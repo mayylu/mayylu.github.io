@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言MySQL所使用的 SQL 语言是用于访问数据库的最常用标准化语言,由于其体积小、速度快、总体拥有成本低，尤其是开放源码这一特点，一般中小型网站的开发都选择 MySQL 作为网站数据库。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL语法">
+<meta property="og:url" content="http://example.com/2022/01/22/SQL%E8%AF%AD%E6%B3%95/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言MySQL所使用的 SQL 语言是用于访问数据库的最常用标准化语言,由于其体积小、速度快、总体拥有成本低，尤其是开放源码这一特点，一般中小型网站的开发都选择 MySQL 作为网站数据库。">
+<meta property="og:locale">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220122232819.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E6%88%AA%E5%9B%BE_20220123180747.png">
+<meta property="article:published_time" content="2022-01-22T13:59:57.000Z">
+<meta property="article:modified_time" content="2022-04-16T06:07:49.365Z">
+<meta property="article:author" content="mayylu">
+<meta property="article:tag" content="SQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220122232819.png">
+
+
+<link rel="canonical" href="http://example.com/2022/01/22/SQL%E8%AF%AD%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/01/22/SQL%E8%AF%AD%E6%B3%95/","path":"2022/01/22/SQL语法/","title":"SQL语法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SQL语法 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-PHP-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">MySQL PHP 基本语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-PHP-%E6%89%A9%E5%B1%95%E8%AF%AD%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">MySQL PHP 扩展语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MYSQL-%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">MYSQL 常用函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL-Aggregate-%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">SQL Aggregate 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL-Scalar-%E5%87%BD%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">SQL Scalar 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL-Eigenfunction-%E5%87%BD%E6%95%B0"><span class="nav-number">4.3.</span> <span class="nav-text">SQL Eigenfunction 函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#information-schema%E7%AE%80%E4%BB%8B"><span class="nav-number">5.</span> <span class="nav-text">information_schema简介</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">关注生活的点点滴滴</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">الوسوم</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/22/SQL%E8%AF%AD%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="关注生活的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQL语法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2022-01-22 21:59:57" itemprop="dateCreated datePublished" datetime="2022-01-22T21:59:57+08:00">2022-01-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">عُدل في</span>
+        <time title="عُدل: 2022-04-16 14:07:49" itemprop="dateModified" datetime="2022-04-16T14:07:49+08:00">2022-04-16</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>MySQL所使用的 SQL 语言是用于访问数据库的最常用标准化语言,由于其体积小、速度快、总体拥有成本低，尤其是开放源码这一特点，一般中小型网站的开发都选择 MySQL 作为网站数据库。  </p>
+<span id="more"></span>  
+
+<h2 id="MySQL-PHP-基本语法"><a href="#MySQL-PHP-基本语法" class="headerlink" title="MySQL PHP 基本语法"></a>MySQL PHP 基本语法</h2><ol>
+<li>使用 PHP 脚本<strong>连接</strong> MySQL服务<br><code>mysqli_connect(host, username, password, dbname,port, socket);</code>   </li>
+<li><strong>断开</strong>与MySQL数据库的链接<br><code>mysqli_close ( connection )</code><br>提示：通常不需要使用 mysqli_close()，因为已打开的非持久连接会在脚本执行完毕后自动关闭。   </li>
+<li><strong>创建,删除</strong>数据库(结果以query而定)<br><code>mysqli_query(connection,query,resultmode);</code><br>‘DROP DATABASE RUNOOB’<br>‘CREATE DATABASE RUNOOB’<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220122232819.png" alt="微信截图_20220122232819"><br>也可以使用mysqli_multi_query(connection,query)执行一条或多条sql语句，然后将结果全部输出。       </li>
+<li><strong>选择</strong>MySQL数据库<br><code>mysqli_select_db(connection,dbname);</code>  </li>
+<li><strong>创建,删除</strong>数据表(参考3)<br>以下例子中我们将在 RUNOOB 数据库中创建数据表runoob_tbl：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE IF NOT EXISTS runoob_tbl(       </span><br><span class="line">   runoob_id INT UNSIGNED AUTO_INCREMENT,     </span><br><span class="line">   runoob_title VARCHAR(100) NOT NULL,    </span><br><span class="line">   runoob_author VARCHAR(40) NOT NULL,     </span><br><span class="line">   submission_date DATE,      </span><br><span class="line">   PRIMARY KEY ( runoob_id )        </span><br><span class="line">)ENGINE=InnoDB DEFAULT CHARSET=utf8;     </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>AUTO_INCREMENT定义列为自增的属性，一般用于主键，数值会自动加1。</li>
+<li>PRIMARY KEY关键字用于定义列为主键。 您可以使用多列来定义主键，列间以逗号分隔。</li>
+<li>ENGINE 设置存储引擎，CHARSET 设置编码</li>
+</ul>
+<ol start="6">
+<li>mysql <strong>添加，修改，删除</strong>表名，列名<br><code>ALTER TABLE &lt;表名&gt; ADD/rename to/drop&lt;字段名&gt;&lt;数据类型&gt;[约束条件]&lt;位置&gt;;</code>   </li>
+</ol>
+<p>&lt;数据类型&gt; 为所要添加的字段能存储数据的数据类型；<br>[约束条件] 是可选的，用来对添加的字段进行约束。<br>&lt;位置&gt; FIRST 关键字,AFTER 关键字,FINIsh关键字.<br>7. MySQL <strong>插入</strong>数据(参考3)</p>
+<p><code>INSERT INTO table_name ( field1, field2,...fieldN )VALUES( value1, value2,...valueN );</code>  </p>
+<p>如果数据是字符型，必须使用单引号或者双引号   </p>
+<ol start="8">
+<li>MySQL Update <strong>修改</strong>数据  </li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UPDATE table_name</span><br><span class="line">SET column1=value, column2=value2,...</span><br><span class="line">WHERE some_column=some_value</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>MySQL <strong>查询</strong>数据 (参考3)</li>
+</ol>
+<p><strong>select</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name,column_name</span><br><span class="line">FROM table_name</span><br><span class="line">[WHERE Clause]</span><br><span class="line">[LIMIT N][ OFFSET M]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>   查询语句中你可以使用一个或者多个表，表之间使用逗号(,)分割，并使用WHERE语句来设定查询条件。</li>
+<li>   SELECT 命令可以读取一条或者多条记录。</li>
+<li>   你可以使用星号（*）来代替其他字段，SELECT语句会返回表的所有字段数据</li>
+<li>   你可以使用 WHERE 语句来包含任何条件。</li>
+<li>   你可以使用 LIMIT 属性来设定返回的记录数。</li>
+<li>   你可以通过OFFSET指定SELECT语句开始查询的数据偏移量。默认情况下偏移量为0。   </li>
+</ul>
+<p><strong>handler(句柄)</strong><br>handler语句并不具备select语句的所有功能。它是mysql专用的语句，并没有包含到SQL标准中。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># 打开一个表名为 tbl_name 的表的句柄</span><br><span class="line">HANDLER tbl_name OPEN [ AS 别名 ]</span><br><span class="line"></span><br><span class="line">可选：</span><br><span class="line"></span><br><span class="line">创建索引：</span><br><span class="line">mysql&gt; create index handler_index on handler_table(c1);</span><br><span class="line"></span><br><span class="line"># 1、通过指定索引查看表，可以指定从索引那一行开始，通过 NEXT 继续浏览</span><br><span class="line">HANDLER tbl_name READ index_name &#123; = | &lt;= | &gt;= | &lt; | &gt; &#125; (value1,value2,...)</span><br><span class="line">    [ WHERE where_condition ] [LIMIT ... ]</span><br><span class="line"></span><br><span class="line"># 2、通过索引查看表</span><br><span class="line"># FIRST: 获取第一行（索引最小的一行）</span><br><span class="line"># NEXT: 获取下一行</span><br><span class="line"># PREV: 获取上一行</span><br><span class="line"># LAST: 获取最后一行（索引最大的一行）</span><br><span class="line">HANDLER tbl_name READ index_name &#123; FIRST | NEXT | PREV | LAST &#125;</span><br><span class="line">    [ WHERE where_condition ] [LIMIT ... ]</span><br><span class="line"></span><br><span class="line"># 3、不通过索引查看表</span><br><span class="line"># READ FIRST: 获取句柄的第一行</span><br><span class="line"># READ NEXT: 依次获取其他行（当然也可以在获取句柄后直接使用获取第一行）</span><br><span class="line"># 最后一行执行之后再执行 READ NEXT 会返回一个空的结果</span><br><span class="line">HANDLER tbl_name READ &#123; FIRST | NEXT &#125;</span><br><span class="line">    [ WHERE where_condition ] [LIMIT ... ]</span><br><span class="line"></span><br><span class="line"># 关闭已打开的句柄</span><br><span class="line">HANDLER tbl_name CLOSE</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li> <strong>删除</strong> 数据(参考3)<br><code>DELETE FROM table_name [WHERE Clause]</code> </li>
+</ol>
+<h2 id="MySQL-PHP-扩展语法"><a href="#MySQL-PHP-扩展语法" class="headerlink" title="MySQL PHP 扩展语法"></a>MySQL PHP 扩展语法</h2><ol>
+<li>MySQL UNION <strong>并联</strong>操作符<br>MySQL UNION 操作符用于连接两个以上的 SELECT 语句的结果组合到一个结果集合中(联合查询，必须保证字段数一致)。<br>多个 SELECT 语句会删除重复的数据。  </li>
+<li>MySQL ORDER BY 子句<strong>排序</strong><br>ORDER BY 关键字用于对结果集按照一个列或者多个列进行排序。<br>ORDER BY 关键字默认按照升序[ASC]对记录进行排序。如果需要按照降序对记录进行排序，您可以使用 DESC 关键字     </li>
+<li>MySQL GROUP BY 子句<strong>分组</strong> </li>
+</ol>
+<p><code>SELECT column1, column2 FROM table1, table2 WHERE [ conditions ] GROUP BY column1, column2 HAVING aggregate_function(column_name) operator value ORDER BY column1, column2</code>        </p>
+<ul>
+<li>group by一般和聚合函数一起使用才有意义   </li>
+<li>在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与聚合函数一起使用。<br>HAVING 子句可以让我们筛选分组后的各组数据。   </li>
+<li>执行顺序  </li>
+</ul>
+<p>1.执行where xx对全表数据做筛选，返回第1个结果集。<br>2.针对第1个结果集使用group by分组，返回第2个结果集。<br>3.针对第2个结果集中的每1组数据执行select xx，有几组就执行几次，返回第3个结果集。<br>4.针对第3个结集执行having xx进行筛选，返回第4个结果集    </p>
+<ol start="4">
+<li>MySQL LIKE 子句<strong>查找</strong>(与where连用)<br><code>SELECT * FROM position WHERE name LIKE &#39;查询字段&#39;;</code><br>like 匹配/模糊匹配，会与 % 和 _ 结合使用。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x27;%a&#x27;     //以a结尾的数据</span><br><span class="line">&#x27;a%&#x27;     //以a开头的数据</span><br><span class="line">&#x27;%a%&#x27;    //含有a的数据</span><br><span class="line">&#x27;_a_&#x27;    //三位且中间字母是a的</span><br><span class="line">&#x27;_a&#x27;     //两位且结尾字母是a的</span><br><span class="line">&#x27;a_&#x27;     //两位且开头字母是a的</span><br></pre></td></tr></table></figure></li>
+<li>MySQL 正则表达式   </li>
+</ol>
+<p><code>SELECT name FROM person_tbl WHERE name REGEXP &#39; &#39;</code>  </p>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E6%88%AA%E5%9B%BE_20220123180747.png" alt="截图_20220123180747">    </p>
+<ol start="6">
+<li>预编程语法<br>第一步：</li>
+</ol>
+<p>set @sentence_i_want_to_exec=concat(‘sel’,’ect * from table_a;’);<br>将命令concat(‘sel’,’ect * from table_a;’)赋给变量@sentence_i_want_to_exec<br>这里的命令即是连接sql语句，形成查表语句。</p>
+<p>第二步：</p>
+<p>prepare stmt from @sentence_i_want_to_exec;<br>编译命令，将命令编译后命名为新的可执行文件stmt</p>
+<p>第三步：</p>
+<p>EXECUTE stmt<br>运行可执行文件stmt</p>
+<h2 id="MYSQL-常用函数"><a href="#MYSQL-常用函数" class="headerlink" title="MYSQL 常用函数"></a>MYSQL 常用函数</h2><h3 id="SQL-Aggregate-函数"><a href="#SQL-Aggregate-函数" class="headerlink" title="SQL Aggregate 函数"></a>SQL Aggregate 函数</h3><p>SQL Aggregate 函数计算从列中取得的值，返回一个单一的值。<br> <code>SELECT function_name(column_name) FROM table_name;</code></p>
+<pre><code>AVG() - 返回平均值   
+COUNT() - 返回行数      
+FIRST() - 返回第一个记录的值     
+LAST() - 返回最后一个记录的值    
+MAX() - 返回最大值     
+MIN() - 返回最小值      
+SUM() - 返回总和   
+</code></pre>
+<h3 id="SQL-Scalar-函数"><a href="#SQL-Scalar-函数" class="headerlink" title="SQL Scalar 函数"></a>SQL Scalar 函数</h3><p>SQL Scalar 函数基于输入值，返回一个单一的值  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">EXP(x)-返回 e 的 x 次方计算        </span><br><span class="line">FLOOR(x)-返回小于或等于 x 的最大整数       </span><br><span class="line">UCASE() - 将某个字段转换为大写   </span><br><span class="line">LCASE() - 将某个字段转换为小写    </span><br><span class="line">MID() - 从某个文本字段提取字符，MySql 中使用    </span><br><span class="line">SELECT MID(column_name,start position,[length]) FROM table_name    </span><br><span class="line">substr(string,start,length) - 从某个文本字段提取字符     </span><br><span class="line">LN 	返回数字的自然对数，以 e 为底   </span><br><span class="line">LEN() - 返回某个文本字段的长度    </span><br><span class="line">ROUND() - 对某个数值字段进行指定小数位数的四舍五入    </span><br><span class="line">NOW() - 返回当前的系统日期和时间   </span><br><span class="line">FORMAT() - 格式化某个字段的显示方式  </span><br><span class="line">CONCAT(s1,s2...sn) 	字符串 s1,s2 等多个字符串合并为一个字符串     </span><br><span class="line">group_concat()group_concat是针对列做的数据拼接，且group_concat自动生成逗号,一般和group by 结合使用比较多      </span><br><span class="line">ASCII(s)-返回字符串 s 的第一个字符的 ASCII 码     </span><br><span class="line">IF(expr,v1,v2)-如果表达式 expr 成立，返回结果 v1；否则，返回结果 v2   </span><br><span class="line">sleep()-休眠几秒   </span><br><span class="line">left（a，b)-指从左侧读取a的前b位      </span><br></pre></td></tr></table></figure>
+
+<h3 id="SQL-Eigenfunction-函数"><a href="#SQL-Eigenfunction-函数" class="headerlink" title="SQL Eigenfunction 函数"></a>SQL Eigenfunction 函数</h3><pre><code>    SYSTEM_USER()     返回当前用户 
+    DATABASE()     返回当前数据库名     
+    VERSION()     返回数据库的版本号      
+    RAND()     返回 0 到 1 的随机数      
+</code></pre>
+<h2 id="information-schema简介"><a href="#information-schema简介" class="headerlink" title="information_schema简介"></a>information_schema简介</h2><p>在MySQL中，把 information_schema 看作是一个数据库，确切说是信息数据库。其中保存着关于MySQL服务器所维护的所有其他数据库的信息。<br>如数据库名，数据库的表，表栏的数据类型与访问权 限等。在INFORMATION_SCHEMA中，有数个只读表。它们实际上是视图，而不是基本表，因此，你将无法看到与之相关的任何文件。<br><strong>SCHEMATA</strong>表：<br>提供了当前mysql实例中所有数据库的信息。是show databases的结果取之此表。</p>
+<p><strong>TABLES</strong>表：<br>提供了关于数据库中的表的信息（包括视图）。详细表述了某个表属于哪个schema，表类型，表引擎，创建时间等信息。是show tables from schemaname的结果取之此表。</p>
+<p><strong>COLUMNS</strong>表：<br>提供了表中的列信息。详细表述了某张表的所有列以及每个列的信息。是show columns from schemaname.tablename的结果取之此表。</p>
+<p>STATISTICS表：<br>提供了关于表索引的信息。是show index from schemaname.tablename的结果取之此表。</p>
+<p>USER_PRIVILEGES（用户权限）表：<br>给出了关于全程权限的信息。该信息源自mysql.user授权表。是非标准表。</p>
+<p>SCHEMA_PRIVILEGES（方案权限）表：<br>给出了关于方案（数据库）权限的信息。该信息来自mysql.db授权表。是非标准表。</p>
+<p>TABLE_PRIVILEGES（表权限）表：<br>给出了关于表权限的信息。该信息源自mysql.tables_priv授权表。是非标准表。</p>
+<p>COLUMN_PRIVILEGES（列权限）表：<br>给出了关于列权限的信息。该信息源自mysql.columns_priv授权表。是非标准表。</p>
+<p>CHARACTER_SETS（字符集）表：<br>提供了mysql实例可用字符集的信息。是SHOW CHARACTER SET结果集取之此表。</p>
+<p>COLLATIONS表：<br>提供了关于各字符集的对照信息。</p>
+<p>COLLATION_CHARACTER_SET_APPLICABILITY表：<br>指明了可用于校对的字符集。这些列等效于SHOW COLLATION的前两个显示字段。</p>
+<p>TABLE_CONSTRAINTS表：<br>描述了存在约束的表。以及表的约束类型。</p>
+<p>KEY_COLUMN_USAGE表：<br>描述了具有约束的键列。</p>
+<p>ROUTINES表：<br>提供了关于存储子程序（存储程序和函数）的信息。此时，ROUTINES表不包含自定义函数（UDF）。名为“mysql.proc name”的列指明了对应于INFORMATION_SCHEMA.ROUTINES表的mysql.proc表列。</p>
+<p>VIEWS表：<br>给出了关于数据库中的视图的信息。需要有show views权限，否则无法查看视图信息。</p>
+<p>TRIGGERS表：<br>提供了关于触发程序的信息。必须有super权限才能查看该表</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SQL/" rel="tag"># SQL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/18/HTTP/" rel="prev" title="HTTP">
+                  <i class="fa fa-chevron-left"></i> HTTP
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/02/SQL%E6%B3%A8%E5%85%A5%E5%AE%9E%E8%B7%B5/" rel="next" title="SQL注入实践">
+                  SQL注入实践 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
