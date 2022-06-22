@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Buscando...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="前言当服务器开启allow_url_include选项时，就可以通过PHP的某些特性函数（include()，require()和include_once()，requir_once()）利用URL去动态包含文件，此时如果没有对文件来源进行严格审查，就会导致任意文件读取或者任意命令执行.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="php文件包含漏洞">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326211707.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326212351.png">
 <meta property="article:published_time" content="2022-02-05T11:11:29.000Z">
-<meta property="article:modified_time" content="2022-04-27T12:32:04.993Z">
+<meta property="article:modified_time" content="2022-05-28T01:15:32.492Z">
 <meta property="article:author" content="mayylu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326211707.png">
@@ -61,7 +61,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
+    <div class="toggle" aria-label="Cambiar a barra de navegación" role="button">
     </div>
   </div>
 
@@ -100,10 +100,10 @@
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
-          المحتويات
+          Tabla de contenidos
         </li>
         <li class="sidebar-nav-overview">
-          عام
+          Inicio
         </li>
       </ul>
 
@@ -123,13 +123,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">11</span>
-          <span class="site-state-item-name">المقالات</span>
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">entradas</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">2</span>
-        <span class="site-state-item-name">الوسوم</span>
+        <span class="site-state-item-name">tags</span>
       </div>
   </nav>
 </div>
@@ -190,16 +190,16 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">نُشر في</span>
+      <span class="post-meta-item-text">Publicado el</span>
 
-      <time title="أُنشأ: 2022-02-05 19:11:29" itemprop="dateCreated datePublished" datetime="2022-02-05T19:11:29+08:00">2022-02-05</time>
+      <time title="Creado por: 2022-02-05 19:11:29" itemprop="dateCreated datePublished" datetime="2022-02-05T19:11:29+08:00">2022-02-05</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">عُدل في</span>
-        <time title="عُدل: 2022-04-27 20:32:04" itemprop="dateModified" datetime="2022-04-27T20:32:04+08:00">2022-04-27</time>
+        <span class="post-meta-item-text">Editado el</span>
+        <time title="Modificado por: 2022-05-28 09:15:32" itemprop="dateModified" datetime="2022-05-28T09:15:32+08:00">2022-05-28</time>
       </span>
 
   
@@ -220,7 +220,8 @@
 <p>示例代码</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="variable">$filename</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];     </span><br><span class="line"> <span class="keyword">include</span>(<span class="variable">$filename</span>);    </span><br><span class="line"> <span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
 <p>require()：只要程序一运行就包含文件，找不到被包含的文件时会产生致命错误，并停止脚本</p>
-<p>include_once()和require_once()：若文件中代码已被包含则不会再次包含<br>2. 环境    </p>
+<p>include_once()和require_once()：若文件中代码已被包含则不会再次包含   </p>
+<p>此外还有<br>highlight_file();   函数对文件进行语法高亮显示,同样也可以使文件输出<br>show_source();      是higlight_file()的别名<br>file_get_contents();把整个文件读入一个字符串中<br>fopen_file();       打开文件<br>2. 环境    </p>
 <ul>
 <li>allow_url_fopen=On(默认为On) 规定是否允许从远程服务器或者网站检索数据   </li>
 <li>allow_url_include=On(php5.2之后默认为Off) 规定是否允许include/require远程文件    </li>
@@ -256,13 +257,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/02/02/SQL%E6%B3%A8%E5%85%A5%E5%AE%9E%E8%B7%B5/" rel="prev" title="SQL注入实践">
-                  <i class="fa fa-chevron-left"></i> SQL注入实践
+                <a href="/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" rel="prev" title="文件上传漏洞">
+                  <i class="fa fa-chevron-left"></i> 文件上传漏洞
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" rel="next" title="文件上传漏洞">
-                  文件上传漏洞 <i class="fa fa-chevron-right"></i>
+                <a href="/2022/02/11/HTML/" rel="next" title="HTML">
+                  HTML <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -290,7 +291,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">mayylu</span>
 </div>
-  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Creado mediante <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
     </div>
