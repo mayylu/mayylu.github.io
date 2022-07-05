@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220122232819.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E6%88%AA%E5%9B%BE_20220123180747.png">
 <meta property="article:published_time" content="2022-01-22T13:59:57.000Z">
-<meta property="article:modified_time" content="2022-06-04T14:03:34.064Z">
+<meta property="article:modified_time" content="2022-07-02T04:36:58.011Z">
 <meta property="article:author" content="mayylu">
 <meta property="article:tag" content="SQL">
 <meta name="twitter:card" content="summary">
@@ -124,12 +124,12 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">المقالات</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">الوسوم</span>
       </div>
   </nav>
@@ -200,7 +200,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">عُدل في</span>
-        <time title="عُدل: 2022-06-04 22:03:34" itemprop="dateModified" datetime="2022-06-04T22:03:34+08:00">2022-06-04</time>
+        <time title="عُدل: 2022-07-02 12:36:58" itemprop="dateModified" datetime="2022-07-02T12:36:58+08:00">2022-07-02</time>
       </span>
 
   
@@ -223,34 +223,36 @@
 <li><strong>选择</strong>MySQL数据库<br><code>mysqli_select_db(connection,dbname);</code>  </li>
 <li><strong>创建,删除</strong>数据表(参考3)<br><code>mysqli_query(connection,query,resultmode);</code><br>以下例子中我们将在 RUNOOB 数据库中创建数据表runoob_tbl：</li>
 </ol>
+<p><strong>create</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> runoob_tbl(       </span><br><span class="line">   runoob_id <span class="type">INT</span> UNSIGNED AUTO_INCREMENT,     </span><br><span class="line">   runoob_title <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,    </span><br><span class="line">   runoob_author <span class="type">VARCHAR</span>(<span class="number">40</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,     </span><br><span class="line">   submission_date <span class="type">DATE</span>,      </span><br><span class="line">   <span class="keyword">PRIMARY</span> KEY ( runoob_id )        </span><br><span class="line">)ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8;     </span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>AUTO_INCREMENT定义列为自增的属性，一般用于主键，数值会自动加1。</li>
+<li>AUTO_INCREMENT定义列为自增的属性，一般用于主键(即PRIMARY KEY 括号中的列)，数值会自动加1。</li>
 <li>PRIMARY KEY关键字用于定义列为主键。 您可以使用多列来定义主键，列间以逗号分隔。</li>
 <li>ENGINE 设置存储引擎，CHARSET 设置编码</li>
 </ul>
-<p>查看列：desc 表名;</p>
-<p><code>DROP TABLE table_name ;</code><br>删除表</p>
+<p>查看列：<code>desc 表名;</code>或<code>describe 表名</code></p>
+<p>删除表: <code>DROP TABLE table_name ;</code></p>
 <ol start="6">
 <li>mysql <strong>添加，修改，删除</strong>表名，列名<br><code>ALTER TABLE &lt;表名&gt; ADD/rename to/drop&lt;字段名&gt;&lt;数据类型&gt;[约束条件]&lt;位置&gt;;</code>   </li>
 </ol>
 <p>&lt;数据类型&gt; 为所要添加的字段能存储数据的数据类型；<br>[约束条件] 是可选的，用来对添加的字段进行约束。<br>&lt;位置&gt; FIRST 关键字,AFTER 关键字,FINIsh关键字.   </p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name rename table_name1; <span class="comment">--修改表名</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span>  <span class="keyword">column</span> name <span class="type">varchar</span>(<span class="number">10</span>); <span class="comment">--添加表列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> name1 <span class="type">int</span>,<span class="keyword">add</span> name2 <span class="type">varchar</span>(<span class="number">11</span>);<span class="comment">--添加两个字段</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">drop</span>  column_name; <span class="comment">--删除表列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">drop</span> column_name1,<span class="keyword">drop</span> column_name2;<span class="comment">--删除两个字段name1,name2</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name modify (<span class="keyword">NOT</span> <span class="keyword">NULL</span>) name <span class="type">char</span>(<span class="number">10</span>) <span class="comment">--修改表列类型</span></span><br><span class="line"><span class="operator">||</span><span class="keyword">alter</span> <span class="keyword">table</span> table_name change name address  <span class="type">char</span>(<span class="number">40</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name change  <span class="keyword">column</span> name name1 <span class="type">varchar</span>(<span class="number">30</span>)<span class="comment">--修改表列名address-&gt; address1</span></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name rename table_name1; <span class="comment">--修改表名</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span>  column_name <span class="type">varchar</span>(<span class="number">10</span>); <span class="comment">--添加表列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> name1 <span class="type">int</span>,<span class="keyword">add</span> name2 <span class="type">varchar</span>(<span class="number">11</span>);<span class="comment">--添加两个字段</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">drop</span>  column_name; <span class="comment">--删除表列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">drop</span> column_name1,<span class="keyword">drop</span> column_name2;<span class="comment">--删除两个字段name1,name2</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name modify (<span class="keyword">NOT</span> <span class="keyword">NULL</span>) name <span class="type">char</span>(<span class="number">10</span>) <span class="comment">--修改表列类型</span></span><br><span class="line"><span class="operator">||</span><span class="keyword">alter</span> <span class="keyword">table</span> table_name change name address  <span class="type">char</span>(<span class="number">40</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name change  <span class="keyword">column</span> name name1 <span class="type">varchar</span>(<span class="number">30</span>)<span class="comment">--修改表列名address-&gt; address1</span></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
 <ol start="7">
-<li>MySQL <strong>插入</strong>数据(参考3)</li>
+<li>MySQL <strong>插入，删除</strong>数据(参考3)</li>
 </ol>
 <p><code>INSERT INTO table_name ( field1, field2,...fieldN )VALUES( value1, value2,...valueN );</code>  </p>
 <p>如果数据是字符型，必须使用单引号或者双引号   </p>
 <p>INSERT 插入多条数据<br><code>INSERT INTO table_name  (field1, field2,...fieldN)  VALUES  (valueA1,valueA2,...valueAN),(valueB1,valueB2,...valueBN),(valueC1,valueC2,...valueCN)......;</code></p>
 <p>如果所有的列都要添加数据可以不规定列进行添加数据</p>
+<p>删除数据 ：<code>delete from students where id=3;</code></p>
 <ol start="8">
 <li>MySQL Update <strong>修改</strong>数据  </li>
 </ol>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UPDATE table_name</span><br><span class="line"><span class="keyword">SET</span> column1<span class="operator">=</span><span class="keyword">value</span>, column2<span class="operator">=</span>value2,...</span><br><span class="line"><span class="keyword">WHERE</span> some_column<span class="operator">=</span>some_value</span><br></pre></td></tr></table></figure>
 
 <ol start="9">
-<li>MySQL <strong>查询</strong>数据 (参考3)</li>
+<li>MySQL <strong>查询</strong>数据 </li>
 </ol>
 <p><strong>select</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name,column_name</span><br><span class="line"><span class="keyword">FROM</span> table_name</span><br><span class="line">[<span class="keyword">WHERE</span> Clause]</span><br><span class="line">[LIMIT N][ <span class="keyword">OFFSET</span> M]</span><br></pre></td></tr></table></figure>
