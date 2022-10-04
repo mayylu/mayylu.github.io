@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220122232819.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E6%88%AA%E5%9B%BE_20220123180747.png">
 <meta property="article:published_time" content="2022-01-22T13:59:57.000Z">
-<meta property="article:modified_time" content="2022-07-16T14:30:00.197Z">
+<meta property="article:modified_time" content="2022-09-19T14:02:21.041Z">
 <meta property="article:author" content="mayylu">
 <meta property="article:tag" content="SQL">
 <meta name="twitter:card" content="summary">
@@ -124,7 +124,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">المقالات</span>
         </a>
       </div>
@@ -200,7 +200,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">عُدل في</span>
-        <time title="عُدل: 2022-07-16 22:30:00" itemprop="dateModified" datetime="2022-07-16T22:30:00+08:00">2022-07-16</time>
+        <time title="عُدل: 2022-09-19 22:02:21" itemprop="dateModified" datetime="2022-09-19T22:02:21+08:00">2022-09-19</time>
       </span>
 
   
@@ -254,7 +254,7 @@
 <ol start="9">
 <li>MySQL <strong>查询</strong>数据 </li>
 </ol>
-<p><strong>select</strong></p>
+<p><strong>select</strong><br>select直接加<strong>数字串</strong>时，可以不写后面的表名，那么它输出的内容就是我们select后的数字，这时我们写的一串数字就是一个数组（或1个行向量），这时select实际上没有向任何一个数据库查询数据，即查询命令不指向任何数据库的表。返回值就是我们输入的这个数组，这时它是个1行n列的表，表的<strong>列名和值</strong>都是我们输入的数组</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name,column_name</span><br><span class="line"><span class="keyword">FROM</span> table_name</span><br><span class="line">[<span class="keyword">WHERE</span> Clause]</span><br><span class="line">[LIMIT N][ <span class="keyword">OFFSET</span> M]</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -274,7 +274,7 @@
 <li>  <strong>删除</strong> 数据<br><code>DELETE FROM &lt;表名&gt; [WHERE 子句] [ORDER BY 子句] [LIMIT 子句]</code> </li>
 </ol>
 <h2 id="MySQL-PHP-扩展语法"><a href="#MySQL-PHP-扩展语法" class="headerlink" title="MySQL PHP 扩展语法"></a>MySQL PHP 扩展语法</h2><ol>
-<li>MySQL UNION <strong>并联</strong>操作符<br>MySQL UNION 操作符用于连接两个以上的 SELECT 语句的结果组合到一个结果集合中(联合查询，必须保证字段数一致)。<br>多个 SELECT 语句会删除重复的数据。  </li>
+<li>MySQL UNION <strong>并联</strong>操作符<br>MySQL UNION 操作符用于连接两个以上的 SELECT 语句的结果组合到一个结果集合中(联合查询，必须保证字段数一致)多个 SELECT 语句会删除重复的数据<br>union all则只是简单地将两个结果集合并后就返回结果。因此，如果返回的两个结果集中有重复的数据，那么返回的结果就会包含重复的数据</li>
 <li>MySQL ORDER BY 子句<strong>排序</strong><br>ORDER BY 关键字用于对结果集按照一个列或者多个列进行排序。<br>ORDER BY 关键字默认按照升序[ASC]对记录进行排序。如果需要按照降序对记录进行排序，您可以使用 DESC 关键字     </li>
 <li>MySQL GROUP BY 子句<strong>分组</strong> </li>
 </ol>
@@ -291,13 +291,13 @@ A(表名) relike B (表达式) ，表示A里边只要含有B即可，B中一般�
 <li>MySQL 正则表达式   </li>
 </ol>
 <p><code>SELECT name FROM person_tbl WHERE name REGEXP &#39; &#39;</code>  </p>
-<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E6%88%AA%E5%9B%BE_20220123180747.png" alt="截图_20220123180747">    </p>
-<ol start="6">
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E6%88%AA%E5%9B%BE_20220123180747.png" alt="截图_20220123180747"><br>6. MySQL as为数据表和字段<strong>起别名</strong><br>1、“SELECT 字段名 AS 别名 FROM 数据表;”，可为字段指定别名；<br>2、“SELECT 字段名 FROM 数据表 AS 别名;”，可为表指定别名。</p>
+<ol start="7">
 <li>预编程语法<br>第一步：</li>
 </ol>
-<p>set @sentence_i_want_to_exec=concat(‘sel’,’ect * from table_a;’);<br>将命令concat(‘sel’,’ect * from table_a;’)赋给变量@sentence_i_want_to_exec<br>这里的命令即是连接sql语句，形成查表语句。</p>
+<p>set @a=concat(‘sel’,’ect * from table_a;’);<br>将命令concat(‘sel’,’ect * from table_a;’)赋给变量@a<br>这里的命令即是连接sql语句，形成查表语句。</p>
 <p>第二步：</p>
-<p>prepare stmt from @sentence_i_want_to_exec;<br>编译命令，将命令编译后命名为新的可执行文件stmt</p>
+<p>prepare stmt from @@a<br>编译命令，将命令编译后命名为新的可执行文件stmt</p>
 <p>第三步：</p>
 <p>EXECUTE stmt<br>运行可执行文件stmt</p>
 <h2 id="MYSQL-常用函数"><a href="#MYSQL-常用函数" class="headerlink" title="MYSQL 常用函数"></a>MYSQL 常用函数</h2><h3 id="SQL-Aggregate-函数"><a href="#SQL-Aggregate-函数" class="headerlink" title="SQL Aggregate 函数"></a>SQL Aggregate 函数</h3><p>SQL Aggregate 函数计算从列中取得的值，返回一个单一的值。<br> <code>SELECT function_name(column_name) FROM table_name;</code></p>

