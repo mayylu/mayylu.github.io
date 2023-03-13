@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
@@ -19,28 +19,29 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="前言代码审计,是对应用程序源代码进行系统性检查的工作。 目的是为了找到并且修复应用程序在开发阶段存在的一些漏洞或者程序逻辑错误,避免程序漏洞被非法利用给企业带来不必要的风险.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="php审计基础">
-<meta property="og:url" content="http://example.com/2022/07/11/php%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:url" content="https://mayylu.github.io/2022/07/11/php%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="mayylu">
 <meta property="og:description" content="前言代码审计,是对应用程序源代码进行系统性检查的工作。 目的是为了找到并且修复应用程序在开发阶段存在的一些漏洞或者程序逻辑错误,避免程序漏洞被非法利用给企业带来不必要的风险.">
-<meta property="og:locale">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1567560448_5d6f13004035f.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/51bfc7bb-fd9a-402e-971a-a2247b226f3d.3adc35af4c1d.png">
 <meta property="article:published_time" content="2022-07-11T13:04:19.000Z">
-<meta property="article:modified_time" content="2022-10-04T10:23:02.847Z">
+<meta property="article:modified_time" content="2023-03-04T13:52:39.096Z">
 <meta property="article:author" content="mayylu">
 <meta property="article:tag" content="php">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1567560448_5d6f13004035f.png">
 
 
-<link rel="canonical" href="http://example.com/2022/07/11/php%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/">
+<link rel="canonical" href="https://mayylu.github.io/2022/07/11/php%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/07/11/php%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/","path":"2022/07/11/php审计基础/","title":"php审计基础"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2022/07/11/php%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/","path":"2022/07/11/php审计基础/","title":"php审计基础"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>php审计基础 | mayylu</title>
@@ -61,7 +62,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
@@ -100,17 +101,17 @@
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
-          المحتويات
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          عام
+          站点概览
         </li>
       </ul>
 
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E9%A2%84%E5%8F%98%E9%87%8F"><span class="nav-number">2.1.</span> <span class="nav-text">php预变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP%E7%9A%84url%E8%A7%A3%E6%9E%90%E7%89%B9%E6%80%A7"><span class="nav-number">2.2.</span> <span class="nav-text">PHP的url解析特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E7%9F%AD%E6%A0%87%E7%AD%BE"><span class="nav-number">2.3.</span> <span class="nav-text">php短标签</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%95%E8%BF%87"><span class="nav-number">3.</span> <span class="nav-text">绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#md5%E7%BB%95%E8%BF%87"><span class="nav-number">3.1.</span> <span class="nav-text">md5绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A3%80%E6%B5%8B%E7%BB%95%E8%BF%87"><span class="nav-number">3.2.</span> <span class="nav-text">字符串检测绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0"><span class="nav-number">3.3.</span> <span class="nav-text">php伪随机数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E5%8F%98%E9%87%8F%E8%B5%8B%E5%80%BC"><span class="nav-number">4.1.</span> <span class="nav-text">为变量赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">自定义函数</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#phpinfo-%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.</span> <span class="nav-text">phpinfo()函数返回的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E9%A2%84%E5%8F%98%E9%87%8F"><span class="nav-number">2.2.</span> <span class="nav-text">php预变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F"><span class="nav-number">2.2.1.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP%E7%9A%84url%E8%A7%A3%E6%9E%90%E7%89%B9%E6%80%A7"><span class="nav-number">2.3.</span> <span class="nav-text">PHP的url解析特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E7%9F%AD%E6%A0%87%E7%AD%BE"><span class="nav-number">2.4.</span> <span class="nav-text">php短标签</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%95%E8%BF%87"><span class="nav-number">3.</span> <span class="nav-text">绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#md5%E7%BB%95%E8%BF%87"><span class="nav-number">3.1.</span> <span class="nav-text">md5绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A3%80%E6%B5%8B%E7%BB%95%E8%BF%87"><span class="nav-number">3.2.</span> <span class="nav-text">字符串检测绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0"><span class="nav-number">3.3.</span> <span class="nav-text">php伪随机数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%BF%A1%E6%81%AF"><span class="nav-number">4.1.</span> <span class="nav-text">查看信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E5%8F%98%E9%87%8F%E8%B5%8B%E5%80%BC"><span class="nav-number">4.2.</span> <span class="nav-text">为变量赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="nav-number">4.3.</span> <span class="nav-text">回调函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="nav-number">4.4.</span> <span class="nav-text">自定义函数</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -123,13 +124,17 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">14</span>
-          <span class="site-state-item-name">المقالات</span>
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">الوسوم</span>
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
@@ -146,7 +151,7 @@
     </header>
 
     
-  <div class="back-to-top" role="button" aria-label="Back to top">
+  <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
@@ -167,8 +172,8 @@
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/11/php%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2022/07/11/php%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -190,16 +195,16 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">نُشر في</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="أُنشأ: 2022-07-11 21:04:19" itemprop="dateCreated datePublished" datetime="2022-07-11T21:04:19+08:00">2022-07-11</time>
+      <time title="创建时间：2022-07-11 21:04:19" itemprop="dateCreated datePublished" datetime="2022-07-11T21:04:19+08:00">2022-07-11</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">عُدل في</span>
-        <time title="عُدل: 2022-10-04 18:23:02" itemprop="dateModified" datetime="2022-10-04T18:23:02+08:00">2022-10-04</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-03-04 21:52:39" itemprop="dateModified" datetime="2023-03-04T21:52:39+08:00">2023-03-04</time>
       </span>
 
   
@@ -214,14 +219,35 @@
     <div class="post-body" itemprop="articleBody">
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>代码审计,是对应用程序源代码进行系统性检查的工作。 目的是为了找到并且修复应用程序在开发阶段存在的一些漏洞或者程序逻辑错误,避免程序漏洞被非法利用给企业带来不必要的风险.</p>
 <span id="more"></span>
-<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="php预变量"><a href="#php预变量" class="headerlink" title="php预变量"></a>php预变量</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">　　$_SERVER[&#x27;SERVER_ADDR&#x27;] 当前运行脚本所在的服务器的ip地址。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;SERVER_NAME&#x27;] 当前运行脚本所在服务器主机的名称。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;REQUEST_METHOD&#x27;] 访问页面时的请求方法。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;REMOTE_ADDR&#x27;] 正在浏览当前页用户的ip地址。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;HTTP_X_FORWARDED_FOR&#x27;] 透过代理服务器取得客户端的真实 IP 地址</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;REMOTE_HOST&#x27;] 正在浏览当前页用户的主机名。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;REMOTE_PORT&#x27;] 用户连接到服务器时所使用的端口。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;SCRIPT_FILENAME&#x27;] 当前执行脚本的绝对路径。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;SERVER_PORT&#x27;] 服务器所使用的端口。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;SERVER_SIGNATURE&#x27;] 包含服务器版本和虚拟主机名的字符串。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;DOCUMENT_ROOT&#x27;] 当前运行脚本所在的文档根目录。</span><br><span class="line"></span><br><span class="line">　　$_COOKIE 通过HTTPCookie传递到脚本的信息。这些是由执行php脚本时，通过setcookie()设置的。</span><br><span class="line"></span><br><span class="line">　　$_SESSION 包含与所有会话变量有关的信息。$_SESSION变量主要应用于会话控制和页面间值的传递。</span><br><span class="line"></span><br><span class="line">　　$_POST 通过post方法传递的参数信息。</span><br><span class="line"></span><br><span class="line">　　$_GET 通过get方法传递的参数信息。</span><br><span class="line"></span><br><span class="line">$_GLOBALS 由所有已定义的全局变量组成的数组。变量名就是该数组的索引。它可以称得上是所有超级变 量的超级集合。</span><br></pre></td></tr></table></figure>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="phpinfo-函数返回的信息"><a href="#phpinfo-函数返回的信息" class="headerlink" title="phpinfo()函数返回的信息"></a>phpinfo()函数返回的信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Core</span><br><span class="line">PHP_VERSION                 php版本号</span><br><span class="line">allow_url_fopen	</span><br><span class="line">allow_url_include</span><br><span class="line">open_basedir                访问限制</span><br><span class="line">disable_functions</span><br><span class="line">upload_tmp_dir              临时目录</span><br><span class="line"></span><br><span class="line">PHP Variables</span><br><span class="line">$_SERVER[&#x27;DOCUMENT_ROOT&#x27;]   网站绝对路径</span><br><span class="line">$_SERVER[&#x27;SERVER_SOFTWARE&#x27;] 服务器软件</span><br><span class="line">$_SERVER[&#x27;HTTP_HOST&#x27;]       网站真实ip</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="php预变量"><a href="#php预变量" class="headerlink" title="php预变量"></a>php预变量</h3><h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__FILE__ 	    文件的完整路径和文件名。</span><br><span class="line">__DIR__ 	    文件所在的目录。等价于 dirname(__FILE__)。目录名不包括末尾的斜杠.</span><br><span class="line">__FUNCTION__ 	当前函数的名称。匿名函数则为 &#123;closure&#125;。</span><br><span class="line">__CLASS__ 	    当前类的名称。</span><br><span class="line">define(&quot;FOO&quot;,     &quot;something&quot;);   自定义常量</span><br></pre></td></tr></table></figure>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">　　$_SERVER[&#x27;SERVER_ADDR&#x27;] 当前运行脚本所在的服务器的ip地址。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;REQUEST_METHOD&#x27;] 访问页面时的请求方法。</span><br><span class="line"></span><br><span class="line">　　$_SERVER[&#x27;REMOTE_ADDR&#x27;] 正在浏览当前页用户的ip地址。</span><br><span class="line">除了上面列出的元素之外，PHP 还将使用请求报头中的值创建其它元素，这些条目将命名为 HTTP_ 后跟报头名称，大写且使用下划线而不是连字符。</span><br><span class="line">例如 Accept-Language 报头将作为 $_SERVER[&#x27;HTTP_ACCEPT_LANGUAGE&#x27;] 提供。 </span><br><span class="line">    $_FILES         文件上传变量,此数组的概况在文件上传处</span><br><span class="line"></span><br><span class="line">　　$_COOKIE        通过HTTPCookie传递到脚本的信息。这些是由执行php脚本时，通过setcookie()设置的。</span><br><span class="line"></span><br><span class="line">　　$_SESSION       包含与所有会话变量有关的信息。$_SESSION变量主要应用于会话控制和页面间值的传递。</span><br><span class="line"></span><br><span class="line">    $_ENV           环境变量.读$ip = getenv(&#x27;REMOTE_ADDR&#x27;)，写putenv(&quot;UNIQID=$uniqid&quot;);</span><br><span class="line"></span><br><span class="line">    $_REQUEST       设置request默认以 $_GET，$_POST 和 $_COOKIE 的顺序。即在request数组中post可以覆盖get</span><br><span class="line"></span><br><span class="line">　　$_POST           通过post方法传递的参数信息。</span><br><span class="line"></span><br><span class="line">　　$_GET            通过get方法传递的参数信息。</span><br><span class="line"></span><br><span class="line">    $_GLOBALS        由所有已定义的全局变量组成的数组(数值不受局部变量的干扰)。数组的键就是变量的名字。 </span><br></pre></td></tr></table></figure>
 
 <h3 id="PHP的url解析特性"><a href="#PHP的url解析特性" class="headerlink" title="PHP的url解析特性"></a>PHP的url解析特性</h3><ol>
-<li>查询字符串解析<br>值得注意的是，查询字符串在解析的过程中会将某些字符删除或用下划线代替。例如，<code>/?%20news[id%00=42会转换为Array([news_id] =&gt; 42)</code>。<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1567560448_5d6f13004035f.png" alt="1567560448_5d6f13004035f"></li>
-<li>basename()函数绕过<br>basename() 函数返回路径中的文件名部分。<br>basename()不能识别ascii值为47、128-255的字符<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://localhost/?file=%ffindex.php/%ff</span><br><span class="line">//index.php</span><br><span class="line">http://localhost/?file=%ffindex.php</span><br><span class="line">//index.php</span><br><span class="line">http://localhost/?file=index.php%ff</span><br><span class="line">//index.php</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$path = &quot;/testweb/home.php&quot;;</span><br><span class="line"></span><br><span class="line">//显示带有文件扩展名的文件名</span><br><span class="line">echo basename($path);</span><br><span class="line"></span><br><span class="line">//显示不带有文件扩展名的文件名</span><br><span class="line">echo basename($path,&quot;.php&quot;);</span><br><span class="line">?&gt; </span><br><span class="line">home.php</span><br><span class="line">home</span><br></pre></td></tr></table></figure>
-<h3 id="php短标签"><a href="#php短标签" class="headerlink" title="php短标签"></a>php短标签</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?=&quot;1&quot;?&gt;	    //相当于&lt;?php echo &quot;1&quot;;?&gt;</span><br><span class="line">&lt;?echo&quot;1&quot;?&gt;     //前提是开启配置参数short_open_tags=on</span><br><span class="line">&lt;% echo&quot;1&quot;;%&gt;	//前提是开启配置参数asp_tags=on，php7.0及以上版本不能使用</span><br></pre></td></tr></table></figure></li>
+<li><p>查询字符串解析<br>值得注意的是，查询字符串在解析的过程中会将某些字符删除或用下划线代替。例如，<code>/?%20news[id%00=42会转换为Array([news_id] =&gt; 42)</code>。<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1567560448_5d6f13004035f.png" alt="1567560448_5d6f13004035f"></p>
+</li>
+<li><p><code>$_SERVER[&#39;QUERY_STRING&#39;]</code><br><code>$_SERVER[&#39;QUERY_STRING&#39;]</code>提取?后的内容不会进行URL解码，而<code>$_GET</code>和<code>$_REQUEST</code>解析url时会先进行URL解码,可以进行URL编码绕过</p>
+</li>
+<li><p><code>$_REQUEST</code><br>$_REQUEST在同时接收GET和POST参数时，POST优先级更高，优先接受post参数。</p>
+</li>
+<li><p>basename函数</p>
+</li>
 </ol>
+<p>basename() 函数返回路径中的文件名部分<br>basename()不能识别ascii值为<code>47、128-255</code>的字符</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/?file=%EF%BF%BDindex.php/%EF%BF%BD">http://localhost/?file=%ffindex.php/%ff</a><br>//index.php<br><a target="_blank" rel="noopener" href="http://localhost/?file=%EF%BF%BDindex.php">http://localhost/?file=%ffindex.php</a><br>//index.php<br><a target="_blank" rel="noopener" href="http://localhost/?file=index.php%EF%BF%BD">http://localhost/?file=index.php%ff</a><br>//index.php</p>
+<?php
+$path = "/testweb/home.php";
+
+//显示带有文件扩展名的文件名
+echo basename($path);
+
+//显示不带有文件扩展名的文件名
+echo basename($path,".php");
+?><p>home.php<br>home</p>
+<h3 id="php短标签"><a href="#php短标签" class="headerlink" title="php短标签"></a>php短标签</h3><pre><code>&lt;? ?&gt;相当于&lt;?php ?&gt;
+&lt;?= ?&gt;相当于&lt;?php echo ?&gt;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?=&quot;1&quot;?&gt;	    //相当于&lt;?php echo &quot;1&quot;;?&gt;</span><br><span class="line">&lt;?echo&quot;1&quot;?&gt;     //前提是开启配置参数short_open_tags=on</span><br><span class="line">&lt;% echo&quot;1&quot;;%&gt;	//前提是开启配置参数asp_tags=on，php7.0及以上版本不能使用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h2><h3 id="md5绕过"><a href="#md5绕过" class="headerlink" title="md5绕过"></a>md5绕过</h3><ol>
 <li><p>md5的弱比较绕过<br>0e开头且e后为数字可以被解析成科学计数法</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">这里附上常见的0E开头的MD5</span><br><span class="line">0e开头的md5和原值：</span><br><span class="line">QNKCDZO</span><br><span class="line">0e830400451993494058024219903391</span><br><span class="line">240610708</span><br><span class="line">0e462097431906509019562988736854</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s1836677006a</span><br><span class="line">0e481036490867661113260034900752</span><br><span class="line">s532378020a</span><br><span class="line">0e220463095855511507588041205815</span><br><span class="line">s1665632922a</span><br><span class="line">0e731198061491163073197128363787</span><br><span class="line">s1184209335a</span><br><span class="line">0e072485820392773389523109082030</span><br><span class="line">s1885207154a</span><br><span class="line">0e509367213418206700842008763514</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s1502113478a</span><br><span class="line">0e861580163291561247404381396064</span><br><span class="line">s214587387a</span><br><span class="line">0e848240448830537924465865611904</span><br><span class="line">s878926199a</span><br><span class="line">0e545993274517709034328855841020</span><br><span class="line">0e215962017</span><br><span class="line">0e291242476940776845150308577824</span><br></pre></td></tr></table></figure></li>
@@ -238,14 +264,27 @@
 <p>strcmp()在比较字符串和数组的时候直接返回0，可用于绕过。</p>
 </li>
 </ol>
-<p>ereg()与strpos()两个函数同样不能用数组作为参数，否则返回<strong>NULL</strong>。<br>2. ereg()类似于preg_match但发现模式会返回true，否则返回false(PHP 5.3后已弃用)<br>eregi函数还可以使用%00来进行截断匹配<br>3. strpos() f函数查找字符串在另一字符串中第一次出现的位置（区分大小写）,如果没有找到字符串则返回 FALSE(字符串位置从 0 开始，不是从 1 开始。)<br>相关函数：<br>strrpos() - 查找字符串在另一字符串中最后一次出现的位置（区分大小写）<br>stripos() - 查找字符串在另一字符串中第一次出现的位置（不区分大小写）<br>strripos() -查找字符串在另一字符串中最后一次出现的位置（不区分大小写）<br>4. preg_match绕过<br> preg_match(返回 pattern 的匹配结果，0 （不匹配）或 1 )<br> preg_match_all(所有匹配 pattern 给定正则表达式的匹配结果并且将它们以 flag 指定顺序输出到$array数组中,返回值为完整匹配次数，输出的 $array 数组中，$array[0]保存完整模式的所有匹配, $array[1] 保存第一个子组的所有匹配)作用相当于python中的re.findall()</p>
+<p>ereg()与strpos()两个函数同样不能用数组作为参数，否则返回<strong>NULL</strong>。<br>2. ereg()类似于preg_match但发现模式会返回true，否则返回false(PHP 5.3后已弃用)<br>eregi函数还可以使用%00来进行截断匹配<br>3. strpos() f函数查找字符串在另一字符串中第一次出现的位置（区分大小写）,如果没有找到字符串则返回 FALSE(字符串位置从 0 开始，不是从 1 开始。)<br>相关函数：<br>strrpos() - 查找字符串在另一字符串中最后一次出现的位置（区分大小写）<br>stripos() - 查找字符串在另一字符串中第一次出现的位置（不区分大小写）<br>strripos() -查找字符串在另一字符串中最后一次出现的位置（不区分大小写）</p>
+<ol start="4">
+<li>preg_match绕过<br>preg_match(返回 pattern 的匹配结果，<strong>0</strong> （不匹配）或 <strong>1</strong>或<strong>false</strong>)<br>preg_match_all(所有匹配 pattern 给定正则表达式的匹配结果并且将它们以 flag 指定顺序输出到$array数组中,返回值为完整匹配次数，输出的 $array 数组中，$array[0]保存完整模式的所有匹配, $array[1] 保存第一个子组的所有匹配)作用相当于python中的re.findall()</li>
+</ol>
+<p>如果检查为if(preg_match(‘/…/‘, $json)),不管preg_match返回<strong>0</strong>还是<strong>false</strong>，if都不成立</p>
 <ul>
 <li><p>数组绕过<br>preg_match只能处理字符串，当传入的subject是数组时会返回<strong>false</strong></p>
 </li>
-<li><p>在非多行模式(没有m修饰符)利用%0a绕过<br>非多行模式下，preg_match只能识别一行<br>如</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (preg_match(&#x27;/^.*(flag).*$/&#x27;, $json)) &#123;</span><br><span class="line">    echo &#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">只需要</span><br><span class="line">$json=&quot;%0aflag&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>在非多行模式(没有m修饰符)利用%0a绕过</p>
+</li>
 </ul>
+<p>非多行模式下，preg_match只能识别<strong>一行</strong><br>如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">if (preg_match(&#x27;/^.*(flag).*/&#x27;, $json)) &#123;</span><br><span class="line">    echo &#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;;</span><br><span class="line">&#125;</span><br><span class="line">$json=&quot;%0aflag&quot;   只检测%0a</span><br><span class="line"></span><br><span class="line">if (preg_match(&#x27;/^.*([\x00-\x1F]+).*([\x00-\x1F]+).*$/&#x27;, $json)) &#123;</span><br><span class="line">    echo &#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">cmd=%0A&#123;%0A&quot;cmd&quot;:&quot;/bin/cat /home/rceservice/flag&quot;%0A&#125;    $对%0A不敏感，若%0A后没有&#x27;&#125;&#x27;,则为一行，有则为两行。当匹配两行时,/^...$/无法匹配成功</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>利用PCRE回溯次数限制绕过(只能post)<br>膜拜大佬<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html?page=2#reply-list">https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html?page=2#reply-list</a><br>DFA: 从起始状态开始，一个字符一个字符地读取输入串，并根据正则来一步步确定至下一个转移状态，直到匹配不上或走完整个输入<br>由于NFA的执行过程存在回溯，所以其性能会劣于DFA，但它支持更多功能。大多数程序语言都使用了NFA作为正则引擎，其中也包括PHP使用的PCRE库。</li>
+</ul>
+<p>PHP为了防止正则表达式的拒绝服务攻击（reDOS），给pcre设定了一个回溯次数上限pcre.backtrack_limit=1000000,超过10万次回溯就会返回false<br>一· 贪婪的.*<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/51bfc7bb-fd9a-402e-971a-a2247b226f3d.3adc35af4c1d.png" alt="51bfc7bb-fd9a-402e-971a-a2247b226f3d.3adc35af4c1d"><br>.*匹配剩余的所以字符,但正则后续要匹配，就会触发回溯</p>
+<p>二. 懒惰的.+?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(preg_match(&#x27;/UNION.+?SELECT/is&#x27;, $input)) &#123;</span><br><span class="line">    die(&#x27;SQL Injection&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">用union/*aa....*/selsect绕过</span><br></pre></td></tr></table></figure>
 <ol start="5">
+<li>str_replace函数绕过</li>
 <li>intval() 函数用于获取变量的整数值<br>成功时返回 var 的 integer 值，失败时返回 0。 空的 array 返回 0，非空的 array 返回 1。</li>
 </ol>
 <p>最大的值取决于操作系统。 32 位系统最大带符号的 integer 范围是 -2147483648 到 2147483647(2的31次方)。<br>举例：在这样的系统上， intval(‘1000000000000’) ,只取后31位会返回 2147483647。<br>64 位系统上，最大带符号的 integer 值是 9223372036854775807。</p>
@@ -259,17 +298,33 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?PHP</span><br><span class="line">mt_srand(0);</span><br><span class="line">echo mt_rand();</span><br><span class="line">echo mt_rand();</span><br><span class="line">echo mt_rand();</span><br><span class="line">?&gt;</span><br><span class="line">963932192</span><br><span class="line">1273124119</span><br><span class="line">1535857466</span><br></pre></td></tr></table></figure>
 <p>所以只要获取种子就能知道特点情况下mt_rand()函数生成的值<br>使用 php_mt_seed工具获取种子</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">──(root💀kali)-[~/php_mt_seed-4.0]</span><br><span class="line">└─# time ./php_mt_seed 1219893521</span><br><span class="line">Pattern: EXACT</span><br><span class="line">Version: 3.0.7 to 5.2.0</span><br><span class="line">Found 0, trying 0xfc000000 - 0xffffffff, speed 7977.1 Mseeds/s  </span><br><span class="line">Version: 5.2.1+</span><br><span class="line">Found 0, trying 0x00000000 - 0x01ffffff, speed 0.0 Mseeds/s </span><br><span class="line">seed = 0x0011793a = 1145146 (PHP 7.1.0+)</span><br><span class="line">Found 1, trying 0x16000000 - 0x17ffffff, speed 50.5 Mseeds/s </span><br><span class="line">seed = 0x161c5abb = 370956987 (PHP 5.2.1 to 7.0.x; HHVM)</span><br><span class="line">Found 2, trying 0x64000000 - 0x65ffffff, speed 48.2 Mseeds/s </span><br><span class="line">seed = 0x64a22f28 = 1688350504 (PHP 5.2.1 to 7.0.x; HHVM)</span><br><span class="line">seed = 0x64a22f28 = 1688350504 (PHP 7.1.0+)</span><br><span class="line">Found 4, trying 0xc4000000 - 0xc5ffffff, speed 46.2 Mseeds/s </span><br><span class="line">seed = 0xc4b59923 = 3300235555 (PHP 5.2.1 to 7.0.x; HHVM)</span><br><span class="line">seed = 0xc4b59923 = 3300235555 (PHP 7.1.0+)</span><br><span class="line">seed = 0xc4efe664 = 3304056420 (PHP 5.2.1 to 7.0.x; HHVM)</span><br><span class="line">seed = 0xc4efe664 = 3304056420 (PHP 7.1.0+)</span><br><span class="line">Found 8, trying 0xfe000000 - 0xffffffff, speed 45.5 Mseeds/s            </span><br><span class="line">┌──(root💀kali)-[~/php_mt_seed-4.0]</span><br><span class="line">└─# php 1.php           </span><br><span class="line">1219893521&lt;br/&gt;1202031004&lt;br/&gt;1198284468&lt;br/&gt;286494712&lt;br/&gt;349108173&lt;br/&gt;</span><br><span class="line"></span><br><span class="line">──(root💀kali)-[~/php_mt_seed-4.0]</span><br><span class="line">└─# php seedn.php ye2mxehQXP                                                                     127 ⨯ 3 ⚙</span><br><span class="line">24 24 0 61  4 4 0 61  28 28 0 61  12 12 0 61  23 23 0 61  4 4 0 61  7 7 0 61  52 52 0 61  59 59 0 61  51 51 0 61  </span><br><span class="line">                           </span><br><span class="line">┌──(root💀kali)-[~/php_mt_seed-4.0]</span><br><span class="line">└─# time ./php_mt_seed 24 24 0 61  4 4 0 61  28 28 0 61  12 12 0 61  23 23 0 61  4 4 0 61  7 7 0 61  52 52 0 61  59 59 0 61  51 51 0 61</span><br><span class="line">Pattern: EXACT-FROM-62 EXACT-FROM-62 EXACT-FROM-62 EXACT-FROM-62 EXACT-FROM-62 EXACT-FROM-62 EXACT-FROM-62 EXACT-FROM-62 EXACT-FROM-62 EXACT-FROM-62</span><br><span class="line">Version: 3.0.7 to 5.2.0</span><br><span class="line">Found 0, trying 0xfc000000 - 0xffffffff, speed 803.8 Mseeds/s </span><br><span class="line">Version: 5.2.1+</span><br><span class="line">Found 0, trying 0x0c000000 - 0x0dffffff, speed 50.6 Mseeds/s </span><br><span class="line">seed = 0x0db9c0bc = 230277308 (PHP 7.1.0+)</span><br><span class="line">Found 1, trying 0xfe000000 - 0xffffffff, speed 37.1 Mseeds/s </span><br><span class="line">Found 1</span><br></pre></td></tr></table></figure>
-<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><h3 id="为变量赋值"><a href="#为变量赋值" class="headerlink" title="为变量赋值"></a>为变量赋值</h3><p><strong>file_get_contents</strong>()函数将整个文件读入一个字符串中,并返回这个值，我们也可以利用<code>php://input</code>或<code>data://text/plain,</code>自定义参数值</p>
-<p><strong>extract</strong>()函数：从数组中将变量导入当前符号表。<br>定义：<br>从数组中将变量导入到当前的符号表<br>该函数使用数组键名作为变量名，使用数组键值作为变量值。针对数组中的每个元素，将在当前符号表中创建对应的一个变量<br>语法：extract(array,extract_rules,prefix),array,必需，要使用的数组</p>
+<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><h3 id="查看信息"><a href="#查看信息" class="headerlink" title="查看信息"></a>查看信息</h3><p>get_defined_vars() 函数返回作用域内所有已定义的变量、环境变量、服务器变量、用户定义变量列表。 </p>
+<h3 id="为变量赋值"><a href="#为变量赋值" class="headerlink" title="为变量赋值"></a>为变量赋值</h3><ol>
+<li><p><strong>file_get_contents</strong>()函数将整个文件读入一个字符串中,并返回这个值，我们也可以利用<code>php://input</code>或<code>data://text/plain,</code>自定义参数值</p>
+</li>
+<li><p><strong>extract</strong>()函数：从数组中将变量导入当前符号表。<br>定义：<br>从数组中将变量导入到当前的符号表<br>该函数使用数组键名作为变量名，使用数组键值作为变量值。针对数组中的每个元素，将在当前符号表中创建对应的一个变量<br>语法：extract(array,extract_rules,prefix),array,必需，要使用的数组</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$a=&quot;hello&quot;;</span><br><span class="line">$b= array(&#x27;a&#x27; =&gt;&quot;world&quot; ,&quot;b&quot;=&gt;&quot;gogogo&quot;);</span><br><span class="line">extract($b);</span><br><span class="line">echo $a;		//world</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 <p>如上所示，会存在一个覆盖漏洞。</p>
-<h3 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h3><ul>
-<li><p>call_user_func<br>把第一个参数作为回调函数调用 需要两个参数都完全可控才可利用 只能传入一个参数调用<br>call_user_func(‘assert’, ‘phpinfo();’);<br>call_user_func_array<br>同call_user_func 可传入一个数组带入多个参数调用函数<br>call_user_func_array (‘file_put_contents’, [‘1.txt’,’6666’]);</p>
+<h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3><p>如果你把函数的指针（地址）作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，就说这是回调函数。</p>
 </li>
-<li><p>create_function()<br>创建一个匿名（lambda样式）函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">函数构造</span><br><span class="line">create_function(&#x27;$fname&#x27;,&#x27;echo $fname.&quot;Zhang&quot;&#x27;)</span><br><span class="line">等价于</span><br><span class="line">function fT($fname)&#123;</span><br><span class="line">    echo $fname.&quot;Zhang&quot;;</span><br><span class="line">&#125;</span><br><span class="line">1.系统就会寻找闭合的引号，此时引号内的注释符等会忽略；</span><br><span class="line">2.系统寻找逗号；</span><br><span class="line">3.系统寻找一对单/双引号；</span><br><span class="line">4.系统寻找)和;。</span><br><span class="line"></span><br><span class="line">第一个参数的利用</span><br><span class="line">$a = )&#123;&#125;system(“dir”);//  create_function($a,’’);	-&gt; function lambda_15(   )&#123;&#125;system(&#x27;ls&#x27;); //) &#123;&#125;</span><br><span class="line">第二个参数的利用</span><br><span class="line">$a=&#x27;&#x27;;&#125;phpinfo();//        create_function(&#x27;&#x27;,&#x27;echo.$a.;&#x27;)    -&gt;function lambda_15()&#123;echo&#x27;&#x27;;&#125;phpinfo();  // ;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>call_user_func<br><code>call_user_func(callable $callback, mixed ...$args): mixed</code><br>callback<br>将被调用的回调函数<br>args<br>0个或以上的参数，被传入回调函数。<br>call_user_func(‘assert’, ‘phpinfo();’);<br>call_user_func(‘extract’, array);传入一个数组<strong>作为参数</strong></li>
 </ul>
-
+<p>当传入的参数，是一个数组，且数组的第一个值是一个类的名字，或一个对象，那么，就会把数组的第二个值，当做方法，然后执行。</p>
+<ul>
+<li>call_user_func_array<br>同call_user_func 可传入一个数组<strong>带入多个参数</strong>调用函数<br>call_user_func_array (‘file_put_contents’, [‘1.txt’,’6666’]);</li>
+</ul>
+<ul>
+<li><p>array_map<br>为数组的<strong>每个元素</strong>应用回调函数<br><code>$a = [1, 2, 3, 4, 5];</code><br><code>array_map(&#39;cube&#39;, $a);</code><br>也可以多参<br><code>array_map(&#39;cube&#39;, $a，$b);</code></p>
+</li>
+<li><p>array_filter<br><code>array_filter($a, &quot;odd&quot;)</code><br>遍历 array 数组中的每个值，并将每个值传递给 callback 回调函数。 如果 callback 回调函数返回 true，则将 array 数组中的当前值返回到结果 array 数组中。 </p>
+</li>
+</ul>
+<h3 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h3><ul>
+<li>create_function(此函数在内部执行 eval()，已在 PHP 7.2.0 起被废弃)<br>创建一个匿名（lambda样式）函数</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">函数构造</span><br><span class="line">create_function(&#x27;$fname&#x27;,&#x27;echo $fname.&quot;Zhang&quot;&#x27;)</span><br><span class="line">等价于</span><br><span class="line">function fT($fname)&#123;</span><br><span class="line">    echo $fname.&quot;Zhang&quot;;</span><br><span class="line">&#125;</span><br><span class="line">1.系统就会寻找闭合的引号，此时引号内的注释符等会忽略；</span><br><span class="line">2.系统寻找逗号；</span><br><span class="line">3.系统寻找一对单/双引号；</span><br><span class="line">4.系统寻找)和;。</span><br><span class="line"></span><br><span class="line">第一个参数的利用</span><br><span class="line">$a = )&#123;&#125;system(“dir”);//  create_function($a,’’);	-&gt; function lambda_15(   )&#123;&#125;system(&#x27;ls&#x27;); //) &#123;&#125;</span><br><span class="line">第二个参数的利用</span><br><span class="line">$a=&#x27;&#x27;;&#125;phpinfo();//        create_function(&#x27;&#x27;,&#x27;echo.$a.;&#x27;)    -&gt;function lambda_15()&#123;echo&#x27;&#x27;;&#125;phpinfo();  // ;&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -290,8 +345,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/07/15/rce/" rel="next" title="rce">
-                  rce <i class="fa fa-chevron-right"></i>
+                <a href="/2022/07/15/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%92%8Clinux/" rel="next" title="命令执行和linux">
+                  命令执行和linux <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -313,13 +368,13 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">mayylu</span>
 </div>
-  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
     </div>

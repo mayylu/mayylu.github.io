@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
@@ -19,29 +19,29 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="前言文件上传漏洞是指用户上传了一个可执行的脚本文件，并通过此脚本文件获得了执行服务器端命令的能力。这种攻击方式是最为直接和有效的，“文件上传”本身没有问题，有问题的是文件上传后，服务器怎么处理、解释文件。如果服务器的处理逻辑做的不够安全，则会导致严重的后果。(以下内容默认为后端检测)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文件上传漏洞">
-<meta property="og:url" content="http://example.com/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:url" content="https://mayylu.github.io/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/index.html">
 <meta property="og:site_name" content="mayylu">
 <meta property="og:description" content="前言文件上传漏洞是指用户上传了一个可执行的脚本文件，并通过此脚本文件获得了执行服务器端命令的能力。这种攻击方式是最为直接和有效的，“文件上传”本身没有问题，有问题的是文件上传后，服务器怎么处理、解释文件。如果服务器的处理逻辑做的不够安全，则会导致严重的后果。(以下内容默认为后端检测)">
-<meta property="og:locale">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220205192532.jpg">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/2010489-20210625212220250-1267761321.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/IMG_20220206_144216.jpg">
 <meta property="article:published_time" content="2022-02-05T11:11:29.000Z">
-<meta property="article:modified_time" content="2022-10-04T10:22:27.083Z">
+<meta property="article:modified_time" content="2023-03-12T06:40:51.540Z">
 <meta property="article:author" content="mayylu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220205192532.jpg">
 
 
-<link rel="canonical" href="http://example.com/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
+<link rel="canonical" href="https://mayylu.github.io/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"http://example.com/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/","path":"2022/02/05/文件上传漏洞/","title":"文件上传漏洞"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/","path":"2022/02/05/文件上传漏洞/","title":"文件上传漏洞"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>文件上传漏洞 | mayylu</title>
@@ -62,7 +62,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
+    <div class="toggle" aria-label="切换导航栏" role="button">
     </div>
   </div>
 
@@ -101,17 +101,17 @@
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
-          المحتويات
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          عام
+          站点概览
         </li>
       </ul>
 
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">2.</span> <span class="nav-text">获取文件信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="nav-number">3.</span> <span class="nav-text">黑名单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E9%BB%91%E5%90%8D%E5%8D%95%E8%BF%87%E6%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">常见的黑名单过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8-htaccess%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90%E5%90%8E%E7%BC%80"><span class="nav-number">3.2.</span> <span class="nav-text">利用.htaccess文件解析后缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#user-ini%E7%95%99%E5%90%8E%E9%97%A8"><span class="nav-number">3.3.</span> <span class="nav-text">.user.ini留后门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95"><span class="nav-number">4.</span> <span class="nav-text">白名单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%88%AA%E6%96%AD%E7%BB%95%E8%BF%87"><span class="nav-number">4.1.</span> <span class="nav-text">文件截断绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%9E%E4%BA%89%E4%B8%8A%E4%BC%A0"><span class="nav-number">4.2.</span> <span class="nav-text">竞争上传</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E6%9C%A8%E9%A9%AC"><span class="nav-number">5.</span> <span class="nav-text">图片木马</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">制作方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.</span> <span class="nav-text">文件解析漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IIS5-x-6-x%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.1.</span> <span class="nav-text">IIS5.x-6.x解析漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apache%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.2.</span> <span class="nav-text">apache解析漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IIS-7-0%E3%80%81IIS-7-5%E3%80%81Nginx-lt-8-03-%E7%95%B8%E5%BD%A2%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.3.</span> <span class="nav-text">IIS 7.0、IIS 7.5、Nginx &lt;8.03 畸形解析漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-lt-8-03-%E7%A9%BA%E5%AD%97%E8%8A%82%E4%BB%A3%E7%A0%81-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.4.</span> <span class="nav-text">Nginx&lt; 8.03 空字节代码 解析漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E7%9A%84%E5%88%A9%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text">编辑器的利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAF%E7%BB%95%E8%BF%87"><span class="nav-number">8.</span> <span class="nav-text">WAF绕过</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">2.</span> <span class="nav-text">获取文件信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="nav-number">3.</span> <span class="nav-text">黑名单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E9%BB%91%E5%90%8D%E5%8D%95%E8%BF%87%E6%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">常见的黑名单过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#allowoverride"><span class="nav-number">3.2.</span> <span class="nav-text">allowoverride</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#user-ini%E7%95%99%E5%90%8E%E9%97%A8"><span class="nav-number">3.3.</span> <span class="nav-text">.user.ini留后门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95"><span class="nav-number">4.</span> <span class="nav-text">白名单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%88%AA%E6%96%AD%E7%BB%95%E8%BF%87"><span class="nav-number">4.1.</span> <span class="nav-text">文件截断绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#00%E6%88%AA%E6%96%AD%E7%BB%95%E8%BF%87"><span class="nav-number">4.1.1.</span> <span class="nav-text">00截断绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%95%BF%E5%BA%A6%E6%88%AA%E6%96%AD%E7%BB%95%E8%BF%87"><span class="nav-number">4.1.2.</span> <span class="nav-text">长度截断绕过</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%9E%E4%BA%89%E4%B8%8A%E4%BC%A0"><span class="nav-number">4.2.</span> <span class="nav-text">竞争上传</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E6%9C%A8%E9%A9%AC"><span class="nav-number">5.</span> <span class="nav-text">图片木马</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E6%96%B9%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">制作方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.</span> <span class="nav-text">文件解析漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IIS5-x-6-x%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.1.</span> <span class="nav-text">IIS5.x-6.x解析漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apache%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.2.</span> <span class="nav-text">apache解析漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IIS-7-0%E3%80%81IIS-7-5%E3%80%81Nginx-lt-8-03-%E7%95%B8%E5%BD%A2%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.3.</span> <span class="nav-text">IIS 7.0、IIS 7.5、Nginx &lt;8.03 畸形解析漏洞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx-lt-8-03-%E7%A9%BA%E5%AD%97%E8%8A%82%E4%BB%A3%E7%A0%81-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.4.</span> <span class="nav-text">Nginx&lt; 8.03 空字节代码 解析漏洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E7%9A%84%E5%88%A9%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text">编辑器的利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAF%E7%BB%95%E8%BF%87"><span class="nav-number">8.</span> <span class="nav-text">WAF绕过</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -124,13 +124,17 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">14</span>
-          <span class="site-state-item-name">المقالات</span>
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">الوسوم</span>
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
@@ -147,7 +151,7 @@
     </header>
 
     
-  <div class="back-to-top" role="button" aria-label="Back to top">
+  <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
@@ -168,8 +172,8 @@
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2022/02/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -191,16 +195,16 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">نُشر في</span>
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="أُنشأ: 2022-02-05 19:11:29" itemprop="dateCreated datePublished" datetime="2022-02-05T19:11:29+08:00">2022-02-05</time>
+      <time title="创建时间：2022-02-05 19:11:29" itemprop="dateCreated datePublished" datetime="2022-02-05T19:11:29+08:00">2022-02-05</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
-        <span class="post-meta-item-text">عُدل في</span>
-        <time title="عُدل: 2022-10-04 18:22:27" itemprop="dateModified" datetime="2022-10-04T18:22:27+08:00">2022-10-04</time>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-03-12 14:40:51" itemprop="dateModified" datetime="2023-03-12T14:40:51+08:00">2023-03-12</time>
       </span>
 
   
@@ -216,21 +220,24 @@
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>文件上传漏洞是指用户上传了一个可执行的脚本文件，并通过此脚本文件获得了执行服务器端命令的能力。这种攻击方式是最为直接和有效的，“文件上传”本身没有问题，有问题的是文件上传后，服务器怎么处理、解释文件。如果服务器的处理逻辑做的不够安全，则会导致严重的后果。(以下内容默认为后端检测)     </p>
 <span id="more"></span>
 <p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220205192532.jpg" alt="微信图片_20220205192532">   </p>
-<h2 id="获取文件信息"><a href="#获取文件信息" class="headerlink" title="获取文件信息"></a>获取文件信息</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;error&quot;</span>] &gt; <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;错误：&quot;</span> . <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;error&quot;</span>] . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;上传文件名: (包括后缀)&quot;</span> . <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;name&quot;</span>] . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;文件类型: &quot;</span> . <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;type&quot;</span>] . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;文件大小: &quot;</span> . (<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;size&quot;</span>] / <span class="number">1024</span>) . <span class="string">&quot; kB&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;文件临时存储的位置: &quot;</span> . <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>];    </span><br><span class="line">    move_uploaded_file(<span class="variable">$_FilES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>],<span class="variable">$newfile</span>);<span class="comment">//将上传的文件移动到新位置,$newfile为新文件的相对路径</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="获取文件信息"><a href="#获取文件信息" class="headerlink" title="获取文件信息"></a>获取文件信息</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;error&quot;</span>] &gt; <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;错误：&quot;</span> . <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;error&quot;</span>] . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;上传文件名: (包括后缀)&quot;</span> . <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;name&quot;</span>] . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;文件类型: &quot;</span> . <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;type&quot;</span>] . <span class="string">&quot;&lt;br&gt;&quot;</span>;<span class="comment">//浏览器根据后缀设置的打开方式，如 Content-Type: image/jpeg</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;文件大小: &quot;</span> . (<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;size&quot;</span>] / <span class="number">1024</span>) . <span class="string">&quot; kB&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;文件临时存储的位置: &quot;</span> . <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>];    </span><br><span class="line">    move_uploaded_file(<span class="variable">$_FilES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>],<span class="variable">$newfile</span>);<span class="comment">//将上传的文件移动到新位置,$newfile为新文件的相对路径</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>通过使用 PHP 的全局数组 $_FILES，你可以从客户计算机向远程服务器上传文件。    </p>
 <p>第一个参数是表单的 input name，第二个下标可以是 “name”、”type”、”size”、”tmp_name” 或 “error”。如下所示：    </p>
 <pre><code>$_FILES[&quot;file&quot;][&quot;name&quot;] - 上传文件的名称       
 $_FILES[&quot;file&quot;][&quot;type&quot;] - 上传文件的类型(抓包可修改)   
 $_FILES[&quot;file&quot;][&quot;size&quot;] - 上传文件的大小，以字节计    
-$_FILES[&quot;file&quot;][&quot;tmp_name&quot;] - 存储在服务器的文件的临时副本的名称    
-$_FILES[&quot;file&quot;][&quot;error&quot;] - 由文件上传导致的错误代码    
+$_FILES[&quot;file&quot;][&quot;tmp_name&quot;] - 存储在服务器的文件的临时副本的名称   
+ 
+$_FILES[&quot;file&quot;][&quot;error&quot;] - 由文件上传导致的错误代码
 </code></pre>
-<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><h3 id="常见的黑名单过滤"><a href="#常见的黑名单过滤" class="headerlink" title="常见的黑名单过滤"></a>常见的黑名单过滤</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$file_name</span> = deldot(<span class="variable">$file_name</span>);<span class="comment">//删除文件名末尾的点   </span></span><br><span class="line">        <span class="variable">$file_ext</span> = strrchr(<span class="variable">$file_name</span>, <span class="string">&#x27;.&#x27;</span>);<span class="comment">//提取后缀  </span></span><br><span class="line">        <span class="variable">$file_ext</span> = strtolower(<span class="variable">$file_ext</span>); <span class="comment">//转换为小写     </span></span><br><span class="line">        <span class="variable">$file_ext</span> = str_ireplace(<span class="string">&#x27;::$DATA&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$file_ext</span>);<span class="comment">//去除字符串::$DATA     </span></span><br><span class="line">        <span class="variable">$file_ext</span> = trim(<span class="variable">$file_ext</span>); <span class="comment">//收尾去空  </span></span><br><span class="line">        <span class="keyword">if</span>(!in_array(<span class="variable">$file_ext</span>, <span class="variable">$deny_ext</span>)) &#123;</span><br><span class="line">            <span class="variable">$temp_file</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>];</span><br><span class="line">            <span class="variable">$img_path</span> = UPLOAD_PATH.<span class="string">&#x27;/&#x27;</span>.date(<span class="string">&quot;YmdHis&quot;</span>).rand(<span class="number">1000</span>,<span class="number">9999</span>).<span class="variable">$file_ext</span>;              </span><br><span class="line">            <span class="keyword">if</span> (move_uploaded_file(<span class="variable">$temp_file</span>,<span class="variable">$img_path</span>)) &#123;</span><br><span class="line">                 <span class="variable">$is_upload</span> = <span class="literal">true</span>;    </span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="variable">$msg</span> = <span class="string">&#x27;上传出错！&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable">$msg</span> = <span class="string">&#x27;不允许上传.asp,.aspx,.php,.jsp后缀文件！&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$msg</span> = UPLOAD_PATH . <span class="string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>UPLOAD_ERR_OK               其值为 0，没有错误发生，文件上传成功。<br>UPLOAD_ERR_INI_SIZE         其值为 1，上传的文件超过了 php.ini 中 upload_max_filesize 选项限制的值。<br>UPLOAD_ERR_FORM_SIZE        其值为 2，上传文件的大小超过了 HTML 表单中 MAX_FILE_SIZE选项指定的值。<br>UPLOAD_ERR_PARTIAL          其值为 3，文件只有部分被上传。<br>UPLOAD_ERR_NO_FILE          其值为 4，没有文件被上传。<br>UPLOAD_ERR_NO_TMP_DIR       其值为 6，找不到临时文件夹。<br>UPLOAD_ERR_CANT_WRITE       其值为 7，文件写入失败。</p>
+<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><h3 id="常见的黑名单过滤"><a href="#常见的黑名单过滤" class="headerlink" title="常见的黑名单过滤"></a>常见的黑名单过滤</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$file_name</span> = deldot(<span class="variable">$file_name</span>);<span class="comment">//删除文件名末尾的点   </span></span><br><span class="line">        <span class="variable">$file_ext</span> = strrchr(<span class="variable">$file_name</span>, <span class="string">&#x27;.&#x27;</span>);<span class="comment">//提取后缀  </span></span><br><span class="line">        <span class="variable">$file_ext</span> = strtolower(<span class="variable">$file_ext</span>); <span class="comment">//转换为小写     </span></span><br><span class="line">        <span class="variable">$file_ext</span> = str_ireplace(<span class="string">&#x27;::$DATA&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$file_ext</span>);<span class="comment">//去除字符串::$DATA     </span></span><br><span class="line">        <span class="keyword">if</span>(!exif_imagetype(<span class="variable">$tmp_name</span>)) <span class="keyword">die</span>(<span class="string">&quot;^_^&quot;</span>); <span class="comment">//检查图像文件的格式(该功能仅检查文件开头的幻数)</span></span><br><span class="line">        <span class="variable">$file_ext</span> = trim(<span class="variable">$file_ext</span>); <span class="comment">//收尾去空  </span></span><br><span class="line">        <span class="keyword">if</span>(!in_array(<span class="variable">$file_ext</span>, <span class="variable">$deny_ext</span>)) &#123;</span><br><span class="line">            <span class="variable">$temp_file</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>];</span><br><span class="line">            <span class="variable">$img_path</span> = UPLOAD_PATH.<span class="string">&#x27;/&#x27;</span>.date(<span class="string">&quot;YmdHis&quot;</span>).rand(<span class="number">1000</span>,<span class="number">9999</span>).<span class="variable">$file_ext</span>;              </span><br><span class="line">            <span class="keyword">if</span> (move_uploaded_file(<span class="variable">$temp_file</span>,<span class="variable">$img_path</span>)) &#123;</span><br><span class="line">                 <span class="variable">$is_upload</span> = <span class="literal">true</span>;    </span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="variable">$msg</span> = <span class="string">&#x27;上传出错！&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable">$msg</span> = <span class="string">&#x27;不允许上传.asp,.aspx,.php,.jsp后缀文件！&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$msg</span> = UPLOAD_PATH . <span class="string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>在window的时候如果文件名+”::$DATA”会把::$DATA之后的数据当成文件流处理,不会检测后缀名，且保持::$DATA之前的文件名，他的目的就是不检查后缀名<br>绕过后缀的有文件格式有php,php3,php4,php5,phtml      </p>
-<h3 id="利用-htaccess文件解析后缀"><a href="#利用-htaccess文件解析后缀" class="headerlink" title="利用.htaccess文件解析后缀"></a>利用.htaccess文件解析后缀</h3><p>htaccess文件是<strong>Apache服务器</strong>中的一个配置文件，它负责相关目录下的网页配置，通过.htaccess文件可以实现网页301重定向、自定义404页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。<br>当系统有成百上千个目录，每个目录下都有对应的.htaccess文件时，网络管理员将会对如何配置全局访问策略无从下手。同时，由于.htaccess文件十分被容易覆盖，很容易造成用户上一时段能访问目录，而下一时段又访问不了的情况发生。最后,htaccess文件也很容易被非授权用户得到，安全性不高。</p>
+<h3 id="allowoverride"><a href="#allowoverride" class="headerlink" title="allowoverride"></a>allowoverride</h3><p>htaccess文件是<strong>Apache服务器</strong>中的一个配置文件，它负责相关目录下的网页配置，利用Apache的rewrite模块对URL进行重写，rewrite规则会写在 .htaccess 文件里<br>从安全性考虑，根目录的AllowOverride属性一般都配置成<code>None</code>不允许任何Override,需要更改文件 <code>/etc/apache2/apache2.conf</code> </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Directory</span> /<span class="attr">var</span>/<span class="attr">www</span>/&gt;</span></span><br><span class="line">        Options Indexes FollowSymLinks</span><br><span class="line">        AllowOverride All</span><br><span class="line">        Require all granted</span><br><span class="line"><span class="tag">&lt;/<span class="name">Directory</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>需要用到的代码如下：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch <span class="string">&quot;后缀名&quot;</span>&gt;</span><br><span class="line">Sethandler application/x-httpd-php</span><br><span class="line">&lt;/Eilesmatch &gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch <span class="string">&quot;后缀名&quot;</span>&gt;</span><br><span class="line">Sethandler application/x-httpd-php </span><br><span class="line">&lt;/Eilesmatch &gt;</span><br><span class="line"></span><br><span class="line">AddType application/x-httpd-php .htm，则.htm文件也可以执行php程序</span><br><span class="line">AddHandler cgi-script .yyy 则扩展名为.yyy的文件作为 CGI 脚本来处理</span><br></pre></td></tr></table></figure>
 <p>实战意义：</p>
 <p>1、如果存在可以上传 .htaccess 文件，就可以直接利用此规则解析；</p>
 <p>2、如果存在修改文件权限，就直接修改解析规则；  </p>
@@ -240,7 +247,9 @@ $_FILES[&quot;file&quot;][&quot;error&quot;] - 由文件上传导致的错误代
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto_prepend_file 在文顶部插入加载文件；</span><br><span class="line"></span><br><span class="line">auto_append_file 在文件最后插入加载文件（当文件调用的有exit()时该设置无效</span><br></pre></td></tr></table></figure>
 <p>我们可以借助.user.ini轻松让所有php文件都“自动”包含某个文件，而这个文件可以是一个正常php文件，也可以是一个包含一句话的webshell。</p>
 <h2 id="白名单"><a href="#白名单" class="headerlink" title="白名单"></a>白名单</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ext_arr</span> = <span class="keyword">array</span>(<span class="string">&#x27;jpg&#x27;</span>,<span class="string">&#x27;png&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>);</span><br><span class="line">    <span class="variable">$file_ext</span> = substr(<span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>],strrpos(<span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>],<span class="string">&quot;.&quot;</span>)+<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span>(in_array(<span class="variable">$file_ext</span>,<span class="variable">$ext_arr</span>))&#123;  </span><br><span class="line">        <span class="variable">$temp_file</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;upload_file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>];</span><br><span class="line">        <span class="variable">$img_path</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;save_path&#x27;</span>].<span class="string">&quot;/&quot;</span>.rand(<span class="number">10</span>, <span class="number">99</span>).date(<span class="string">&quot;YmdHis&quot;</span>).<span class="string">&quot;.&quot;</span>.<span class="variable">$file_ext</span>;   </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="文件截断绕过"><a href="#文件截断绕过" class="headerlink" title="文件截断绕过"></a>文件截断绕过</h3><p>检测原理：<br>有很多0x00，%00，/00之类的截断，但是核心都在chr(0)这个字符，它可以返回ascii字符，所以chr(0)表示的是null,如果变量是从用户$_GET或$_POST中获得的并且我们可控，那么我们可以利用空字符\x00来截断后面的拓展名，从而造成任意文件上传。     </p>
+<h3 id="文件截断绕过"><a href="#文件截断绕过" class="headerlink" title="文件截断绕过"></a>文件截断绕过</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;files/&#x27;</span>.<span class="variable">$action</span>.<span class="string">&#x27;.php&#x27;</span>); <span class="comment">//载入相应文件</span></span><br></pre></td></tr></table></figure>
+<h4 id="00截断绕过"><a href="#00截断绕过" class="headerlink" title="00截断绕过"></a>00截断绕过</h4><p>要求：<br>php&lt;5.3.4   magic_quotes_gpc=off(默认on,5.4以后该选项被移除)<br>检测原理：<br>有很多0x00，%00，/00之类的截断，但是核心都在chr(0)这个字符，它可以返回ascii字符，所以chr(0)表示的是null,如果变量是从用户$_GET或$_POST中获得的并且我们可控，那么我们可以利用空字符\x00来截断后面的拓展名，从而造成任意文件上传。     </p>
+<h4 id="长度截断绕过"><a href="#长度截断绕过" class="headerlink" title="长度截断绕过"></a>长度截断绕过</h4><p>要求：<br>php版本小于5.2.8<br>linux 需要文件名长于 4096，windows 需要长于 256，超过部分会被丢弃从而实现文件包含绕过后缀.php限制</p>
 <h3 id="竞争上传"><a href="#竞争上传" class="headerlink" title="竞争上传"></a>竞争上传</h3><p>检测原理： </p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$upload_file</span> = <span class="variable">$UPLOAD_ADDR</span> . <span class="string">&#x27;/&#x27;</span> . <span class="variable">$file_name</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(move_uploaded_file(<span class="variable">$temp_file</span>, <span class="variable">$upload_file</span>))&#123;</span><br><span class="line">        <span class="keyword">if</span>(in_array(<span class="variable">$file_ext</span>,<span class="variable">$ext_arr</span>))&#123;</span><br><span class="line">             <span class="variable">$img_path</span> = <span class="variable">$UPLOAD_ADDR</span> . <span class="string">&#x27;/&#x27;</span>. rand(<span class="number">10</span>, <span class="number">99</span>).date(<span class="string">&quot;YmdHis&quot;</span>).<span class="string">&quot;.&quot;</span>.<span class="variable">$file_ext</span>;</span><br><span class="line">             rename(<span class="variable">$upload_file</span>, <span class="variable">$img_path</span>);</span><br><span class="line">             <span class="variable">$is_upload</span> = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
 <p>文件先经过保存 ,然后判断后缀名是否在白名单中, 如果不在则删除. 此时可以利用条件竞争在保存文件后删除文件前来执行php文件     </p>
@@ -319,13 +328,13 @@ return 403;
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/02/02/SQL%E6%B3%A8%E5%85%A5%E5%AE%9E%E8%B7%B5/" rel="prev" title="SQL注入实践">
-                  <i class="fa fa-chevron-left"></i> SQL注入实践
+                <a href="/2022/02/05/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E5%92%8C%E4%BC%AA%E5%8D%8F%E8%AE%AE/" rel="prev" title="php文件包含漏洞和伪协议">
+                  <i class="fa fa-chevron-left"></i> php文件包含漏洞和伪协议
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/02/05/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" rel="next" title="php文件包含漏洞">
-                  php文件包含漏洞 <i class="fa fa-chevron-right"></i>
+                <a href="/2022/02/11/HTML/" rel="next" title="HTML">
+                  HTML <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -347,13 +356,13 @@ return 403;
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">mayylu</span>
 </div>
-  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
     </div>
