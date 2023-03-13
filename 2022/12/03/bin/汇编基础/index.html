@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言   以下示例皆为8086CPU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编基础">
+<meta property="og:url" content="https://mayylu.github.io/2022/12/03/bin/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言   以下示例皆为8086CPU">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://files.catbox.moe/zak9nm.png">
+<meta property="article:published_time" content="2022-12-03T13:41:03.000Z">
+<meta property="article:modified_time" content="2023-03-13T14:13:34.026Z">
+<meta property="article:author" content="mayylu">
+<meta property="article:tag" content="二进制">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.catbox.moe/zak9nm.png">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2022/12/03/bin/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2022/12/03/bin/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/","path":"2022/12/03/bin/汇编基础/","title":"汇编基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>汇编基础 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">2.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8"><span class="nav-number">2.1.</span> <span class="nav-text">存储器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BA%BF"><span class="nav-number">2.2.</span> <span class="nav-text">总线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">2.3.</span> <span class="nav-text">寄存器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">2.3.1.</span> <span class="nav-text">通用寄存器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AE%B5%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">2.3.2.</span> <span class="nav-text">段寄存器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E5%9D%80%E5%AF%84%E5%AD%98"><span class="nav-number">2.3.3.</span> <span class="nav-text">变址寄存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">2.3.4.</span> <span class="nav-text">指针寄存器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">2.3.5.</span> <span class="nav-text">状态标志寄存器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%87%E7%BC%96%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">汇编指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">数据传送指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E6%8C%87%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">算术运算指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">逻辑运算指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">3.4.</span> <span class="nav-text">程序转移指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%B1%9E%E6%80%A7"><span class="nav-number">3.5.</span> <span class="nav-text">变量属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%87%E7%BC%96%E7%A8%8B%E5%BA%8F"><span class="nav-number">4.</span> <span class="nav-text">汇编程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">4.1.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5"><span class="nav-number">4.2.</span> <span class="nav-text">输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BA"><span class="nav-number">4.3.</span> <span class="nav-text">输出</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">关注生活的点点滴滴</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2022/12/03/bin/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="关注生活的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          汇编基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-03 21:41:03" itemprop="dateCreated datePublished" datetime="2022-12-03T21:41:03+08:00">2022-12-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-03-13 22:13:34" itemprop="dateModified" datetime="2023-03-13T22:13:34+08:00">2023-03-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BA%8C%E8%BF%9B%E5%88%B6/" itemprop="url" rel="index"><span itemprop="name">二进制</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>   以下示例皆为8086CPU</p>
+<span id="more"></span>     
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><h3 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h3><p>8bit(位)=1Byte(字节)<br>2Byte=1word<br>1024Byte(字节)=1KB<br><img src="https://files.catbox.moe/zak9nm.png"></p>
+<p>存储器被划分为若干个存储单元，每个存储单元从0开始顺序编号,大小为1bit,表现为2位的16进制数</p>
+<p>为方便调用，8086CPU在内部用段地址和偏移地址最终形成物理地址即<br>段地址*16+偏移地址=物理地址</p>
+<h3 id="总线"><a href="#总线" class="headerlink" title="总线"></a>总线</h3><p>CPU要对数据进行读写，必须和外部器件进行以下三类信息的交互：<br>1、存储单元的地址(地址信息)；<br>2、器件的选择、读或写命令(控制信息)；<br>3、读或写的数据(数据信息) 。<br>总线是<strong>连接CPU和其他芯片的导线</strong>，逻辑上分为地址总线、数据总线、控制总线。</p>
+<p>CPU从内存单元中读写数据的过程：<br>1、<strong>CPU</strong>通过地址线将<strong>地址信息</strong>发出；<br>2、<strong>CPU</strong>通过控制线发出内存读<strong>命令</strong>，选中存储器芯片，并通知它将要从中读或写数据；<br>3、<strong>存储器</strong>将相应的地址单元中的<strong>数据</strong>通过数据线送入CPU或CPU通过数据线将数据送入相应的内存单元。</p>
+<p>8086外部数据总线宽度为16位，它既能处理16位数据，也能处理8位数据。可寻址的内存空间为1mb。<br>CPU是通过地址总线指定存储单元，地址总线传送的能力决定了CPU对存储单元的寻址能力。<br>8086CPU有<strong>20位地址总线</strong>，可以传送20位地址，达到1MB寻址能力，但8086CPU内部数据总线宽度是16位，表现出来的寻址能力只有64kb。8086CPU采用一种在内部用用两个16位地址合成的方法来形成一个20位的物理地址。</p>
+<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3><p>寄存器是cpu完成操作的载体<br>8086 CPU 中寄存器总共为 14 个，且均为 16 位。<br>即 AX，BX，CX，DX，SP，BP，SI，DI，IP，FLAG，CS，DS，SS，ES 共 14 个。而这 14 个寄存器按照一定方式又分为了通用寄存器，控制寄存器和段寄存器。</p>
+<h4 id="通用寄存器"><a href="#通用寄存器" class="headerlink" title="通用寄存器"></a>通用寄存器</h4><p>通用寄存器的每一个16位寄存器就可以当做2个独立的8位寄存器来使用，如AX寄存器可以分为两个独立的8位的AH和AL寄存器；</p>
+<ol>
+<li>AX (Accumulator)——累加寄存器，也称之为累加器；<br>AX寄存器还具有的特殊用途是在使用DIV和MUL指令时使用，<br>在mul使用时al或ax作为被乘数,积保留在ax或积低16位保留在ax<br>在div使用时ax作为被除数或被除数后16位,商保留在al或ax</li>
+<li>bx——based register——基地址寄存器<br>BX主要还是用于其专属功能–寻址（寻址物理内存地址）上，BX寄存器中存放的数据一般是用来作为偏移地址使用的。</li>
+<li>cx——count register——计数器<br>当在汇编指令中使用循环LOOP指令时，可以通过CX来指定需要循环的次数</li>
+<li>dx——data registered——数据寄存器<br>dx可与ax配合使用，常作为ax的扩展<br>在执行MUL指令时，如果两个相乘的数都是16位的话，那么相乘后产生的结果显然需要32位来保存，而这32位的结果的高16位就是存放在DX寄存器中。<br>如除数为16位时，被除数将会是32位，而被除数的高16位就是存放在DX中，而且执行完DIV指令后，本次除法运算所产生的余数将会保存在DX中<h4 id="段寄存器"><a href="#段寄存器" class="headerlink" title="段寄存器"></a>段寄存器</h4>cs——code segment——代码段<br>ds——data segment——数据段<br>ss——stack segment——栈段寄存器<br>es——extra segment——附加段寄存器<h4 id="变址寄存"><a href="#变址寄存" class="headerlink" title="变址寄存"></a>变址寄存</h4>si——source index——源变址寄存器<br>di——destination index——目的变址寄存器<h4 id="指针寄存器"><a href="#指针寄存器" class="headerlink" title="指针寄存器"></a>指针寄存器</h4>ip——instructor  point——指令指针寄存器<br>sp——stack point——堆栈指针寄存器<br>bp——base point——基础指针<h4 id="状态标志寄存器"><a href="#状态标志寄存器" class="headerlink" title="状态标志寄存器"></a>状态标志寄存器</h4>OF（11位-overflow flag-溢出标志位）——OV（overflow-溢出）——NV（not overflow-没溢出）<br>DF（10位-direction flag-方向标志位）——DN（down-下方）——UP（up-上方）<br>IF（9位-interrupt flag-中断标志位）——EI（enable interrupt-允许中断）——DI（disabled interrupt-不允许中断）<br>TF（8位-trap flag-陷阱标志位）——<br>SF（7位-sign flag-负号标志位）——NG（negative-负）——PL（plus-正）<br>ZF（6位-zero flag-零值标志位）——ZR（zero-为零）——NZ（not zero-不为0）<br>AF（4位-auxiliary carray flag-辅助进位标志位）——AC（auxiliary carry-有辅助进位）NA（not auxiliary carry-没有辅助进位）<br>PF（2位-parity flag-奇偶标志位）——PE（parity even-偶）——PO（parity odd-奇）<br>CF（0位-carry flag-进位标志位）——CY（carried-有进位）——NC（not carried-没进位）</li>
+</ol>
+<h2 id="汇编指令"><a href="#汇编指令" class="headerlink" title="汇编指令"></a>汇编指令</h2><h3 id="数据传送指令"><a href="#数据传送指令" class="headerlink" title="数据传送指令"></a>数据传送指令</h3><p>数据传送指令可以利用立即数和寄存器来完成存储单元的数据传输，没有程序转移的功能，不能改变cs:ip的值</p>
+<ol>
+<li><p>通用数据传送指令。<br>MOV        传送指令                 MOV DEST,SRC<br>XCHG    交换指令                 XCHG OPER1,OPER2</p>
+</li>
+<li><p>堆栈和堆栈操作指令。<br>PUSH    进栈指令                 PUSH SRC<br>POP        出栈指令                 POP DEST</p>
+</li>
+<li><p>目的地址传送指令。<br>LEA     取偏移地址指令              LEA REC,OPRD<br>LDS     取指针内容指令            例: LDS SI,string ;把段地址:偏移地址存到DS:SI.<br>LES     取指针内容指令            例: LES DI,string ;把段地址:偏移地址存到ES:DI. </p>
+</li>
+<li><p>符号拓展指令<br>CBW        字节转化为字指令           把寄存器AL中的值符号拓展到寄存器AH<br>CWD        字转化为双字指令           把寄存器AX中的值符号拓展到寄存器DX</p>
+<h3 id="算术运算指令"><a href="#算术运算指令" class="headerlink" title="算术运算指令"></a>算术运算指令</h3></li>
+<li><p>加减<br>ADD        加法指令                  ADD DEST,SRC    DEST&lt;=DEST SRC    两数相加<br>SUB        减法指令                  SUB DEST,SRC    DEST&lt;=DEST-SRC    两数相减<br>INC        加1指令                      INC DEST    DEST&lt;=DEST 1<br>DEC        减1指令                      DEC DEST    DEST&lt;=DEST-1<br>ADC     带进位加法指令               ADC DEST,SRC    DEST&lt;=DEST SRC CF    与add指令不同之处是要再加上进位标志cf的值<br>SBB      带借位减法                   SBB DEST,SRC    DEST&lt;=DEST-(SRC CF)    与sub指令不同之处是要再减上借位标志cf的值</p>
+</li>
+<li><p>乘除<br>MUL        无符号数乘法指令<br>IMUL    有符号数乘法指令<br>DIV        无符号数除法指令<br>IDIV     有符号数除法   </p>
+</li>
+<li><p>比较<br>CMP        比较指令                   CMP DEST,SRC    根据dest-src的差影响各状态标志寄存器    不把dest-src的结果送入dest</p>
+</li>
+<li><p>相反数<br>NEG        取补指令                   NEG OPRD    OPRD=0-OPRD    对操作数取补（相反数）</p>
+<h3 id="逻辑运算指令"><a href="#逻辑运算指令" class="headerlink" title="逻辑运算指令"></a>逻辑运算指令</h3></li>
+<li><p>逻辑运算<br>NOT        否运算指令                    NOT OPRD    把操作数OPRD按位取反，然后送回OPRD<br>AND        与运算指令                    AND DEST，SRC    把两个操作数进行与运算之后结果送回DEST    同1得1，否则得0<br>OR        或运算指令                    OR DEST，SRC    把两个操作数进行或运算之后结果送回DEST    同0得0，否则得1<br>XOR        异或运算                    XOR DEST，SRC    把两个操作数进行异或运算之后结果送回DEST    相同得0不同得1</p>
+</li>
+</ol>
+<p>TEST    测试指令                    TEST DEST，SRC    将两个操作数进行按位AND,设结果是TEMP，但是结果不送回DEST，仅影响状态位标志，指令执行后，ZF、PF、SF反映运算结果，CF和OF清零<br>如：TEMP是0，ZF位置1，如果TEMP不是0，ZF位置0</p>
+<p>SAL        算术左移                    SAL OPRD，count    把操作数oprd左移count位，右边补0    与shl指令一样<br>通过截取count的低5位，实际的移位数被限于0到31之间。<br>SHL        逻辑左移                    SHL OPRD，count    把操作数oprd左移count位，右边补0    与sal指令一样<br>通过截取count的低5位，实际的移位数被限于0到31之间。<br>SAR        算术右移                    SAR OPRD，count    把操作数oprd右移count位，同时每右移一位，左边补符号位，移出的最低位进入标志位CF    通过截取count的低5位，实际的移位数被限于0到31之间。<br>SHR        逻辑右移                    SHR OPRD，count    把操作数oprd右移count位，左边补0，移出的最低位进入标志位CF    通过截取count的低5位，实际的移位数被限于0到31之间。<br>ROL        左循环移位指令                 ROL OPRD,count        通过截取count的低5位，实际的移位数被限于0到31之间。<br>ROR        右循环移位指令                 ROR OPRD,count        通过截取count的低5位，实际的移位数被限于0到31之间。<br>RCL        带进位左循环移位             RCL OPRD,count    相当于CF在最高位参与循环移位    大循环左移<br>通过截取count的低5位，实际的移位数被限于0到31之间。<br>RCR        带进位右循环移位             RCR OPRD,count    相当于CF在最高位参与循环移位    大循环右移<br>通过截取count的低5位，实际的移位数被限于0到31之间。</p>
+<h3 id="程序转移指令"><a href="#程序转移指令" class="headerlink" title="程序转移指令"></a>程序转移指令</h3><ol>
+<li>转移指令<br>JMP    无条件段内直接转移指令    JMP LABEL    使控制无条件地转移到标号为label的位置    无条件转移指令本身不影响标志</li>
+</ol>
+<p>JA/JNBE &gt;<br>JAE/JNB ≥<br>JB/JNAE &lt;<br>JBE/JNA ≤<br>以上四条，测试无符号整数运算的结果(标志C和Z)。</p>
+<p>JG/JNLE &gt;<br>JGE/JNL ≥<br>JL/JNGE &lt;<br>JLE/JNG ≤<br>以上四条，测试有符号整数运算的结果(标志S，O和Z)。</p>
+<p>JE/JZ    ZF=1<br>JNE/JNZ  ZF=0<br>JC       CF=1<br>JNC<br>JO       OF=1<br>JNO<br>JS       SF=1<br>JNS</p>
+<ol start="2">
+<li>循环指令<br>LOOP    计数循环指令    LOOP LABEL    使CX的值减1，当CX的值不为0的时候跳转至LABEL，否则执行LOOP之后的语句</li>
+<li>子程序指令<br>CALL    过程调用指令    CALL LABEL    段内直接调用LABEL    与jmp的区别在于call指令会在调用label之前保存返回地址（call 中return之后主程序还可以继续执行，jmp 当label执行完毕后不能返回主程序继续执行）<br>RET    段内过程返回指令    RET    使子程序结束，继续执行主程序<h3 id="变量属性"><a href="#变量属性" class="headerlink" title="变量属性"></a>变量属性</h3>SEG     得到变量名或标号名的段基址<br>OFFSET  得到变量名或标号名的偏移量<br>TYPE    在变量名前，返回值为1（字节）、2（字）、4（双字）<br>LENGTH  用在变量前面，对于变量使用DUP进行定义的情况，汇编程序将回送分配给该变量的单元数。对于其他情况则回送1<br>SIZE    用在变量前面，汇编程序将回送分配给该变量的字节数，值为 LENGTH 与 TYPE 值的乘积<br>PTR     指定类型<h2 id="汇编程序"><a href="#汇编程序" class="headerlink" title="汇编程序"></a>汇编程序</h2>一个汇编语言程序从写出到最终执行的简要过程：<br>编写 -&gt; 编译连接 -&gt; 执行<br>在Win 64位系统下实现Debug汇编的方法。</li>
+</ol>
+<p>mount c d:\                  回车 <br>c：                          回车<br>汇编连接源程序文件<br>ML &lt;源文件名.ASM&gt;<br>如果源程序没有错误，则自动生成.OBJ 文件和.EXE 可执行文件。</p>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">assum cs:codesg</span><br><span class="line">codesg segment</span><br><span class="line">start: mov ax,0123H</span><br><span class="line">          mov bx,0456H</span><br><span class="line">          add ax,bx</span><br><span class="line">          add ax,ax</span><br><span class="line"></span><br><span class="line">          mov ax,4c00h</span><br><span class="line">          int 21h</span><br><span class="line">codesg ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>segment和ends是一对成对使用的伪指令，这是在写可被编译器编译的汇编程序时，必须要用到的一对伪指令。segment和ends的功能是定义一个段，segment说明一个段开始，ends 说明一个段结束。<br>assume对除了CS以外的其它段寄存器，仅仅只是关联了段名，以便在访问段内变量时程序可以知道用哪个段寄存器，并没有在程序加载时将段地址装入段寄存器。所以，将段地址装入段寄存器的工作，必须由用户在程序中自己编写代码，并在程序开始运行时执行代码完成装入工作。</p>
+<p>内存并没有分段，段的划分来自于CPU。由于8086CPU用“基础地址（段地址×16）+偏移地址=物理地址”的方式给出内存单元的物理地址，使得我们可以用分段的方式来管理内存。</p>
+<p>数据段：存放数据的段。使用时候，用DS寄存器。<br>程序段：用来存放程序的段。使用的时候，用CS和IP寄存器。<br>栈段：  是一个栈。使用时，初始设置SS和SP寄存器。</p>
+<h3 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h3><ol>
+<li><p>字符输入<br>mov ah, 1;输入后，收到的值存放在AL中<br>int 21h</p>
+</li>
+<li><p>字符串输入<br>BUFFER DB  20                    ;预定义20字节的空间</p>
+<pre><code>DB  ?                    ;待输入完成后，自动获得输入的字符个数
+DB  20  DUP(0)  
+
+LEA DX,BUFFER        ;接收字符串
+MOV AH, 0AH
+INT 21H  
+</code></pre>
+</li>
+</ol>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><ol>
+<li><p>字符输出</p>
+<pre><code>mov ah,02h
+ mov dl,0dh   ;回车键
+ int 21h
+ mov ah,02h
+ mov dl,0ah   ;换行键
+ int 21h 
+</code></pre>
+</li>
+<li><p>字符串输出<br>INPUT  DB  “Please input a string: “,’$’</p>
+<pre><code> LEA DX, INPUT                        ;打印提示输入信息    
+ MOV AH, 09H                             
+ INT 21H
+</code></pre>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" rel="tag"># 二进制</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/29/misc/Docker%E5%AE%9E%E8%B7%B5/" rel="prev" title="Docker 实践">
+                  <i class="fa fa-chevron-left"></i> Docker 实践
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/18/common/xml%E5%92%8Cxxe/" rel="next" title="xml和xxe">
+                  xml和xxe <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

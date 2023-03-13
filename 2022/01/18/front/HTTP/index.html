@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言HTTP（HyperText Transfer Protocol，超文本传输协议),web在其基础上进行通信.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP">
+<meta property="og:url" content="https://mayylu.github.io/2022/01/18/front/HTTP/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言HTTP（HyperText Transfer Protocol，超文本传输协议),web在其基础上进行通信.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/3bf33a87e950352ad2fb2dca5d43fbf2b3118b5d.webp">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/20190214095421560.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/20170707143243946.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/Ya2spdZ5mKMqTuR.png">
+<meta property="article:published_time" content="2022-01-18T12:04:19.000Z">
+<meta property="article:modified_time" content="2023-03-13T14:15:08.361Z">
+<meta property="article:author" content="mayylu">
+<meta property="article:tag" content="HTTP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/3bf33a87e950352ad2fb2dca5d43fbf2b3118b5d.webp">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2022/01/18/front/HTTP/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2022/01/18/front/HTTP/","path":"2022/01/18/front/HTTP/","title":"HTTP"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HTTP | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80TCP-IP"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 网络基础TCP&#x2F;IP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-TCP-IP%E7%9A%84%E5%88%86%E5%B1%82%E7%AE%A1%E7%90%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1 TCP&#x2F;IP的分层管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2%E7%BD%91%E7%BB%9C%E5%B1%82%E7%9A%84%E5%9C%B0%E5%9D%80%E2%80%94IP%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2网络层的地址—IP协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-3%E5%BA%94%E7%94%A8%E5%B1%82%E7%9A%84%E6%A0%87%E5%BF%97%E2%80%94DNS%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.1.3应用层的标志—DNS服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1%E6%9C%AC%E7%AB%A0%E9%87%8D%E7%82%B9%E2%80%94HTTP"><span class="nav-number">1.2.</span> <span class="nav-text">2.1本章重点—HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1HTTP%E8%AF%B7%E6%B1%82%E6%8A%A5%E6%96%87"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1.1HTTP请求报文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2HTTP%E5%93%8D%E5%BA%94%E6%8A%A5%E6%96%87"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.1.2HTTP响应报文</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">关注生活的点点滴滴</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2022/01/18/front/HTTP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="关注生活的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HTTP
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-18 20:04:19" itemprop="dateCreated datePublished" datetime="2022-01-18T20:04:19+08:00">2022-01-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-03-13 22:15:08" itemprop="dateModified" datetime="2023-03-13T22:15:08+08:00">2023-03-13</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>HTTP（HyperText Transfer Protocol，超文本传输协议),<br>web在其基础上进行通信.<br> <span id="more"></span></p>
+<h3 id="1-1-网络基础TCP-IP"><a href="#1-1-网络基础TCP-IP" class="headerlink" title="1.1 网络基础TCP/IP"></a>1.1 网络基础TCP/IP</h3><p>通常使用的网络（包括互联网）是在TCP/IP协议族的基础上运作的。而HTTP属于它内部的一个子集.</p>
+<h4 id="1-1-1-TCP-IP的分层管理"><a href="#1-1-1-TCP-IP的分层管理" class="headerlink" title="1.1.1 TCP/IP的分层管理"></a>1.1.1 TCP/IP的分层管理</h4><p>TCP/IP协议族里重要的一点就是分层。TCP/IP协议族按层次分别分为以下4层：  </p>
+<p>应用层,传输层,网络层,数据链路层。  </p>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/3bf33a87e950352ad2fb2dca5d43fbf2b3118b5d.webp" alt="3bf33a87e950352ad2fb2dca5d43fbf2b3118b5d">    </p>
+<ul>
+<li>应用层<br>应用层是TCP/IP协议的第一层，是直接为应用进程提供服务的。   </li>
+</ul>
+<p><strong>FTP</strong>（File Transfer Protocol，文件传输协议）和<strong>DNS</strong>（Domain Name System，域名系统）服务就是其中两类。HTTP协议也处于该层。  </p>
+<ul>
+<li>运输层<br>作为TCP/IP协议的第二层，运输层在整个TCP/IP协议中起到了中流砥柱的作用。且在运输层中，<em>TCP和UDP</em>也同样起到了中流砥柱的作用。  </li>
+<li>网络层<br>网络层在TCP/IP协议中的位于第三层。在TCP/IP协议中网络层可以进行网络连接的建立和终止以及<em>IP地址</em>的寻找等功能。   </li>
+</ul>
+<h4 id="1-1-2网络层的地址—IP协议"><a href="#1-1-2网络层的地址—IP协议" class="headerlink" title="1.1.2网络层的地址—IP协议"></a>1.1.2网络层的地址—IP协议</h4><p>IP协议的作用是把各种数据包传送给对方。而要保证确实传送到对方那里，则需要满足各类条件。其中两个重要的条件是IP地址和MAC地址（Media Access Control Address）网络之间还必须有传送的机制，才能将IP信息包通过一个个的网络传送到目的地。此种传送机制称为IP路由.       </p>
+<p>TCP位于传输层，提供可靠的字节流服务.<br><strong>节流服务</strong>（Byte Stream Service）是指，为了方便传输，将大块数据分割成以报文段（segment）为单位的数据包进行管理。而可靠的传输服务是指，能够把数据准确可靠地传给对方。 </p>
+<p><strong>三次握手策略</strong>         </p>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/20190214095421560.png" alt="20190214095421560"><br>发送端首先发送一个带SYN标志的数据包给对方。接收端收到后，回传一个带有SYN/ACK标志的数据包以示传达确认信息。最后，发送端再回传一个带ACK标志的数据包，代表“握手”结束。   </p>
+<h4 id="1-1-3应用层的标志—DNS服务"><a href="#1-1-3应用层的标志—DNS服务" class="headerlink" title="1.1.3应用层的标志—DNS服务"></a>1.1.3应用层的标志—DNS服务</h4><p><strong>DNS</strong>(Domain Name System)服务是和HTTP协议一样位于应用层的协议。它提供域名到IP地址之间的解析服务。   </p>
+<p><em>URL</em><br><strong>URI的格式</strong>      </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">protocol :// hostname[:port] / path / [;parameters][?query]#fragment     </span><br><span class="line">协议//&lt;用户名&gt;:&lt;密码&gt;@&lt;主机域名&gt;:&lt;端口&gt;/&lt;url路径&gt;?查询字符串#识别符        </span><br><span class="line"></span><br><span class="line">如果有host，前面是要加 // 的，因此对于 http 等这些网络地址来讲http://www.baidu.sb:80/ad/cas写成这样很自然。 </span><br><span class="line"></span><br><span class="line">如果是文件，文件没有 host ，所以中间的部分就不要了，就变成了file:///ad/cash </span><br><span class="line">对于文件来讲，似乎 // 不要也是没有任何关系的呢 </span><br><span class="line"></span><br><span class="line">在内网中，其他服务器的文件地址是 file://host/path/file.ext</span><br><span class="line">本机不用 host 部分，就直接 file:/// 即可。</span><br></pre></td></tr></table></figure>
+<p><strong>URL 编码</strong></p>
+<p>URL 只能使用 ASCII 字符集来通过因特网进行发送。</p>
+<p>由于 URL 常常会包含 ASCII 集合之外的字符，URL 必须转换为有效的 ASCII 格式。</p>
+<p>URL 编码使用 “%” 其后跟随两位的十六进制数来替换非 ASCII 字符。</p>
+<p>URL 不能包含空格。URL 编码通常使用 + 来替换空格。 </p>
+<h3 id="2-1本章重点—HTTP"><a href="#2-1本章重点—HTTP" class="headerlink" title="2.1本章重点—HTTP"></a>2.1本章重点—HTTP</h3><p>HTTP协议用于客户端和服务器端之间的通信,是网页的核心,可以说以上协议都是为其服务的<br>(注意:HTTP是一种不保存状态，即无状态（stateless）协议。HTTP协议自身不对请求和响应之间的通信状态进行保存。)     </p>
+<h4 id="2-1-1HTTP请求报文"><a href="#2-1-1HTTP请求报文" class="headerlink" title="2.1.1HTTP请求报文"></a>2.1.1HTTP请求报文</h4><p>HTTP请求报文是由请求方法、请求URI、协议版本、可选的请求首部字段和内容实体构成的：<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/20170707143243946.jpg" alt="20170707143243946"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST /user HTTP/1.1      //请求行</span><br><span class="line">Host: www.user.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">User-agent: Mozilla/5.0.      //以上是首部行</span><br><span class="line">（此处必须有一空行）  //空行分割header和请求内容 </span><br><span class="line">name=world   请求体</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>请求行  </li>
+</ol>
+<p><strong>get和post区别:</strong><br> get是以实体的方式得到由请求 URI 所指定资源的信息传递参数长度受限制，因为传递的参数是直接表示在地址栏中<br> post方式: 用来向服务器发出请求，要求它接收被附在请求后的实体，并把它请求 URI 所指定资源的附加新子项，所以 post 请求可能会导致新的资源的建立和 / 或已有资源的修改。   </p>
+<p>GET方法用来请求访问已被URI识别的资源。指定的资源经服务器端解析后返回响应内容   </p>
+<ol start="2">
+<li>请求首段<br>使用首部字段是为了给浏览器和服务器提供报文主体大小、所使用的语言、认证信息等内容<br>请求头部由关键字/值对组成，每行一对</li>
+</ol>
+<p>Host: 请求的主机名，允许多个域名同处一个IP地址，即虚拟主机 </p>
+<p>Accept(内容协商) : 客户端希望接受的数据类型，比如 Accept：text/xml（application/json）表示希望接受到的是xml（json）类型</p>
+<p>Content-Type：发送端发送的实体数据的数据类型。比如，Content-Type：application/x-www-form-urlencoded(用于post传参，且会进行URL转码)||multipart/form-data(文件上传)||text/xml||application/json</p>
+<ul>
+<li>cookie<br>会根据从服务器端发送的响应报文内的一个叫做Set-Cookie的首部字段信息，通知客户端保存Cookie。当下次客户端再往该服务器发送请求时，客户端会自动在请求报文中加入Cookie值后发送出去<br>HttpOnly</li>
+</ul>
+<p>User-Agent: 产生请求的浏览器类型</p>
+<p>Referer: 表示这个请求是从哪个URL过来的 </p>
+<p>connect: keep-alive<br>持久连接的特点是，只要任意一端没有明确提出断开连接，则保持TCP连接状态,形成管线化连接。   </p>
+<p>X-Forwarded-For: client, proxy1, proxy2 ,  proxy3<br>最左边(client1)是最原始客户端的IP地址,HTTP 请求到达服务器之前，经过了三个代理 Proxy1、Proxy2、Proxy3</p>
+<p>remote_addr: 一般情况下Remote Address 无法伪造，因为建立 TCP 连接需要三次握手，如果伪造了源 IP，无法建立 TCP 连接</p>
+<ol>
+<li>报体信息传输格式 </li>
+</ol>
+<p><em>内容编码</em>应用在实体内容上的编码格式，并保持实体信息原样压缩。内容编码后的实体由客户端接收并负责解码,提升传输速率      </p>
+<p><em>分块传输编码（Chunked Transfer Coding）</em>,把实体主体分块的功能在传输大容量数据时，通过把数据分割成多块，能够让浏览器逐步显示页面。</p>
+<h4 id="2-1-2HTTP响应报文"><a href="#2-1-2HTTP响应报文" class="headerlink" title="2.1.2HTTP响应报文"></a>2.1.2HTTP响应报文</h4><p>HTTP响应报文和请求报文的结构差不多，也是由四个部分组成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">＜status-line＞   //状态行</span><br><span class="line"></span><br><span class="line">＜headers＞   //消息报头</span><br><span class="line"></span><br><span class="line">＜blank line＞   //空行(两个CRLF)</span><br><span class="line"></span><br><span class="line">＜response-body＞    //响应体  </span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/Ya2spdZ5mKMqTuR.png" alt="Ya2spdZ5mKMqTuR"></p>
+<ol>
+<li>状态行  </li>
+</ol>
+<p>1xx:信息</p>
+<p>100 Continue    服务器仅接收到部分请求，但是一旦服务器并没有拒绝该请求，客户端应该继续发送其余的请求。<br>101 Switching Protocols    服务器转换协议：服务器将遵从客户的请求转换到另外一种协议。 </p>
+<p>2xx:成功</p>
+<p><strong>200 OK  请求成功（其后是对GET和POST请求的应答文档。)</strong><br>201 Created     请求被创建完成，同时新的资源被创建。<br>202 Accepted    供处理的请求已被接受，但是处理未完成。<br>203 Non-authoritative Information       文档已经正常地返回，但一些应答头可能不正确，因为使用的是文档的拷贝。<br>204 No Content      没有新文档。浏览器应该继续显示原来的文档。如果用户定期地刷新页面，而Servlet可以确定用户文档足够新，这个状态代码是很有用的。<br>205 Reset Content       没有新文档。但浏览器应该重置它所显示的内容。用来强制浏览器清除表单输入内容。<br>206 Partial Content        客户发送了一个带有Range头的GET请求，服务器完成了它。</p>
+<p>3xx:重定向</p>
+<p>300 Multiple Choices        多重选择。链接列表。用户可以选择某链接到达目的地。最多允许五个地址。<br>301 Moved Permanently       所请求的页面已经转移至新的url。<br>302 Found       所请求的页面已经临时转移至新的url。<br>303 See Other       所请求的页面可在别的url下被找到。<br>304 Not Modified    未按预期修改文档。客户端有缓冲的文档并发出了一个条件性的请求（一般是提供If-Modified-Since头表示客户只想比指定日期更新的文档）。服务器告诉客户，原来缓冲的文档还可以继续使用。<br>305 Use Proxy       客户请求的文档应该通过Location头所指明的代理服务器提取。<br>306 Unused      此代码被用于前一版本。目前已不再使用，但是代码依然被保留。<br>307 Temporary Redirect          被请求的页面已经临时移至新的url。</p>
+<p>4xx:客户端错误  </p>
+<p><strong>400:Bad Request     服务器未能理解请求。</strong><br>401 Unauthorized    被请求的页面需要用户名和密码。<br>402 Payment Required        此代码尚无法使用。<br><strong>403 Forbidden       对被请求页面的访问被禁止。</strong><br>405         Method Not Allowed请求中指定的方法不被允许。<br>406 Not Acceptable      服务器生成的响应无法被客户端所接受。<br>407 Proxy Authentication Required       用户必须首先使用代理服务器进行验证，这样请求才会被处理。<br>408 Request Timeout     请求超出了服务器的等待时间。<br>409 Conflict        由于冲突，请求无法被完成。<br>410 Gone        被请求的页面不可用。<br>411 Length Required”Content-Length”     未被定义。如果无此内容，服务器不会接受请求。<br>412 Precondition Failed     请求中的前提条件被服务器评估为失败。<br>413 Request Entity Too Large        由于所请求的实体的太大，服务器不会接受请求。<br>415 Unsupported Media Type      由于媒介类型不被支持，服务器不会接受请求。<br>416 Requested Range Not Satisfiable     服务器不能满足客户在请求中指定的Range头。<br>417 Expectation Failed      执行失败。<br>423         锁定的错误。</p>
+<p>5xx:服务器错误</p>
+<p><strong>500 Internal Server Error请求未完成。服务器遇到不可预知的情况</strong><br>501 Not Implemented请求未完成。服务器不支持所请求的功能。<br>502 Bad Gateway<br>请求未完成。服务器从上游服务器收到一个无效的响应。<br>502.1CGI    应用程序超时。<br>502.2CGI        应用程序出错。<br>503 Service Unavailable     请求未完成。服务器临时过载或宕机。<br>504 Gateway Timeout 网关超时。<br>505 HTTP Version Not Supported      服务器不支持请求中指明的HTTP版本。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/17/c/c++%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0/" rel="prev" title="c++内置函数">
+                  <i class="fa fa-chevron-left"></i> c++内置函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/22/sql/SQL%E8%AF%AD%E6%B3%95/" rel="next" title="SQL语法">
+                  SQL语法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

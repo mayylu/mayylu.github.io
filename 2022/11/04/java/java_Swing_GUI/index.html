@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言java是面向对象的语言，Swing是JAVA基础类的一部分，Swing的功能组件大多都由类来实现。J开头的像JFrame、JButton都是swing下的，Frame、Button都是awt下的，而swing是awt的升级版。Swing包括了图形用户界面（GUI）器件如：文本框，按钮，分隔窗格和表 ，是java工具开发的首选.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java_Swing_GUI">
+<meta property="og:url" content="https://mayylu.github.io/2022/11/04/java/java_Swing_GUI/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言java是面向对象的语言，Swing是JAVA基础类的一部分，Swing的功能组件大多都由类来实现。J开头的像JFrame、JButton都是swing下的，Frame、Button都是awt下的，而swing是awt的升级版。Swing包括了图形用户界面（GUI）器件如：文本框，按钮，分隔窗格和表 ，是java工具开发的首选.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20221104234104.png">
+<meta property="article:published_time" content="2022-11-04T12:04:19.000Z">
+<meta property="article:modified_time" content="2023-03-13T14:15:30.634Z">
+<meta property="article:author" content="mayylu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20221104234104.png">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2022/11/04/java/java_Swing_GUI/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2022/11/04/java/java_Swing_GUI/","path":"2022/11/04/java/java_Swing_GUI/","title":"java_Swing_GUI"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>java_Swing_GUI | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3"><span class="nav-number">1.1.</span> <span class="nav-text">窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E6%9D%BF"><span class="nav-number">1.2.</span> <span class="nav-text">面板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">事件</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">关注生活的点点滴滴</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2022/11/04/java/java_Swing_GUI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="关注生活的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java_Swing_GUI
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-04 20:04:19" itemprop="dateCreated datePublished" datetime="2022-11-04T20:04:19+08:00">2022-11-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-03-13 22:15:30" itemprop="dateModified" datetime="2023-03-13T22:15:30+08:00">2023-03-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>java是面向对象的语言，Swing是JAVA基础类的一部分，Swing的功能组件大多都由类来实现。J开头的像JFrame、JButton都是swing下的，Frame、Button都是awt下的，而swing是awt的升级版。Swing包括了图形用户界面（GUI）器件如：文本框，按钮，分隔窗格和表 ，是java工具开发的首选.<br> <span id="more"></span></p>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20221104234104.png" alt="QQ截图20221104234104"></p>
+<h3 id="窗口"><a href="#窗口" class="headerlink" title="窗口"></a>窗口</h3><p>窗口类组件，可以独立显示，一个图形界面<strong>至少</strong>需要一个窗口，绝大多数 Swing 图形界面程序使用 JFrame 作为顶层容器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> JFrame;</span><br><span class="line"><span class="keyword">import</span> java.awt.Color;</span><br><span class="line"><span class="keyword">import</span> javax.swing.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Text1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    	Color bgColor = Color.red;</span><br><span class="line">        JFrame jf = <span class="keyword">new</span> JFrame(<span class="string">&quot;测试窗口&quot;</span>);          								  <span class="comment">// 创建窗口,并设计标题</span></span><br><span class="line">        jf.setSize( <span class="number">400</span>, <span class="number">400</span>);                                    					 <span class="comment">// 设置窗口大小</span></span><br><span class="line">		jf.getContentPane().setBackground(bgColor);                                  <span class="comment">//JFrame不能直接添加组件，需要用getContentPane()函数获取内容面板，再在内容面板上进行添加组件。</span></span><br><span class="line">      <span class="comment">//jf.setLocationRelativeTo(null);                   						     // 把窗口位置设置到屏幕中心</span></span><br><span class="line">        jf.setLocation(<span class="number">200</span>,<span class="number">200</span>);                                                     <span class="comment">//设置初始位置      </span></span><br><span class="line">        jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);                  <span class="comment">// 当点击窗口的关闭按钮时退出程序（没有这一句，程序不会退出）</span></span><br><span class="line">        jf.setVisible(<span class="keyword">true</span>);                                                         <span class="comment">// 显示   </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="面板"><a href="#面板" class="headerlink" title="面板"></a>面板</h3><p>中间容器充当基本组件的载体，不可独立显示。中间容器可以添加若干基本组件（也可以嵌套添加中间容器），对容器内的组件进行管理，类似于给各种复杂的组件进行分组管理。最顶层的一个中间容器必须依托在顶层容器（窗口）内。<br>JPanel 是在开发中使用频率非常高的一般轻量级面板容器组件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">### JavaSwing 布局管理器</span><br><span class="line">1. FlowLayout（流式布局）</span><br></pre></td></tr></table></figure>
+<p>FlowLayout.LEFT :       左对齐<br>FlowLayout.CENTER :     居中对齐（默认）<br>FlowLayout.RIGHT :      右对齐<br>FlowLayout.LEADING :    与容器方向的开始边对齐，例如，对于从左到右的方向，则与左边对齐<br>FlowLayout.TRAILING :   与容器方向的结束边对齐，例如，对于从左到右的方向，则与右边对齐。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">![QQ截图20221105100817](https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ截图20221105100817.png)</span><br><span class="line">2. BorderLayout(边界布局)</span><br></pre></td></tr></table></figure>
+<p>// 把 5 个按钮添加到容器中的 5 个方位<br>            panel.add(btnN, BorderLayout.NORTH);<br>            panel.add(btnS, BorderLayout.SOUTH);<br>            panel.add(btnW, BorderLayout.WEST);<br>            panel.add(btnE, BorderLayout.EAST);<br>            panel.add(btnC, BorderLayout.CENTER);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3. GridLayout（网格布局）</span><br></pre></td></tr></table></figure>
+<p>JPanel panel3 = new JPanel(new GridLayout(2, 1));</p>
+<pre><code>        JButton btnN3 = new JButton(&quot;Button_North&quot;);
+        JButton btnS3 = new JButton(&quot;Button_South&quot;);
+
+        panel3.add(btnN3);
+        panel3.add(btnS3);
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">### 组件</span><br><span class="line">1. JButton（按钮）</span><br><span class="line">```java</span><br><span class="line">JButton button1=new JButton(&quot;start&quot;);</span><br><span class="line">    	  JButton button2=new JButton(&quot;stop&quot;);</span><br><span class="line">    	  </span><br><span class="line">    	  button1.addActionListener(new ActionListener() &#123;</span><br><span class="line">    		  public void actionPerformed(ActionEvent e) &#123;</span><br><span class="line">    			  System.out.println(&quot;start&quot;);</span><br><span class="line">    		  &#125;</span><br><span class="line">    	  &#125;);</span><br><span class="line">    	  MyMonitor myMonitor=new MyMonitor();</span><br><span class="line">    	  button2.addActionListener(myMonitor);</span><br><span class="line">          // 设置按钮的默认图片button2.setIcon(new ImageIcon(&quot;button_normal.png&quot;));</span><br><span class="line">          // 设置按钮被点击时的图片button2.setPressedIcon(new ImageIcon(&quot;button_press.png&quot;));</span><br><span class="line">    	  Jf.add(button1,BorderLayout.EAST);</span><br><span class="line">    	  Jf.add(button2,BorderLayout.WEST);</span><br><span class="line">    	  Jf.pack();</span><br><span class="line">    	  Jf.setSize( 400, 400);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line">class MyMonitor implements ActionListener&#123;</span><br><span class="line">	public void actionPerformed(ActionEvent e) &#123;</span><br><span class="line">		System.out.println(&quot;Stop&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>JLabel（标签）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">JPanel panel = <span class="keyword">new</span> JPanel();</span><br><span class="line">       <span class="comment">// 添加一个标签</span></span><br><span class="line">       JLabel label = <span class="keyword">new</span> JLabel(<span class="string">&quot;水果：&quot;</span>);</span><br><span class="line">       panel.add(label);</span><br></pre></td></tr></table></figure></li>
+<li><p>JTextField（文本框）</p>
+</li>
+<li><p>JTextArea（文本区域）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">JPanel panel = <span class="keyword">new</span> JPanel();</span><br><span class="line"><span class="comment">// 创建一个 5 行 10 列的文本区域</span></span><br><span class="line"><span class="keyword">final</span> JTextArea textArea = <span class="keyword">new</span> JTextArea(<span class="number">5</span>, <span class="number">10</span>);</span><br><span class="line"><span class="comment">// 设置自动换行</span></span><br><span class="line">textArea.setLineWrap(<span class="keyword">true</span>);</span><br><span class="line"><span class="comment">// 添加到内容面板</span></span><br><span class="line">panel.add(textArea);</span><br></pre></td></tr></table></figure></li>
+<li><p>JComboBox（下拉列表框）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">     <span class="comment">// 需要选择的条目</span></span><br><span class="line">     String[] listData = <span class="keyword">new</span> String[]&#123;<span class="string">&quot;香蕉&quot;</span>, <span class="string">&quot;雪梨&quot;</span>, <span class="string">&quot;苹果&quot;</span>, <span class="string">&quot;荔枝&quot;</span>&#125;;</span><br><span class="line">     <span class="comment">// 创建一个下拉列表框</span></span><br><span class="line">     JComboBox comboBox = <span class="keyword">new</span> JComboBox(listData);</span><br><span class="line">     <span class="comment">// 设置默认选中的条目</span></span><br><span class="line">     comboBox.setSelectedIndex(<span class="number">2</span>);</span><br><span class="line">     <span class="comment">// 添加到内容面板</span></span><br><span class="line">     panel.add(comboBox);</span><br><span class="line">     <span class="comment">//增加元素</span></span><br><span class="line">     cb_channel.addItem(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">     <span class="comment">//获取选中的选项索引</span></span><br><span class="line">     <span class="keyword">int</span> i=cb_channel.getSelectedIndex();	</span><br><span class="line"></span><br><span class="line">     <span class="comment">//为组合框注册监听器ItemListener</span></span><br><span class="line">cb_channel.addItemListener(<span class="keyword">new</span> ItemListener()&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">itemStateChanged</span><span class="params">(ItemEvent e)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i=cb_channel.getSelectedIndex();	</span><br><span class="line">       	list_shows.setListData(shows[i]);</span><br><span class="line">     &#125;			</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>JList（列表框）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个 JList 实例</span></span><br><span class="line">JList list = <span class="keyword">new</span> JList();</span><br><span class="line"><span class="comment">// 设置一下首选大小</span></span><br><span class="line">list.setPreferredSize(<span class="keyword">new</span> Dimension(<span class="number">200</span>, <span class="number">100</span>));</span><br><span class="line"><span class="comment">// 设置选择模式，有三个模式: 只能单选、可间隔多选、可连续多选</span></span><br><span class="line">list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);</span><br><span class="line"><span class="comment">// 设置选项数据（内部将自动封装成 ListModel ）</span></span><br><span class="line">list.setListData(<span class="keyword">new</span> String[]&#123;<span class="string">&quot;香蕉&quot;</span>, <span class="string">&quot;雪梨&quot;</span>, <span class="string">&quot;苹果&quot;</span>, <span class="string">&quot;荔枝&quot;</span>&#125;);</span><br><span class="line"><span class="comment">// 设置默认选中项</span></span><br><span class="line">list.setSelectedIndex(<span class="number">1</span>);</span><br><span class="line"><span class="comment">//判断是否有选中的值</span></span><br><span class="line">list_shows.isSelectionEmpty()</span><br><span class="line"><span class="comment">//获取所选值</span></span><br><span class="line">list_shows.getSelectedValue();</span><br><span class="line"><span class="comment">// 获取所有被选中的选项索引</span></span><br><span class="line"><span class="keyword">int</span>[] indices = list.getSelectedIndices();</span><br><span class="line"><span class="comment">// 获取选中的选项索引</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getSelectedIndex</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 添加选项选中状态被改变的监听器</span></span></span><br><span class="line"><span class="function">list.<span class="title">addListSelectionListener</span><span class="params">(new ListSelectionListener()</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">valueChanged</span><span class="params">(ListSelectionEvent e)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 获取选项数据的 ListModel</span></span><br><span class="line">        ListModel&lt;String&gt; listModel = list.getModel();</span><br><span class="line">        <span class="comment">// 输出选中的选项</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> index : indices) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;选中: &quot;</span> + index + <span class="string">&quot; = &quot;</span> + listModel.getElementAt(index));</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>JDialog（对话框）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 显示一个自定义的对话框</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> owner 对话框的拥有者</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parentComponent 对话框的父级组件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showCustomDialog</span><span class="params">(Frame owner, Component parentComponent)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建一个模态对话框</span></span><br><span class="line">    <span class="keyword">final</span> JDialog dialog = <span class="keyword">new</span> JDialog(owner, <span class="string">&quot;提示&quot;</span>, <span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">// 设置对话框的宽高</span></span><br><span class="line">    dialog.setSize(<span class="number">250</span>, <span class="number">150</span>);</span><br><span class="line">    <span class="comment">// 设置对话框大小不可改变</span></span><br><span class="line">    dialog.setResizable(<span class="keyword">false</span>);</span><br><span class="line">    <span class="comment">// 设置对话框相对显示的位置</span></span><br><span class="line">    dialog.setLocationRelativeTo(parentComponent);</span><br><span class="line">    JLabel messageLabel = <span class="keyword">new</span> JLabel(<span class="string">&quot;对话框消息内容&quot;</span>);</span><br><span class="line">    <span class="comment">// 创建一个按钮用于关闭对话框</span></span><br><span class="line">    JButton okBtn = <span class="keyword">new</span> JButton(<span class="string">&quot;确定&quot;</span>);</span><br><span class="line">    okBtn.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 关闭对话框</span></span><br><span class="line">            dialog.dispose();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    JPanel panel = <span class="keyword">new</span> JPanel();</span><br><span class="line">    panel.add(messageLabel);</span><br><span class="line">    panel.add(okBtn);</span><br><span class="line">    <span class="comment">// 设置对话框的内容面板</span></span><br><span class="line">    dialog.setContentPane(panel);</span><br><span class="line">    <span class="comment">// 显示对话框</span></span><br><span class="line">    dialog.setVisible(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>JMenuBar（菜单栏）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 创建一个菜单栏</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">JMenuBar menuBar = <span class="keyword">new</span> JMenuBar();</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 创建一级菜单</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">JMenu fileMenu = <span class="keyword">new</span> JMenu(<span class="string">&quot;文件&quot;</span>);</span><br><span class="line">JMenu editMenu = <span class="keyword">new</span> JMenu(<span class="string">&quot;编辑&quot;</span>);</span><br><span class="line">JMenu viewMenu = <span class="keyword">new</span> JMenu(<span class="string">&quot;视图&quot;</span>);</span><br><span class="line">JMenu aboutMenu = <span class="keyword">new</span> JMenu(<span class="string">&quot;关于&quot;</span>);</span><br><span class="line"><span class="comment">// 一级菜单添加到菜单栏</span></span><br><span class="line">menuBar.add(fileMenu);</span><br><span class="line">menuBar.add(editMenu);</span><br><span class="line">menuBar.add(viewMenu);</span><br><span class="line">menuBar.add(aboutMenu);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 创建 &quot;文件&quot; 一级菜单的子菜单</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">JMenuItem exitMenuItem = <span class="keyword">new</span> JMenuItem(<span class="string">&quot;退出&quot;</span>);</span><br><span class="line"><span class="comment">// 子菜单添加到一级菜单</span></span><br><span class="line">fileMenu.addSeparator();       <span class="comment">// 添加一条分割线</span></span><br><span class="line">fileMenu.add(exitMenuItem);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 创建 &quot;编辑&quot; 一级菜单的子菜单</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">JMenuItem copyMenuItem = <span class="keyword">new</span> JMenuItem(<span class="string">&quot;复制&quot;</span>);</span><br><span class="line">JMenuItem pasteMenuItem = <span class="keyword">new</span> JMenuItem(<span class="string">&quot;粘贴&quot;</span>);</span><br><span class="line"><span class="comment">// 子菜单添加到一级菜单</span></span><br><span class="line">editMenu.add(copyMenuItem);</span><br><span class="line">editMenu.add(pasteMenuItem);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 创建 &quot;视图&quot; 一级菜单的子菜单</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> JCheckBoxMenuItem checkBoxMenuItem = <span class="keyword">new</span> JCheckBoxMenuItem(<span class="string">&quot;复选框子菜单&quot;</span>);</span><br><span class="line"><span class="keyword">final</span> JRadioButtonMenuItem radioButtonMenuItem01 = <span class="keyword">new</span> JRadioButtonMenuItem(<span class="string">&quot;单选按钮子菜单01&quot;</span>);</span><br><span class="line"><span class="keyword">final</span> JRadioButtonMenuItem radioButtonMenuItem02 = <span class="keyword">new</span> JRadioButtonMenuItem(<span class="string">&quot;单选按钮子菜单02&quot;</span>);</span><br><span class="line"><span class="comment">// 子菜单添加到一级菜单</span></span><br><span class="line">viewMenu.add(checkBoxMenuItem);</span><br><span class="line">viewMenu.addSeparator();                <span class="comment">// 添加一个分割线</span></span><br><span class="line">viewMenu.add(radioButtonMenuItem01);</span><br><span class="line">viewMenu.add(radioButtonMenuItem02);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 其中两个 单选按钮子菜单，要实现单选按钮的效果，需要将它们放到一个按钮组中</span></span><br><span class="line">ButtonGroup btnGroup = <span class="keyword">new</span> ButtonGroup();</span><br><span class="line">btnGroup.add(radioButtonMenuItem01);</span><br><span class="line">btnGroup.add(radioButtonMenuItem02);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 默认第一个单选按钮子菜单选中</span></span><br><span class="line">radioButtonMenuItem01.setSelected(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 菜单项的点击/状态改变事件监听，事件监听可以直接设置在具体的子菜单上（这里只设置其中几个）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// 设置 &quot;新建&quot; 子菜单被点击的监听器</span></span><br><span class="line">newMenuItem.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;新建  被点击&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">    </span><br></pre></td></tr></table></figure></li>
+<li><p>JPopupMenu（弹出菜单）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 直接在内容面板上添加鼠标监听器</span></span><br><span class="line">    panel.addMouseListener(<span class="keyword">new</span> MouseListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseClicked</span><span class="params">(MouseEvent e)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 鼠标点击（按下并抬起）</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mousePressed</span><span class="params">(MouseEvent e)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 鼠标按下</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseReleased</span><span class="params">(MouseEvent e)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 鼠标释放</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果是鼠标右键，则显示弹出菜单</span></span><br><span class="line">            <span class="keyword">if</span> (e.isMetaDown()) &#123;</span><br><span class="line">                showPopupMenu(e.getComponent(), e.getX(), e.getY());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseEntered</span><span class="params">(MouseEvent e)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 鼠标进入组件区域</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseExited</span><span class="params">(MouseEvent e)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 鼠标离开组件区域</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showPopupMenu</span><span class="params">(Component invoker, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建 弹出菜单 对象</span></span><br><span class="line">    JPopupMenu popupMenu = <span class="keyword">new</span> JPopupMenu();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建 一级菜单</span></span><br><span class="line">    JMenuItem copyMenuItem = <span class="keyword">new</span> JMenuItem(<span class="string">&quot;复制&quot;</span>);</span><br><span class="line">    JMenuItem pasteMenuItem = <span class="keyword">new</span> JMenuItem(<span class="string">&quot;粘贴&quot;</span>);</span><br><span class="line">    JMenu editMenu = <span class="keyword">new</span> JMenu(<span class="string">&quot;编辑&quot;</span>);   <span class="comment">// 需要 添加 二级子菜单 的 菜单，使用 JMenu</span></span><br><span class="line">    JMenuItem fileMenu = <span class="keyword">new</span> JMenuItem(<span class="string">&quot;文件&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建 二级菜单</span></span><br><span class="line">    JMenuItem findMenuItem = <span class="keyword">new</span> JMenuItem(<span class="string">&quot;查找&quot;</span>);</span><br><span class="line">    JMenuItem replaceMenuItem = <span class="keyword">new</span> JMenuItem(<span class="string">&quot;替换&quot;</span>);</span><br><span class="line">    <span class="comment">// 添加 二级菜单 到 &quot;编辑&quot;一级菜单</span></span><br><span class="line">    editMenu.add(findMenuItem);</span><br><span class="line">    editMenu.add(replaceMenuItem);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加 一级菜单 到 弹出菜单</span></span><br><span class="line">    popupMenu.add(copyMenuItem);</span><br><span class="line">    popupMenu.add(pasteMenuItem);</span><br><span class="line">    popupMenu.addSeparator();       <span class="comment">// 添加一条分隔符</span></span><br><span class="line">    popupMenu.add(editMenu);</span><br><span class="line">    popupMenu.add(fileMenu);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加菜单项的点击监听器</span></span><br><span class="line">    copyMenuItem.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;复制 被点击&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    findMenuItem.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;查找 被点击&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// ......</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在指定位置显示弹出菜单</span></span><br><span class="line">    popupMenu.show(invoker, x, y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/27/php/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="prev" title="php反序列化">
+                  <i class="fa fa-chevron-left"></i> php反序列化
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/29/misc/Docker%E5%AE%9E%E8%B7%B5/" rel="next" title="Docker 实践">
+                  Docker 实践 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
