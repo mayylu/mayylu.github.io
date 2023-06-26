@@ -20,25 +20,25 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="前言">
+<meta name="description" content="前言因为22招新了解一点关于docker的使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker 实践">
-<meta property="og:url" content="https://mayylu.github.io/2022/11/29/misc/Docker%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:url" content="https://mayylu.github.io/2022/11/29/server/Docker%E5%AE%9E%E8%B7%B5/index.html">
 <meta property="og:site_name" content="mayylu">
-<meta property="og:description" content="前言">
+<meta property="og:description" content="前言因为22招新了解一点关于docker的使用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-29T02:44:30.000Z">
-<meta property="article:modified_time" content="2023-03-13T14:16:22.303Z">
+<meta property="article:modified_time" content="2023-06-13T13:05:24.837Z">
 <meta property="article:author" content="mayylu">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://mayylu.github.io/2022/11/29/misc/Docker%E5%AE%9E%E8%B7%B5/">
+<link rel="canonical" href="https://mayylu.github.io/2022/11/29/server/Docker%E5%AE%9E%E8%B7%B5/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2022/11/29/misc/Docker%E5%AE%9E%E8%B7%B5/","path":"2022/11/29/misc/Docker实践/","title":"Docker 实践"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2022/11/29/server/Docker%E5%AE%9E%E8%B7%B5/","path":"2022/11/29/server/Docker实践/","title":"Docker 实践"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Docker 实践 | mayylu</title>
@@ -88,7 +88,7 @@
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li>
   </ul>
 </nav>
 
@@ -132,13 +132,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -183,7 +183,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2022/11/29/misc/Docker%E5%AE%9E%E8%B7%B5/">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2022/11/29/server/Docker%E5%AE%9E%E8%B7%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -214,7 +214,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2023-03-13 22:16:22" itemprop="dateModified" datetime="2023-03-13T22:16:22+08:00">2023-03-13</time>
+        <time title="修改时间：2023-06-13 21:05:24" itemprop="dateModified" datetime="2023-06-13T21:05:24+08:00">2023-06-13</time>
       </span>
 
   
@@ -227,7 +227,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><span id="more"></span>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为22招新了解一点关于docker的使用</p>
+<span id="more"></span>
 
 <h2 id="docker-基础命令"><a href="#docker-基础命令" class="headerlink" title="docker 基础命令"></a>docker 基础命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">启动docker</span><br><span class="line">systemctl start docker</span><br><span class="line"></span><br><span class="line">关闭docker</span><br><span class="line">systemctl stop docker</span><br><span class="line"></span><br><span class="line">重启docker</span><br><span class="line">systemctl restart docker</span><br><span class="line"></span><br><span class="line">docker设置随服务启动而自启动</span><br><span class="line">systemctl enable docker</span><br><span class="line"></span><br><span class="line">查看docker 版本号信息</span><br><span class="line">docker version</span><br><span class="line">docker info</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="docker-镜像命令"><a href="#docker-镜像命令" class="headerlink" title="docker 镜像命令"></a>docker 镜像命令</h2><h3 id="image管理"><a href="#image管理" class="headerlink" title="image管理"></a>image管理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">搜索开源镜像</span><br><span class="line">docker search 镜像名</span><br><span class="line">NAME                               DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED</span><br><span class="line">redis                              Redis is an open source key-value store that…   11599     [OK]       </span><br><span class="line">bitnami/redis                      Bitnami Redis Docker Image                      237                  [OK]</span><br><span class="line">redislabs/redisinsight             RedisInsight - The GUI for Redis                72                   </span><br><span class="line">redislabs/redisearch               Redis With the RedisSearch module pre-loaded…   56                   </span><br><span class="line">redislabs/rejson                   RedisJSON - Enhanced JSON data type processi…   50                   </span><br><span class="line">bitnami/redis-sentinel             Bitnami Docker Image for Redis Sentinel         42                   [OK]</span><br><span class="line">redislabs/redis                    Clustered in-memory database engine compatib…   35                   </span><br><span class="line">redislabs/redismod                 An automated build of redismod - latest Redi…   27                   [OK]</span><br><span class="line">redis/redis-stack                  redis-stack installs a Redis server with add…   24  </span><br><span class="line">限制搜索镜像                 </span><br><span class="line">docker search --filter=STARS=9000 mysql </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">拉取镜像不加tag(版本号) 即拉取docker仓库中 该镜像的最新版本latest 加:tag 则是拉取指定版本</span><br><span class="line">docker pull 镜像名 </span><br><span class="line">docker pull 镜像名:tag</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">查看自己服务器中docker 镜像列表</span><br><span class="line">docker images</span><br><span class="line">REPOSITORY                       TAG       IMAGE ID       CREATED        SIZE</span><br><span class="line">stackoverflow1                   latest    1a369ff8523c   23 hours ago   368MB</span><br><span class="line">ctftraining/upload               latest    6d90e144c982   2 months ago   370MB</span><br><span class="line">ctftraining/qwb_2019_supersqli   latest    474a1967b7e5   2 months ago   370MB</span><br><span class="line">ctftraining/rce1                 latest    64239e5a3f11   2 months ago   370MB</span><br><span class="line">h1ve-main                        latest    735f474f81ea   2 months ago   920MB</span><br><span class="line">mariadb                          10.4      0552982c09ae   3 months ago   404MB</span><br><span class="line">redis                            4         191c4017dcdd   2 years ago    89.3MB</span><br><span class="line">d0g3/h1ve-frp                    latest    5e0d10177d43   2 years ago    35.1MB</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">删除镜像 当前镜像没有被任何容器使用才可以删除</span><br><span class="line">#删除一个</span><br><span class="line">docker rmi -f 镜像名/镜像ID</span><br><span class="line">#删除多个 其镜像ID或镜像用用空格隔开即可 </span><br><span class="line">docker rmi -f 镜像名/镜像ID 镜像名/镜像ID 镜像名/镜像ID</span><br><span class="line">#删除全部镜像  -a 意思为显示全部, -q 意思为只显示ID</span><br><span class="line">docker rmi -f $(docker images -aq)</span><br><span class="line">强制删除镜像</span><br><span class="line">docker image rm 镜像名称/镜像ID</span><br><span class="line"></span><br></pre></td></tr></table></figure>
