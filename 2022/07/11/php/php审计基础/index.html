@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1567560448_5d6f13004035f.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/51bfc7bb-fd9a-402e-971a-a2247b226f3d.3adc35af4c1d.png">
 <meta property="article:published_time" content="2022-07-11T13:04:19.000Z">
-<meta property="article:modified_time" content="2023-04-22T06:57:24.609Z">
+<meta property="article:modified_time" content="2023-08-26T07:58:38.402Z">
 <meta property="article:author" content="mayylu">
 <meta property="article:tag" content="php">
 <meta name="twitter:card" content="summary">
@@ -135,7 +135,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -217,7 +217,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2023-04-22 14:57:24" itemprop="dateModified" datetime="2023-04-22T14:57:24+08:00">2023-04-22</time>
+        <time title="修改时间：2023-08-26 15:58:38" itemprop="dateModified" datetime="2023-08-26T15:58:38+08:00">2023-08-26</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -272,8 +272,11 @@
 <p>array_walk_recursive内部机制相关，会把第一个参数数组里面的值循环迭代传进去，第三个参数一直参加调用</p>
 <h3 id="PHP的url解析特性"><a href="#PHP的url解析特性" class="headerlink" title="PHP的url解析特性"></a>PHP的url解析特性</h3><p>在php中””包裹的字符串是可以被进一步解析的，例<code>echo(&quot;$_GET[a]&quot;);</code>，而’’包裹的字符串则不能，PHP的url参数的值可视为包裹在””的字符串</p>
 <ol>
-<li><p>查询字符串解析<br>值得注意的是，查询字符串在解析的过程中会将某些字符删除或用下划线代替。例如，<code>/?%20news[id%00=42会转换为Array([news_id] =&gt; 42)</code>。<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1567560448_5d6f13004035f.png" alt="1567560448_5d6f13004035f"></p>
-</li>
+<li>查询字符串解析<br>值得注意的是，查询字符串在解析的过程中会将某些字符删除或用下划线代替。例如，<code>/?%20news[id%00=42会转换为Array([news_id] =&gt; 42)</code>。</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1567560448_5d6f13004035f.png" alt="1567560448_5d6f13004035f"></p>
+<p>[会与]匹配(匹配遵循就进原则)没有匹配上的[不会被转义，即匹配成功就不会进行第二次替换，所以可以利用[传入含有特殊字符的变量,如<code>/?my[secret.flag=123</code>=<code>my.secret.flag</code></p>
+<ol>
 <li><p><code>$_SERVER[&#39;QUERY_STRING&#39;]</code><br><code>$_SERVER[&#39;QUERY_STRING&#39;]</code>提取?后的内容不会进行URL解码，而<code>$_GET</code>和<code>$_REQUEST</code>解析url时会先进行URL解码,可以进行URL编码绕过</p>
 </li>
 <li><p><code>$_REQUEST</code><br>$_REQUEST在同时接收GET和POST参数时，POST优先级更高，优先接受post参数。</p>
