@@ -20,18 +20,18 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="前言当一个文件被包含时，无论该文件后缀是否是php，都将作为php文件处理，被包含文件中在有效的 PHP 起始和结束标记中的代码将作为 PHP 代码执行，其余直接输出不会影响代码执行如#123&lt;?php echo 4;?&gt;5,输出的是#12345 其中所包含的代码继承了 include 所在行的变量范围。从该处开始，调用文件在该行处可用的任何变量在被调用的文件中也都可用，所有在包含文件">
+<meta name="description" content="前言 当一个文件被包含时，无论该文件后缀是否是php，都将作为php文件处理 被包含文件中在有效的 PHP 起始和结束标记中的代码将作为 PHP 代码执行，其余直接输出不会影响代码执行，如#123&lt;?php echo 4;?&gt;5,include后输出的是#12345 其中所包含的代码继承了 include 所在行的变量范围。从该处开始，调用文件在该行处可用的任何变量在被调用的文件中也都">
 <meta property="og:type" content="article">
 <meta property="og:title" content="php文件包含漏洞和伪协议">
 <meta property="og:url" content="https://mayylu.github.io/2022/02/05/php/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E5%92%8C%E4%BC%AA%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="mayylu">
-<meta property="og:description" content="前言当一个文件被包含时，无论该文件后缀是否是php，都将作为php文件处理，被包含文件中在有效的 PHP 起始和结束标记中的代码将作为 PHP 代码执行，其余直接输出不会影响代码执行如#123&lt;?php echo 4;?&gt;5,输出的是#12345 其中所包含的代码继承了 include 所在行的变量范围。从该处开始，调用文件在该行处可用的任何变量在被调用的文件中也都可用，所有在包含文件">
+<meta property="og:description" content="前言 当一个文件被包含时，无论该文件后缀是否是php，都将作为php文件处理 被包含文件中在有效的 PHP 起始和结束标记中的代码将作为 PHP 代码执行，其余直接输出不会影响代码执行，如#123&lt;?php echo 4;?&gt;5,include后输出的是#12345 其中所包含的代码继承了 include 所在行的变量范围。从该处开始，调用文件在该行处可用的任何变量在被调用的文件中也都">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/Screenshot_2022-07-20-20-19-01-40_149003a2d400f6adb210d7e357a3a646.jpg.jpg">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326211707.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220326212351.png">
 <meta property="article:published_time" content="2022-02-05T11:11:29.000Z">
-<meta property="article:modified_time" content="2023-08-12T15:34:16.524Z">
+<meta property="article:modified_time" content="2023-11-23T14:50:46.393Z">
 <meta property="article:author" content="mayylu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/Screenshot_2022-07-20-20-19-01-40_149003a2d400f6adb210d7e357a3a646.jpg.jpg">
@@ -217,7 +217,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2023-08-12 23:34:16" itemprop="dateModified" datetime="2023-08-12T23:34:16+08:00">2023-08-12</time>
+        <time title="修改时间：2023-11-23 22:50:46" itemprop="dateModified" datetime="2023-11-23T22:50:46+08:00">2023-11-23</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -239,10 +239,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>当一个文件被包含时，无论该文件后缀是否是php，都将作为<strong>php文件处理</strong>，被包含文件中在有效的 PHP 起始和结束标记中的代码将作为 PHP 代码执行，<strong>其余直接输出</strong>不会影响代码执行<br>如<code>#123&lt;?php echo 4;?&gt;5</code>,输出的是<code>#12345</code></p>
-<p>其中所包含的代码继承了 <strong>include 所在行</strong>的变量范围。从该处开始，调用文件在该行处可用的任何变量在被调用的文件中也都可用，所有在包含文件中定义的函数和类都具有全局作用域，</p>
-<span id="more"></span>
-
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ol>
+<li>当一个文件被包含时，无论该文件后缀是否是php，都将作为<strong>php文件处理</strong></li>
+<li>被包含文件中在有效的 PHP 起始和结束标记中的代码将作为 PHP 代码执行，<strong>其余直接输出</strong>不会影响代码执行，如<code>#123&lt;?php echo 4;?&gt;5</code>,<strong>include后</strong>输出的是<code>#12345</code></li>
+<li>其中所包含的代码继承了 <strong>include 所在行</strong>的变量范围。从该处开始，调用文件在该行处可用的任何变量在被调用的文件中也都可用，所有在包含文件中定义的函数和类都具有全局作用域，<span id="more"></span></li>
+</ol>
 <h3 id="php函数"><a href="#php函数" class="headerlink" title="php函数"></a>php函数</h3><p><strong>include</strong>：执行到include时才包含文件，找不到被包含文件时只会产生警告，脚本将继续执行</p>
 <p>示例代码</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="variable">$filename</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];     </span><br><span class="line"> <span class="keyword">include</span> <span class="variable">$filename</span>;    </span><br><span class="line"> <span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
@@ -333,7 +334,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
