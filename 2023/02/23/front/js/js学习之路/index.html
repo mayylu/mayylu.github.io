@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言闲来无事，简单总结学习中遇到的与js相关的知识，因为暂时用的不多，记的比较随意">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js学习之路">
+<meta property="og:url" content="https://mayylu.github.io/2023/02/23/front/js/js%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言闲来无事，简单总结学习中遇到的与js相关的知识，因为暂时用的不多，记的比较随意">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-23T13:04:19.000Z">
+<meta property="article:modified_time" content="2024-03-11T13:36:13.602Z">
+<meta property="article:author" content="mayylu">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2023/02/23/front/js/js%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2023/02/23/front/js/js%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/","path":"2023/02/23/front/js/js学习之路/","title":"js学习之路"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>js学习之路 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#js%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">js基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">引用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.2.</span> <span class="nav-text">对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.2.1.</span> <span class="nav-text">浏览器对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Document%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.2.2.</span> <span class="nav-text">Document对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%94%9F%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.2.3.</span> <span class="nav-text">原生对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A"><span class="nav-number">2.3.1.</span> <span class="nav-text">事件绑定</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92"><span class="nav-number">2.4.</span> <span class="nav-text">与后端交互</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ajax"><span class="nav-number">2.4.1.</span> <span class="nav-text">ajax</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fetch"><span class="nav-number">2.4.2.</span> <span class="nav-text">fetch</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#async-await"><span class="nav-number">2.5.</span> <span class="nav-text">async&#x2F;await</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JQuery%E6%A1%86%E6%9E%B6"><span class="nav-number">3.</span> <span class="nav-text">JQuery框架</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">学习是一种生活态度</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2023/02/23/front/js/js%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="学习是一种生活态度">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js学习之路
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-23 21:04:19" itemprop="dateCreated datePublished" datetime="2023-02-23T21:04:19+08:00">2023-02-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-03-11 21:36:13" itemprop="dateModified" datetime="2024-03-11T21:36:13+08:00">2024-03-11</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>闲来无事，简单总结学习中遇到的与js相关的知识，因为暂时用的不多，记的比较随意</p>
+<span id="more"></span>
+<h2 id="js基础"><a href="#js基础" class="headerlink" title="js基础"></a>js基础</h2><h3 id="引用方法"><a href="#引用方法" class="headerlink" title="引用方法"></a>引用方法</h3><ol>
+<li>标签引用<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    alert(<span class="string">&quot;Hello,World!&quot;</span>);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></li>
+<li>文件引用<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script defer=<span class="string">&quot;defer&quot;</span> src=<span class="string">&quot;https://www.yuketang.cn/static/lesson/html/sentry.js&quot;</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3><h4 id="浏览器对象"><a href="#浏览器对象" class="headerlink" title="浏览器对象"></a>浏览器对象</h4><ol>
+<li>window对象<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.close()<span class="comment">//关闭当前的窗口</span></span><br><span class="line"><span class="built_in">window</span>.open(<span class="string">&#x27;链接地址&#x27;</span>)<span class="comment">//打开窗口</span></span><br><span class="line">以下可以不带 <span class="built_in">window</span> 前缀</span><br><span class="line"><span class="built_in">window</span>.alert(<span class="string">&quot;sometext&quot;</span>)<span class="comment">//警告框</span></span><br><span class="line"><span class="built_in">window</span>.confirm(<span class="string">&quot;sometext&quot;</span>)<span class="comment">//确认框</span></span><br><span class="line"><span class="built_in">window</span>.prompt(<span class="string">&quot;sometext&quot;</span>,<span class="string">&quot;defaultText&quot;</span>);<span class="comment">//提示输入框</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span>, <span class="title">milliseconds</span>)</span>;<span class="comment">//延时器</span></span><br><span class="line"><span class="built_in">window</span>.setInterval(<span class="function"><span class="keyword">function</span>, <span class="title">milliseconds</span>)</span>;<span class="comment">//定时器</span></span><br><span class="line"><span class="comment">// 清除定时器</span></span><br><span class="line"><span class="comment">// clearInterval(timer);</span></span><br></pre></td></tr></table></figure></li>
+<li>Navigator对象<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ua = navigator.userAgent;<span class="comment">//获取浏览器信息,同http中的User-agent</span></span><br></pre></td></tr></table></figure></li>
+<li>Location对象<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">location属性</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;href&quot;</span>: <span class="string">&quot;http://127.0.0.1:5500/jstext.html?1=1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;origin&quot;</span>: <span class="string">&quot;http://127.0.0.1:5500&quot;</span>,</span><br><span class="line">  <span class="string">&quot;protocol&quot;</span>: <span class="string">&quot;http:&quot;</span>,</span><br><span class="line">  <span class="string">&quot;host&quot;</span>: <span class="string">&quot;127.0.0.1:5500&quot;</span>,</span><br><span class="line">  <span class="string">&quot;hostname&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;port&quot;</span>: <span class="string">&quot;5500&quot;</span>,</span><br><span class="line">  <span class="string">&quot;pathname&quot;</span>: <span class="string">&quot;/jstext.html&quot;</span>,</span><br><span class="line">  <span class="string">&quot;search&quot;</span>: <span class="string">&quot;?1=1&quot;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">方法</span><br><span class="line">location.assign(<span class="string">&quot;https://www.baidu.com&quot;</span>);<span class="comment">//作用和直接修改location</span></span><br><span class="line">location.reload(<span class="literal">true</span>);<span class="comment">//重新加载当前页面,方法中传递一个true，作为参数，则会强制清空缓存刷新页面</span></span><br><span class="line">location.replace(<span class="string">&quot;https://www.baidu.com&quot;</span>);<span class="comment">//调用完毕也会跳转页面，它不会生成历史记录，不能使用回退按钮回退</span></span><br></pre></td></tr></table></figure></li>
+<li>History对象<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">history.back();</span><br><span class="line">history.forward();</span><br></pre></td></tr></table></figure></li>
+<li>consolo对象<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;输出一条日志&quot;</span>);<span class="comment">//最常用</span></span><br><span class="line">    <span class="built_in">console</span>.info(<span class="string">&quot;输出一条信息&quot;</span>);</span><br><span class="line">    <span class="built_in">console</span>.warn(<span class="string">&quot;输出一条警告&quot;</span>);</span><br><span class="line">    <span class="built_in">console</span>.error(<span class="string">&quot;输出一条错误&quot;</span>);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="Document对象"><a href="#Document对象" class="headerlink" title="Document对象"></a>Document对象</h4></li>
+<li>查找元素节点<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;button id=<span class="string">&quot;btn&quot;</span>&gt;我是按钮&lt;/button&gt;</span><br><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">&quot;btn&quot;</span>);        <span class="comment">//通过元素 id 来查找元素。</span></span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;btn&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&quot;</span>&gt;</span>我是按钮<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="built_in">document</span>.getElementsByTagName(<span class="string">&quot;button&quot;</span>);<span class="comment">//通过标签名来查找元素。</span></span><br><span class="line"><span class="built_in">document</span>.getElementsByClassName(<span class="string">&quot;btn&quot;</span>);	<span class="comment">//通过类名来查找元素。</span></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">&quot;.btn&quot;</span>)	<span class="comment">//通过CSS选择器选择一个元素。</span></span><br><span class="line"><span class="built_in">document</span>.querySelectorAll(CSS选择器)	<span class="comment">//通过CSS选择器选择多个元素。</span></span><br></pre></td></tr></table></figure></li>
+<li>查看改变元素<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> all_radio = <span class="built_in">document</span>.getElementById(<span class="string">&quot;door_form&quot;</span>).elements;<span class="comment">//elements 集合以数组形式返回 form 表单所有的元素。</span></span><br><span class="line"><span class="keyword">if</span>(all_radio[i].checked) <span class="comment">//判断是否被选中</span></span><br><span class="line"></span><br><span class="line">btn.innerText = <span class="string">&quot;我是JavaScript的按钮&quot;</span>;</span><br><span class="line">box.innerHTML = <span class="string">&quot;&lt;h1&gt;我是Box中的大标题&lt;/h1&gt;&quot;</span>;</span><br><span class="line">a.href=<span class="string">&quot;https://www.baidu.com&quot;</span>;</span><br><span class="line">a.setAttribute(<span class="string">&quot;href&quot;</span>, <span class="string">&quot;https://www.baidu.com&quot;</span>);</span><br><span class="line">box.style.background = <span class="string">&quot;green&quot;</span>;</span><br></pre></td></tr></table></figure></li>
+<li>节点操作<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1、创建元素节点：document.createElement(tagName)</span><br><span class="line">2、创建文本节点：document.createTextNode=&quot;str&quot;</span><br><span class="line">3、追加子节点：parent.appendChild(ele)</span><br><span class="line">4、追加子节点：parent.insertBefore(a,b)</span><br><span class="line">5、删除子节点：parent.removeChild(ele)</span><br><span class="line">6、删除自身节点：ele.remove( )</span><br><span class="line">7、替换节点：parent.replaceChild(a,b)</span><br><span class="line">8、复制节点：ele.cloneNode(&quot;true|false&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="原生对象"><a href="#原生对象" class="headerlink" title="原生对象"></a>原生对象</h4></li>
+</ol>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><ol>
+<li>鼠标事件<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//需要点击触发</span></span><br><span class="line"><span class="keyword">var</span> textInput = <span class="built_in">document</span>.getElementById(<span class="string">&quot;text&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 当文本框获取焦点，文本框背景为红色 */</span></span><br><span class="line">    textInput.onfocus = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.style.background = <span class="string">&quot;red&quot;</span>;…</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onblur</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">此外还有</span></span><br><span class="line"><span class="function"><span class="title">onclick</span>	当单击鼠标时运行脚本。</span></span><br><span class="line"><span class="function"><span class="title">ondblclick</span>	当双击鼠标时运行脚本。</span></span><br><span class="line"><span class="function"><span class="title">onscroll</span>	当滚动元素的滚动条时运行脚本。</span></span><br></pre></td></tr></table></figure></li>
+<li>键盘事件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">onkeydown	当按下按键时运行脚本。</span><br><span class="line">onkeyup	当松开按键时运行脚本。</span><br><span class="line">onkeypress	当按下并松开按键时运行脚本</span><br><span class="line"></span><br><span class="line">键盘属性</span><br><span class="line">ctrlKey	返回当事件被触发时，“CTRL” 键是否被按下。</span><br><span class="line">确定单击鼠标按钮时是否按下了 &quot;CTRL&quot; 键：</span><br><span class="line">if (event.ctrlKey) &#123;</span><br><span class="line">  alert(&quot;The CTRL key was pressed!&quot;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  alert(&quot;The CTRL key was NOT pressed!&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>媒体事件</li>
+</ol>
+<h4 id="事件绑定"><a href="#事件绑定" class="headerlink" title="事件绑定"></a>事件绑定</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">var</span> form = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;mkdir&#x27;</span>);</span><br><span class="line">form.addEventListener(<span class="string">&#x27;submit&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  e.preventDefault(); <span class="comment">// 阻止表单默认提交行为</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> formData = <span class="keyword">new</span> FormData(form); <span class="comment">// 获取表单数据</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">  xhr.open(<span class="string">&#x27;POST&#x27;</span>, <span class="string">&#x27;mkdir.php&#x27;</span>); <span class="comment">// 设置请求目标</span></span><br><span class="line">  xhr.send(formData); <span class="comment">// 发送表单数据</span></span><br><span class="line"></span><br><span class="line">  xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (xhr.readyState === XMLHttpRequest.DONE) &#123; <span class="comment">// 请求完成</span></span><br><span class="line">      <span class="keyword">if</span> (xhr.status === <span class="number">200</span>) &#123; <span class="comment">// 请求成功</span></span><br><span class="line">        alter(<span class="string">&#x27;创建成功&#x27;</span>, <span class="string">&#x27;info&#x27;</span>); <span class="comment">// 处理响应结果</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123; <span class="comment">// 请求失败</span></span><br><span class="line">        alter(json[<span class="string">&#x27;error&#x27;</span>], <span class="string">&#x27;danger&#x27;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="与后端交互"><a href="#与后端交互" class="headerlink" title="与后端交互"></a>与后端交互</h3><h4 id="ajax"><a href="#ajax" class="headerlink" title="ajax"></a>ajax</h4><p>AJAX 的核心是 XMLHttpRequest 对象。 所有现代浏览器都支持 XMLHttpRequest 对象。<code>if (window.XMLHttpRequest) </code><br>XMLHttpRequest 对象用于幕后同服务器交换数据，这意味着可以更新网页的部分，而不需要重新加载整个页面。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//步骤一：创建异步对象</span></span><br><span class="line"><span class="keyword">var</span> ajax = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="comment">//步骤二：设置请求的url参数，参数一是请求的类型，参数二是请求的url</span></span><br><span class="line">ajax.open(<span class="string">&quot;get&quot;</span>, <span class="string">&quot;users.json&quot;</span>);</span><br><span class="line">ajax.open(<span class="string">&quot;GET&quot;</span>,<span class="string">&quot;/try/ajax/demo_get.php?t=&quot;</span> + <span class="built_in">Math</span>.random(),<span class="literal">true</span>);<span class="comment">//async=true,JavaScript 无需等待服务器的响应</span></span><br><span class="line"></span><br><span class="line">ajax.open(<span class="string">&quot;POST&quot;</span>,<span class="string">&quot;/try/ajax/demo_post2.php&quot;</span>,<span class="literal">true</span>);</span><br><span class="line">ajax.setRequestHeader(<span class="string">&quot;Content-type&quot;</span>,<span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span><br><span class="line">ajax.send(<span class="string">&quot;fname=Henry&amp;lname=Ford&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//步骤三：发送请求</span></span><br><span class="line">ajax.send();</span><br><span class="line"><span class="comment">//步骤四：注册事件 onreadystatechange 状态改变就会调用</span></span><br><span class="line">ajax.onreadystatechange = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ajax.readyState == <span class="number">4</span> &amp;&amp; ajax.status == <span class="number">200</span>) &#123;</span><br><span class="line">        <span class="comment">//步骤五：如果能够进到这个判断，说明数据完美的回来了，并且请求的页面是存在的</span></span><br><span class="line">        <span class="built_in">console</span>.log(ajax.responseText);<span class="comment">//输入响应的内容</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="fetch"><a href="#fetch" class="headerlink" title="fetch"></a>fetch</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">sn</span>(<span class="params">e, t</span>)</span> &#123;</span><br><span class="line">        e &amp;&amp; t &amp;&amp; fetch(<span class="string">&quot;/check.php&quot;</span>, &#123;</span><br><span class="line">            <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line">            <span class="attr">headers</span>: &#123;</span><br><span class="line">                <span class="string">&quot;Content-type&quot;</span>: <span class="string">&quot;application/x-www-form-urlencoded; charset=UTF-8&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">body</span>: <span class="string">&quot;score=&quot;</span> + <span class="built_in">parseInt</span>(e).toString() + <span class="string">&quot;&amp;checkCode=&quot;</span> + md5(<span class="built_in">parseInt</span>(e).toString() + t) + <span class="string">&quot;&amp;tm=&quot;</span> + (+<span class="keyword">new</span> <span class="built_in">Date</span>).toString().substring(<span class="number">0</span>, <span class="number">10</span>)</span><br><span class="line">        &#125;).then(<span class="function"><span class="params">e</span> =&gt;</span> e.text()).then(<span class="function"><span class="params">e</span> =&gt;</span> alert(e))<span class="comment">//按照顺序进行赋值或调用</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="async-await"><a href="#async-await" class="headerlink" title="async/await"></a>async/await</h3><p>async是一个加在函数前的修饰符，被async定义的函数会默认返回一个Promise对象resolve的值。因此对async函数可以直接then，返回值就是then方法传入的函数。</p>
+<p>await 也是一个修饰符，只能放在async定义的函数内。可以理解为等待。<br>await 修饰的如果是Promise对象：可以获取Promise中返回的内容（resolve或reject的参数），且取到值后语句才会往下执行；<br>如果不是Promise对象：把这个非promise的东西当做await表达式的结果</p>
+<h2 id="JQuery框架"><a href="#JQuery框架" class="headerlink" title="JQuery框架"></a>JQuery框架</h2><p>jQuery 库可以通过一行简单的标记被添加到网页中<br><code>&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;https://www.leavesongs.com/content/templates/K-BLUE1.2/js/jquery-1.8.3.min.js&quot;&gt;&lt;/script&gt;</code><br>jQuery 入口函数:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 执行代码</span></span><br><span class="line">&#125;);</span><br><span class="line">或者</span><br><span class="line">$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 执行代码</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>基础语法： $(selector).action()</p>
+<ol>
+<li>jQuery 选择器<br>元素选择器 <code>$(&quot;p:first&quot;)</code><br>#id 选择器 <code>$(&quot;#test&quot;)</code><br>.class 选择器 <code>$(&quot;.test&quot;)</code><br>属性选择器<code>$(&quot;[name=&#39;user&#39;]&quot;) </code></li>
+<li>jQuery AJAX<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deletefile</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> filename = $(<span class="built_in">this</span>).parent().attr(<span class="string">&quot;filename&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> data = &#123;</span><br><span class="line">        <span class="string">&quot;filename&quot;</span>: filename</span><br><span class="line">    &#125;;</span><br><span class="line">    $.ajax(&#123;</span><br><span class="line">        <span class="attr">url</span>: <span class="string">&#x27;delete.php&#x27;</span>,</span><br><span class="line">        <span class="attr">type</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">        <span class="attr">data</span>: data,</span><br><span class="line">        <span class="attr">success</span>: <span class="function"><span class="keyword">function</span> (<span class="params">json</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (json[<span class="string">&#x27;success&#x27;</span>]) &#123;</span><br><span class="line">                toast(<span class="string">&#x27;删除成功&#x27;</span>, <span class="string">&#x27;info&#x27;</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                toast(json[<span class="string">&#x27;error&#x27;</span>], <span class="string">&#x27;danger&#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;location.reload();&#125;, <span class="number">1000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="string">&quot;.delete&quot;</span>).click(deletefile);</span><br><span class="line">    $(<span class="string">&#x27;.fileLabe2&#x27;</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> f = $(<span class="string">&quot;.fileLabe2&quot;</span>).attr(<span class="string">&quot;f&quot;</span>);</span><br><span class="line">        <span class="keyword">var</span> parts = f.split(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">        <span class="keyword">var</span> parentPath=<span class="string">&#x27;/&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span> (parts.length&gt;<span class="number">3</span>) <span class="keyword">var</span> parentPath = parts.slice(<span class="number">0</span>, -<span class="number">2</span>).join(<span class="string">&#x27;/&#x27;</span>); </span><br><span class="line">        <span class="keyword">var</span> form = $(<span class="string">&#x27;&lt;form method=&quot;POST&quot;&gt;&lt;/form&gt;&#x27;</span>);</span><br><span class="line">        form.attr(<span class="string">&#x27;action&#x27;</span>, <span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line">        <span class="keyword">var</span> input = $(<span class="string">&#x27;&lt;input type=&quot;hidden&quot; name=&quot;f&quot; value=&quot;&#x27;</span> + parentPath + <span class="string">&#x27;&quot;&gt;&lt;/input&gt;&#x27;</span>)</span><br><span class="line">        $(<span class="built_in">document</span>.body).append(form);</span><br><span class="line">        $(form).append(input);</span><br><span class="line">        form.submit();</span><br><span class="line">        form.remove();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/18/common/%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2/" rel="prev" title="数据交换">
+                  <i class="fa fa-chevron-left"></i> 数据交换
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/25/common/%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%92%8C%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8/" rel="next" title="身份认证和数据安全">
+                  身份认证和数据安全 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
