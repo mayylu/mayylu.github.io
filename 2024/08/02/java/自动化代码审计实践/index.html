@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言本人并不是很喜欢写工具使用教程，但是每次用都得搜语法，再加上之前找实习的时候几乎只要牵涉到Java安全，就会问有没有使用过自动化代码审计工具，所以干脆写一篇语法总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动化代码审计实践">
+<meta property="og:url" content="https://mayylu.github.io/2024/08/02/java/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="mayylu">
+<meta property="og:description" content="前言本人并不是很喜欢写工具使用教程，但是每次用都得搜语法，再加上之前找实习的时候几乎只要牵涉到Java安全，就会问有没有使用过自动化代码审计工具，所以干脆写一篇语法总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20240921111-19218552.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20241001-043900.png">
+<meta property="article:published_time" content="2024-08-02T10:03:19.000Z">
+<meta property="article:modified_time" content="2024-10-01T16:24:42.328Z">
+<meta property="article:author" content="mayylu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20240921111-19218552.png">
+
+
+<link rel="canonical" href="https://mayylu.github.io/2024/08/02/java/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%AE%9E%E8%B7%B5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2024/08/02/java/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%AE%9E%E8%B7%B5/","path":"2024/08/02/java/自动化代码审计实践/","title":"自动化代码审计实践"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>自动化代码审计实践 | mayylu</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mayylu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%9A%84%E8%8A%82%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">反序列化的节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tabby%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">tabby使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%89%8D%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.</span> <span class="nav-text">使用前的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E6%89%BE%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E7%9A%84%E9%93%BE%E5%AD%90"><span class="nav-number">3.2.1.</span> <span class="nav-text">漏洞挖掘找可能存在的链子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ctf%E6%AF%94%E8%B5%9B%E6%89%BE%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87"><span class="nav-number">3.2.2.</span> <span class="nav-text">ctf比赛找黑名单绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#web%E5%B1%82%E6%AC%A1%E6%89%BE%E5%8F%AF%E8%83%BD%E7%9A%84%E6%9C%AA%E6%8E%88%E6%9D%83"><span class="nav-number">3.2.3.</span> <span class="nav-text">web层次找可能的未授权</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#codeQL%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">codeQL使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%89%8D%E7%9A%84%E5%87%86%E5%A4%87"><span class="nav-number">4.1.</span> <span class="nav-text">使用前的准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAcodeql%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">4.1.1.</span> <span class="nav-text">创建codeql数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vscode%E6%8F%92%E4%BB%B6%E9%80%89%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">4.1.2.</span> <span class="nav-text">vscode插件选中数据库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text">基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">4.2.1.</span> <span class="nav-text">基本语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">4.2.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">4.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">mayylu</p>
+  <div class="site-description" itemprop="description">学习是一种生活态度</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2024/08/02/java/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="mayylu">
+      <meta itemprop="description" content="学习是一种生活态度">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mayylu">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          自动化代码审计实践
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-02 18:03:19" itemprop="dateCreated datePublished" datetime="2024-08-02T18:03:19+08:00">2024-08-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-10-02 00:24:42" itemprop="dateModified" datetime="2024-10-02T00:24:42+08:00">2024-10-02</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本人并不是很喜欢写工具使用教程，但是每次用都得搜语法，再加上之前找实习的时候几乎只要牵涉到Java安全，就会问有没有使用过自动化代码审计工具，所以干脆写一篇语法总结<br> <span id="more"></span></p>
+<h2 id="反序列化的节点"><a href="#反序列化的节点" class="headerlink" title="反序列化的节点"></a>反序列化的节点</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">起点：</span><br><span class="line">readObject</span><br><span class="line">java.lang.reflect.InvocationHandler.invoke</span><br><span class="line">readResolve</span><br><span class="line">readExternal</span><br><span class="line"></span><br><span class="line">终点：</span><br><span class="line">java.lang.reflect.invoke</span><br><span class="line">Class.forName()</span><br><span class="line">loadClass()</span><br><span class="line">defineClass()</span><br><span class="line">lookup()</span><br><span class="line"></span><br><span class="line">常用链：</span><br><span class="line">HashMap.readObject-&gt;HashMap.hash()-&gt;*.hashCode()</span><br><span class="line">Hashtable.readObject-&gt;AbstractMap.equals-&gt;*.get()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="tabby使用"><a href="#tabby使用" class="headerlink" title="tabby使用"></a>tabby使用</h2><p>TABBY是一款针对Java语言的静态代码分析工具。<br>它使用静态分析框架 Soot 作为语义提取工具，将JAR/WAR/CLASS文件转化为代码属性图。 并使用 Neo4j 图数据库来存储生成的代码属性图CPG。</p>
+<h3 id="使用前的配置"><a href="#使用前的配置" class="headerlink" title="使用前的配置"></a>使用前的配置</h3><p>怎么安装就不写了,这里只写用法<br>tabby配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tabby.build.target                        = cases/hessian-onlyJdk.jar</span><br><span class="line">tabby.build.libraries                     = libs</span><br><span class="line">tabby.build.mode                          = gadget # 分析类型 web 或 gadget，web模式会剔除常见jar包的全量分析，gadget模式会对target目录下的文件进行全量分析，如果是挖web层面的漏洞可以设置mode为web</span><br><span class="line">tabby.output.directory                    = ./output/dev</span><br><span class="line"></span><br><span class="line"># debug</span><br><span class="line">tabby.debug.details                       = true</span><br><span class="line"></span><br><span class="line"># jdk settings</span><br><span class="line">tabby.build.isJDKProcess                  = true # 分析过程是否加入基础的2个jdk依赖，这里我们主要挖掘target 目录文件的利用链所以设置isJDKProcess为true</span><br><span class="line">tabby.build.withAllJDK                    = false # 分析过程是否加入全量的jdk依赖</span><br><span class="line">tabby.build.excludeJDK                    = false</span><br><span class="line">tabby.build.isJDKOnly                     = false# 分析过程仅分析jdk依赖，不会去分析target目录下的文件,用于挖掘 jdk 里面的利用链</span><br></pre></td></tr></table></figure>
+<p>neo4j配置看官方语雀<code>https://www.yuque.com/wh1t3p1g/tp0c1t/wx6fiha89p0wu6s5#</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Xmx7g -jar tabby.jar <span class="comment">#允许命令，7g是分配的内存，不能设置太高了，不然内存爆了还得重新来</span></span><br></pre></td></tr></table></figure>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><p>Cypher 是 Neo4j 的图查询语言，被设计用于查询图数据</p>
+<h4 id="漏洞挖掘找可能存在的链子"><a href="#漏洞挖掘找可能存在的链子" class="headerlink" title="漏洞挖掘找可能存在的链子"></a>漏洞挖掘找可能存在的链子</h4><p>这里以hessian反序列化为例，演示的内容为<code>0CTF/TCTF 2022 hessian-onlyJdk</code>的一个非预期<br>我们先找<strong>readobject-&gt;putval</strong>这个已经公认的链子，起始点肯定是<code>com.caucho.hessian.io.Hessian2Input#readObject</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">match (source:Method) where source.NAME in [&quot;readObject&quot;] and source.CLASSNAME=&quot;com.caucho.hessian.io.Hessian2Input&quot;</span><br><span class="line">match (sink:Method &#123;IS_SINK:true, NAME:&quot;invoke&quot;&#125;)&lt;-[r:CALL]-(m1:Method) where r.REAL_CALL_TYPE in [&quot;java.lang.reflect.Method&quot;]</span><br><span class="line">CALL apoc.algo.allSimplePaths(m1, source ,&quot;&lt;CALL|ALIAS&quot;, 9) yield path</span><br><span class="line">return * limit 20</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20240921111-19218552.png" alt="QQ20240921111-19218552"><br>我们再找sink点，这里以任意方法调用为目标(为方便展示，这里只返回一条路径，实践这样的化容易误判)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">match (source:Method) where source.NAME in [&quot;putVal&quot;] and source.CLASSNAME=&quot;java.util.HashMap&quot;</span><br><span class="line">match (sink:Method &#123;IS_SINK:true, NAME:&quot;invoke&quot;&#125;)&lt;-[r:CALL]-(m1:Method) where r.REAL_CALL_TYPE in [&quot;java.lang.reflect.Method&quot;]</span><br><span class="line">CALL apoc.algo.allSimplePaths(m1, source ,&quot;&lt;CALL|ALIAS&quot;, 9) yield path</span><br><span class="line">return * limit 1</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20241001-043900.png" alt="QQ20241001-043900"></p>
+<h4 id="ctf比赛找黑名单绕过"><a href="#ctf比赛找黑名单绕过" class="headerlink" title="ctf比赛找黑名单绕过"></a>ctf比赛找黑名单绕过</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">match (source:Method) where source.NAME in [&quot;readObject&quot;] and source.CLASSNAME=&quot;javax.activation.URLDataSource&quot;</span><br><span class="line">match (sink:Method &#123;NAME:&quot;toString&quot;&#125;)&lt;-[r:CALL]-(m1:Method) </span><br><span class="line">call apoc.algo.allSimplePaths(m1, source, &quot;&lt;CALL|ALIAS&quot;, 6) yield path where none(n in nodes(path) where (n.CLASSNAME =~ &quot;javax.management.*&quot; or n.CLASSNAME =~ &quot;com.alibaba.fastjson.*&quot; ))</span><br><span class="line">return * limit 10</span><br></pre></td></tr></table></figure>
+<h4 id="web层次找可能的未授权"><a href="#web层次找可能的未授权" class="headerlink" title="web层次找可能的未授权"></a>web层次找可能的未授权</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MATCH (source:Method) WHERE source.NAME in [&quot;doGet&quot;,&quot;doPost&quot;]</span><br><span class="line">MATCH (sink:Method&#123;NAME:&quot;doUploadBrithdayCard&quot;&#125;)&lt;-[:CALL]-(m1:Method)</span><br><span class="line">CALL apoc.algo.allSimplePaths(m1, source ,&quot;&lt;CALL|ALIAS&quot;, 8) yield path</span><br><span class="line">RETURN * limit 20</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>它这个工具找到其实挺全的，但是容易跑偏，毕竟没有考虑参数传递，只考虑了方法调用，所以我们最好一段一段去找，当成一个思路扩展和日常学习的辅助工具还是不错的</p>
+<h2 id="codeQL使用"><a href="#codeQL使用" class="headerlink" title="codeQL使用"></a>codeQL使用</h2><p>CodeQL支持进行漏洞挖掘的语言包括：C/C++、C#、Go、Java、JavaScript、Python、Ruby。其针对这些不同的语言有着不同的规则编写规范，所以相比tabby,CodeQL使用起来也更加复杂</p>
+<h3 id="使用前的准备"><a href="#使用前的准备" class="headerlink" title="使用前的准备"></a>使用前的准备</h3><h4 id="创建codeql数据库"><a href="#创建codeql数据库" class="headerlink" title="创建codeql数据库"></a>创建codeql数据库</h4><p>在使用 CodeQL 分析代码之前，需要创建一个 CodeQL 数据库</p>
+<p>这条命令需要在需要审计的源代码目录中使用,如果要审计jar包,需要把jar包解压成项目文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">codeql database create ./xxx.db --language=xxx</span><br><span class="line"><span class="comment">#java需要lib库的，要加command参数运行一下mvn安装依赖</span></span><br><span class="line">CodeQL database create  quartz_db --language=<span class="string">&quot;java&quot;</span>  --<span class="built_in">command</span>=<span class="string">&quot;mvn clean install --file pom.xml -Dmaven.test.skip=true&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="vscode插件选中数据库"><a href="#vscode插件选中数据库" class="headerlink" title="vscode插件选中数据库"></a>vscode插件选中数据库</h4><p>vscode打开<code>ql\java\ql\examples\snippets</code>目录，vscode插件选中生成数据库并选择java语言<br>随后编写脚本,点击 运行，就可以查看查找结果了</p>
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><h4 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">类型</span><br><span class="line">RefType       Class或Interface</span><br><span class="line"></span><br><span class="line">getACallable() 获取所有可以调用方法(其中包括构造方法)</span><br><span class="line">getAMember() 获取所有成员，其中包括调用方法，字段和内部类</span><br><span class="line">getAField() 获取所有字段</span><br><span class="line">getAMethod() 获取所有方法</span><br><span class="line">getASupertype() 获取父类</span><br><span class="line">getAnAncestor() 获取所有的父类相当于递归的getASupertype*()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">method</span><br><span class="line"></span><br><span class="line">getNumberOfParameters() 参数数量</span><br><span class="line">fromSource()            来自源代码，而不是从其他地方（如库或编译生成的代码）</span><br><span class="line">getDeclaringType()      获取的是当前方法所属class的名称</span><br><span class="line">getDeclaringType().hasQualifiedName(&quot;javax.naming&quot;, &quot;Context&quot;)</span><br><span class="line"></span><br><span class="line">简单地说， Callable是可以被调用的东西， Call是调用Callable的东西。他俩都属于方法</span><br><span class="line">    Callable  可以调用方法</span><br><span class="line">    polyCalls(Callable target) 一个Callable 是否调用了另外的Callable，这里面包含了类似虚函数的调用</span><br><span class="line">    hasName(name) 可以对方法名进行限制</span><br><span class="line"></span><br><span class="line">    Call</span><br><span class="line">    getCallee() 返回函数声明的位置，及转换成method</span><br><span class="line">    getCaller() 返回调用这个函数的函数位置</span><br></pre></td></tr></table></figure>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>寻找public构造方法且该构造方法只有一个String类型的参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java <span class="comment">//导入codeql的java依赖</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//where部分的查询条件如果过长，会显得很乱。CodeQL提供一种机制可以让你把很长的查询语句封装成函数；这个函数，就叫谓词</span></span><br><span class="line"><span class="function">predicate <span class="title">isparam</span><span class="params">(Method method)</span> </span>&#123;</span><br><span class="line">    method.getNumberOfParameters() = <span class="number">1</span> </span><br><span class="line">    and</span><br><span class="line">    method.getParameter(<span class="number">0</span>).getType().getName() = <span class="string">&quot;String&quot;</span> </span><br><span class="line">&#125;<span class="comment">//第一个参数类型是String</span></span><br><span class="line"></span><br><span class="line">from Constructor c <span class="comment">//c是一个构造方法</span></span><br><span class="line"><span class="comment">//获取声明该构造方法的类类型， 检查这个构造方法是否是公共的</span></span><br><span class="line">where c.getDeclaringType().getAMethod().isPublic() </span><br><span class="line"><span class="function">and <span class="title">isparam</span><span class="params">(c)</span> </span></span><br><span class="line"><span class="function">and c.<span class="title">fromSource</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">and c.<span class="title">getName</span><span class="params">()</span> !</span>= <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">select c <span class="comment">//输出查找结果</span></span><br></pre></td></tr></table></figure>
+<p>寻找Lookup调用getter,setter方法，及证明jndi</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LookupMethod</span> <span class="keyword">extends</span> <span class="title">Call</span> </span>&#123;</span><br><span class="line">  LookupMethod() &#123;</span><br><span class="line">    <span class="keyword">this</span>.getCallee().getDeclaringType().getASupertype*().hasQualifiedName(<span class="string">&quot;javax.naming&quot;</span>, <span class="string">&quot;Context&quot;</span>) and</span><br><span class="line">    <span class="keyword">this</span>.getCallee().hasName(<span class="string">&quot;lookup&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GetterCallable</span> <span class="keyword">extends</span> <span class="title">Callable</span> </span>&#123;</span><br><span class="line">  GetterCallable() &#123;</span><br><span class="line">    getName().matches(<span class="string">&quot;get%&quot;</span>) <span class="function">and</span></span><br><span class="line"><span class="function">    <span class="title">hasNoParameters</span><span class="params">()</span> and</span></span><br><span class="line"><span class="function">    <span class="title">getName</span><span class="params">()</span>.<span class="title">length</span><span class="params">()</span> &gt; 3</span></span><br><span class="line"><span class="function">    or</span></span><br><span class="line"><span class="function">    <span class="title">getName</span><span class="params">()</span>.<span class="title">matches</span><span class="params">(<span class="string">&quot;set%&quot;</span>)</span> and</span></span><br><span class="line"><span class="function">    <span class="title">getNumberOfParameters</span><span class="params">()</span> </span>= <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">query predicate <span class="title">edges</span><span class="params">(Callable a, Callable b)</span> </span>&#123; a.polyCalls(b) &#125;</span><br><span class="line"></span><br><span class="line">from LookupMethod endcall, GetterCallable entryPoint, Callable endCallAble</span><br><span class="line">where</span><br><span class="line">  endcall.getCallee() = endCallAble and</span><br><span class="line">  edges+(entryPoint, endCallAble)</span><br><span class="line">select endcall.getCaller(), entryPoint, endcall.getCaller(), <span class="string">&quot;Geter jndi&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>codeql在找java链子方面功能要比tabby强大，tabby只能按照开发者设置规则来找链子，但是codeql可以自己设计规则，如找固定参数类型的方法，或者找实现某个接口的类，找符合某种自定义规则的方法</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/" rel="prev" title="内网渗透学习">
+                  <i class="fa fa-chevron-left"></i> 内网渗透学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/09/20/front/js/xss/" rel="next" title="xss">
+                  xss <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mayylu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

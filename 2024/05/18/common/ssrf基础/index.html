@@ -28,7 +28,7 @@
 <meta property="og:description" content="前言不想说什么写就完了">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-18T13:34:19.000Z">
-<meta property="article:modified_time" content="2024-05-19T01:35:40.526Z">
+<meta property="article:modified_time" content="2024-09-27T15:45:25.211Z">
 <meta property="article:author" content="mayylu">
 <meta name="twitter:card" content="summary">
 
@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">48</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -213,7 +213,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2024-05-19 09:35:40" itemprop="dateModified" datetime="2024-05-19T09:35:40+08:00">2024-05-19</time>
+        <time title="修改时间：2024-09-27 23:45:25" itemprop="dateModified" datetime="2024-09-27T23:45:25+08:00">2024-09-27</time>
       </span>
 
   
@@ -244,7 +244,8 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$x</span>=parse_url(<span class="variable">$url</span>);</span><br><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">&#x27;/^http:\/\/ctf\..*show$/i&#x27;</span>,<span class="variable">$url</span>))&#123;</span><br><span class="line">    <span class="keyword">echo</span> file_get_contents(<span class="variable">$url</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//url=http://ctf.@127.0.0.1/flag.php?.show</span></span><br></pre></td></tr></table></figure>
 <h3 id="利用函数的解析不同进行绕过"><a href="#利用函数的解析不同进行绕过" class="headerlink" title="利用函数的解析不同进行绕过"></a>利用函数的解析不同进行绕过</h3><p>暂时不想写，网上都有</p>
 <h2 id="ssrf常见利用"><a href="#ssrf常见利用" class="headerlink" title="ssrf常见利用"></a>ssrf常见利用</h2><h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>file:// #读文件</p>
-<p>disk://<br>gopher:// #内网渗透常用</p>
+<p>disk://</p>
+<p>gopher:// #内网渗透常用<br>Gopher 协议的语法格式如下：<br><code>gopher://&lt;host&gt;:&lt;port&gt;/&lt;gopher-path&gt;_后面接 TCP 数据流</code><br>gopher协议在各个语言中的限制<br>PHP php版本至少为5.3<br>Java 小于JDK1.7</p>
 <h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p>利用redis写webshell<br>利用redis写ssh公钥<br>利用redis写计划任务<br>Redis 主从复制</p>
 <p>写的利用redis的备份功能，主从复制利用的是redis 读写分离的机制</p>
 
@@ -260,7 +261,7 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/04/22/java/Weblogic/" rel="prev" title="weblogic">
+                <a href="/2024/04/22/java/Serializable/Weblogic/" rel="prev" title="weblogic">
                   <i class="fa fa-chevron-left"></i> weblogic
                 </a>
             </div>
