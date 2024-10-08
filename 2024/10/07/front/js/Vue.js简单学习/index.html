@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>Vue.js简单学习 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vue.js简单学习</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十月 7, 2024&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/js/">js</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现在前端多是Vue.js+webpack,也是多亏了于此，黑盒才能有这么多的未授权可以挖，正好也是最近打算审计审计Ruoyi-vue(感觉这位就是java各种框架的缝合怪，也可以借此了解java oa可能存在的漏洞，扯远了)</p>
+<span id="more"></span>
+<h2 id="前端项目部署"><a href="#前端项目部署" class="headerlink" title="前端项目部署"></a>前端项目部署</h2><p>真正的前后端分离</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm install</span><br><span class="line"><span class="comment"># 建议不要直接使用 cnpm 安装依赖，会有各种诡异的 bug。可以通过如下操作解决 npm 下载速度慢的问题</span></span><br><span class="line">npm install --registry=https://registry.npmmirror.com</span><br><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="vue项目目录结构"><a href="#vue项目目录结构" class="headerlink" title="vue项目目录结构"></a>vue项目目录结构</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、build：构建脚本目录</span><br><span class="line">	<span class="number">1</span>）build.js ==&gt; 生产环境构建脚本；</span><br><span class="line">	<span class="number">2</span>）check-versions.js ==&gt; 检查npm，node.js版本；</span><br><span class="line">	<span class="number">3</span>）utils.js ==&gt; 构建相关工具方法；</span><br><span class="line">	<span class="number">4</span>）vue-loader.conf.js ==&gt; 配置了css加载器以及编译css之后自动添加前缀；</span><br><span class="line">	<span class="number">5</span>）webpack.base.conf.js ==&gt; webpack基本配置；</span><br><span class="line">	<span class="number">6</span>）webpack.dev.conf.js ==&gt; webpack开发环境配置；</span><br><span class="line">	<span class="number">7</span>）webpack.prod.conf.js ==&gt; webpack生产环境配置；</span><br><span class="line"><span class="number">2</span>、config：项目配置(vue3没有该目录变成了vue.config.js文件)</span><br><span class="line">	<span class="number">1</span>）dev.env.js ==&gt; 开发环境变量；</span><br><span class="line">	<span class="number">2</span>）index.js ==&gt; 项目配置文件；</span><br><span class="line">	<span class="number">3</span>）prod.env.js ==&gt; 生产环境变量；</span><br><span class="line"><span class="number">3</span>、node_modules：npm或yarn安装的库和框架都存放在这个文件夹</span><br><span class="line"><span class="number">4</span>、src：这里是我们要开发的目录，基本上要做的事情都在这个目录里。里面包含了几个目录及文件：</span><br><span class="line">	<span class="number">1</span>）assets：资源目录，放置一些图片或者公共js、公共css。这里的资源会被webpack构建；</span><br><span class="line">	<span class="number">2</span>）components：存放Vue组件文件，通常是可复用的UI元素；</span><br><span class="line">	<span class="number">3</span>）views/pages：存放路由页面组件，通常每个路由对应一个页面</span><br><span class="line">	<span class="number">3</span>）router：配置应用的路由；</span><br><span class="line">	<span class="number">4</span>）App.vue：根组件；</span><br><span class="line">	<span class="number">5</span>）main.js：入口js文件；</span><br><span class="line"><span class="number">5</span>、public/<span class="keyword">static</span>：静态资源目录，如HTML文件、图标等。不会被webpack构建</span><br><span class="line"><span class="number">6</span>、index.html：首页入口文件，可以添加一些 meta 信息等</span><br><span class="line"><span class="number">7</span>、package.json：npm包配置文件，定义了项目的npm脚本，依赖包等信息</span><br><span class="line"><span class="number">8</span>、README.md：项目的说明文档，markdown 格式</span><br><span class="line"><span class="number">9.</span> .env: 包含应用的环境变量</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>一般流程是<strong>src/main.js</strong> 创建Vue实例引入其他必要的资源，请求来临时根据<strong>src/router/index.js</strong>中的匹配规则，匹配url对应的<strong>src/views/<strong>中的路由页面，路由页面再调用</strong>src/Components/<strong>中的公共组件，嵌套在总组件</strong>src/App.vue</strong>上，最后和<strong>src/assets/<strong>中的静态资源一起呈现在</strong>public/index.html</strong>上</p>
+<p>这里的组件类似于html+js，可以进行一部分的逻辑操作<br>现在借用Ruoyi来看一下<br>抓包访问<code>/system/user</code>，发现会自动触发<code>GET /dev-api/system/user/list?pageNum=1&amp;pageSize=10</code>返回用户信息<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20241008-014116.png" alt="QQ20241008-014116"></p>
+<p>前端断点调试(因为我开了sourcemap，配合插件就能调试了)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ruoyi-ui/src/views/system/user/index.vue</span></span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus &#125; <span class="keyword">from</span> <span class="string">&quot;@/api/system/user&quot;</span>;</span><br><span class="line">.............................</span><br><span class="line"><span class="function"><span class="title">created</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.getList();</span><br><span class="line">    <span class="built_in">this</span>.getTreeselect();</span><br><span class="line">    <span class="built_in">this</span>.getConfigKey(<span class="string">&quot;sys.user.initPassword&quot;</span>).then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.initPassword = response.msg;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">    <span class="comment">/** 查询用户列表 */</span></span><br><span class="line">    <span class="function"><span class="title">getList</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.loading = <span class="literal">true</span>;</span><br><span class="line">      listUser(<span class="built_in">this</span>.addDateRange(<span class="built_in">this</span>.queryParams, <span class="built_in">this</span>.dateRange)).then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">this</span>.userList = response.rows;</span><br><span class="line">          <span class="built_in">this</span>.total = response.total;</span><br><span class="line">          <span class="built_in">this</span>.loading = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      );</span><br><span class="line">    &#125;,</span><br><span class="line">..............................</span><br><span class="line"><span class="comment">//ruoyi-ui/src/api/system/user.js</span></span><br><span class="line"><span class="keyword">import</span> request <span class="keyword">from</span> <span class="string">&#x27;@/utils/request&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">listUser</span>(<span class="params">query</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> request(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&#x27;/system/user/list&#x27;</span>,</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;get&#x27;</span>,</span><br><span class="line">    <span class="attr">params</span>: query</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//赋值完成后，回到ruoyi-ui/src/views/system/user/index.vue看看是怎么渲染的</span></span><br><span class="line"><span class="comment">//:data=&quot;userList&quot; 绑定了表格的数据源，所以说vue的表单一般是没有xss漏洞的</span></span><br><span class="line"> &lt;el-table v-loading=<span class="string">&quot;loading&quot;</span> :data=<span class="string">&quot;userList&quot;</span> @selection-change=<span class="string">&quot;handleSelectionChange&quot;</span>&gt;</span><br><span class="line">          <span class="xml"><span class="tag">&lt;<span class="name">el-table-column</span> <span class="attr">type</span>=<span class="string">&quot;selection&quot;</span> <span class="attr">width</span>=<span class="string">&quot;50&quot;</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span> /&gt;</span></span></span><br><span class="line">          <span class="xml"><span class="tag">&lt;<span class="name">el-table-column</span> <span class="attr">label</span>=<span class="string">&quot;用户编号&quot;</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span> <span class="attr">key</span>=<span class="string">&quot;userId&quot;</span> <span class="attr">prop</span>=<span class="string">&quot;userId&quot;</span> <span class="attr">v-if</span>=<span class="string">&quot;columns[0].visible&quot;</span> /&gt;</span></span></span><br><span class="line">		  <span class="xml"><span class="tag">&lt;<span class="name">el-table-column</span> <span class="attr">label</span>=<span class="string">&quot;用户名称&quot;</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span> <span class="attr">key</span>=<span class="string">&quot;userName&quot;</span> <span class="attr">prop</span>=<span class="string">&quot;userName&quot;</span> <span class="attr">v-if</span>=<span class="string">&quot;columns[1].visible&quot;</span> <span class="attr">:show-overflow-tooltip</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span></span><br><span class="line">...................</span><br><span class="line"><span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">....................			</span><br><span class="line">		<span class="attr">total</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="comment">// 用户表格数据</span></span><br><span class="line">      <span class="attr">userList</span>: <span class="literal">null</span>,</span><br><span class="line">....................</span><br></pre></td></tr></table></figure>
+<h3 id="其他实例"><a href="#其他实例" class="headerlink" title="其他实例"></a>其他实例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;hello&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">   <span class="comment">&lt;!-- 相当于v-text纯文本 --&gt;</span></span></span><br><span class="line"><span class="xml">	  <span class="tag">&lt;<span class="name">div</span> &gt;</span>&#123;&#123;test&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- v-html指令，可以将HTML字符串渲染为真正的DOM元素 --&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">v-html</span>=<span class="string">&quot;safeHTML&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">import</span> DOMPurify <span class="keyword">from</span> <span class="string">&#x27;dompurify&#x27;</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">const</span> hello=<span class="string">&quot;adf&quot;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  data () &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">	  <span class="keyword">return</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		  <span class="attr">test</span>:hello,<span class="comment">//注意js中的xss</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">		  <span class="attr">safeHTML</span>: DOMPurify.sanitize(<span class="string">&#x27;&lt;h1&gt;This is safe&lt;/h1&gt;&#x27;</span>) <span class="comment">//DOMPurify.sanitize 会自动移除任何潜在的恶意代码，如 &lt;script&gt; 标签，从而保护应用免受 XSS 攻击</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">	  &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>留言板<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="comment">&lt;!-- 事件绑定--&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">form</span> @<span class="attr">submit.prevent</span>=<span class="string">&quot;submitMessage&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">v-model</span>=<span class="string">&quot;newMessage&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span><span class="comment">&lt;!-- 文本区域，v-model双向绑定到 newMessage 数据属性 --&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span>提交<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">&quot;(message, index) in safeMessages&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;index&quot;</span> <span class="attr">v-html</span>=<span class="string">&quot;message&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="comment">&lt;!-- 动态渲染留言内容 --&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">import</span> DOMPurify <span class="keyword">from</span> <span class="string">&#x27;dompurify&#x27;</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="keyword">return</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">newMessage</span>: <span class="string">&#x27;&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">messages</span>: []</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">computed</span>: &#123; <span class="comment">// 计算属性，支持动态变化</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">safeMessages</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">return</span> <span class="built_in">this</span>.messages.map(<span class="function"><span class="params">msg</span> =&gt;</span> DOMPurify.sanitize(msg));</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">methods</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">submitMessage</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">const</span> sanitizedMessage = DOMPurify.sanitize(<span class="built_in">this</span>.newMessage);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.messages.push(sanitizedMessage);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.newMessage = <span class="string">&#x27;&#x27;</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">&#125;;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">//其他可能引起xss的点</span></span><br><span class="line"><span class="xml">this.$alert(response.msg, &quot;导入结果&quot;, &#123; dangerouslyUseHTMLString: true &#125;);//支持html的弹窗</span></span><br></pre></td></tr></table></figure>
+<h2 id="vue打包"><a href="#vue打包" class="headerlink" title="vue打包"></a>vue打包</h2><h3 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h3><p>Webpack 是一个现代 JavaScript 应用程序的模块打包工具，它将应用程序的各种资源（如 JavaScript、CSS、图片等）打包成一个或多个文件，以优化加载性能，打包后的代码晦涩难懂</p>
+<p>vue.config.js中配置webpack</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">// 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建，如果为true会造成webpack源码泄露</span></span><br><span class="line">  <span class="attr">productionSourceMap</span>: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line"><span class="attr">configureWebpack</span>: &#123;</span><br><span class="line"><span class="comment">// 以便在webpack的名称字段中提供应用程序的标题，以便可以在index.html中访问它以注入正确的标题。</span></span><br><span class="line">    <span class="attr">name</span>: name,</span><br><span class="line">    <span class="attr">resolve</span>: &#123;</span><br><span class="line">      <span class="attr">alias</span>: &#123;</span><br><span class="line">        <span class="string">&quot;@&quot;</span>: resolve(<span class="string">&quot;src&quot;</span>),</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/JavaScript/"># JavaScript</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2024/10/01/java/java%20%E8%B7%AF%E7%94%B1%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%9D%83%E9%99%90%E7%BB%95%E8%BF%87/">java 路由设计中的权限绕过</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

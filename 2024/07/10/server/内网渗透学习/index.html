@@ -1,236 +1,222 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
+    <meta name="author" content="mayylu">
 
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"mayylu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="前言鉴于我在二进制方面还停留在汇编阶段，所以主要还是研究内网体系和工具利用上面，但是我感觉就算不知道具体细节，现阶段也够用">
-<meta property="og:type" content="article">
-<meta property="og:title" content="内网渗透学习">
-<meta property="og:url" content="https://mayylu.github.io/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/index.html">
-<meta property="og:site_name" content="mayylu">
-<meta property="og:description" content="前言鉴于我在二进制方面还停留在汇编阶段，所以主要还是研究内网体系和工具利用上面，但是我感觉就算不知道具体细节，现阶段也够用">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1-1024x700.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1423.1.png">
-<meta property="article:published_time" content="2024-07-10T04:44:19.000Z">
-<meta property="article:modified_time" content="2024-09-27T14:17:31.870Z">
-<meta property="article:author" content="mayylu">
-<meta property="article:tag" content="server">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/1-1024x700.png">
-
-
-<link rel="canonical" href="https://mayylu.github.io/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/">
+    <meta name="description" content="学习是一种生活态度">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://mayylu.github.io/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/","path":"2024/07/10/server/内网渗透学习/","title":"内网渗透学习"}</script>
+<title>内网渗透学习 | mayylu&#39;s blog</title>
 
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>内网渗透学习 | mayylu</title>
-  
+
+
+    <link rel="icon" href="/favicon.ico">
 
 
 
 
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">mayylu</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
 
 
 
-<nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
-  </ul>
-</nav>
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
 
 
 
-
-</div>
+    
+    
         
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
+    
 
-  <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%9F%E6%8E%A7%E5%88%B6%E5%99%A8-DC"><span class="nav-number">2.1.</span> <span class="nav-text">域控制器(DC)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BB%E5%8A%A8%E7%9B%AE%E5%BD%95-AD"><span class="nav-number">2.2.</span> <span class="nav-text">活动目录(AD)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84"><span class="nav-number">2.3.</span> <span class="nav-text">组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">3.</span> <span class="nav-text">信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E6%9C%BA%E5%9F%BA%E7%A1%80%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">3.1.</span> <span class="nav-text">本机基础信息收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%9F%E5%86%85%E5%9F%BA%E7%A1%80%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">3.2.</span> <span class="nav-text">域内基础信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SPN"><span class="nav-number">3.2.1.</span> <span class="nav-text">SPN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BloodHound"><span class="nav-number">3.2.2.</span> <span class="nav-text">BloodHound</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E8%B5%84%E6%BA%90%E6%8E%A2%E6%B5%8B"><span class="nav-number">3.3.</span> <span class="nav-text">内网资源探测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0%E5%86%85%E7%BD%91%E5%AD%98%E6%B4%BB%E4%B8%BB%E6%9C%BA"><span class="nav-number">3.3.1.</span> <span class="nav-text">发现内网存活主机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">3.3.2.</span> <span class="nav-text">内网端口扫描</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Nmap%E8%BF%9B%E8%A1%8C%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">Nmap进行端口扫描</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E9%9B%86%E7%94%A8%E6%88%B7%E5%87%AD%E8%AF%81"><span class="nav-number">3.4.</span> <span class="nav-text">收集用户凭证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%94%A8%E6%88%B7%E7%9A%84%E5%AF%86%E7%A0%81%E5%93%88%E5%B8%8C"><span class="nav-number">3.4.1.</span> <span class="nav-text">本地用户的密码哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#mimikatz%E8%AF%BB%E5%8F%96"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">mimikatz读取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A6%BB%E7%BA%BF%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.4.1.2.</span> <span class="nav-text">离线破解</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E5%BA%94%E7%94%A8%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%BF%A1%E6%81%AF"><span class="nav-number">3.4.2.</span> <span class="nav-text">从应用中获取信息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3xshell"><span class="nav-number">3.4.2.1.</span> <span class="nav-text">破解xshell</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E4%B8%8E%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91"><span class="nav-number">4.</span> <span class="nav-text">内网穿透与端口转发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA"><span class="nav-number">4.1.</span> <span class="nav-text">ssh隧道搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lcx"><span class="nav-number">4.2.</span> <span class="nav-text">lcx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#frp"><span class="nav-number">4.3.</span> <span class="nav-text">frp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chisel"><span class="nav-number">4.4.</span> <span class="nav-text">chisel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stowaway"><span class="nav-number">4.5.</span> <span class="nav-text">Stowaway</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-number">5.</span> <span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux"><span class="nav-number">5.1.</span> <span class="nav-text">linux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SUID%E6%8F%90%E6%9D%83"><span class="nav-number">5.1.1.</span> <span class="nav-text">SUID提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Capabilities"><span class="nav-number">5.1.2.</span> <span class="nav-text">Capabilities</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SUDO%E6%BB%A5%E7%94%A8%E6%8F%90%E6%9D%83"><span class="nav-number">5.1.3.</span> <span class="nav-text">SUDO滥用提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%8F%E7%89%9B%E6%8F%90%E6%9D%83"><span class="nav-number">5.1.4.</span> <span class="nav-text">脏牛提权</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#win"><span class="nav-number">5.2.</span> <span class="nav-text">win</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%83%82%E5%9C%9F%E8%B1%86%E6%8F%90%E6%9D%83"><span class="nav-number">5.2.1.</span> <span class="nav-text">烂土豆提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8F%90%E6%9D%83"><span class="nav-number">5.2.2.</span> <span class="nav-text">注册表提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E6%8E%A7%E5%88%B6"><span class="nav-number">5.2.3.</span> <span class="nav-text">远程桌面控制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%AF%86%E7%A0%81%E7%99%BB%E5%BD%95RDP-%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2"><span class="nav-number">5.2.3.1.</span> <span class="nav-text">利用密码登录RDP 远程桌面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%93%88%E5%B8%8C%E4%BC%A0%E9%80%92%E7%99%BB%E5%BD%95-RDP-%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2"><span class="nav-number">5.2.3.2.</span> <span class="nav-text">利用哈希传递登录 RDP 远程桌面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RDP%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81"><span class="nav-number">5.2.3.3.</span> <span class="nav-text">RDP会话劫持</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83"><span class="nav-number">5.3.</span> <span class="nav-text">数据库提权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql-UDF%E6%8F%90%E6%9D%83"><span class="nav-number">5.3.1.</span> <span class="nav-text">mysql UDF提权</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%9F%E5%86%85%E6%A8%AA%E5%90%91"><span class="nav-number">6.</span> <span class="nav-text">域内横向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IPC-amp-at-amp-schticks"><span class="nav-number">6.1.</span> <span class="nav-text">IPC$ &amp; at &amp; schticks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#at-amp-schtasks-%E4%BD%BF%E7%94%A8"><span class="nav-number">6.1.1.</span> <span class="nav-text">at &amp; schtasks 使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#windows-Kerberos%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.2.</span> <span class="nav-text">windows Kerberos身份认证协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86"><span class="nav-number">6.2.1.</span> <span class="nav-text">第一部分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HASH%E4%BC%A0%E9%80%92%EF%BC%88PTH%EF%BC%89"><span class="nav-number">6.2.1.1.</span> <span class="nav-text">HASH传递（PTH）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DCsync%E6%94%BB%E5%87%BB%E8%8E%B7%E5%8F%96%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7hash"><span class="nav-number">6.2.1.2.</span> <span class="nav-text">DCsync攻击获取域内用户hash</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#writeDacl%E6%9D%83%E9%99%90"><span class="nav-number">6.2.1.2.1.</span> <span class="nav-text">writeDacl权限</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#PTH-%E7%9A%84%E9%99%90%E5%88%B6-UAC"><span class="nav-number">6.2.1.2.2.</span> <span class="nav-text">PTH 的限制 UAC</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E6%9E%9A%E4%B8%BE"><span class="nav-number">6.2.1.3.</span> <span class="nav-text">域内用户枚举</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E5%96%B7%E6%B4%92"><span class="nav-number">6.2.1.4.</span> <span class="nav-text">密码喷洒</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AS-REP-Roasting"><span class="nav-number">6.2.1.5.</span> <span class="nav-text">AS-REP Roasting</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE"><span class="nav-number">6.2.1.6.</span> <span class="nav-text">黄金票据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86"><span class="nav-number">6.2.2.</span> <span class="nav-text">第二部分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A7%94%E6%89%98%E6%94%BB%E5%87%BB"><span class="nav-number">6.2.2.1.</span> <span class="nav-text">委托攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%9D%9E%E7%BA%A6%E6%9D%9F%E6%80%A7%E5%A7%94%E6%B4%BE"><span class="nav-number">6.2.2.1.1.</span> <span class="nav-text">非约束性委派</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E5%A7%94%E6%B4%BE"><span class="nav-number">6.2.2.1.2.</span> <span class="nav-text">约束委派</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%B5%84%E6%BA%90%E7%9A%84%E7%BA%A6%E6%9D%9F%E6%80%A7%E5%A7%94%E6%B4%BE-RBCD"><span class="nav-number">6.2.2.1.3.</span> <span class="nav-text">基于资源的约束性委派(RBCD)</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE"><span class="nav-number">6.2.2.2.</span> <span class="nav-text">白银票据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86"><span class="nav-number">6.2.3.</span> <span class="nav-text">第三部分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NTLM-%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E5%8D%8F%E8%AE%AE%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.3.</span> <span class="nav-text">NTLM 身份验证协议协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%9F%E9%97%B4%E6%A8%AA%E5%90%91"><span class="nav-number">7.</span> <span class="nav-text">域间横向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81"><span class="nav-number">8.</span> <span class="nav-text">权限维持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux-1"><span class="nav-number">8.1.</span> <span class="nav-text">linux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0root%E6%9D%83%E9%99%90%E5%90%8E%E9%97%A8%E7%94%A8%E6%88%B7"><span class="nav-number">8.1.1.</span> <span class="nav-text">添加root权限后门用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ssh%E5%90%8E%E9%97%A8"><span class="nav-number">8.1.2.</span> <span class="nav-text">ssh后门</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim%E5%90%8E%E9%97%A8"><span class="nav-number">8.1.3.</span> <span class="nav-text">vim后门</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-number">8.1.4.</span> <span class="nav-text">定时任务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#win-1"><span class="nav-number">8.2.</span> <span class="nav-text">win</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%B1%E5%AD%90%E7%94%A8%E6%88%B7"><span class="nav-number">8.2.1.</span> <span class="nav-text">影子用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8%E6%B3%A8%E5%86%8C%E8%A1%A8"><span class="nav-number">8.2.2.</span> <span class="nav-text">修改开机自启动注册表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DLL%E5%8A%AB%E6%8C%81"><span class="nav-number">8.2.3.</span> <span class="nav-text">DLL劫持</span></a></li></ol></li></ol></li></ol></div>
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
         </div>
-        <!--/noindex-->
+    </nav>
 
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">mayylu</p>
-  <div class="site-description" itemprop="description">学习是一种生活态度</div>
-</div>
-<div class="site-state-wrap site-overview-item animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">48</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">10</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-
-
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
         </div>
-      </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
     </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
-
-    
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://mayylu.github.io/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="mayylu">
-      <meta itemprop="description" content="学习是一种生活态度">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mayylu">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          内网渗透学习
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-07-10 12:44:19" itemprop="dateCreated datePublished" datetime="2024-07-10T12:44:19+08:00">2024-07-10</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2024-09-27 22:17:31" itemprop="dateModified" datetime="2024-09-27T22:17:31+08:00">2024-09-27</time>
-      </span>
-
-  
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
 </div>
 
-        </div>
-      </header>
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>鉴于我在二进制方面还停留在汇编阶段，所以主要还是研究内网体系和工具利用上面，但是我感觉就算不知道具体细节，现阶段也够用</p>
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">内网渗透学习</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 10, 2024&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>鉴于我在二进制方面还停留在汇编阶段，所以主要还是研究内网体系和工具利用上面，但是我感觉就算不知道具体细节，现阶段也够用</p>
 <span id="more"></span>
 <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="域控制器-DC"><a href="#域控制器-DC" class="headerlink" title="域控制器(DC)"></a>域控制器(DC)</h3><p>域控制器是域环境中核心的服务器计算机，用于在域中响应安全身份验证请求，负责允许或拒绝发出请求<br>的主机访问域内资源，以及对用户进行身份验证，存储用户账户信息并执行域的安全策略等。</p>
 <p><strong>辅域</strong>：通常指的是在网络环境中作为主域控制器备份的域控制器。这些控制器在功能上辅助主域控制器，确保在主域控制器故障时能够接管关键服务</p>
@@ -389,77 +375,47 @@ Enterprise Admins组内的用户    企业管理员
 <li>最后运行目标程序，就会成功上线cs</li>
 </ol>
 
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/server/" rel="tag"># server</a>
-          </div>
+        </div>
 
         
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2024/07/04/sql/nosql%E6%B3%A8%E5%85%A5/" rel="prev" title="nosql注入">
-                  <i class="fa fa-chevron-left"></i> nosql注入
-                </a>
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/server/"># server</a>
+                    
+                        
+                </span>
             </div>
-            <div class="post-nav-item">
-                <a href="/2024/08/02/java/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%AE%9E%E8%B7%B5/" rel="next" title="自动化代码审计实践">
-                  自动化代码审计实践 <i class="fa fa-chevron-right"></i>
-                </a>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
             </div>
-          </div>
-    </footer>
-  </article>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/08/02/java/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%AE%9E%E8%B7%B5/">自动化代码审计实践</a>
+            
+            
+            <a class="next" rel="next" href="/2024/07/10/server/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/">应急响应</a>
+            
+        </section>
+
+
+    </article>
 </div>
 
-
-
-
-
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-
-<div class="copyright">
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">mayylu</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
 
     </div>
-  </footer>
-
-  
-  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
-
-  
-
-
-
-
-
-  
-
-
-
-
-
 </body>
+
 </html>
