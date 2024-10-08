@@ -19,7 +19,7 @@
 
 
 
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/vue.ico">
 
 
 
@@ -218,7 +218,8 @@
         <div class="post-content">
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>笔试的时候遇到了，一脸懵逼,对这方面只要一次打比赛的经验，还是好久之前的了，鬼知道我投的攻防岗会有这东西，简单总结一下吧，感觉这是个大坑</p>
 <span id="more"></span>
-<h2 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">uname -a #查看本机信息</span><br><span class="line">uname -m #如果输出是 aarch64，则表示 ARM 架构；如果输出是 x86_64，则表示 AMD（x86）架构。</span><br><span class="line"><span class="meta">#</span><span class="bash">win</span></span><br><span class="line">systeminfo </span><br><span class="line"></span><br><span class="line">mount # 挂载信息</span><br><span class="line">env #查看环境变量</span><br><span class="line">clear #清屏</span><br></pre></td></tr></table></figure>
+<h2 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h2><p>之前写的那个“linux基础命令”是为ctf的命令执行绕过中做总结的，更偏向文本操作和一些基础命令，这里总结一下更侧重运维和内网渗透的命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">uname -a #查看本机信息</span><br><span class="line">uname -m #如果输出是 aarch64，则表示 ARM 架构；如果输出是 x86_64，则表示 AMD（x86）架构。</span><br><span class="line"><span class="meta">#</span><span class="bash">win</span></span><br><span class="line">systeminfo </span><br><span class="line"></span><br><span class="line">mount # 挂载信息</span><br><span class="line">env #查看环境变量</span><br><span class="line">clear #清屏</span><br></pre></td></tr></table></figure>
 <h3 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h3><h4 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h4><p>-a或–all 显示所有连线中的Socket，默认不显示LISTEN相关</p>
 <p>-n或–numeric  直接使用IP地址，而不通过域名服务器。<br>-o或–timers 显示计时器。<br>-p或–programs 显示PID和程序名称。<br>-e或–extend 显示网络其他相关信息。<br>-l或–listening 显示服务器正在监听的端口，默认显示已经建立的连接</p>
 <p>-t或–tcp 显示TCP传输协议的连线状况。<br>-u或–udp 显示UDP传输协议的连线状况。</p>

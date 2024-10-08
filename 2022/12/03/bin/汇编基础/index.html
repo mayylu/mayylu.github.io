@@ -19,7 +19,7 @@
 
 
 
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/vue.ico">
 
 
 
@@ -257,22 +257,68 @@
 </li>
 <li><p>相反数<br>NEG        取补指令                   NEG OPRD    OPRD=0-OPRD    对操作数取补（相反数）</p>
 <h3 id="逻辑运算指令"><a href="#逻辑运算指令" class="headerlink" title="逻辑运算指令"></a>逻辑运算指令</h3></li>
-<li><p>逻辑运算<br>NOT        否运算指令                    NOT OPRD    把操作数OPRD按位取反，然后送回OPRD<br>AND        与运算指令                    AND DEST，SRC    把两个操作数进行与运算之后结果送回DEST    同1得1，否则得0<br>OR        或运算指令                    OR DEST，SRC    把两个操作数进行或运算之后结果送回DEST    同0得0，否则得1<br>XOR        异或运算                    XOR DEST，SRC    把两个操作数进行异或运算之后结果送回DEST    相同得0不同得1</p>
+<li><p>逻辑运算</p>
+<pre><code>NOT        否运算指令                    NOT OPRD    把操作数OPRD按位取反，然后送回OPRD    
+AND        与运算指令                    AND DEST，SRC    把两个操作数进行与运算之后结果送回DEST    同1得1，否则得0
+OR        或运算指令                    OR DEST，SRC    把两个操作数进行或运算之后结果送回DEST    同0得0，否则得1
+XOR        异或运算                    XOR DEST，SRC    把两个操作数进行异或运算之后结果送回DEST    相同得0不同得1
+
+TEST    测试指令                    TEST DEST，SRC    将两个操作数进行按位AND,设结果是TEMP，但是结果不送回DEST，仅影响状态位标志，指令执行后，ZF、PF、SF反映运算结果，CF和OF清零
+如：TEMP是0，ZF位置1，如果TEMP不是0，ZF位置0
+
+SAL        算术左移                    SAL OPRD，count    把操作数oprd左移count位，右边补0    与shl指令一样
+通过截取count的低5位，实际的移位数被限于0到31之间。
+SHL        逻辑左移                    SHL OPRD，count    把操作数oprd左移count位，右边补0    与sal指令一样
+通过截取count的低5位，实际的移位数被限于0到31之间。
+SAR        算术右移                    SAR OPRD，count    把操作数oprd右移count位，同时每右移一位，左边补符号位，移出的最低位进入标志位CF    通过截取count的低5位，实际的移位数被限于0到31之间。
+SHR        逻辑右移                    SHR OPRD，count    把操作数oprd右移count位，左边补0，移出的最低位进入标志位CF    通过截取count的低5位，实际的移位数被限于0到31之间。
+ROL        左循环移位指令                 ROL OPRD,count        通过截取count的低5位，实际的移位数被限于0到31之间。
+ROR        右循环移位指令                 ROR OPRD,count        通过截取count的低5位，实际的移位数被限于0到31之间。
+RCL        带进位左循环移位             RCL OPRD,count    相当于CF在最高位参与循环移位    大循环左移
+通过截取count的低5位，实际的移位数被限于0到31之间。
+RCR        带进位右循环移位             RCR OPRD,count    相当于CF在最高位参与循环移位    大循环右移
+通过截取count的低5位，实际的移位数被限于0到31之间。
+</code></pre>
 </li>
 </ol>
-<p>TEST    测试指令                    TEST DEST，SRC    将两个操作数进行按位AND,设结果是TEMP，但是结果不送回DEST，仅影响状态位标志，指令执行后，ZF、PF、SF反映运算结果，CF和OF清零<br>如：TEMP是0，ZF位置1，如果TEMP不是0，ZF位置0</p>
-<p>SAL        算术左移                    SAL OPRD，count    把操作数oprd左移count位，右边补0    与shl指令一样<br>通过截取count的低5位，实际的移位数被限于0到31之间。<br>SHL        逻辑左移                    SHL OPRD，count    把操作数oprd左移count位，右边补0    与sal指令一样<br>通过截取count的低5位，实际的移位数被限于0到31之间。<br>SAR        算术右移                    SAR OPRD，count    把操作数oprd右移count位，同时每右移一位，左边补符号位，移出的最低位进入标志位CF    通过截取count的低5位，实际的移位数被限于0到31之间。<br>SHR        逻辑右移                    SHR OPRD，count    把操作数oprd右移count位，左边补0，移出的最低位进入标志位CF    通过截取count的低5位，实际的移位数被限于0到31之间。<br>ROL        左循环移位指令                 ROL OPRD,count        通过截取count的低5位，实际的移位数被限于0到31之间。<br>ROR        右循环移位指令                 ROR OPRD,count        通过截取count的低5位，实际的移位数被限于0到31之间。<br>RCL        带进位左循环移位             RCL OPRD,count    相当于CF在最高位参与循环移位    大循环左移<br>通过截取count的低5位，实际的移位数被限于0到31之间。<br>RCR        带进位右循环移位             RCR OPRD,count    相当于CF在最高位参与循环移位    大循环右移<br>通过截取count的低5位，实际的移位数被限于0到31之间。</p>
 <h3 id="程序转移指令"><a href="#程序转移指令" class="headerlink" title="程序转移指令"></a>程序转移指令</h3><ol>
-<li>转移指令<br>JMP    无条件段内直接转移指令    JMP LABEL    使控制无条件地转移到标号为label的位置    无条件转移指令本身不影响标志</li>
+<li><p>转移指令</p>
+<pre><code>JMP    无条件段内直接转移指令    JMP LABEL    使控制无条件地转移到标号为label的位置    无条件转移指令本身不影响标志
+
+JA/JNBE &gt;
+JAE/JNB ≥
+JB/JNAE &lt;
+JBE/JNA ≤
+以上四条，测试无符号整数运算的结果(标志C和Z)。
+
+JG/JNLE &gt;
+JGE/JNL ≥
+JL/JNGE &lt;
+JLE/JNG ≤
+以上四条，测试有符号整数运算的结果(标志S，O和Z)。
+
+JE/JZ    ZF=1
+JNE/JNZ  ZF=0
+JC       CF=1
+JNC 
+JO       OF=1
+JNO 
+JS       SF=1
+JNS
+</code></pre>
+</li>
 </ol>
-<p>JA/JNBE &gt;<br>JAE/JNB ≥<br>JB/JNAE &lt;<br>JBE/JNA ≤<br>以上四条，测试无符号整数运算的结果(标志C和Z)。</p>
-<p>JG/JNLE &gt;<br>JGE/JNL ≥<br>JL/JNGE &lt;<br>JLE/JNG ≤<br>以上四条，测试有符号整数运算的结果(标志S，O和Z)。</p>
-<p>JE/JZ    ZF=1<br>JNE/JNZ  ZF=0<br>JC       CF=1<br>JNC<br>JO       OF=1<br>JNO<br>JS       SF=1<br>JNS</p>
 <ol start="2">
-<li>循环指令<br>LOOP    计数循环指令    LOOP LABEL    使CX的值减1，当CX的值不为0的时候跳转至LABEL，否则执行LOOP之后的语句</li>
-<li>子程序指令<br>CALL    过程调用指令    CALL LABEL    段内直接调用LABEL    与jmp的区别在于call指令会在调用label之前保存返回地址（call 中return之后主程序还可以继续执行，jmp 当label执行完毕后不能返回主程序继续执行）<br>RET    段内过程返回指令    RET    使子程序结束，继续执行主程序<h3 id="变量属性"><a href="#变量属性" class="headerlink" title="变量属性"></a>变量属性</h3>SEG     得到变量名或标号名的段基址<br>OFFSET  得到变量名或标号名的偏移量<br>TYPE    在变量名前，返回值为1（字节）、2（字）、4（双字）<br>LENGTH  用在变量前面，对于变量使用DUP进行定义的情况，汇编程序将回送分配给该变量的单元数。对于其他情况则回送1<br>SIZE    用在变量前面，汇编程序将回送分配给该变量的字节数，值为 LENGTH 与 TYPE 值的乘积<br>PTR     指定类型<h2 id="汇编程序"><a href="#汇编程序" class="headerlink" title="汇编程序"></a>汇编程序</h2>一个汇编语言程序从写出到最终执行的简要过程：<br>编写 -&gt; 编译连接 -&gt; 执行<br>在Win 64位系统下实现Debug汇编的方法。</li>
+<li>循环指令<pre><code>LOOP    计数循环指令    LOOP LABEL    使CX的值减1，当CX的值不为0的时候跳转至LABEL，否则执行LOOP之后的语句
+</code></pre>
+</li>
+<li>子程序指令<pre><code>CALL    过程调用指令    CALL LABEL    段内直接调用LABEL    与jmp的区别在于call指令会在调用label之前保存返回地址（call 中return之后主程序还可以继续执行，jmp 当label执行完毕后不能返回主程序继续执行）
+RET    段内过程返回指令    RET    使子程序结束，继续执行主程序
+</code></pre>
+<h3 id="变量属性"><a href="#变量属性" class="headerlink" title="变量属性"></a>变量属性</h3>SEG     得到变量名或标号名的段基址<br>OFFSET  得到变量名或标号名的偏移量<br>TYPE    在变量名前，返回值为1（字节）、2（字）、4（双字）<br>LENGTH  用在变量前面，对于变量使用DUP进行定义的情况，汇编程序将回送分配给该变量的单元数。对于其他情况则回送1<br>SIZE    用在变量前面，汇编程序将回送分配给该变量的字节数，值为 LENGTH 与 TYPE 值的乘积<br>PTR     指定类型<h2 id="汇编程序"><a href="#汇编程序" class="headerlink" title="汇编程序"></a>汇编程序</h2>一个汇编语言程序从写出到最终执行的简要过程：<br>编写 -&gt; 编译连接 -&gt; 执行<br>在Win 64位系统下实现Debug汇编的方法。</li>
 </ol>
-<p>mount c d:\                  回车 <br>c：                          回车<br>汇编连接源程序文件<br>ML &lt;源文件名.ASM&gt;<br>如果源程序没有错误，则自动生成.OBJ 文件和.EXE 可执行文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mount c d:\                  回车 </span><br><span class="line">c：                          回车</span><br><span class="line">汇编连接源程序文件</span><br><span class="line">ML &lt;源文件名.ASM&gt;</span><br></pre></td></tr></table></figure>
+<p>如果源程序没有错误，则自动生成.OBJ 文件和.EXE 可执行文件。</p>
 <h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">assum cs:codesg</span><br><span class="line">codesg segment</span><br><span class="line">start: mov ax,0123H</span><br><span class="line">          mov bx,0456H</span><br><span class="line">          add ax,bx</span><br><span class="line">          add ax,ax</span><br><span class="line"></span><br><span class="line">          mov ax,4c00h</span><br><span class="line">          int 21h</span><br><span class="line">codesg ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
 <p>segment和ends是一对成对使用的伪指令，这是在写可被编译器编译的汇编程序时，必须要用到的一对伪指令。segment和ends的功能是定义一个段，segment说明一个段开始，ends 说明一个段结束。<br>assume对除了CS以外的其它段寄存器，仅仅只是关联了段名，以便在访问段内变量时程序可以知道用哪个段寄存器，并没有在程序加载时将段地址装入段寄存器。所以，将段地址装入段寄存器的工作，必须由用户在程序中自己编写代码，并在程序开始运行时执行代码完成装入工作。</p>
 <p>内存并没有分段，段的划分来自于CPU。由于8086CPU用“基础地址（段地址×16）+偏移地址=物理地址”的方式给出内存单元的物理地址，使得我们可以用分段的方式来管理内存。</p>
