@@ -207,7 +207,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">七月 10, 2024&nbsp;&nbsp;</a>
+                        Date: <a href="#">八月 20, 2024&nbsp;&nbsp;</a>
                         </span>
                     
                     
@@ -229,7 +229,7 @@
 <p>我简单划分为了三个板块:</p>
 <p>系统排查(主要是防止攻击者进行权限维持，对系统层面的抑制策略)<br>服务和进程排查<br>痕迹排除(目的是搞清楚攻击路径)</p>
 <h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>之前写的那个“linux基础命令”是为ctf的命令执行绕过中做总结的，更偏向文本操作和一些基础命令，这里总结一下更侧重运维和内网渗透的命令</p>
-<h3 id="系统排查"><a href="#系统排查" class="headerlink" title="系统排查"></a>系统排查</h3><h4 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">uname -a #查看本机信息</span><br><span class="line">uname -m #如果输出是 aarch64，则表示 ARM 架构；如果输出是 x86_64，则表示 AMD（x86）架构。</span><br><span class="line">lscpu #CPU信息</span><br><span class="line">lsmod #载入模块信息</span><br><span class="line">mount # 挂载信息</span><br><span class="line">env #查看环境变量</span><br><span class="line">clear #清屏</span><br></pre></td></tr></table></figure>
+<h3 id="系统排查"><a href="#系统排查" class="headerlink" title="系统排查"></a>系统排查</h3><h4 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">uname -a #查看本机信息</span><br><span class="line">uname -m #如果输出是 aarch64，则表示 ARM 架构；如果输出是 x86_64，则表示 AMD（x86）架构。</span><br><span class="line">lscpu #CPU信息</span><br><span class="line">lsmod #载入模块信息</span><br><span class="line">mount # 挂载信息</span><br><span class="line">env #查看环境变量</span><br><span class="line">clear #清屏</span><br><span class="line">top #查看当前系统状态</span><br></pre></td></tr></table></figure>
 <h4 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h4><p>超级用户 (root):</p>
 <pre><code>拥有系统的所有权限，可以执行任何操作，包括管理系统文件、用户、安装软件等。
 </code></pre>
@@ -240,8 +240,10 @@
 <pre><code>这些用户通常用于运行系统服务和守护进程（如 www-data、nobody 等）。系统用户通常没有登录权限。
 </code></pre>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cat etc/passwd | grep ‘bin/bash’ <span class="comment">#查看可登录账户,bin/bash 可登录 sbin/nologin 不可登录</span></span><br><span class="line">last <span class="comment">#查看用户最近登录信息</span></span><br><span class="line">lastb <span class="comment">#查看错误的用户登录信息</span></span><br><span class="line">lastlog <span class="comment">#查看所有用户最后一次登录信息</span></span><br><span class="line"></span><br><span class="line"> awk -F: <span class="string">&#x27;$3==0&#123;print $1&#125;&#x27;</span> /etc/passwd <span class="comment">#查询特权用户特权用户(uid 为0)</span></span><br><span class="line"> awk <span class="string">&#x27;/\$1|\$6/&#123;print $1&#125;&#x27;</span> /etc/shadow <span class="comment">#查询可以远程登录的帐号信息</span></span><br></pre></td></tr></table></figure>
-<h4 id="启动项和定时任务"><a href="#启动项和定时任务" class="headerlink" title="启动项和定时任务"></a>启动项和定时任务</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /etc/rc.d/rc.local <span class="comment">#或者是/etc/init.d/rc.local</span></span><br><span class="line">vi /etc/rc.d/rc.local</span><br><span class="line">/usr/<span class="built_in">local</span>/shell/crontab.sh</span><br></pre></td></tr></table></figure>
-<p>  <code>crontab -l</code>命令可以查看定时任务<br>Centos的定时任务文件在<code>/var/spool/cron/&lt;username&gt;</code><br>Ubuntu定时任务文件在<code>/var/spool/cron/crontabs/&lt;username&gt;</code></p>
+<p>如有，打开 /home 各帐号目录下的 .bash_history，查看普通帐号的历史命令</p>
+<h4 id="启动项和定时任务"><a href="#启动项和定时任务" class="headerlink" title="启动项和定时任务"></a>启动项和定时任务</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /etc/rc.d/rc.local <span class="comment">#或者是/etc/init.d/rc.local</span></span><br><span class="line">vi /etc/rc.d/rc.local</span><br><span class="line">/usr/<span class="built_in">local</span>/shell/crontab.sh</span><br><span class="line"></span><br><span class="line">systemctl list-unit-files | grep <span class="built_in">enable</span> <span class="comment">#查看启动项</span></span><br></pre></td></tr></table></figure>
+
+<p>  <code>crontab -l</code>命令可以查看定时任务<br>Centos的定时任务文件在<code>/var/spool/cron/&lt;username&gt;</code><br>Ubuntu定时任务文件在<code>/var/spool/cron/crontabs/&lt;username&gt;</code><br><code>crontab -e</code> 使用编辑器编辑当前的crontab文件</p>
 <h3 id="服务和进程排查"><a href="#服务和进程排查" class="headerlink" title="服务和进程排查"></a>服务和进程排查</h3><h4 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h4><h5 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h5><p>-a或–all 显示所有连线中的Socket，默认不显示LISTEN相关</p>
 <p>-n或–numeric  直接使用IP地址，而不通过域名服务器。<br>-o或–timers 显示计时器。<br>-p或–programs 显示PID和程序名称。<br>-e或–extend 显示网络其他相关信息。<br>-l或–listening 显示服务器正在监听的端口，默认显示已经建立的连接</p>
 <p>-t或–tcp 显示TCP传输协议的连线状况。<br>-u或–udp 显示UDP传输协议的连线状况。</p>
@@ -262,14 +264,15 @@
 
 <h2 id="Win"><a href="#Win" class="headerlink" title="Win"></a>Win</h2><h3 id="系统排查-1"><a href="#系统排查-1" class="headerlink" title="系统排查"></a>系统排查</h3><h4 id="系统分析"><a href="#系统分析" class="headerlink" title="系统分析"></a>系统分析</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#win</span></span><br><span class="line">systeminfo </span><br></pre></td></tr></table></figure>
 <p>win+R，输入<code>msinfo32.exe</code>里面的信息更丰富</p>
-<h4 id="用户信息-1"><a href="#用户信息-1" class="headerlink" title="用户信息"></a>用户信息</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">net user</span><br><span class="line">注册表-HKEY_LOCAL_MACHINE-SAM-SAM-Domains-Account-Users-Names <span class="comment">#查看隐藏用户</span></span><br><span class="line"></span><br><span class="line">query user <span class="comment">#获取在线用户</span></span><br></pre></td></tr></table></figure>
+<h4 id="用户信息-1"><a href="#用户信息-1" class="headerlink" title="用户信息"></a>用户信息</h4><p>cmd打开<code>lusrmgr.msc</code>查看服务器是否存在可疑账号、新增账号</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">net user</span><br><span class="line">注册表-HKEY_LOCAL_MACHINE-SAM-SAM-Domains-Account-Users-Names <span class="comment">#查看隐藏用户</span></span><br><span class="line"></span><br><span class="line">query user <span class="comment">#获取在线用户</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="启动项和定时任务-1"><a href="#启动项和定时任务-1" class="headerlink" title="启动项和定时任务"></a>启动项和定时任务</h4><p>任务管理器 - 启动项<br>计算机管理 — 任务计划程序 — 任务计划程序库 —<br>powershell &gt; Get-ScheduledTask<br>cmd &gt; schtasks</p>
 <h3 id="服务和进程排查-1"><a href="#服务和进程排查-1" class="headerlink" title="服务和进程排查"></a>服务和进程排查</h3><h4 id="netstat-1"><a href="#netstat-1" class="headerlink" title="netstat"></a>netstat</h4><p>同上</p>
 <h4 id="TASKLIST"><a href="#TASKLIST" class="headerlink" title="TASKLIST"></a>TASKLIST</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">tasklist </span><br><span class="line">参数含义</span><br><span class="line">/S &lt;computer&gt;　指定连接到的计算机或IP地址，默认本机。</span><br><span class="line">/u [&lt;Domain&gt;\]&lt;UserName&gt;　指定使用哪个用户执行这个命令。</span><br><span class="line">/P [password]　为指定的用户指定密码。</span><br><span class="line">/M [module]　列出调用指定的DLL模块的所有进程。如果没有指定模块名，显示每个进程加载的所有模块。</span><br><span class="line">/SVC　显示每个进程中的服务信息，当/fo参数设置为table时有效。</span><br><span class="line">/V　显示详细信息。</span><br><span class="line">/FI filter　显示一系列符合筛选器指定的进程。</span><br><span class="line">/FO format　指定输出格式，有效值：TABLE、LIST、CSV。</span><br><span class="line">/NH　指定输出中不显示栏目标题。只对TABLE和CSV格式有效。</span><br></pre></td></tr></table></figure>
 <p><code>tasklist | findstr “PID”</code></p>
 <h3 id="痕迹排查-1"><a href="#痕迹排查-1" class="headerlink" title="痕迹排查"></a>痕迹排查</h3><h4 id="文件痕迹排查-1"><a href="#文件痕迹排查-1" class="headerlink" title="文件痕迹排查"></a>文件痕迹排查</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">forfiles /m *.exe /d +2020/2/12 /s /p c:\ /c <span class="string">&quot;cmd/ c echo @path @fdate @ftime&quot;</span>2 &gt; null <span class="comment">#2020/2/12以来的新增文件</span></span><br></pre></td></tr></table></figure>
-<h4 id="日志分析-1"><a href="#日志分析-1" class="headerlink" title="日志分析"></a>日志分析</h4><p>win+R，输入<code>eventvwr.msc</code>，直接进入事件查看器分析日志，分析日志<br>常见事件ID</p>
+<h4 id="日志分析-1"><a href="#日志分析-1" class="headerlink" title="日志分析"></a>日志分析</h4><p>win+R，输入<code>eventvwr.msc</code>，直接进入事件查看器分析日志，导出 Windows 日志–安全，利用 Log Parser 进行分析<br>常见事件ID</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">系统日志:</span><br><span class="line">1074，通过这个事件ID查看计算机的开机、关机、重启的时间以及原因和注释。</span><br><span class="line">6005，表示计算机日志服务已启动，如果出现了事件ID为6005，则表示这天正常启动了系统。</span><br><span class="line">104，这个时间ID记录所有审计日志清除事件，当有日志被清除时，出现此事件ID。</span><br><span class="line"></span><br><span class="line">安全日志：</span><br><span class="line">4624，这个事件ID表示成功登陆的用户，用来筛选该系统的用户登陆成功情况。</span><br><span class="line">4625，这个事件ID表示登陆失败的用户。</span><br><span class="line">4720,4722,4723,4724,4725,4726,4738,4740,事件ID表示当用户帐号发生创建，删除，改变密码时的事件记录。</span><br><span class="line">4727,4737,4739,4762,事件ID表示当用户组发生添加、删除时或组内添加成员时生成该事件。</span><br></pre></td></tr></table></figure>
 
 
@@ -296,10 +299,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/">内网渗透学习</a>
+                <a class="prev" rel="prev" href="/2024/09/20/front/js/xss%20%E6%80%BB%E7%BB%93/">xss 总结</a>
             
             
-            <a class="next" rel="next" href="/2024/07/04/sql/nosql%E6%B3%A8%E5%85%A5/">nosql注入</a>
+            <a class="next" rel="next" href="/2024/08/02/java/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%AE%9E%E8%B7%B5/">自动化代码审计实践</a>
             
         </section>
 
