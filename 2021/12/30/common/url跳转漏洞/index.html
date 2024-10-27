@@ -15,7 +15,7 @@
 
 
 
-<title>XXL-JOB 利用分析 | mayylu&#39;s blog</title>
+<title>url跳转漏洞 | mayylu&#39;s blog</title>
 
 
 
@@ -198,7 +198,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">XXL-JOB 利用分析</h1>
+            <h1 class="post-title">url跳转漏洞</h1>
             
                 <div class="post-meta">
                     
@@ -207,24 +207,23 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十月 27, 2020&nbsp;&nbsp;</a>
+                        Date: <a href="#">十二月 30, 2021&nbsp;&nbsp;</a>
                         </span>
                     
-                    
-                        <span class="post-category">
-                    Category:
-                            
-                                <a href="/categories/java/">java</a>
-                            
-                        </span>
                     
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近一直在面试，感觉有好多想搞的东西没时间搞，不面了，收收心搞技术了<br>在一次src挖掘中遇到了XXL-JOB，不得不说bp的RouteVulScan插件还是有点用的，这个组件爆出来不少漏洞，简单总结一下<br> <span id="more"></span></p>
-
+            <p>一般在用户访问到需要登录才能使用的功能时，或者像是sso统一认证时，为了保障用户的使用体验，有可能会使用想是<code>redirect</code>的参数记录用户的来的登录页面的refer，当登录成功时，就会跳转页面到之前的页面</p>
+<span id="more"></span>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="跳转目录的"><a href="#跳转目录的" class="headerlink" title="跳转目录的"></a>跳转目录的</h3><p>如：<br><a target="_blank" rel="noopener" href="https://xx.xxx.com.cn/?redirect=/user/info.php">https://xx.xxx.com.cn/?redirect=/user/info.php</a><br>修改为<br><a target="_blank" rel="noopener" href="https://xx.xxx.com.cn/?redirect=@www.baidu.com">https://xx.xxx.com.cn/?redirect=@www.baidu.com</a></p>
+<h2 id="url跳转的实现"><a href="#url跳转的实现" class="headerlink" title="url跳转的实现"></a>url跳转的实现</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.META标签内跳转</span><br><span class="line">2.javascript跳转</span><br><span class="line">3.header跳转</span><br></pre></td></tr></table></figure>
+<h2 id="url跳转漏洞利用方法"><a href="#url跳转漏洞利用方法" class="headerlink" title="url跳转漏洞利用方法"></a>url跳转漏洞利用方法</h2><p>钓鱼：利用源码小偷制作钓鱼网站<br>配合xss漏洞：xss执行js脚本<br>配合csrf漏洞：配合csrf操作危险请求</p>
+<h2 id="绕过-illegal-url-redirect"><a href="#绕过-illegal-url-redirect" class="headerlink" title="绕过 illegal url redirect"></a>绕过 illegal url redirect</h2><p>一般的防御方法就是加一个跳转页面或者白名单</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">http://www.aaa.com?returnUrl=http://www.evil.com/www.aaa.com</span><br><span class="line">http://www.aaa.com?returnUrl=http://www.evil.com?www.aaa.com</span><br><span class="line">http://www.aaa.com?returnUrl=http://www.evil.com\www.aaa.com</span><br><span class="line">http://www.aaa.com?returnUrl=http://www.aaa.com@www.evil.com</span><br><span class="line">http://www.aaa.com?returnUrl=http://www.aaa.com.220.181.57.217.xip.io//ssrf的方法</span><br><span class="line">http://www.aaa.com?returnUrl=http://www.evil.com#www.aaa.com</span><br><span class="line">http://www.aaa.com?returnUrl=http://cccaaa.com //注册一个相似的域名(代价有点大一般没人这么搞)</span><br></pre></td></tr></table></figure>
+<h2 id="OAuth劫持"><a href="#OAuth劫持" class="headerlink" title="OAuth劫持"></a>OAuth劫持</h2>
         </div>
 
         
@@ -243,8 +242,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/11/05/common/url%E8%B7%B3%E8%BD%AC%E6%BC%8F%E6%B4%9E/">url跳转漏洞</a>
+                <a class="prev" rel="prev" href="/2022/01/18/common/%E5%9B%BE%E8%A7%A3HTTP%E8%AF%BB%E5%90%8E%E6%80%BB%E7%BB%93/">《图解HTTP》读后总结</a>
             
+            
+            <a class="next" rel="next" href="/2021/12/19/misc/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%A7%82/">网络安全观</a>
             
         </section>
 
