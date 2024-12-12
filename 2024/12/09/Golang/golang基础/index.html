@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>golang基础 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">golang基础</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 9, 2024&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Golang/">Golang</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>第一次用go是大二的时候，那个时候招新用到github上的项目，但是万万没想到的是那个项目有个bug，redis里的session没有清除机制，一段时间后就会爆满导致网站服务崩溃，一开始测试的时候没问题，但是上线那一天一上强度就503了。那段时间压力爆炸，改时间已经来不及了已经有部分题目被学弟写了，他那个框架我也没学过修bug也来不及了。也是疯狂查资料，最后用的一个定时清除reids连接的go脚本，打包编译上传到docker里，才解决这个问题，这时我对go的印象是作为脚本可以一点不依靠环境配置，docker里面什么语言环境都没有，但是我用go生成的二进制文件直接就执行成功了</p>
+<p>最近想写资产测绘工具当作毕设，并且平时挖src也能用上，就简单分析了一个go写的开源渗透工具，看完这个工具后也是感觉到了go语言的便利，有类似python的弱类型，有类似java的类和包结构，甚至还有类似C的指针和结构体,也正因如此就决定毕设用go写而不是用更熟悉的python写</p>
+<span id="more"></span>
+<h2 id="go语言的基础命令"><a href="#go语言的基础命令" class="headerlink" title="go语言的基础命令"></a>go语言的基础命令</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">go run hello.go </span><br><span class="line">go build hello.go <span class="comment">#生成二进制文件</span></span><br><span class="line">./hello</span><br><span class="line">go env -w GOPROXY=<span class="string">&quot;https://goproxy.cn,direct&quot;</span>  <span class="comment">#设置导包的代理</span></span><br><span class="line">go install example.com/mytool@latest <span class="comment">#相当于拉取源码后build</span></span><br></pre></td></tr></table></figure>
+<h2 id="Go语言环境配置"><a href="#Go语言环境配置" class="headerlink" title="Go语言环境配置"></a>Go语言环境配置</h2><p>GOROOT：指向 Go 安装目录，通常是 Go 自带的安装路径，包含了 Go 的标准库、工具链等</p>
+<p>GOPATH：指向你的工作空间目录<br>    src：源代码存放目录，包括你自己的项目代码和go install导入的外部包。<br>    pkg：编译后的包文件存放目录，包括使用 go install 命令生成的二进制文件。<br>    bin：可执行文件存放目录，包括使用 go install 命令生成的可执行文件。</p>
+<p>GOMODCACHE：但是GOPATH规定编程只能在<code>$GOPATH/src</code>下很是麻烦，所以从 <strong>Go 1.11</strong> 开始，Go 模块系统简化了依赖管理，并使得 GOPATH 不再是必需的，允许你在任何目录下开发 Go 项目<br>依赖管理通过go.mod(记录模块的依赖关系、版本等信息)和go.sum(保证了这些依赖的完整性和安全性)文件来完成(类似于python的<code>pip install -r requirements.txt</code>),下载的包在<code>$GOPATH/pkg/mod</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#开启GOMODCACHE</span></span><br><span class="line"><span class="built_in">export</span> GO111MODULE=on <span class="comment">#on， 不管在不在gopath/src下，都采用的go mod包管理方式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#初始化 Go 模块：</span></span><br><span class="line">go mod init &lt;module-name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加或更新依赖,修改 go.mod：</span></span><br><span class="line">go get &lt;package&gt;@&lt;version&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#清理未使用的依赖项,生成或更新 go.sum：</span></span><br><span class="line">go mod tidy</span><br><span class="line"></span><br><span class="line"><span class="comment">#验证依赖的完整性：</span></span><br><span class="line">go mod verify</span><br></pre></td></tr></table></figure>
+<p>go v1.5引入vendor模式，如果项目目录下有vendor目录，那么go工具链会优先使用vendor内的包进行编译、测试</p>
+<h2 id="go基础语法一览"><a href="#go基础语法一览" class="headerlink" title="go基础语法一览"></a>go基础语法一览</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="keyword">int</span> = <span class="number">10</span></span><br><span class="line"><span class="comment">//支持弱类型 </span></span><br><span class="line">a := <span class="number">10</span> </span><br><span class="line"><span class="keyword">var</span> a = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">m1 := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">        <span class="string">&quot;a&quot;</span>: <span class="string">&quot;test1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;b&quot;</span>: <span class="string">&quot;test2&quot;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">m1 [<span class="string">&quot;c&quot;</span>] = <span class="string">&quot;test3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a [<span class="number">10</span>] <span class="keyword">string</span> <span class="comment">//数组的大小是固定的</span></span><br><span class="line"><span class="keyword">var</span> b = [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125; <span class="comment">//自行推断数组的长度</span></span><br><span class="line">c := [] <span class="keyword">string</span> &#123;<span class="string">&quot;aa&quot;</span>, <span class="string">&quot;bb&quot;</span>, <span class="string">&quot;cc&quot;</span>&#125; <span class="comment">//切片是动态的</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> ip *<span class="keyword">int</span>        <span class="comment">/* 声明指针变量 */</span></span><br><span class="line">ip = &amp;a  <span class="comment">/* 指针变量的存储地址 */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> conf <span class="keyword">struct</span> &#123;</span><br><span class="line">        name <span class="keyword">string</span></span><br><span class="line">        age <span class="keyword">int</span></span><br><span class="line">    &#125;</span><br><span class="line">a := conf&#123;name: <span class="string">&quot;d4m1ts&quot;</span>, age: <span class="number">18</span>&#125;<span class="comment">//创建一个实例</span></span><br><span class="line"></span><br><span class="line">conf := <span class="built_in">new</span>(conf)<span class="comment">//创建了一个指向 Conf 类型结构体的指针，并初始化了 Conf 结构体的零值</span></span><br><span class="line">conf := &amp;Conf&#123;&#125;</span><br><span class="line">conf.name = <span class="string">&quot;d4m1ts&quot;</span><span class="comment">//修改name字段的值</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    a := [] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line">    <span class="keyword">for</span> _,i := <span class="keyword">range</span> a &#123;</span><br><span class="line">        fmt.Println(i)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> sum &lt;= <span class="number">10</span>&#123;</span><br><span class="line">      sum += sum</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">text</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;%d &quot;</span>, i)      </span><br><span class="line">		<span class="keyword">defer</span> fmt.Printf(<span class="string">&quot;%d &quot;</span>, i) </span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%d &quot;</span>, <span class="number">11</span>)</span><br><span class="line">&#125;<span class="comment">//0 1 2 3 4 11 4 3 2 1 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义接口</span></span><br><span class="line"><span class="keyword">type</span> testImpl <span class="keyword">interface</span> &#123;</span><br><span class="line">    testFunc1(a <span class="keyword">int</span>, b <span class="keyword">int</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 定义结构体</span></span><br><span class="line"><span class="keyword">type</span> testStruct <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 实现函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(testMethod testStruct)</span> <span class="title">TestFunc1</span><span class="params">(a <span class="keyword">int</span>, b <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a+b</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">var</span> test1 testImpl</span><br><span class="line">    test1 := <span class="built_in">new</span>(testStruct) <span class="comment">// 实例化</span></span><br><span class="line">    res1 := test1.TestFunc1(<span class="number">10</span>,<span class="number">20</span>)</span><br><span class="line">    fmt.Println(res1)</span><br></pre></td></tr></table></figure>
+<p>先写个大概，开发时遇到不会写的再往上加</p>
+<h2 id="go自带的常用包"><a href="#go自带的常用包" class="headerlink" title="go自带的常用包"></a>go自带的常用包</h2><h3 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    fmt.Scan 会读取空白分隔符分隔的值；</span></span><br><span class="line"><span class="comment">    fmt.Scanln 会在遇到换行符时停止读取。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">fmt.Scan(&amp;name)</span><br><span class="line">fmt.Print(<span class="string">&quot;Enter your age: &quot;</span>)</span><br><span class="line">fmt.Scanln(&amp;age)</span><br><span class="line"></span><br><span class="line">fmt.Println(<span class="string">&quot;Hello, World!&quot;</span>) <span class="comment">// 输出：Hello, World!/n</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;Hello, %v!\n&quot;</span>, name) <span class="comment">// 输出：Hello, Go!,  %v：用于格式化任何类型的变量，以默认方式输出</span></span><br><span class="line"><span class="keyword">var</span> sentence = fmt.Sprintf(<span class="string">&quot;hello %s %s %d&quot;</span>, keyword, name, age)<span class="comment">//格式化拼接</span></span><br></pre></td></tr></table></figure>
+<h3 id="基本数据类型处理"><a href="#基本数据类型处理" class="headerlink" title="基本数据类型处理"></a>基本数据类型处理</h3><h4 id="基本数据类型转化"><a href="#基本数据类型转化" class="headerlink" title="基本数据类型转化"></a>基本数据类型转化</h4><p>Go 的类型转换是显式的，你必须告诉编译器要如何转换类型，以避免类型不兼容问题。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;strconv&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// int 转字符串</span></span><br><span class="line">    str := strconv.Itoa(n)<span class="comment">//Integer to ASCII</span></span><br><span class="line">	str := strconv.FormatInt(<span class="number">255</span>, <span class="number">10</span>)<span class="comment">//也可以用FormatInt</span></span><br><span class="line">	fmt.Println(str) <span class="comment">// 输出字符串&quot;255&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 字符串转 int</span></span><br><span class="line">	num, err := strconv.Atoi(str)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// int 转 float64</span></span><br><span class="line">	<span class="keyword">var</span> i <span class="keyword">int</span> = <span class="number">42</span></span><br><span class="line">	<span class="keyword">var</span> f <span class="keyword">float64</span> = <span class="keyword">float64</span>(i)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// float64 转 int</span></span><br><span class="line">	<span class="keyword">var</span> x <span class="keyword">float64</span> = <span class="number">42.58</span></span><br><span class="line">	<span class="keyword">var</span> y <span class="keyword">int</span> = <span class="keyword">int</span>(x)  <span class="comment">//42</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 字符串转布尔值</span></span><br><span class="line">	str := <span class="string">&quot;true&quot;</span></span><br><span class="line">	b, err := strconv.ParseBool(str)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 布尔值转字符串</span></span><br><span class="line">	<span class="keyword">var</span> flag <span class="keyword">bool</span> = <span class="literal">true</span></span><br><span class="line">	s := strconv.FormatBool(flag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="处理和操作字符串"><a href="#处理和操作字符串" class="headerlink" title="处理和操作字符串"></a>处理和操作字符串</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;strings&quot;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(strings.Contains(<span class="string">&quot;hello world&quot;</span>, <span class="string">&quot;world&quot;</span>)) <span class="comment">// 输出: true</span></span><br><span class="line">    fmt.Println(strings.Contains(<span class="string">&quot;hello world&quot;</span>, <span class="string">&quot;golang&quot;</span>)) <span class="comment">// 输出: false</span></span><br><span class="line">    fmt.Println(strings.ToLower(<span class="string">&quot;HELLO WORLD&quot;</span>)) <span class="comment">// 输出: hello world</span></span><br><span class="line">    fmt.Println(strings.ToUpper(<span class="string">&quot;hello world&quot;</span>)) <span class="comment">// 输出: HELLO WORLD</span></span><br><span class="line">    result := strings.Split(<span class="string">&quot;a,b,c,d&quot;</span>, <span class="string">&quot;,&quot;</span>)</span><br><span class="line">    fmt.Println(result) <span class="comment">// 输出: [a b c d]fmt.Println(strings.Replace(&quot;hello world&quot;, &quot;world&quot;, &quot;golang&quot;, 1)) // 输出: hello golang</span></span><br><span class="line">    result := strings.Join([]<span class="keyword">string</span>&#123;<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>, <span class="string">&quot;d&quot;</span>&#125;, <span class="string">&quot;,&quot;</span>)</span><br><span class="line">    fmt.Println(result) <span class="comment">// 输出: a,b,c,d</span></span><br><span class="line">    fmt.Println(strings.Index(<span class="string">&quot;hello world&quot;</span>, <span class="string">&quot;world&quot;</span>)) <span class="comment">// 输出: 6</span></span><br><span class="line">    fmt.Println(strings.Index(<span class="string">&quot;hello world&quot;</span>, <span class="string">&quot;golang&quot;</span>)) <span class="comment">// 输出: -1</span></span><br><span class="line">    fmt.Println(strings.HasPrefix(<span class="string">&quot;hello world&quot;</span>, <span class="string">&quot;hello&quot;</span>)) <span class="comment">// 输出: true</span></span><br><span class="line">    fmt.Println(strings.HasSuffix(<span class="string">&quot;hello world&quot;</span>, <span class="string">&quot;world&quot;</span>)) <span class="comment">// 输出: true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;io&quot;</span></span><br><span class="line">	<span class="string">&quot;io/ioutil&quot;</span> <span class="comment">//与java不同，go要求在导入子包时必须显式地导入</span></span><br><span class="line">    <span class="string">&quot;path/filepath&quot;</span></span><br><span class="line">    <span class="string">&quot;os&quot;</span></span><br><span class="line">    <span class="string">&quot;bufio&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h4 id="获得当前路径"><a href="#获得当前路径" class="headerlink" title="获得当前路径"></a>获得当前路径</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cwd, _ := os.Getwd() <span class="comment">// 获取当前工作目录，由你运行程序时所在的目录决定，比方说你在c路径运行一个e路径的文件，工作目录还是c路径</span></span><br><span class="line">exePath:=os.Args[<span class="number">0</span>]<span class="comment">//运行该程序时指定的路径,注意：如果是本地调试运行没打包的化，会生成的临时可执行文件，如C:\Users\DELL\AppData\Local\Temp\GoLand\___go_build_test_go.exe</span></span><br><span class="line">exePath, err := os.Executable()</span><br></pre></td></tr></table></figure>
+<h4 id="路径处理"><a href="#路径处理" class="headerlink" title="路径处理"></a>路径处理</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">path := filepath.Join(<span class="string">&quot;api&quot;</span>, <span class="string">&quot;mayylu&quot;</span>, <span class="string">&quot;file.txt&quot;</span>)<span class="comment">//api\mayylu\file.txt</span></span><br><span class="line">cleanPath := filepath.Clean(path) <span class="comment">//规范化</span></span><br><span class="line">dir, file := filepath.Split(path)</span><br><span class="line">dir:=filepath.Dir(path)</span><br><span class="line">absPath, err := filepath.Abs(<span class="string">&quot;file.txt&quot;</span>) <span class="comment">// 转换相对路径为绝对路径</span></span><br><span class="line">ext := filepath.Ext(path)</span><br></pre></td></tr></table></figure>
+<h4 id="获取文件的状态"><a href="#获取文件的状态" class="headerlink" title="获取文件的状态"></a>获取文件的状态</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_, err := os.Stat(config)  </span><br><span class="line"><span class="keyword">if</span> os.IsNotExist(err) &#123;    <span class="comment">// 判断文件是否不存在</span></span><br><span class="line">    <span class="comment">// 如果文件不存在</span></span><br><span class="line">    err := os.Mkdir(<span class="string">&quot;new_directory&quot;</span>, <span class="number">0755</span>) <span class="comment">// 创建目录，权限为 0755</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">file,_ := os.Open(<span class="string">&quot;test.txt&quot;</span>) <span class="comment">//简化的文件打开函数，通常用于以 只读 的方式打开文件</span></span><br><span class="line"><span class="keyword">defer</span> file.Close()</span><br><span class="line">byteRes, _ := ioutil.ReadAll(file)    <span class="comment">// 返回存放结果</span></span><br><span class="line">fmt.Println(<span class="keyword">string</span>(byteRes))</span><br><span class="line"></span><br><span class="line">data, _ := ioutil.ReadFile(<span class="string">&quot;test.txt&quot;</span>)</span><br><span class="line">fmt.Println(<span class="keyword">string</span>(data))</span><br><span class="line"></span><br><span class="line"><span class="comment">//利用Scanner按行读取</span></span><br><span class="line">datas := []<span class="keyword">string</span>&#123;&#125;</span><br><span class="line">scanner := bufio.NewScanner(file)    </span><br><span class="line"><span class="keyword">for</span> scanner.Scan()&#123;</span><br><span class="line">		datas = <span class="built_in">append</span>(datas, scanner.Text())</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="写文件"><a href="#写文件" class="headerlink" title="写文件"></a>写文件</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">os.O_RDONLY：只读模式。</span></span><br><span class="line"><span class="comment">os.O_WRONLY：只写模式。</span></span><br><span class="line"><span class="comment">os.O_RDWR：读写模式。</span></span><br><span class="line"><span class="comment">os.O_CREATE：如果文件不存在，则创建文件。</span></span><br><span class="line"><span class="comment">os.O_APPEND：追加模式，写入内容时会自动追加到文件末尾。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">file,_ := os.OpenFile(<span class="string">&quot;test.txt&quot;</span>, os.O_RDWR | os.O_APPEND | os.O_CREATE, <span class="number">0666</span>) <span class="comment">// 按照特定权限打开，0666为新创建文件的权限</span></span><br><span class="line"><span class="keyword">defer</span> file.Close()</span><br><span class="line"></span><br><span class="line">data := []<span class="keyword">byte</span>(<span class="string">&quot;hello d4m1ts&quot;</span>)</span><br><span class="line">count, _ := file.Write(data)    <span class="comment">// 按字节写入，返回的count为写入的字节数</span></span><br><span class="line">count, _ = file.WriteString(<span class="string">&quot;\nHello D4m1ts&quot;</span>)    <span class="comment">// 按字符串写入</span></span><br><span class="line">file.Sync()    <span class="comment">//如果没有调用 file.Sync()，默认在文件关闭时自动同步文件的内容</span></span><br><span class="line"></span><br><span class="line">data := []<span class="keyword">byte</span>(<span class="string">&quot;hello d4m1ts&quot;</span>)</span><br><span class="line">ioutil.WriteFile(<span class="string">&quot;test.txt&quot;</span>, data, <span class="number">0666</span>)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;os/exec&quot;</span></span><br><span class="line">	<span class="string">&quot;runtime&quot;</span></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line">s:=os.Args[<span class="number">1</span>:]<span class="comment">//是用户在运行程序时传入的实际参数（如果有的话）</span></span><br><span class="line">sysType := runtime.GOOS <span class="comment">//获取当前程序运行的操作系统名称</span></span><br><span class="line"></span><br><span class="line">i:=time.Now().Unix() <span class="comment">//获得时间戳</span></span><br></pre></td></tr></table></figure>
+<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;os/exec&quot;</span></span><br><span class="line">	<span class="string">&quot;runtime&quot;</span></span><br><span class="line">)</span><br><span class="line">cmd := exec.Command(<span class="string">&quot;ls&quot;</span>, <span class="string">&quot;-l&quot;</span>)<span class="comment">//命令执行</span></span><br><span class="line">output, _ := cmd.CombinedOutput()</span><br><span class="line">fmt.Println(<span class="keyword">string</span>(output))</span><br><span class="line"></span><br><span class="line">os.Exit(<span class="number">0</span>) <span class="comment">// 正常退出</span></span><br><span class="line">os.Exit(<span class="number">1</span>) <span class="comment">// 错误退出</span></span><br></pre></td></tr></table></figure>
+<h3 id="HTTP请求"><a href="#HTTP请求" class="headerlink" title="HTTP请求"></a>HTTP请求</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;io/ioutil&quot;</span></span><br><span class="line">    <span class="string">&quot;net/http&quot;</span></span><br><span class="line">    <span class="string">&quot;net/url&quot;</span></span><br><span class="line">)</span><br><span class="line">    <span class="comment">//直接http post</span></span><br><span class="line">    http.Post(u, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>, strings.NewReader(<span class="string">&quot;aa=bb&quot;</span>))<span class="comment">//将字符串封装成io.Reader类型的对象</span></span><br><span class="line">    resp, err := http.Post(url, <span class="string">&quot;application/json&quot;</span>, bytes.NewBuffer(jsonData))</span><br><span class="line"></span><br><span class="line">    <span class="comment">//直接http get</span></span><br><span class="line">    baseURL := <span class="string">&quot;https://www.baidu.com/&quot;</span></span><br><span class="line">    Url, _ := baseURL.Parse(u)</span><br><span class="line">    param.Set(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;d4m1ts&quot;</span>)</span><br><span class="line">    Url.RawQuery = param.Encode()<span class="comment">//url编码，并设置参数</span></span><br><span class="line">    <span class="comment">//fmt.Sprintf(&quot;%s?%s&quot;, baseURL, params.Encode())</span></span><br><span class="line">    response,_ := http.Get(Url.String())    <span class="comment">// 发起get请求</span></span><br><span class="line">    <span class="keyword">defer</span> response.Body.Close()<span class="comment">//可写可不写，不强制</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个HTTP请求，但是不发送请求</span></span><br><span class="line">    u := <span class="string">&quot;http://httpbin.org/&quot;</span></span><br><span class="line">    req, _ := http.NewRequest(<span class="string">&quot;GET&quot;</span>, u, <span class="literal">nil</span>) <span class="comment">//nil 在 Go 中表示一个零值，用于表示一个空的或未初始化的变量，这里指没有post body数据</span></span><br><span class="line">    req.Header.Set(<span class="string">&quot;User-Agent&quot;</span>, <span class="string">&quot;Test GO&quot;</span>)<span class="comment">//自定义header头</span></span><br><span class="line">    transport := &amp;http.Transport&#123;</span><br><span class="line">	Proxy: http.ProxyFromEnvironment, <span class="comment">// 如果有代理，使用环境变量中配置的代理设置</span></span><br><span class="line">	DialContext: (&amp;net.Dialer&#123;</span><br><span class="line">		Timeout:   <span class="number">60</span> * time.Second,    <span class="comment">// 设置连接超时时间</span></span><br><span class="line">		KeepAlive: <span class="number">60</span> * time.Second,    <span class="comment">// 设置连接保持时间</span></span><br><span class="line">	&#125;).DialContext,                   <span class="comment">// 使用 DialContext 来自定义连接建立过程</span></span><br><span class="line">	MaxIdleConnsPerHost: <span class="number">-1</span>,          <span class="comment">// 限制每个主机的最大空闲连接数（负数表示不限制）</span></span><br><span class="line">	TLSClientConfig: &amp;tls.Config&#123;</span><br><span class="line">		InsecureSkipVerify: <span class="literal">true</span>,      <span class="comment">//跳过 SSL/TLS 证书验证</span></span><br><span class="line">	&#125;,</span><br><span class="line">	DisableKeepAlives: <span class="literal">true</span>,          <span class="comment">// 禁用 HTTP Keep-Alive，关闭持久连接</span></span><br><span class="line">&#125;</span><br><span class="line">    client := http.Client&#123;</span><br><span class="line">        Timeout: <span class="number">3</span>*time.Second,    <span class="comment">// 超时时间</span></span><br><span class="line">        Transport: transport, <span class="comment">//http.Transport是一个结构体，保存了连接管理配置信息</span></span><br><span class="line">        CheckRedirect: <span class="function"><span class="keyword">func</span><span class="params">(req *http.Request, via []*http.Request)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">			<span class="keyword">return</span> http.ErrUseLastResponse <span class="comment">/* 不进入重定向 */</span></span><br><span class="line">		&#125;,</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 发送刚才创建的请求</span></span><br><span class="line">    response, _ := client.Do(req)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fmt.Println(response.StatusCode)</span><br><span class="line">    fmt.Println(response.Header.Get(<span class="string">&quot;Server&quot;</span>))</span><br><span class="line">    body, _ := ioutil.ReadAll(response.Body)</span><br><span class="line">    fmt.Println(<span class="keyword">string</span>(body))</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="其他在开发中常用的包"><a href="#其他在开发中常用的包" class="headerlink" title="其他在开发中常用的包"></a>其他在开发中常用的包</h2><h3 id="gopkg-in-yaml-v3"><a href="#gopkg-in-yaml-v3" class="headerlink" title="gopkg.in/yaml.v3"></a>gopkg.in/yaml.v3</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">cache:</span></span><br><span class="line">  <span class="attr">enable :</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">list :</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">aaa</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">bbb</span></span><br><span class="line"><span class="attr">mysql:</span></span><br><span class="line">  <span class="attr">user :</span> <span class="string">root</span></span><br><span class="line">  <span class="attr">password :</span> <span class="string">haha</span></span><br><span class="line">  <span class="attr">port :</span> <span class="number">3306</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">Fingerprint</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;gopkg.in/yaml.v3&quot;</span></span><br><span class="line">    <span class="string">&quot;io/ioutil&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    <span class="comment">// 定义结构体</span></span><br><span class="line">    <span class="keyword">type</span> Yaml <span class="keyword">struct</span> &#123;</span><br><span class="line">        Cache <span class="keyword">struct</span>&#123;</span><br><span class="line">            Enable <span class="keyword">bool</span> <span class="string">`yaml:&quot;enable&quot;`</span></span><br><span class="line">            List []<span class="keyword">string</span> <span class="string">`yaml:&quot;list,flow&quot;`</span></span><br><span class="line">        &#125;</span><br><span class="line">        Mysql <span class="keyword">struct</span>&#123;</span><br><span class="line">            User <span class="keyword">string</span> <span class="string">`yaml:&quot;user&quot;`</span></span><br><span class="line">            Password <span class="keyword">string</span> <span class="string">`yaml:&quot;password&quot;`</span></span><br><span class="line">            Port <span class="keyword">int</span> <span class="string">`yaml:&quot;port&quot;`</span></span><br><span class="line">        &#125;</span><br><span class="line">        Type <span class="keyword">string</span> <span class="string">`yaml:&quot;type,omitempty&quot;`</span></span><br><span class="line">    &#125;</span><br><span class="line">    result := <span class="built_in">new</span>(Yaml)</span><br><span class="line">    yamlFile, _ := ioutil.ReadFile(<span class="string">&quot;test.yml&quot;</span>)</span><br><span class="line">    _ = yaml.Unmarshal(yamlFile, result) <span class="comment">//提取yaml</span></span><br><span class="line">    result.Cache.Enable:=True</span><br><span class="line"></span><br><span class="line">    yamlFile, _ := os.OpenFile(<span class="string">&quot;test.yml&quot;</span>, os.O_RDWR|os.O_CREATE|os.O_TRUNC, <span class="number">0777</span>)</span><br><span class="line">	<span class="keyword">defer</span> yamlFile.Close()</span><br><span class="line">	enc := yaml.NewEncoder(yamlFile)</span><br><span class="line">	err := enc.Encode(result)<span class="comment">//写yaml</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="json快速解析"><a href="#json快速解析" class="headerlink" title="json快速解析"></a>json快速解析</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;encoding/json&quot;</span></span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/json-iterator/go&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/tidwall/gjson&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/tidwall/sjson&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义结构体，变量名注意大写，因为跨到json包了</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name <span class="keyword">string</span></span><br><span class="line">    Age <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 初始化结构体</span></span><br><span class="line">    user := User&#123;</span><br><span class="line">        Name: <span class="string">&quot;d4m1ts&quot;</span>,</span><br><span class="line">        Age: <span class="number">18</span>,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 序列化，转字符串</span></span><br><span class="line">    s1, _ := json.Marshal(user)</span><br><span class="line">    fmt.Println(<span class="keyword">string</span>(s1))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 反序列化，恢复为原来的结构</span></span><br><span class="line">    user2 := User&#123;&#125;</span><br><span class="line">    json.Unmarshal(s1, &amp;user2)</span><br><span class="line">    fmt.Println(user2)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">json := <span class="string">`&#123;&quot;name&quot;: &quot;John&quot;, &quot;age&quot;: 30, &quot;address&quot;: &#123;&quot;city&quot;: &#123;&quot;country&quot;: &quot;china&quot;, &quot;name&quot;: &quot;henu&quot;&#125;, &quot;zip&quot;: &quot;10001&quot;&#125;&#125;`</span></span><br><span class="line"><span class="comment">// 标准库 encoding/json 在使用时需要预先定义结构体，使用时显得不够灵活。这时候可以尝试使用其他模块</span></span><br><span class="line">	address := gjson.Get(json, <span class="string">&quot;address&quot;</span>)</span><br><span class="line">    enList:= address.Get(<span class="string">&quot;city&quot;</span>).Array()</span><br><span class="line"><span class="comment">// 修改字段值</span></span><br><span class="line">	json, _ = sjson.Set(json, <span class="string">&quot;name&quot;</span>, <span class="string">&quot;Jane&quot;</span>)</span><br><span class="line"><span class="comment">// 添加新字段</span></span><br><span class="line">    json, _ = sjson.Set(json, <span class="string">&quot;address.city&quot;</span>, <span class="string">&quot;New York&quot;</span>)</span><br><span class="line"><span class="comment">// 删除字段</span></span><br><span class="line">    json, _ = sjson.Delete(json, <span class="string">&quot;address.city&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// github.com/json-iterator/go 模块</span></span><br><span class="line">    name := jsoniter.Get([]<span class="keyword">byte</span>(json), <span class="string">&quot;name&quot;</span>)</span><br><span class="line">    fmt.Println(<span class="string">&quot;Name:&quot;</span>, name.ToString())  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="github-com-olekukonko-tablewriter"><a href="#github-com-olekukonko-tablewriter" class="headerlink" title="github.com/olekukonko/tablewriter"></a>github.com/olekukonko/tablewriter</h3><p>在终端输出表格</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/olekukonko/tablewriter&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">)</span><br><span class="line">	<span class="comment">// 创建一个新的表格写入器，输出到标准输出（终端）</span></span><br><span class="line">	table := tablewriter.NewWriter(os.Stdout)</span><br><span class="line">	<span class="comment">// 设置表头</span></span><br><span class="line">	table.SetHeader([]<span class="keyword">string</span>&#123;<span class="string">&quot;Name&quot;</span>, <span class="string">&quot;Age&quot;</span>, <span class="string">&quot;Country&quot;</span>&#125;)</span><br><span class="line">	<span class="comment">// 添加表格行</span></span><br><span class="line">	table.Append([]<span class="keyword">string</span>&#123;<span class="string">&quot;John&quot;</span>, <span class="string">&quot;30&quot;</span>, <span class="string">&quot;USA&quot;</span>&#125;)</span><br><span class="line">	table.Append([]<span class="keyword">string</span>&#123;<span class="string">&quot;Alice&quot;</span>, <span class="string">&quot;25&quot;</span>, <span class="string">&quot;Canada&quot;</span>&#125;)</span><br><span class="line">	table.Append([]<span class="keyword">string</span>&#123;<span class="string">&quot;Bob&quot;</span>, <span class="string">&quot;35&quot;</span>, <span class="string">&quot;UK&quot;</span>&#125;)</span><br><span class="line">	<span class="comment">// 渲染表格并输出</span></span><br><span class="line">	table.Render()</span><br><span class="line"></span><br><span class="line">data := [][]<span class="keyword">string</span>&#123;</span><br><span class="line">		&#123;<span class="string">&quot;Alice&quot;</span>, <span class="string">&quot;30&quot;</span>, <span class="string">&quot;USA&quot;</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;Bob&quot;</span>, <span class="string">&quot;25&quot;</span>, <span class="string">&quot;UK&quot;</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;Charlie&quot;</span>, <span class="string">&quot;35&quot;</span>, <span class="string">&quot;Canada&quot;</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">table := tablewriter.NewWriter(os.Stdout)          <span class="comment">// 创建一个新的表格写入器，输出到标准输出（终端）</span></span><br><span class="line">table.SetAlignment(tablewriter.ALIGN_CENTER)       <span class="comment">// 设置表格列的对齐方式为居中</span></span><br><span class="line">table.AppendBulk(data)                             <span class="comment">// 批量添加数据到表格</span></span><br><span class="line">table.Render()                                     <span class="comment">// 渲染并输出表格</span></span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Golang/"># Golang</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2024/11/28/android/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91(%E8%BF%98%E5%9C%A8%E5%86%99)/">安卓逆向(还在写)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
