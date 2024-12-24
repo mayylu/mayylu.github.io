@@ -216,24 +216,62 @@
         </header>
 
         <div class="post-content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>HTTP（HyperText Transfer Protocol，超文本传输协议),<br>web在其基础上进行通信.<br> <span id="more"></span></p>
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>HTTP (HyperText Transfer Protocol，超文本传输协议),<br>web在其基础上进行通信.<br> <span id="more"></span></p>
 <h3 id="1-1-网络基础TCP-IP"><a href="#1-1-网络基础TCP-IP" class="headerlink" title="1.1 网络基础TCP/IP"></a>1.1 网络基础TCP/IP</h3><p>通常使用的网络（包括互联网）是在TCP/IP协议族的基础上运作的。而HTTP属于它内部的一个子集.</p>
 <h4 id="1-1-1-TCP-IP的分层管理"><a href="#1-1-1-TCP-IP的分层管理" class="headerlink" title="1.1.1 TCP/IP的分层管理"></a>1.1.1 TCP/IP的分层管理</h4><p>TCP/IP协议族里重要的一点就是分层。TCP/IP协议族按层次分别分为以下4层：  </p>
 <p>应用层,传输层,网络层,数据链路层。  </p>
 <p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/3bf33a87e950352ad2fb2dca5d43fbf2b3118b5d.webp" alt="3bf33a87e950352ad2fb2dca5d43fbf2b3118b5d">    </p>
 <ul>
-<li>应用层<br>应用层是TCP/IP协议的第一层，是直接为应用进程提供服务的。   </li>
-</ul>
-<p><strong>FTP</strong>（File Transfer Protocol，文件传输协议）和<strong>DNS</strong>（Domain Name System，域名系统）服务就是其中两类。HTTP协议也处于该层。  </p>
-<ul>
-<li>运输层<br>作为TCP/IP协议的第二层，运输层在整个TCP/IP协议中起到了中流砥柱的作用。且在运输层中，<em>TCP和UDP</em>也同样起到了中流砥柱的作用。  </li>
-<li>网络层<br>网络层在TCP/IP协议中的位于第三层。在TCP/IP协议中网络层可以进行网络连接的建立和终止以及<em>IP地址</em>的寻找等功能。   </li>
+<li><p>数据链路层 (Data Link Layer)：</p>
+<pre><code>  主要协议：Ethernet、PPP（点对点协议）、HDLC、ARP（地址解析协议）。
+  功能：提供节点之间的帧传输，负责物理地址的管理和错误检测。
+</code></pre>
+</li>
+<li><p>网络层 (Network Layer)：</p>
+<pre><code>  主要协议：IP（包括IPv4和IPv6）、ICMP（互联网控制消息协议）、IGMP（互联网组管理协议）。
+  功能：负责数据包的路由和转发，处理逻辑地址（IP地址）。
+</code></pre>
+</li>
+<li><p>传输层 (Transport Layer)：</p>
+<pre><code>  主要协议：TCP（传输控制协议）、UDP（用户数据报协议）、SCTP（流控制传输协议）。
+  功能：提供端到端的通信服务，确保数据的可靠性和顺序（TCP）或提供快速传输（UDP）。
+</code></pre>
+</li>
+<li><p>应用层 (Application Layer)：</p>
+<pre><code>  主要协议：HTTP、HTTPS、FTP、SMTP、DNS等。
+  功能：为用户和应用程序提供接口，支持网络应用的运行。   
+</code></pre>
+</li>
 </ul>
 <h4 id="1-1-2网络层的地址—IP协议"><a href="#1-1-2网络层的地址—IP协议" class="headerlink" title="1.1.2网络层的地址—IP协议"></a>1.1.2网络层的地址—IP协议</h4><p>IP协议的作用是把各种数据包传送给对方。而要保证确实传送到对方那里，则需要满足各类条件。其中两个重要的条件是IP地址和MAC地址（Media Access Control Address）网络之间还必须有传送的机制，才能将IP信息包通过一个个的网络传送到目的地。此种传送机制称为IP路由.       </p>
 <p>TCP位于传输层，提供可靠的字节流服务.<br><strong>节流服务</strong>（Byte Stream Service）是指，为了方便传输，将大块数据分割成以报文段（segment）为单位的数据包进行管理。而可靠的传输服务是指，能够把数据准确可靠地传给对方。 </p>
 <p><strong>三次握手策略</strong>         </p>
 <p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/20190214095421560.png" alt="20190214095421560"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20240312143302.png" alt="QQ截图20240312143302"><br>发送端首先发送一个带SYN标志的数据包给对方。接收端收到后，回传一个带有SYN/ACK标志的数据包以示传达确认信息。最后，发送端再回传一个带ACK标志的数据包，代表“握手”结束。   </p>
+<p>作用：</p>
+<ol>
+<li><p><strong>可靠的数据传输</strong>：</p>
+<ul>
+<li>通过三次握手可以确保双方都能够正确地接收对方的数据包，从而保证了连接的可靠性。每次握手都是对前面一个步骤的确认。</li>
+</ul>
+</li>
+<li><p><strong>防止重复发送同一连接</strong>： //确保双方都知道连接成功了</p>
+<ul>
+<li>如果只用两次握手，可能出现这样一种情况：客户端发出的第一个连接请求（SYN）由于网络问题延迟到达服务器，而在延迟期间客户端重新发起了新的连接请求并完成了正常的三次握手过程。此时，延迟的旧请求到达服务器，服务器会误以为是一个新的连接请求而接受并发送SYN-ACK回应。这种情况下，如果只使用两次握手，客户端就会错误地认为连接已经建立，但实际上服务器并不知道这是重复的请求。三次握手可以避免这种情况的发生，因为客户端会在第二次握手后等待对方的确认（ACK），如果未收到则不会认为连接已建立。</li>
+</ul>
+</li>
+<li><p><strong>确定初始序列号</strong>：</p>
+<ul>
+<li>在三次握手的过程中，客户端和服务器都会发送自己的初始序列号（ISN）。这些序列号用于标识后续数据传输中的数据片段，确保数据的顺序性和完整性。通过三次握手，双方能够确定彼此的初始序列号，为后续的数据传输做好准备。</li>
+</ul>
+</li>
+<li><p><strong>同步状态信息</strong>：</p>
+<ul>
+<li>在三次握手的过程中，双方还可以同步其他状态信息，如窗口大小等，这对于后续的数据传输非常重要。</li>
+</ul>
+</li>
+</ol>
+<p>综上所述，三次握手机制不仅保证了连接的建立是双方明确同意的结果，而且还确保了连接的可靠性、数据的完整性和有序性。因此，三次握手是TCP连接建立过程中不可或缺的一部分。</p>
 <h4 id="1-1-3应用层的标志—DNS服务"><a href="#1-1-3应用层的标志—DNS服务" class="headerlink" title="1.1.3应用层的标志—DNS服务"></a>1.1.3应用层的标志—DNS服务</h4><p><strong>DNS</strong>(Domain Name System)服务是和HTTP协议一样位于应用层的协议。它提供域名到IP地址之间的解析服务。   </p>
 <p><strong>URI的格式</strong>      </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">protocol :// hostname[:port] / path / [;parameters][?query]#fragment     </span><br><span class="line">协议//&lt;用户名&gt;:&lt;密码&gt;@&lt;主机域名&gt;:&lt;端口&gt;/&lt;url路径&gt;?查询字符串#识别符        </span><br><span class="line"></span><br><span class="line">如果有host，前面是要加 // 的，因此对于 http 等这些网络地址来讲http://www.baidu.sb:80/ad/cas写成这样很自然。 </span><br><span class="line"></span><br><span class="line">如果是文件，文件没有 host ，所以中间的部分就不要了，就变成了file:///ad/cash </span><br><span class="line">对于文件来讲，似乎 // 不要也是没有任何关系的呢 </span><br><span class="line"></span><br><span class="line">在内网中，其他服务器的文件地址是 file://host/path/file.ext</span><br><span class="line">本机不用 host 部分，就直接 file:/// 即可。</span><br></pre></td></tr></table></figure>

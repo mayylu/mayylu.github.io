@@ -354,6 +354,10 @@
 <li>Referer 参数：–referer<br>当“–level”设置为3或更高时，Sqlmap会检测Referer是否存在注入漏洞<br>–proxy=                                使用代理(可配合burp跑https)<br>–delay=                                设置延迟时间（两个请求之间)<br>–common-tables                         暴力破解表<br>–common-colomns                        暴力破解列<br>–threads=                              使用多少线程<br>–batch                                 选择默认选项</li>
 </ul>
 <p>也可以用文件的方式(更简洁) sqlmap.py -r c:\1.txt -p username –dbs</p>
+<ol start="5">
+<li>指定注入类型<br>要指定注入方式，可以在使用sqlmap时使用–technique参数。该参数可以接受以下注入方式的值：</li>
+</ol>
+<p>–technique=X<br>    B: 布尔型注入<br>    E: 错误型注入<br>    U: 基于联合查询的注入<br>    T: 基于时间延迟的注入<br>    S: 基于堆栈查询的注入<br>    Q: 基于二次查询的注入<br>    X: 基于盲注的注入（无回显）<br>    F: 文件型注入<br>    D: 基于DNS的注入<br>    H: 基于HTTP头的注入<br>    R: 基于重叠查询的注入<br>    C: 基于信用卡号的注入</p>
 <ol start="6">
 <li>提权命令</li>
 </ol>
