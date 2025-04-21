@@ -15,7 +15,7 @@
 
 
 
-<title>安卓逆向(还在写) | mayylu&#39;s blog</title>
+<title>资产外的信息收集 | mayylu&#39;s blog</title>
 
 
 
@@ -198,7 +198,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">安卓逆向(还在写)</h1>
+            <h1 class="post-title">资产外的信息收集</h1>
             
                 <div class="post-meta">
                     
@@ -207,14 +207,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 28, 2024&nbsp;&nbsp;</a>
+                        Date: <a href="#">四月 11, 2025&nbsp;&nbsp;</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Android/">Android</a>
+                                <a href="/categories/misc/">misc</a>
                             
                         </span>
                     
@@ -223,12 +223,23 @@
         </header>
 
         <div class="post-content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近参加了某国企的无领导小组讨论面试，真的是无语死了，十个人抢一个岗位，开局连自我介绍都没有，讨论内容关于钓鱼防范的，全程跟老太太吵架一样，我是一点嘴都插不上，说的也尽是些“懒婆娘的裹脚布”，满嘴官话，还有个女生坏的狠，离结束还有五分钟就说要总结了，就是不给你一点发言的机会，再也不参加这沙比面试了</p>
+            <p>本来是想写比较全面的web资产信息打点的，自己的毕设也是这一方面的，但是渗透的前期打点牵扯到的知识面比较广，自己也是一个懒货很多工具只知道怎么用源码没怎么分析过，所有其中很多细节都讲不清楚。</p>
+<p>再一个就是自己从大二开始就一直想要edusrc的证书，但是自己也没人带，自己只会ctf和代码审计，根本无从下手。年前的时候花了大概一个月挖了一下，还算好挖吧，学校的系统都比较老，但是这又牵扯到了另一个问题了。学校的资产往往都收缩的很紧，如果没有校园网账号，挖的时候就非常难受了，经常花了一天时间收集信息，但是晚上一看都不是什么有用的资产，后来干脆不收集信息了直接挖公众号了。所以目标资产外的信息收集也是很关键的，比如社工，源码信息，供应链等</p>
+<p>由于自己又不是资深红队，对这方面的信息了解的也不多，就简单写写，后面有机会遇到了在补，发现自己越来越啰嗦了。</p>
 <span id="more"></span>
-<h2 id="APK文件结构"><a href="#APK文件结构" class="headerlink" title="APK文件结构"></a>APK文件结构</h2><p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20241128-142228.png" alt="QQ20241128-142228"><br>初步分析分为这几类</p>
-<h3 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h3><p>对应classes.dex</p>
-<h3 id="资源文件"><a href="#资源文件" class="headerlink" title="资源文件"></a>资源文件</h3><h4 id="静态资源文件"><a href="#静态资源文件" class="headerlink" title="静态资源文件"></a>静态资源文件</h4><p>res目录             res目录存放资源文件，包括图片，字符串等等，APK的脸蛋由他的layout文件设计<br>resources.arsc文件     resources.arsc是编译后的二进制资源文件，它是一个映射表，映射着资源和id，通过R文件中的id就可以找到对应的资源</p>
-<h4 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h4><p>AndroidMainfest.xml文件     APK的应用清单信息，它描述了应用的名字，版本，权限，引用的库文件等等信息<br>META-INF目录                 保存应用的签名信息，签名信息可以验证APK文件的完整性，相当于APK的身份证(验证文件是否又被修改)</p>
+
+<h2 id="信息收集语法"><a href="#信息收集语法" class="headerlink" title="信息收集语法"></a>信息收集语法</h2><h3 id="搜索引擎语法"><a href="#搜索引擎语法" class="headerlink" title="搜索引擎语法"></a>搜索引擎语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//谷歌</span><br><span class="line">site:xxx.edu.cn &quot;学号&quot; &quot;身份证号&quot; filetype:xlsx</span><br><span class="line">site:xxx.edu.cn intext:初始密码|默认密码 &amp;&amp; （&quot;附件&quot;）</span><br></pre></td></tr></table></figure>
+
+<p>除此之外，我感觉现在的ai也是一种特殊的搜索引擎，比如已知Apache Shiro存在一种特定的逻辑漏洞，我们就可以看看是否在其他产品上存在该漏洞</p>
+<p><code>Apache Shiro是一个Java 权限认证框架，除此之外github上还有没有类似的框架，说出20个</code><br>然后我们根据产品一一测试即可</p>
+<h3 id="GitHub语法"><a href="#GitHub语法" class="headerlink" title="GitHub语法"></a>GitHub语法</h3><p>一些学生会写自动化小工具比如选课脚本，图书馆通知，课堂大作业项目等，往往未对代码进行脱敏就把源码放到库上了，可能对于学生来说，学校资源没什么用身边人都有，但是我们如果能够在 GitHub 找到过某高校的一个学生账号，就可以连接校园VPN攻击内网服务了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//搜索限制</span><br><span class="line">pushed:&gt;2019-01-01 created:&gt;2019-01-01</span><br><span class="line">language:java</span><br><span class="line">//搜索内容</span><br><span class="line">&quot;代码片段用引号包裹&quot;</span><br><span class="line">&quot;strings.ReplaceAll(&quot;   &quot;\&quot;../\&quot;, \&quot;\&quot;)&quot;    NOT &quot;.Clean(&quot; language:Go</span><br><span class="line">filename:.env filename:bash_history filename:_rsa filename:jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin.xml</span><br></pre></td></tr></table></figure>
+<p>另外，如果在挖某开源系统的漏洞，可以看看这个系统的issue，说不定一个bug的背后就藏在一个漏洞</p>
+<h3 id="网盘泄露"><a href="#网盘泄露" class="headerlink" title="网盘泄露"></a>网盘泄露</h3><h2 id="供应链"><a href="#供应链" class="headerlink" title="供应链"></a>供应链</h2><p>供应链攻击分为两种，一种就是攻击供应商，拿到目标留着供应商的配置信息或者源码，另外一种就是攻击有相同源码的同源站，获取靶标的信息如同源站的密钥都是一样的，路径信息，配置信息，如果能拿下同源站，黑盒测试就变成代码审计了</p>
+<h3 id="资产搜索引擎"><a href="#资产搜索引擎" class="headerlink" title="资产搜索引擎"></a>资产搜索引擎</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//直接搜索公司名称，如果版权没删就能搜到</span><br><span class="line">&quot;公司名称&quot; &amp;&amp; org=&quot;China Education and Research Network Center&quot;//fofa</span><br><span class="line">body=&quot;公司名称&quot;&amp;&amp;ip.isp=&quot;教育&quot; //hunter</span><br><span class="line"></span><br><span class="line">title=&quot;&quot;     //fofa</span><br><span class="line">web.title=&quot;&quot; //hunter</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="社工"><a href="#社工" class="headerlink" title="社工"></a>社工</h2><h3 id="社交软件"><a href="#社交软件" class="headerlink" title="社交软件"></a>社交软件</h3><p>这个我遇到的比较多，比如说学校的vpn密码默认身份证号后六位，账号是学号，你就可以在抖音或者小红书上找找看有没有没打码的录取通知书，我自己试了好几个学校，一般是有的，抖音要比小红书多一点，抖音大部分都是家长发出来炫耀的，老一辈人大多都习惯待在自己的小圈子里，根本没有意识到现在已经是大数据时代了，没想到有人会顺着网线找过来</p>
 
         </div>
 
@@ -238,10 +249,6 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/Android/"># Android</a>
-                    
-                        
                 </span>
             </div>
             <div>
@@ -252,10 +259,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2024/12/12/Golang/golang%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5/">golang语法速查</a>
+                <a class="prev" rel="prev" href="/2025/04/18/android/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91(%E8%BF%98%E5%9C%A8%E5%86%99)/">安卓逆向</a>
             
             
-            <a class="next" rel="next" href="/2024/11/11/java/package/jboss%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">jboss 反序列化</a>
+            <a class="next" rel="next" href="/2025/03/20/front/js/Vue.js%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/">Vue 简单学习</a>
             
         </section>
 
