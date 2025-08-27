@@ -313,7 +313,10 @@
 <p><code>select * from words where id = &#39;&#39;;</code></p>
 <p>我们将表1919810931114514名字改为words，flag列名字改为id，那么就能得到flag的内容了。<br>修改表名和列名的语法如下：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--修改表名(将表名user改为users)</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">user</span> rename <span class="keyword">to</span> users;</span><br><span class="line"></span><br><span class="line"><span class="comment">--修改列名(将字段名username改为name)</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> users change uesrname name <span class="type">varchar</span>(<span class="number">30</span>); </span><br></pre></td></tr></table></figure>
-
+<h2 id="预编程"><a href="#预编程" class="headerlink" title="预编程"></a>预编程</h2><p>预编程是web层为了提高MySQL的运行效率，通过先构建语法树然后再带入查询参数，避免了一次执行构建一次语法树的繁琐，预编译的时候会导致参数带上引号</p>
+<p>web服务器与数据库交互如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Prepare	SELECT password FROM test where username= ?      #第一次是构建设定的语法树，第n次则从数据库的共享内存里匹配已经构建好的语法树，从而减轻负担</span><br><span class="line">Execute	SELECT password FROM test where username= &#x27;root&#x27; #为参数自动添加引号，并转义后拼接，有些预编程直接将参数hex编码</span><br></pre></td></tr></table></figure>
+<p>而对于不可参数化的位置，预编译是行不通的，<strong>即不能加引号的位置就不能预编译</strong>，因为不同索引可能导致不同的查询计划，导致无法确定</p>
 <h2 id="SQLMAP的使用"><a href="#SQLMAP的使用" class="headerlink" title="SQLMAP的使用"></a>SQLMAP的使用</h2><p>手动注入费时费力,我们可以通过工具来提高效率,但使用工具的前提是我们发现了漏洞.  </p>
 <ol>
 <li>系统命令   </li>

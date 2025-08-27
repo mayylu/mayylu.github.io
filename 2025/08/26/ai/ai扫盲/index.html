@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>ai扫盲 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">ai扫盲</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">八月 26, 2025&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/ai/">ai</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>该死的培训终于结束了，这一个月在生活上发生了很多事，可能这就是身份的转变吧，也让我在人情世故方面成长了不少。刚到公司也没什么事情，暂时也没有动力搞渗透，就想着学学ai吧，这里简单介绍一下ai的基本使用和一些概念的东西，后续有时间再学学怎么调参，怎么搭建模型，希望以后随着技术的发展，可以让每个人都可以搭建属于自己的好用的大模型</p>
+<span id="more"></span>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>简单总结一下，后面一边理解一边改</p>
+<h3 id="LLM"><a href="#LLM" class="headerlink" title="LLM"></a>LLM</h3><p><strong>AI</strong>（Artificial Intelligence，人工智能）其实是大概念，包括任何能让机器表现出“智能行为”的技术，即机器可以基于规则、算法或数据做出决策，则都可以称作ai，大模型只是其中的一种实现方法</p>
+<p><strong>大模型</strong>是一种基于<strong>深度学习</strong>（通过多层神经网络学习复杂模式和规律的机器学习方法）的系统，它由<strong>神经网络</strong>（由大量互相连接的计算节点组成、模拟人脑处理信息的结构）构成，通过上亿到上千亿的<strong>参数</strong>（神经网络中可调节的权重和偏置，用来存储模式和规律）学习海量数据中的模式，从而在遇到新输入时进行预测或生成输出。</p>
+<p><strong>LLM</strong>大语言模型（Large Language Model） 是大模型的一个子类，专门用于 <strong>NLP</strong>自然语言处理（Natural Language Processing）。它可以通过学习大规模文本数据的模式和规律，从而实现对自然语言的理解和生成，语言作为思想的符号，是人类交流和表达的主要方式，因此LLM被视为是实现 <strong>通用人工智能（AGI）</strong>（即人做的机器都能做）的一个重要方向。<br>目前大部分LLM基于<strong>Transformer</strong>架构构建的，Transformer是Google于2017年提出的一种全新的神经网络结构，主要用于自然语言处理。它借鉴了<strong>RNN</strong>（循环神经网络, Recurrent Neural Network）和<strong>CNN</strong>（卷积神经网络, Convolutional Neural Network）的思想。引入了注意力机制，实现 <strong>Encoder-Decoder 架构</strong></p>
+<h3 id="agent"><a href="#agent" class="headerlink" title="agent"></a>agent</h3><p><strong>agent</strong>智能体是指能够思考-行动-观察以实现目标的自主系统，<strong>AI Agent</strong>则是指利用 AI 技术实现的智能体<br>现在一般使用的是基于LLM的智能体，可以看成由两部分组成，大脑和身体，大脑即是用LLM进行推理从而作出决策，身体就是通过调用外部工具和内部工具或者函数来实现结果的执行程序</p>
+<h2 id="搭建简单的智能体"><a href="#搭建简单的智能体" class="headerlink" title="搭建简单的智能体"></a>搭建简单的智能体</h2><h3 id="LangChain"><a href="#LangChain" class="headerlink" title="LangChain"></a>LangChain</h3><p>LangChain是一个基于语言模型开发应用程序的编程开发框架，它提供了多种模块，通过这些模块可以构建出一个简单的自主决策、能执行任务的智能体（Agent）</p>
+<p>模型（Models）：包含各大语言模型的LangChain接口和调用细节，以及输出解析机制。<br>提示模板（Prompts）：用户每次输入的 Prompt，都会被选择性的拼接到上下文，形成新的条件，从而引导模型输出。<br>数据索引（Indexes）：搭建动态的知识库。并使其准备好与语言模型交互（包括文档加载程序、向量存储器、文本分割器和检索器）。<br>记忆（Memory）：通过短时记忆和长时记忆，在对话过程中存储和检索数据，让ChatBot记住你。<br>链（Chains）：LangChain中的核心机制，以特定方式封装各种功能，并通过一系列的组合，自动而灵活地完成任务。<br>代理（Agents）：另一个LangChain中的核心机制，通过“代理”让大模型自主调用外部工具和内部工具，使智能Agent成为可能。</p>
+<h4 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line">llm = ChatOpenAI(</span><br><span class="line">    api_key=<span class="string">&quot;sk-xxx&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://api.gptgod.online/v1/&quot;</span>,<span class="comment">#使用第三方中转API，还是调的OpenAI模型</span></span><br><span class="line">    temperature=<span class="number">0.7</span>,<span class="comment"># 越低回答越准确，越高回答越随机</span></span><br><span class="line">    max_tokens=<span class="number">300</span>,  <span class="comment"># 最大生成 token 数量</span></span><br><span class="line">    top_p=<span class="number">0.9</span>,            <span class="comment"># nucleus sampling，控制候选词概率覆盖率，越低越保守</span></span><br><span class="line">    frequency_penalty=<span class="number">0.5</span>, <span class="comment"># 惩罚重复词汇，减少单调性</span></span><br><span class="line">    presence_penalty=<span class="number">0.3</span>   <span class="comment"># 惩罚已经出现过的话题，输出更丰富</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(llm.invoke(<span class="string">&quot;你好&quot;</span>))</span><br></pre></td></tr></table></figure>
+<h4 id="提示词工程"><a href="#提示词工程" class="headerlink" title="提示词工程"></a>提示词工程</h4><h5 id="角色设定"><a href="#角色设定" class="headerlink" title="角色设定"></a>角色设定</h5><p>通过提示词预先设定角色，控制输出</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_core.prompts <span class="keyword">import</span> ChatPromptTemplate</span><br><span class="line"><span class="keyword">from</span> langchain_core.output_parsers <span class="keyword">import</span> StrOutputParser</span><br><span class="line">prompt = ChatPromptTemplate.from_messages([<span class="comment"># 创建提示模板</span></span><br><span class="line">    (<span class="string">&quot;system&quot;</span>, <span class="string">&quot;您是一个猫娘，请用可爱的语气回答问题。&quot;</span>),</span><br><span class="line">    (<span class="string">&quot;user&quot;</span>, <span class="string">&quot;&#123;input&#125;&quot;</span>)</span><br><span class="line">])</span><br><span class="line">output_parser = StrOutputParser()<span class="comment"># 选择输出模式，这里是字符串</span></span><br><span class="line">chain = prompt | llm|output_parser <span class="comment">#prompt-&gt;llm-&gt;output_parser</span></span><br><span class="line"><span class="built_in">print</span>(chain.invoke(&#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;你好呀~&quot;</span>&#125;))<span class="comment">#使用 LLM 链</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="知识库搭建"><a href="#知识库搭建" class="headerlink" title="知识库搭建"></a>知识库搭建</h5><p>在现有的知识库中检索最相关的知识，然后拼接到 Prompt 里，从而获取更加准确的答案</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_community.document_loaders <span class="keyword">import</span> WebBaseLoader</span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI, OpenAIEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain_community.vectorstores <span class="keyword">import</span> FAISS</span><br><span class="line"><span class="keyword">from</span> langchain_text_splitters <span class="keyword">import</span> RecursiveCharacterTextSplitter</span><br><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> create_retrieval_chain</span><br><span class="line"><span class="keyword">from</span> langchain.chains.combine_documents <span class="keyword">import</span> create_stuff_documents_chain</span><br><span class="line"><span class="keyword">from</span> langchain_core.prompts <span class="keyword">import</span> ChatPromptTemplate</span><br><span class="line"></span><br><span class="line">prompt = ChatPromptTemplate.from_template(<span class="string">&quot;&quot;&quot;仅根据提供的上下文回答以下问题:                                </span></span><br><span class="line"><span class="string">&lt;context&gt;</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string">&lt;/context&gt;</span></span><br><span class="line"><span class="string">Question: &#123;input&#125;&quot;&quot;&quot;</span>)</span><br><span class="line">document_chain = create_stuff_documents_chain(llm, prompt)<span class="comment">#创建文档链</span></span><br><span class="line">embeddings = OpenAIEmbeddings(<span class="comment"># 使用openai的embedding模型充当检索引擎</span></span><br><span class="line">    api_key=<span class="string">&quot;sk-xxx&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://api.gptgod.online/v1/&quot;</span>)</span><br><span class="line">docs = WebBaseLoader(<span class="string">&quot;https://mzh.moegirl.org.cn/%E7%8C%AB%E5%A8%98&quot;</span>).load()<span class="comment">#选择网页加载器来获取内容</span></span><br><span class="line">documents = RecursiveCharacterTextSplitter().split_documents(docs)<span class="comment"># 文本拆分</span></span><br><span class="line">vector = FAISS.from_documents(documents, embeddings)<span class="comment"># 向量数据库构建</span></span><br><span class="line">retriever = vector.as_retriever()<span class="comment"># 通过向量数据库创建检索器</span></span><br><span class="line"></span><br><span class="line">retrieval_chain = create_retrieval_chain(retriever, document_chain)<span class="comment"># 最后创建检索链，功能为在向量库里找最相关的知识 → 拼到 Prompt 里</span></span><br><span class="line">response = retrieval_chain.invoke(&#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;猫娘是什么&quot;</span>&#125;)<span class="comment"># 执行查询</span></span><br><span class="line"><span class="built_in">print</span>(response[<span class="string">&quot;answer&quot;</span>])<span class="comment">#也可以用StrOutputParser</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="短期记忆"><a href="#短期记忆" class="headerlink" title="短期记忆"></a>短期记忆</h5><p>每次调用链的时候，LangChain 会把 memory 里的历史对话拼接到 Prompt,所以memory也可以看作提示词工程的一部分</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">memory = ConversationBufferMemory(<span class="comment">#创建记忆</span></span><br><span class="line">    memory_key=<span class="string">&quot;chat_history&quot;</span>, </span><br><span class="line">    return_messages=<span class="literal">True</span>)  <span class="comment"># 将以消息列表的形式返回聊天记录，而不是单个字符串</span></span><br><span class="line">qa = ConversationalRetrievalChain.from_llm(</span><br><span class="line">    llm,    <span class="comment"># 模型</span></span><br><span class="line">    retriever=vectordb.as_retriever(),  <span class="comment"># 向量库</span></span><br><span class="line">    memory=memory)   <span class="comment"># 记忆</span></span><br><span class="line">result = qa(&#123;<span class="string">&quot;question&quot;</span>: <span class="string">&quot;你好啊&quot;</span>&#125;)</span><br><span class="line"><span class="built_in">print</span>(result[<span class="string">&#x27;answer&#x27;</span>])</span><br><span class="line">result = qa(&#123;<span class="string">&quot;question&quot;</span>: <span class="string">&quot;你还记得我上句话说的什么呀？&quot;</span>&#125;)</span><br><span class="line"><span class="built_in">print</span>(result[<span class="string">&#x27;answer&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h5 id="长期记忆"><a href="#长期记忆" class="headerlink" title="长期记忆"></a>长期记忆</h5><p>但是memory属于短期记忆，能记多少内容取决于模型的上下文窗口（token）大小，如果提示词加问题过长就会被强制截断<br>所以我们可以将历史对话储存在本地，使用embedding检索实现长期记忆</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">HISTORY_FILE = <span class="string">&quot;chat_history.json&quot;</span><span class="comment">#历史存储文件</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_history</span>():</span><span class="comment">#加载历史对话</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(HISTORY_FILE):</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(HISTORY_FILE, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            raw_history = json.load(f)</span><br><span class="line">        history = []</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> raw_history:</span><br><span class="line">            <span class="keyword">if</span> item[<span class="string">&quot;role&quot;</span>] == <span class="string">&quot;user&quot;</span>:</span><br><span class="line">                history.append(HumanMessage(content=item[<span class="string">&quot;content&quot;</span>]))<span class="comment"># 转换为 LangChain 消息对象</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                history.append(AIMessage(content=item[<span class="string">&quot;content&quot;</span>]))</span><br><span class="line">        <span class="keyword">return</span> history</span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_history</span>(<span class="params">history</span>):</span><span class="comment">#保存历史对话</span></span><br><span class="line">    raw_history = []</span><br><span class="line">    <span class="keyword">for</span> msg <span class="keyword">in</span> history:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(msg, HumanMessage):</span><br><span class="line">            raw_history.append(&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: msg.content&#125;)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(msg, AIMessage):</span><br><span class="line">            raw_history.append(&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;ai&quot;</span>, <span class="string">&quot;content&quot;</span>: msg.content&#125;)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(HISTORY_FILE, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        json.dump(raw_history, f, ensure_ascii=<span class="literal">False</span>, indent=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">retriever = vectorstore.as_retriever()</span><br><span class="line">history_prompt = ChatPromptTemplate.from_messages([<span class="comment">#构建历史对话检索器</span></span><br><span class="line">    MessagesPlaceholder(variable_name=<span class="string">&quot;chat_history&quot;</span>),<span class="comment">#对话历史的占位符</span></span><br><span class="line">    (<span class="string">&quot;user&quot;</span>, <span class="string">&quot;&#123;ipnut&#125;&quot;</span>),</span><br><span class="line">    (<span class="string">&quot;user&quot;</span>, <span class="string">&quot;鉴于上述对话，生成一个搜索查询以查找与对话相关的信息&quot;</span>)</span><br><span class="line">])</span><br><span class="line">history_aware_retriever = create_history_aware_retriever(llm, retriever, history_prompt)</span><br><span class="line"></span><br><span class="line">response_prompt = ChatPromptTemplate.from_messages([<span class="comment">#构建回答链</span></span><br><span class="line">    (<span class="string">&quot;system&quot;</span>, <span class="string">&quot;根据以下上下文回答用户的问题:\n\n&#123;context&#125;&quot;</span>),</span><br><span class="line">    MessagesPlaceholder(variable_name=<span class="string">&quot;chat_history&quot;</span>),</span><br><span class="line">    (<span class="string">&quot;user&quot;</span>, <span class="string">&quot;&#123;input&#125;&quot;</span>),</span><br><span class="line">])</span><br><span class="line">document_chain = create_stuff_documents_chain(llm, response_prompt)</span><br><span class="line">conversational_chain = create_retrieval_chain(history_aware_retriever, document_chain)<span class="comment">#通过对话回答问题</span></span><br><span class="line">chat_history = load_history() <span class="comment">#加载对话历史</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;已加载 <span class="subst">&#123;<span class="built_in">len</span>(chat_history)//<span class="number">2</span>&#125;</span> 轮历史对话。&quot;</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    user_input = <span class="built_in">input</span>(<span class="string">&quot;你: &quot;</span>)</span><br><span class="line">    response = conversational_chain.invoke(&#123;</span><br><span class="line">        <span class="string">&quot;chat_history&quot;</span>: chat_history,</span><br><span class="line">        <span class="string">&quot;input&quot;</span>: user_input</span><br><span class="line">    &#125;)</span><br><span class="line">    answer = response[<span class="string">&quot;answer&quot;</span>]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;AI:&quot;</span>, answer)</span><br><span class="line">    chat_history.append(HumanMessage(content=user_input)) <span class="comment"># === 追加到历史 ===</span></span><br><span class="line">    chat_history.append(AIMessage(content=answer))</span><br><span class="line">    save_history(chat_history)<span class="comment"># === 存到本地 ===</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用代理"><a href="#使用代理" class="headerlink" title="使用代理"></a>使用代理</h4><h5 id="实时搜索"><a href="#实时搜索" class="headerlink" title="实时搜索"></a>实时搜索</h5><p>这里使用的是Tavily平台</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> langchain_community.tools.tavily_search <span class="keyword">import</span> TavilySearchResults</span><br><span class="line"><span class="keyword">from</span> langchain_openai <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"><span class="keyword">from</span> langchain.agents <span class="keyword">import</span> initialize_agent, AgentType</span><br><span class="line"><span class="comment">#环境配置</span></span><br><span class="line">os.environ[<span class="string">&quot;OPENAI_API_KEY&quot;</span>] = <span class="string">&quot;sk-xx&quot;</span></span><br><span class="line">os.environ[<span class="string">&quot;OPENAI_API_BASE&quot;</span>] = <span class="string">&quot;https://api.gptgod.online/v1/&quot;</span></span><br><span class="line">os.environ[<span class="string">&quot;TAVILY_API_KEY&quot;</span>] = <span class="string">&#x27;tvly-dev-xxxx&#x27;</span></span><br><span class="line"></span><br><span class="line">search = TavilySearchResults()<span class="comment"># 初始化工具</span></span><br><span class="line">tools = [search]<span class="comment">#提供给 Agent 的 工具列表</span></span><br><span class="line">llm = ChatOpenAI(<span class="comment"># 初始化模型</span></span><br><span class="line">    model=<span class="string">&quot;gpt-3.5-turbo&quot;</span>,</span><br><span class="line">    temperature=<span class="number">0</span>)<span class="comment">#控制输出的随机性，0 表示完全确定性（模型尽可能给出固定答案，适合问答、工具调用等任务）</span></span><br><span class="line"></span><br><span class="line">agent_executor = initialize_agent(</span><br><span class="line">    tools,</span><br><span class="line">    llm,</span><br><span class="line">    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,</span><br><span class="line">    verbose=<span class="literal">True</span>)<span class="comment">#打印中间推理过程（例如模型思考、调用了哪个工具、工具返回了什么），方便调试</span></span><br><span class="line">response = agent_executor.invoke(&#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;猫娘是什么？&quot;</span>&#125;)<span class="comment"># 执行</span></span><br><span class="line"><span class="built_in">print</span>(response)</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/ai/"># ai</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2025/05/02/sql/SQL%20Server%E6%B3%A8%E5%85%A5/">SQL Server注入</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
