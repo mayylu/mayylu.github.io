@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>安卓安全入门 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">安卓安全入门</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">九月 2, 2025&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Android/">Android</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不牵涉到过多的逆向，主要看看抓包可能遇到的问题，Android和java一样是个大坑，我这人喜欢实践的一些东西，不喜欢空谈理论和做一些没意思的练习，就和以前一样看看b站视频写写简单的总结，写到哪算哪，有个概念，反正个人感觉万事开头难，一直观望不如直接就开始学</p>
+<span id="more"></span>
+<h2 id="安卓的基本概念"><a href="#安卓的基本概念" class="headerlink" title="安卓的基本概念"></a>安卓的基本概念</h2><p>Android 是一个由 Google 主导开发的 基于 Linux 内核的开源操作系统，所以调用的底层是linux接口，同时Android系统的应用层是采用Java开发的<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/2025_06_QQ20250621-215022-21-1.png" alt="2025_06_QQ20250621-215022-21-1"></p>
+<h3 id="APK文件结构"><a href="#APK文件结构" class="headerlink" title="APK文件结构"></a>APK文件结构</h3><p>apk修改为zip后缀名，进行解压就可以看到内部结构<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ20241128-142228.png" alt="QQ20241128-142228"><br>初步分析分为这几类</p>
+<h4 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h4><p>对应classes.dex，DEX（Dalvik Executable）文件是一种专门为Android操作系统设计的可执行文件格式。它是将Java字节码(class文件)转换为Dalvik字节码的结果</p>
+<h4 id="资源文件"><a href="#资源文件" class="headerlink" title="资源文件"></a>资源文件</h4><p>res目录             res目录存放资源文件，包括图片，字符串等等，APK的脸蛋由他的layout文件设计<br>resources.arsc文件     resources.arsc是编译后的二进制资源文件，它是一个映射表，映射着资源和id，通过R文件中的id就可以找到对应的资源</p>
+<h4 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h4><p>AndroidMainfest.xml文件     APK的应用清单信息，它描述了应用的名字，版本，权限，引用的库文件等等信息<br>META-INF目录                 保存应用的签名信息，在 Android 中，应用签名用于验证应用的身份和完整性。如果应用被篡改或者被恶意修改，则应用的签名将无法验证，使得应用无法被安装或者运行。</p>
+<h3 id="安卓四大组件"><a href="#安卓四大组件" class="headerlink" title="安卓四大组件"></a>安卓四大组件</h3><p>安卓和一般的桌面程序在应用场景上是相似的，所以我们大二的时候安卓和c#的wcf开发是划为一类的，可惜的是我们信安学的是wcf计科学的安卓，四大组件其实就是在对Android开放时的开发需要考虑的方面的划分</p>
+<p>Activity(活动)                     应用的一个单一界面，负责与用户进行交互，和web的前端不同，应用程序是不跨设备的所以Activity可以执行系统操作<br>Service(服务)                     在后台运行的组件，主管后台逻辑，Service的生命周期与Activity无关。即使关闭所有Activity，Service仍然可以继续在后台运行<br>Broadcast Receiver(广播接收器)     用于接收并响应系统或应用发出的广播消息，实现应用程序之间，程序和系统之间的通信<br>Content Provider(内容提供者)     存储并检索数据以及向其他应用程序提供访问数据的接口。可以访问文件系统、SQLite 数据库、网络等数据源</p>
+<h2 id="ADB的使用"><a href="#ADB的使用" class="headerlink" title="ADB的使用"></a>ADB的使用</h2><p>adb（Android Debug Bridge）是一种用于在 Android 设备和计算机之间通信的命令行工具，开发人员可以在连接到设备时运行各种命令来执行各种任务。adb 是 Android SDK（Software Development Kit）的一部分。<br>adb 的运行原理是 PC 端的 adb server 与手机端的守护进程 adbd 建立连接，然后 PC 端的 adb client 通过 adb server 转发命令，adbd 接收命令后解析运行。<br>和手机连接前需要手机打开开发者模式</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adb connect 127.0.0.1:7555  <span class="comment">#mumu模拟器开放端口，真机就是数据线连接</span></span><br><span class="line">adb version                 <span class="comment">#查看adb版本</span></span><br><span class="line">adb devices                 <span class="comment">#获取已连接的设备列表</span></span><br><span class="line">adb -s <span class="string">&#x27;设备名&#x27;</span> shell whoami</span><br><span class="line">adb shell                   <span class="comment">#进入shell模式</span></span><br><span class="line">adb forward tcp:&lt;本地端口&gt; tcp:&lt;设备端口&gt; <span class="comment">#端口转发</span></span><br></pre></td></tr></table></figure>
+<h3 id="package-manager-包管理器"><a href="#package-manager-包管理器" class="headerlink" title="package manager(包管理器)"></a>package manager(包管理器)</h3><p>包管理器是一个系统级服务，它负责管理应用程序的安装、卸载、更新、清除和查询等操作。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">adb shell pm list packages                              <span class="comment">#列出安装在连接设备上的所有软件包</span></span><br><span class="line"><span class="comment">#-s	只列出系统应用程序。</span></span><br><span class="line"><span class="comment">#-3	只列出用户自己安装的第三方应用程序。</span></span><br><span class="line">adb shell pm path &lt;PACKAGE&gt;                             <span class="comment">#根据包名查看应用安装路径</span></span><br><span class="line">adb shell pm clear &lt;packagename&gt;                        <span class="comment">#清除应用数据与缓存</span></span><br><span class="line">adb uninstall &lt;PACKAGE&gt;                                 <span class="comment">#卸载软件包</span></span><br><span class="line">adb shell dumpsys package &lt;packagename&gt;                 <span class="comment">#查看应用详细信息</span></span><br><span class="line">adb shell dumpsys activity services [&lt;packagename&gt;]     <span class="comment">#查看正在运行的Services</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="frida-hook"><a href="#frida-hook" class="headerlink" title="frida-hook"></a>frida-hook</h2><p>Frida 是一款开源的动态插桩工具，可以插入一些代码到原生App的内存空间去动态地监视和修改其行为，可以实现Java层和Native层Hook操作。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">frida-ps -U -a  <span class="comment">#查看当前手机运行的进程</span></span><br><span class="line">frida -U -f &lt;Identifier&gt; -l hook.js <span class="comment">#Spawn模式</span></span><br><span class="line">frida -U &lt;Name&gt; -l hook.js <span class="comment">#attach模式 </span></span><br></pre></td></tr></table></figure>
+<h3 id="hook函数编写"><a href="#hook函数编写" class="headerlink" title="hook函数编写"></a>hook函数编写</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方法重载</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    Java.perform(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> testClass = Java.use(<span class="string">&quot;org.owasp.goatdroid.fourgoats.activities.Login&quot;</span>);<span class="comment">// 定位类</span></span><br><span class="line">    <span class="comment">//更改类的方法的实现,allFieldsCompleted为需要修改的函数名，overload是怕目标方法存在重载</span></span><br><span class="line">    testClass.test_mothiod.overload(<span class="string">&quot;java.lang.String&quot;</span>, <span class="string">&quot;java.lang.String&quot;</span>).implementation = <span class="function"><span class="keyword">function</span>(<span class="params">userName,password</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;userName: &quot;</span> + userName + <span class="string">&quot; password: &quot;</span> + password)</span><br><span class="line">        <span class="keyword">var</span> ret_value = <span class="built_in">this</span>.test_mothiod(<span class="string">&quot;admin&quot;</span>, <span class="string">&quot;password&quot;</span>); <span class="comment">// 调用原来的函数获取结果并返回</span></span><br><span class="line">        <span class="keyword">return</span> ret_value;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">setImmediate(main);</span><br><span class="line"></span><br><span class="line"><span class="comment">//主动调用函数</span></span><br><span class="line"><span class="comment">//静态方法直接调用</span></span><br><span class="line"><span class="keyword">var</span> ClassName=Java.use(<span class="string">&quot;com.zj.wuaipojie.Demo&quot;</span>); </span><br><span class="line">ClassName.privateFunc();</span><br><span class="line"><span class="comment">//实例方法需要反射调用实例</span></span><br><span class="line">    Java.perform(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        Java.choose(<span class="string">&quot;com.zj.wuaipojie.Demo&quot;</span>,&#123;    <span class="comment">//要hook的类</span></span><br><span class="line">            <span class="attr">onMatch</span>:<span class="function"><span class="keyword">function</span>(<span class="params">instance</span>)</span>&#123;</span><br><span class="line">                ret=instance.privateFunc(<span class="string">&quot;aaaaaaa&quot;</span>); <span class="comment">//调用要hook的方法</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">onComplete</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                <span class="comment">// 当搜索完成后，会执行 onComplete 回调函数</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="objection"><a href="#objection" class="headerlink" title="objection"></a>objection</h3><p>Objection是基于Frida API开发的一个工具，Objection将Frida的API封装成易于使用的命令行接口，从而降低了使用门槛，提高了效率<br>这个工具需要已经开启frida服务端</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#建立连接，Objection 会重启应用并且注入Frida Agent到目标应用程序</span></span><br><span class="line">objection -g com.zj.wuaipojie explore</span><br><span class="line"><span class="comment">#建立交互后我们就可以使用android开头的命令了</span></span><br><span class="line"><span class="comment">#获取activity列表</span></span><br><span class="line">android hooking list activities</span><br><span class="line"><span class="comment">#启动某个activity，可以用于发现隐藏页面</span></span><br><span class="line">android intent launch_activity com.zj.wuaipojie.ui.ChallengeSecond</span><br><span class="line"><span class="comment">#列出所有加载的类</span></span><br><span class="line">android hooking list classes</span><br><span class="line"><span class="comment"># 根据关键词找类</span></span><br><span class="line">android hooking search classes crypto</span><br><span class="line"><span class="comment"># hook对应方法的参数、返回值和调用栈</span></span><br><span class="line">android hooking watch class_method javax.crypto.Cipher.doFinal --dump-args --dump-return  --dump-backtrace</span><br><span class="line"><span class="comment">#看看类的所有方法</span></span><br><span class="line">android hooking list class_methods com.android.internal.net.crypto.KeyGenerationUtils</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Android/"># Android</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2025/08/26/ai/ai%E6%89%AB%E7%9B%B2/">ai扫盲</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
