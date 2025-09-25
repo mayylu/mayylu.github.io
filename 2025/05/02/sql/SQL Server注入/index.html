@@ -225,7 +225,7 @@
         <div class="post-content">
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很早之前总结mysql语法和注入技巧，但是后面在实战中遇到了一个iis老系统有mssql注入漏洞，才发现自己不知道该怎么注入和绕过waf。这里只简单介绍sql server的一些特性和注入绕过具体实现。本质上sql server语法和mysql语法差不多。所有这篇文章不会过多介绍一些基础的sql语句</p>
 <span id="more"></span>  
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>使用 SqlLocalDB 实用工具创建 SQL Server Express LocalDB 的实例,然后navicat连接</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>SqlLocalDB 是 Microsoft SQL Server Express LocalDB 的命令行工具，通常简称为 LocalDB。为SQL Server Express 的精简版，安装和管理都非常轻量。不需要作为 Windows 服务运行（不像常规 SQL Server 那样始终占用资源），而是按需启动。<br>使用 SqlLocalDB 实用工具创建 SQL Server Express LocalDB 的实例,然后navicat连接</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sqllocaldb v <span class="comment">#查看版本</span></span><br><span class="line">sqllocaldb create MSSQLLocalDB <span class="comment">#创建数据库,创建后不会自动启动数据库</span></span><br><span class="line">sqllocaldb i <span class="comment">#列出当前用户拥有的所有 SQL Server Express LocalDB 实例</span></span><br><span class="line">SqlLocalDb info MSSQLLocalDB      <span class="comment">#显示数据库信息</span></span><br><span class="line">SqlLocalDB start MSSQLLocalDB     <span class="comment">#启动数据库</span></span><br><span class="line">SqlLocalDB stop MSSQLLocalDB     <span class="comment">#停止MyDatabase数据库 </span></span><br><span class="line">SqlLocalDB delete MSSQLLocalDB   <span class="comment">#删除MyDatabase数据库 </span></span><br></pre></td></tr></table></figure>
 <p>连接主机为<code>(localdb)\MSSQLLocalDB</code>,如果不行,可以通过管道名字进行连接, 管道名称每次重启服务都会变</p>
 <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>架构是数据库对象的逻辑容器，用于将数据库中的对象分组并且管理其访问权限。每个架构由一个架构名标识，并且每个数据库对象（如表、视图等）都属于某个架构。可以理解为对数据库下各表进行分组。</p>
@@ -284,7 +284,7 @@
                 <a class="prev" rel="prev" href="/2025/06/10/file/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">文件上传-文件后缀检测绕过</a>
             
             
-            <a class="next" rel="next" href="/2025/04/21/java/Serializable/JDBC%20%E5%88%A9%E7%94%A8/">JDBC 利用</a>
+            <a class="next" rel="next" href="/2025/04/21/java/JDBC%20%E5%88%A9%E7%94%A8/">JDBC 利用</a>
             
         </section>
 

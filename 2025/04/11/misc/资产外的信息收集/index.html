@@ -228,7 +228,7 @@
 <p>由于自己又不是资深红队，对这方面的信息了解的也不多，就简单写写，后面有机会遇到了在补，发现自己越来越啰嗦了。</p>
 <span id="more"></span>
 
-<h2 id="信息收集语法"><a href="#信息收集语法" class="headerlink" title="信息收集语法"></a>信息收集语法</h2><h3 id="搜索引擎语法"><a href="#搜索引擎语法" class="headerlink" title="搜索引擎语法"></a>搜索引擎语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//谷歌</span><br><span class="line">site:xxx.edu.cn &quot;学号&quot; &quot;身份证号&quot; filetype:xlsx OR filetype:pdf OR filetype:xls OR filetype:doc</span><br><span class="line">site:xxx.edu.cn intext:初始密码|默认密码 &amp;&amp; （&quot;附件&quot;）</span><br><span class="line">intitle:实验室安全准入考试系统</span><br><span class="line"></span><br><span class="line">//bing</span><br><span class="line">对于找一些国内的网站来说，感觉bing比google好用，语法类似</span><br></pre></td></tr></table></figure>
+<h2 id="信息收集语法"><a href="#信息收集语法" class="headerlink" title="信息收集语法"></a>信息收集语法</h2><h3 id="搜索引擎语法"><a href="#搜索引擎语法" class="headerlink" title="搜索引擎语法"></a>搜索引擎语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//谷歌</span><br><span class="line">site:xxx.edu.cn &quot;学号&quot; &quot;身份证号&quot; filetype:xlsx OR filetype:pdf OR filetype:xls OR filetype:doc</span><br><span class="line">site:xxx.edu.cn intext:初始密码|默认密码 &amp;&amp; （&quot;附件&quot;）</span><br><span class="line">intitle:实验室安全准入考试系统</span><br><span class="line"></span><br><span class="line">//bing</span><br><span class="line">对于找一些国内的网站来说，感觉bing比google好用，语法类似</span><br><span class="line">&quot;&quot;&amp;&amp;site:&quot;*.edu.cn&quot;</span><br></pre></td></tr></table></figure>
 
 <p>除此之外，我感觉现在的ai也是一种特殊的搜索引擎，比如已知Apache Shiro存在一种特定的逻辑漏洞，我们就可以看看是否在其他产品上存在该漏洞</p>
 <p><code>Apache Shiro是一个Java 权限认证框架，除此之外github上还有没有类似的框架，说出20个</code><br>然后我们根据产品一一测试即可</p>
@@ -261,7 +261,7 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2025/04/21/java/Serializable/JDBC%20%E5%88%A9%E7%94%A8/">JDBC 利用</a>
+                <a class="prev" rel="prev" href="/2025/04/21/java/JDBC%20%E5%88%A9%E7%94%A8/">JDBC 利用</a>
             
             
             <a class="next" rel="next" href="/2025/03/20/front/js/Vue.js%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/">Vue 简单学习</a>
