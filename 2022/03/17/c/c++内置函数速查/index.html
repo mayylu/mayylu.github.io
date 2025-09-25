@@ -270,16 +270,7 @@
 <ol start="3">
 <li>格式字符串（格式） </li>
 </ol>
-<pre><code>［标志］［输出最少宽度］［．精度］［长度］类型
- &quot;％-md&quot; 左对齐，若m比实际少时，按实际输出。      
- &quot;%m.ns&quot;输出m位，取字符串(左起)n位，左补空格，当n&gt;m or m省略时m=n        
-                      e.g.    &quot;%7.2s&quot;   输入CHINA    
-                                        输出&quot;     CH&quot;     
- &quot;%m.nf&quot;输出浮点数，m为宽度，n为小数点右边数位(实际长度超过m应该按实际数位输出，小数位数超过4位部分被四舍五入)     
-                      e.g.    &quot;%3.1f&quot;   输入3852.99     
-                                        输出3853.0      
-     长度：为ｈ短整形量,ｌ为长整形量      
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">［标志］［输出最少宽度］［．精度］［长度］类型</span><br><span class="line"> &quot;％-md&quot; 左对齐，若m比实际少时，按实际输出。      </span><br><span class="line"> &quot;%m.ns&quot;输出m位，取字符串(左起)n位，左补空格，当n&gt;m or m省略时m=n        </span><br><span class="line">                      e.g.    &quot;%7.2s&quot;   输入CHINA    </span><br><span class="line">                                        输出&quot;     CH&quot;     </span><br><span class="line"> &quot;%m.nf&quot;输出浮点数，m为宽度，n为小数点右边数位(实际长度超过m应该按实际数位输出，小数位数超过4位部分被四舍五入)     </span><br><span class="line">                      e.g.    &quot;%3.1f&quot;   输入3852.99     </span><br><span class="line">                                        输出3853.0      </span><br><span class="line">     长度：为ｈ短整形量,ｌ为长整形量      </span><br></pre></td></tr></table></figure>
 <h3 id="sanf"><a href="#sanf" class="headerlink" title="sanf"></a>sanf</h3><ol>
 <li><p>格式<br><code>scanf(&quot;%d%d%d&quot;,&amp;a,&amp;b,&amp;c)</code>将前三个数与a,b,c分别绑定     </p>
 </li>
