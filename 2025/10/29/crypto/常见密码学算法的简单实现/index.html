@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>常见密码学算法的简单实现 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">常见密码学算法的简单实现</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十月 29, 2025&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/crypto/">crypto</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>打比赛的时候遇到了加解密脚本编写，所以想写一篇总结，正好把逆向常见的那几个加密算法也总结总结，虽然自己也不太想学密码，但是该来的跑不掉<br>本来这篇文章我想的标题是常见加密算法，但考虑到MD5是hash,base是编码，所以就给这篇文章起名为常见密码学算法</p>
+<span id="more"></span>
+<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p>把数据从一种格式转换为另一种格式，用于传输或存储，不需要密码</p>
+<h3 id="base64"><a href="#base64" class="headerlink" title="base64"></a>base64</h3><p>Base64编码每3个字节为一个编码组，对应的24个二进制位，然后按照每6位进行分组，分为4组，计算每组的值通过映射Base64编码表获得对应的值<br>下述实例为<code>base64.b64decode(Man)=TWFu</code><br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/b032393761228828d783be5953f4c8a2.png" alt="b032393761228828d783be5953f4c8a2"></p>
+<p>c代码实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">out[o++] = b64_table[(b0 &gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x3F</span>]; <span class="comment">//取 b0 的高 6 位</span></span><br><span class="line">out[o++] = b64_table[((b0 &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) | ((b1 &gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0F</span>)];<span class="comment">//取 b0 的低 2 位 + b1 的高 4 位，拼成 6 位。</span></span><br><span class="line">out[o++] = b64_table[((b1 &amp; <span class="number">0x0F</span>) &lt;&lt; <span class="number">2</span>) | ((b2 &gt;&gt; <span class="number">6</span>) &amp; <span class="number">0x03</span>)];<span class="comment">//取 b1 的低 4 位 + b2 的高 2 位。</span></span><br><span class="line">out[o++] = b64_table[b2 &amp; <span class="number">0x3F</span>];<span class="comment">//取 b2 的低 6 位。</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#换码base64加密</span></span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">table1 = <span class="string">&#x27;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/=&#x27;</span>  <span class="comment"># 自定义Base64 编码表</span></span><br><span class="line">table2 = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=&#x27;</span>  <span class="comment"># 标准Base64 编码表</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">custom_base64_decode</span>(<span class="params">data</span>):</span> <span class="comment">#解密</span></span><br><span class="line">    std_b64 = <span class="string">&#x27;&#x27;</span>.join(table2[table1.index(c)] <span class="keyword">if</span> c <span class="keyword">in</span> table1 <span class="keyword">else</span> c <span class="keyword">for</span> c <span class="keyword">in</span> data)  <span class="comment">#简单的映射变换</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64decode(std_b64) <span class="comment">#标准base解密</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">custom_base64_encode</span>(<span class="params">raw_bytes</span>):</span> <span class="comment">#加密</span></span><br><span class="line">    std_b64 = base64.b64encode(raw_bytes).decode() <span class="comment">#标准加密</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(table1[table2.index(c)] <span class="keyword">if</span> c <span class="keyword">in</span> table2 <span class="keyword">else</span> c <span class="keyword">for</span> c <span class="keyword">in</span> std_b64)</span><br><span class="line">encoded = <span class="string">&#x27;pCNxpTIUejgMhkgQdiQOdjB3bjwTdPgJgzcSdyQRgPoNcz16c44Vh31Z&#x27;</span></span><br><span class="line">flag = custom_base64_decode(encoded)</span><br><span class="line"><span class="built_in">print</span>(flag.decode(<span class="string">&#x27;utf-8&#x27;</span>, errors=<span class="string">&#x27;ignore&#x27;</span>))</span><br><span class="line"><span class="comment"># 验证反向编码</span></span><br><span class="line"><span class="built_in">print</span>(custom_base64_encode(flag))</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h2><h3 id="块密码"><a href="#块密码" class="headerlink" title="块密码"></a>块密码</h3><h4 id="TEA-XTEA-XXTEA"><a href="#TEA-XTEA-XXTEA" class="headerlink" title="TEA / XTEA / XXTEA"></a>TEA / XTEA / XXTEA</h4><p>TEA（Tiny Encryption Algorithm，微型加密算法）是一种结构简单、速度快、实现容易的分组对称加密算法，曾广泛用于早期嵌入式设备、游戏加密、移动通信协议。</p>
+<p>算法还是很简单的，就是v1和v0不断相互作为参数进行加密迭代，左脚踩右脚，解密就是倒着来一遍</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span></span></span><br><span class="line"><span class="comment">// TEA 加密函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">encrypt</span><span class="params">(<span class="keyword">uint32_t</span>* v, <span class="keyword">const</span> <span class="keyword">uint32_t</span>* k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v0 = v[<span class="number">0</span>], v1 = v[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">uint32_t</span> sum = <span class="number">0</span>;              <span class="comment">//累加器</span></span><br><span class="line">    <span class="keyword">uint32_t</span> delta = <span class="number">0x9e3779b9</span>;  <span class="comment">//黄金比例常数，用于打乱循环效果</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++) &#123;  <span class="comment">//设置32 轮加密，可修改</span></span><br><span class="line">        sum += delta;</span><br><span class="line">        v0 += ((v1 &lt;&lt; <span class="number">4</span>) + k[<span class="number">0</span>]) ^ (v1 + sum) ^ ((v1 &gt;&gt; <span class="number">5</span>) + k[<span class="number">1</span>]); <span class="comment">//通过v1和k和sum得到新的v0</span></span><br><span class="line">        v1 += ((v0 &lt;&lt; <span class="number">4</span>) + k[<span class="number">2</span>]) ^ (v0 + sum) ^ ((v0 &gt;&gt; <span class="number">5</span>) + k[<span class="number">3</span>]);<span class="comment">//通过新的v0和k和sum得到新的v1</span></span><br><span class="line">    &#125;</span><br><span class="line">    v[<span class="number">0</span>] = v0;</span><br><span class="line">    v[<span class="number">1</span>] = v1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// TEA 解密函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decrypt</span><span class="params">(<span class="keyword">uint32_t</span>* v, <span class="keyword">const</span> <span class="keyword">uint32_t</span>* k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v0 = v[<span class="number">0</span>], v1 = v[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">uint32_t</span> delta = <span class="number">0x9e3779b9</span>;</span><br><span class="line">    <span class="keyword">uint32_t</span> sum = delta * <span class="number">32</span>;  <span class="comment">//初始sum为delta*加密轮数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++) &#123;</span><br><span class="line">        v1 -= ((v0 &lt;&lt; <span class="number">4</span>) + k[<span class="number">2</span>]) ^ (v0 + sum) ^ ((v0 &gt;&gt; <span class="number">5</span>) + k[<span class="number">3</span>]);<span class="comment">//还原v1</span></span><br><span class="line">        v0 -= ((v1 &lt;&lt; <span class="number">4</span>) + k[<span class="number">0</span>]) ^ (v1 + sum) ^ ((v1 &gt;&gt; <span class="number">5</span>) + k[<span class="number">1</span>]);<span class="comment">//还原v0</span></span><br><span class="line">        sum -= delta;</span><br><span class="line">    &#125;</span><br><span class="line">    v[<span class="number">0</span>] = v0;</span><br><span class="line">    v[<span class="number">1</span>] = v1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v[<span class="number">2</span>] = &#123;<span class="number">0x12345678</span>, <span class="number">0x9abcdef0</span>&#125;;  <span class="comment">//明文长度必须是 8 字节（64 位）的倍数,明文分组（64位 → 两个32位整数）</span></span><br><span class="line">    <span class="keyword">uint32_t</span> k[<span class="number">4</span>] = &#123;<span class="number">0x11111111</span>, <span class="number">0x22222222</span>, <span class="number">0x33333333</span>, <span class="number">0x44444444</span>&#125;;  <span class="comment">//密钥（128位 → 四个32位整数）</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;原文: %08X %08X\n&quot;</span>, v[<span class="number">0</span>], v[<span class="number">1</span>]);</span><br><span class="line">    encrypt(v, k);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;加密: %08X %08X\n&quot;</span>, v[<span class="number">0</span>], v[<span class="number">1</span>]);</span><br><span class="line">    decrypt(v, k);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;解密: %08X %08X\n&quot;</span>, v[<span class="number">0</span>], v[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>XTEA 是 TEA 的扩展，也称做 TEAN，四个子密钥采取不正规的方式进行混合以阻止密钥表攻击<br>XTEA与TEA的不同点在for循环里</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加密</span></span><br><span class="line">        v0 += (((v1 &lt;&lt; <span class="number">4</span>) ^ (v1 &gt;&gt; <span class="number">5</span>)) + v1) ^ (sum + key[sum &amp; <span class="number">3</span>]);<span class="comment">//XTEA 每轮的key选择由sum决定，密钥使用顺序更混乱；</span></span><br><span class="line">        sum += DELTA;  <span class="comment">//XTEA 通过把 sum 的更新时机放到两次数据运算之间</span></span><br><span class="line">        v1 += (((v0 &lt;&lt; <span class="number">4</span>) ^ (v0 &gt;&gt; <span class="number">5</span>)) + v0) ^ (sum + key[(sum &gt;&gt; <span class="number">11</span>) &amp; <span class="number">3</span>]);  </span><br><span class="line"><span class="comment">//解密</span></span><br><span class="line">        v1 -= (((v0 &lt;&lt; <span class="number">4</span>) ^ (v0 &gt;&gt; <span class="number">5</span>)) + v0) ^ (sum + key[(sum &gt;&gt; <span class="number">11</span>) &amp; <span class="number">3</span>]);  </span><br><span class="line">        sum -= DELTA;  </span><br><span class="line">        v0 -= (((v1 &lt;&lt; <span class="number">4</span>) ^ (v1 &gt;&gt; <span class="number">5</span>)) + v1) ^ (sum + key[sum &amp; <span class="number">3</span>]);  </span><br></pre></td></tr></table></figure>
+<p>前面的xtea和tea,在加密前需要两两分组，然后组内多轮相交<br>XXTEA 每轮都会让每个块都和它的前后块交互：每个块同时受到上下邻块的影响 → 扩散非常彻底。并且XXTEA支持任意长度（n×32位）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DELTA 0x9e3779b9</span></span><br><span class="line"><span class="comment">// ----------------------------</span></span><br><span class="line"><span class="comment">// XXTEA 加密</span></span><br><span class="line"><span class="comment">// v: 数据块数组 (长度 n)</span></span><br><span class="line"><span class="comment">// n: 数据块数量（每块32位）</span></span><br><span class="line"><span class="comment">// k: 128位密钥数组（4个32位整数）</span></span><br><span class="line"><span class="comment">// ----------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">xxtea_encrypt</span><span class="params">(<span class="keyword">uint32_t</span> *v, <span class="keyword">int</span> n, <span class="keyword">const</span> <span class="keyword">uint32_t</span> k[<span class="number">4</span>])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">2</span>) <span class="keyword">return</span>;  <span class="comment">// 至少两个32位块才能加密</span></span><br><span class="line">    <span class="keyword">uint32_t</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">uint32_t</span> rounds = <span class="number">6</span> + <span class="number">52</span>/n;  <span class="comment">// 推荐轮数公式</span></span><br><span class="line">    <span class="keyword">uint32_t</span> z = v[n<span class="number">-1</span>], y, e, p;</span><br><span class="line">    <span class="keyword">while</span> (rounds-- &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        sum += DELTA;</span><br><span class="line">        e = (sum &gt;&gt; <span class="number">2</span>) &amp; <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">for</span> (p = <span class="number">0</span>; p &lt; n<span class="number">-1</span>; p++) &#123;</span><br><span class="line">            y = v[p+<span class="number">1</span>];</span><br><span class="line">            <span class="comment">// 核心混合公式：</span></span><br><span class="line">            v[p] += (((z &gt;&gt; <span class="number">5</span>) ^ (y &lt;&lt; <span class="number">2</span>)) + ((y &gt;&gt; <span class="number">3</span>) ^ (z &lt;&lt; <span class="number">4</span>))) ^ ((sum ^ y) + (k[(p &amp; <span class="number">3</span>) ^ e] ^ z));</span><br><span class="line">            z = v[p];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//最后一块没有参加循环，最后一块与第一块混合，保证循环</span></span><br><span class="line">        y = v[<span class="number">0</span>];</span><br><span class="line">        v[n<span class="number">-1</span>] += (((z &gt;&gt; <span class="number">5</span>) ^ (y &lt;&lt; <span class="number">2</span>)) + ((y &gt;&gt; <span class="number">3</span>) ^ (z &lt;&lt; <span class="number">4</span>))) ^ ((sum ^ y) + (k[(p &amp; <span class="number">3</span>) ^ e] ^ z));</span><br><span class="line">        z = v[n<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// XXTEA 解密</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">xxtea_decrypt</span><span class="params">(<span class="keyword">uint32_t</span> *v, <span class="keyword">int</span> n, <span class="keyword">const</span> <span class="keyword">uint32_t</span> k[<span class="number">4</span>])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">2</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">uint32_t</span> rounds = <span class="number">6</span> + <span class="number">52</span>/n;</span><br><span class="line">    <span class="keyword">uint32_t</span> sum = rounds * DELTA;</span><br><span class="line">    <span class="keyword">uint32_t</span> z, y = v[<span class="number">0</span>], e, p;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (sum != <span class="number">0</span>) &#123;</span><br><span class="line">        e = (sum &gt;&gt; <span class="number">2</span>) &amp; <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">for</span> (p = n<span class="number">-1</span>; p &gt; <span class="number">0</span>; p--) &#123;</span><br><span class="line">            z = v[p<span class="number">-1</span>];</span><br><span class="line">            v[p] -= (((z &gt;&gt; <span class="number">5</span>) ^ (y &lt;&lt; <span class="number">2</span>)) + ((y &gt;&gt; <span class="number">3</span>) ^ (z &lt;&lt; <span class="number">4</span>))) ^ ((sum ^ y) + (k[(p &amp; <span class="number">3</span>) ^ e] ^ z));</span><br><span class="line">            y = v[p];</span><br><span class="line">        &#125;</span><br><span class="line">        z = v[n<span class="number">-1</span>];</span><br><span class="line">        v[<span class="number">0</span>] -= (((z &gt;&gt; <span class="number">5</span>) ^ (y &lt;&lt; <span class="number">2</span>)) + ((y &gt;&gt; <span class="number">3</span>) ^ (z &lt;&lt; <span class="number">4</span>))) ^ ((sum ^ y) + (k[(<span class="number">0</span> &amp; <span class="number">3</span>) ^ e] ^ z));</span><br><span class="line">        y = v[<span class="number">0</span>];</span><br><span class="line">        sum -= DELTA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> DES</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.Padding <span class="keyword">import</span> pad, unpad</span><br><span class="line"><span class="keyword">from</span> Crypto.Random <span class="keyword">import</span> get_random_bytes</span><br><span class="line"></span><br><span class="line">key = <span class="string">b&#x27;12345678&#x27;</span>  <span class="comment"># DES 密钥长度必须 8 字节</span></span><br><span class="line">data = <span class="string">b&#x27;hello world&#x27;</span>  <span class="comment"># 11 字节明文</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># DES 块大小 = 8 字节，填充到块大小倍数</span></span><br><span class="line">data_padded = pad(data, <span class="number">8</span>)<span class="comment">#默认使用 PKCS#5 填充</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;填充后的明文:&quot;</span>, data_padded)  <span class="comment"># b&#x27;hello world\x05\x05\x05&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ECB 模式</span></span><br><span class="line">cipher_ecb = DES.new(key, DES.MODE_ECB)</span><br><span class="line">encrypted_ecb = cipher_ecb.encrypt(data_padded)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;DES-ECB 加密:&quot;</span>, encrypted_ecb.<span class="built_in">hex</span>())</span><br><span class="line"></span><br><span class="line">decrypted_ecb_padded = cipher_ecb.decrypt(encrypted_ecb)</span><br><span class="line">decrypted_ecb = unpad(decrypted_ecb_padded, <span class="number">8</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;DES-ECB 解密:&quot;</span>, decrypted_ecb)</span><br><span class="line"></span><br><span class="line"><span class="comment"># CBC 模式</span></span><br><span class="line"><span class="comment"># 生成随机 IV（初始化向量）</span></span><br><span class="line">iv = get_random_bytes(<span class="number">8</span>)  <span class="comment"># DES 块大小 = 8 字节</span></span><br><span class="line">cipher_cbc = DES.new(key, DES.MODE_CBC, iv)</span><br><span class="line">encrypted_cbc = cipher_cbc.encrypt(data_padded)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;DES-CBC 加密:&quot;</span>, encrypted_cbc.<span class="built_in">hex</span>())</span><br><span class="line"></span><br><span class="line">cipher_cbc_dec = DES.new(key, DES.MODE_CBC, iv)</span><br><span class="line">decrypted_cbc_padded = cipher_cbc_dec.decrypt(encrypted_cbc)</span><br><span class="line">decrypted_cbc = unpad(decrypted_cbc_padded, <span class="number">8</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;DES-CBC 解密:&quot;</span>, decrypted_cbc)</span><br></pre></td></tr></table></figure>
+<h4 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.Padding <span class="keyword">import</span> pad, unpad</span><br><span class="line"><span class="keyword">from</span> Crypto.Random <span class="keyword">import</span> get_random_bytes</span><br><span class="line"></span><br><span class="line">key = <span class="string">b&#x27;1234567812345678&#x27;</span> <span class="comment">#加密密钥，AES-128要求密钥为16 字节</span></span><br><span class="line">data = <span class="string">b&#x27;hello world&#x27;</span>  <span class="comment"># 11 字节</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 填充到 16 的倍数,AES是块加密算法，每次只能加密固定长度的块：如果明文长度不是16字节的倍数，直接加密会报错或数据不完整</span></span><br><span class="line">data_padded = pad(data, <span class="number">16</span>)  <span class="comment">#默认使用 PKCS#7 填充</span></span><br><span class="line"><span class="built_in">print</span>(data_padded)  <span class="comment"># b&#x27;hello world\x05\x05\x05\x05\x05&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#ecb模式</span></span><br><span class="line"><span class="comment"># 加密</span></span><br><span class="line">cipher = AES.new(key, AES.MODE_ECB)</span><br><span class="line">encrypted = cipher.encrypt(data_padded)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;AES-ECB 加密:&quot;</span>, encrypted.<span class="built_in">hex</span>())</span><br><span class="line"><span class="comment"># 解密</span></span><br><span class="line">decrypted_padded = cipher.decrypt(encrypted)</span><br><span class="line">decrypted = unpad(decrypted_padded, <span class="number">16</span>)<span class="comment"># 去掉填充</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;AES-ECB 解密:&quot;</span>, decrypted)</span><br><span class="line"></span><br><span class="line"><span class="comment">#CBC 模式</span></span><br><span class="line"><span class="comment"># 生成随机 IV（初始化向量）</span></span><br><span class="line">iv = get_random_bytes(<span class="number">16</span>)  <span class="comment"># AES 块大小 = 16 字节</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加密</span></span><br><span class="line">cipher_cbc = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">encrypted_cbc = cipher_cbc.encrypt(data_padded)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;AES-CBC 加密:&quot;</span>, encrypted_cbc.<span class="built_in">hex</span>())</span><br><span class="line"><span class="comment"># 解密</span></span><br><span class="line">cipher_cbc_dec = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">decrypted_cbc_padded = cipher_cbc_dec.decrypt(encrypted_cbc)</span><br><span class="line">decrypted_cbc = unpad(decrypted_cbc_padded, <span class="number">16</span>)  <span class="comment">#</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;AES-CBC 解密:&quot;</span>, decrypted_cbc)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="流密码"><a href="#流密码" class="headerlink" title="流密码"></a>流密码</h3><h4 id="RC4"><a href="#RC4" class="headerlink" title="RC4"></a>RC4</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> ARC4</span><br><span class="line"></span><br><span class="line">key = <span class="string">b&#x27;mysecretkey&#x27;</span>  <span class="comment"># 确保你的key长度是16字节</span></span><br><span class="line">cipher = ARC4.new(key) <span class="comment">#创建一个 RC4（ARC4）流加密器</span></span><br><span class="line">data = <span class="string">b&#x27;Hello, World!&#x27;</span> <span class="comment"># 要加密的数据</span></span><br><span class="line"><span class="comment"># 加密数据</span></span><br><span class="line">encrypted_data = cipher.encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Encrypted:&quot;</span>, encrypted_data)</span><br><span class="line"><span class="comment"># 解密时需要重新创建 cipher</span></span><br><span class="line">cipher_dec = ARC4.new(key)</span><br><span class="line">decrypted_data = cipher_dec.decrypt(encrypted_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Decrypted:&quot;</span>, decrypted_data)</span><br></pre></td></tr></table></figure>
+<h5 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化置换盒 S</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rc4_init</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *s, <span class="keyword">unsigned</span> <span class="keyword">char</span> *key, <span class="keyword">int</span> keylen)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> temp;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">256</span>; i++) s[i] = i;  <span class="comment">// 初始化 S 为 0~255</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">256</span>; i++) &#123;</span><br><span class="line">        j = (j + s[i] + key[i % keylen]) % <span class="number">256</span>;<span class="comment">// 通过密钥映射和累加打乱 S</span></span><br><span class="line">        <span class="comment">// 交换 s[i] 和 s[j]</span></span><br><span class="line">        temp = s[i];</span><br><span class="line">        s[i] = s[j];</span><br><span class="line">        s[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 加密 / 解密（同一个函数）</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rc4_crypt</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *s, <span class="keyword">unsigned</span> <span class="keyword">char</span> *data, <span class="keyword">int</span> datalen)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>, k, t;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> temp;</span><br><span class="line">    <span class="keyword">for</span> (k = <span class="number">0</span>; k &lt; datalen; k++) &#123;</span><br><span class="line">        i = (i + <span class="number">1</span>) % <span class="number">256</span>;</span><br><span class="line">        j = (j + s[i]) % <span class="number">256</span>;</span><br><span class="line">        <span class="comment">// 交换 s[i] 和 s[j]</span></span><br><span class="line">        temp = s[i];</span><br><span class="line">        s[i] = s[j];</span><br><span class="line">        s[j] = temp;</span><br><span class="line">        t = (s[i] + s[j]) % <span class="number">256</span>;<span class="comment">// 生成伪随机字节 t</span></span><br><span class="line">        data[k] ^= s[t];<span class="comment">// 将伪随机字节与明文/密文异或，这就是为什么加解密是同一个函数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试示例</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> key[] = <span class="string">&quot;secret&quot;</span>;            <span class="comment">// 密钥</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> data[] = <span class="string">&quot;Hello, RC4!&quot;</span>;      <span class="comment">// 明文</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> s[<span class="number">256</span>];                      <span class="comment">// S 盒</span></span><br><span class="line">    rc4_init(s, key, <span class="built_in">strlen</span>((<span class="keyword">char</span> *)key));     <span class="comment">// 初始化</span></span><br><span class="line">    rc4_crypt(s, data, <span class="built_in">strlen</span>((<span class="keyword">char</span> *)data));  <span class="comment">// 加密</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;加密后: &quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>((<span class="keyword">char</span> *)data); i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%02X &quot;</span>, data[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 再次初始化并解密（RC4 对称）</span></span><br><span class="line">    rc4_init(s, key, <span class="built_in">strlen</span>((<span class="keyword">char</span> *)key));<span class="comment">// 再次初始化</span></span><br><span class="line">    rc4_crypt(s, data, <span class="built_in">strlen</span>((<span class="keyword">char</span> *)data)); <span class="comment">//使用相同的函数处理即可解密</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;解密后: %s\n&quot;</span>, data);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h2><h3 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h3><p>原始rsa是纯数学加密，就是直接把明文通过数学公式变成密文，而没有额外随机性或结构。<br>现代rsa引入填充机制，在加密前加入随机掩码,解决纯数学加密的“同明文密文固定”问题</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> PKCS1_OAEP</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1️⃣ 生成 RSA 密钥对（2048 位）</span></span><br><span class="line">key = RSA.generate(<span class="number">2048</span>)</span><br><span class="line">private_key = key.export_key() <span class="comment">#导出私钥（PEM 格式）</span></span><br><span class="line">public_key = key.publickey().export_key() <span class="comment">#导出公钥（PEM 格式）</span></span><br><span class="line"><span class="comment"># PEM 格式是 Base64编码的二进制数据，通常以特定头尾包裹，如-----BEGIN RSA PRIVATE KEY----- 开头</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;私钥:\n&quot;</span>, private_key.decode()[:<span class="number">100</span>], <span class="string">&quot;...&quot;</span>)  <span class="comment"># 只显示前100字符</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;公钥:\n&quot;</span>, public_key.decode()[:<span class="number">100</span>], <span class="string">&quot;...&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2️⃣ 公钥加密</span></span><br><span class="line">message = <span class="string">b&quot;Hello RSA!&quot;</span></span><br><span class="line">pub_key = RSA.import_key(public_key)<span class="comment"># 导入公钥字符串</span></span><br><span class="line">cipher_encrypt = PKCS1_OAEP.new(pub_key)<span class="comment">#使用 PKCS#1 OAEP 填充方式</span></span><br><span class="line">encrypted_data = cipher_encrypt.encrypt(message) <span class="comment">#生成密文为二进制数据</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;加密后:&quot;</span>, encrypted_data.<span class="built_in">hex</span>()[:<span class="number">60</span>], <span class="string">&quot;...&quot;</span>)  <span class="comment">#转换成16进制字符串显示前60字符</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3️⃣ 私钥解密</span></span><br><span class="line">priv_key = RSA.import_key(private_key)</span><br><span class="line">cipher_decrypt = PKCS1_OAEP.new(priv_key)</span><br><span class="line">decrypted_data = cipher_decrypt.decrypt(encrypted_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;解密后:&quot;</span>, decrypted_data.decode())</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h2><p>哈希（Hash，也叫散列或摘要）是一种单向映射函数：你能从明文得到哈希，不能从哈希反推出明文。<br><strong>输入任意数据</strong> → 输出固定长度字符串（通常是十六进制）。</p>
+<p><strong>文件的hash</strong>，就是将文件数据作为输入，计算出hash，这时只要修改文件，文件的hash值就会改变</p>
+<h3 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h3><p>MD5可以将任意长度的数据 → 映射为 128 位（16 字节）的固定长度哈希值，最后呈现结果是结果32位十六进制字符</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">s = <span class="string">&quot;hello&quot;</span></span><br><span class="line">md5_hash = hashlib.md5(s.encode()).hexdigest()<span class="comment">#encode 转为 UTF-8 编码的字节得到的 b&#x27;hello&#x27;</span></span><br><span class="line"><span class="comment">#.hexdigest() —— 哈希对象 → 十六进制字符串,编码结果是16字节的0x5d41402abc4b2a76b9719d911017c592,变成字符串5d41402abc4b2a76b9719d911017c592</span></span><br><span class="line"><span class="comment"># 相当于python的.hex()</span></span><br><span class="line"><span class="built_in">print</span>(md5_hash)<span class="comment">#结果32位十六进制字符，</span></span><br><span class="line"><span class="built_in">print</span>(md5_hash[<span class="number">8</span>:-<span class="number">8</span>]) <span class="comment">#16位MD5,取32位中间的16位，并不安全</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SHA-系列"><a href="#SHA-系列" class="headerlink" title="SHA 系列"></a>SHA 系列</h3><p>SHA 跟MD5相比输出长，更安全</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">text = <span class="string">&quot;hello world&quot;</span></span><br><span class="line"></span><br><span class="line">sha1 = hashlib.sha1(text.encode()).hexdigest() <span class="comment">#20字节</span></span><br><span class="line">sha256 = hashlib.sha256(text.encode()).hexdigest() <span class="comment">#32字节</span></span><br><span class="line">sha512 = hashlib.sha512(text.encode()).hexdigest() <span class="comment">#64字节</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;SHA1:&quot;</span>, sha1)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;SHA256:&quot;</span>, sha256)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;SHA512:&quot;</span>, sha512)</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/crypto/"># crypto</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/11/13/crypto/%E9%87%8D%E5%AD%A6%E5%AF%86%E7%A0%81%E5%AD%A6/">重学密码学</a>
+            
+            
+            <a class="next" rel="next" href="/2025/10/25/bin/%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">二进制漏洞基础学习(正在学习)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

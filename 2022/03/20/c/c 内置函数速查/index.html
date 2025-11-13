@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>c 内置函数速查 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">c 内置函数速查</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">三月 20, 2022&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/c/">c</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 C++ 中，除了可以创建各种函数，还包含了各种有用的函数供您使用。这些函数写在标准 C 和 C++ 库中，叫做内置函数。您可以在程序中引用这些函数。这篇文章是学c++的时候写了一点，后面学ida的时候，遇到了很多c的函数，又加了一点</p>
+<span id="more"></span>
+
+<h2 id="C-标准库"><a href="#C-标准库" class="headerlink" title="C 标准库"></a>C 标准库</h2><h3 id="stdint-h"><a href="#stdint-h" class="headerlink" title="stdint.h"></a>stdint.h</h3><p>提供跨平台、固定宽度的整数类型定义，让程序在不同系统、不同编译器下表现一致<br>int8_t         8 位，     占 1 个字节<br>int16_t         16 位，    占 2 个字节<br>int32_t         32 位，    占 4 个字节<br>int64_t         64 位，    占 8 个字节<br>uint8_t        8 位无符号， 占 1 个字节<br>uint16_t    16 位无符号，占 2 个字节<br>uint32_t    32 位无符号，占 4 个字节<br>uint64_t    64 位无符号，占 8 个字节</p>
+<h3 id="string-h"><a href="#string-h" class="headerlink" title="string.h"></a>string.h</h3><p>字符串复制函数<br><code>strcpy(s1, s2)</code>复制字符串 s2 到字符串 s1<br><code>strncpy(s1, s2, n)</code>复制字符串 s2 的前 n 个字符到字符串 s1<br>字符串连接函数<br><code>strcat(s1, s2)</code>连接字符串 s2 到字符串 s1 的末尾<br><code>strncat(s1, s2, n)</code>连接字符串 s2 的前 n 个字符到字符串 s1 的末尾<br>字符串比较函数<br><code>strcmp(s1, s2)</code>比较字符串 s1 和 s2<br><code>strncmp(s1, s2, n)</code>比较字符串 s1 和 s2 的前 n 个字符<br>字符串查找函数<br><code>strchr(s, c)</code>查找字符 c 在字符串 s 中第一次出现的位置<br><code>strrchr(s, c)</code>查找字符 c 在字符串 s 中最后一次出现的位置<br><code>strstr(s1, s2)</code>查找字符串 s2 在字符串 s1 中第一次出现的位置<br>内存操作函数<br><code>memset(s, c, n)</code>将字符串 s 的前 n 个字节设置为字符 c<br><code>memcpy(s1, s2, n)</code>从字符串 s2 复制 n 个字符到字符串 s1<br><code>memcmp(s1, s2, n)</code>比较字符串 s1 和 s2 的前 n 个字符<br>字符串长度函数<br><code>strlen(s1)</code>返回字符串 s1 的长度   </p>
+<h3 id="ctype-h"><a href="#ctype-h" class="headerlink" title="ctype.h"></a>ctype.h</h3><p>形式：<strong>int</strong> 函数（int c） </p>
+<p>参数：传入的一定是一个字符或者EOF</p>
+<p>返回值：满足条件返回非0（true），否则返回0；</p>
+<p>int isalnum(int c)      该函数检查所传的字符是否是字母和数字。</p>
+<p>int isalpha(int c)      该函数检查所传的字符是否是字母。</p>
+<p>int islower(int c)      该函数检查所传的字符是否是小写字母。</p>
+<p>int isupper(int c)      该函数检查所传的字符是否是大写字母。</p>
+<p>int tolower(int c)      该函数把大写字母转换为小写字母。    //返回ascil码，需要加（char）进行转码     </p>
+<p>int toupper(int c)      该函数把小写字母转换为大写字母。</p>
+<p>int isspace(int c)      该函数检查所传的字符是否是空格。</p>
+<p>int ispunct(int c)      该函数检查所传的字符是否是标点符号</p>
+<h3 id="stdio-h-standard-input-amp-output"><a href="#stdio-h-standard-input-amp-output" class="headerlink" title="stdio.h(standard input &amp; output)"></a>stdio.h(standard input &amp; output)</h3><h4 id="printf"><a href="#printf" class="headerlink" title="printf"></a>printf</h4><ol>
+<li>转换说明符 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">%s         字符串  </span><br><span class="line">%c         字符   </span><br><span class="line">%d         有符号十进制整数   </span><br><span class="line">%f         浮点数(包括float和double)  </span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>标志  </li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">左对齐   &quot;-&quot;   e.g.   &quot;%-20s&quot;   </span><br><span class="line">右对齐： &quot;+&quot;   e.g.   &quot;%+20s&quot;   </span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>格式字符串（格式） </li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">［标志］［输出最少宽度］［．精度］［长度］类型</span><br><span class="line"> &quot;％-md&quot; 左对齐，若m比实际少时，按实际输出。      </span><br><span class="line"> &quot;%m.ns&quot;输出m位，取字符串(左起)n位，左补空格，当n&gt;m or m省略时m=n        </span><br><span class="line">                      e.g.    &quot;%7.2s&quot;   输入CHINA    </span><br><span class="line">                                        输出&quot;     CH&quot;     </span><br><span class="line"> &quot;%m.nf&quot;输出浮点数，m为宽度，n为小数点右边数位(实际长度超过m应该按实际数位输出，小数位数超过4位部分被四舍五入)     </span><br><span class="line">                      e.g.    &quot;%3.1f&quot;   输入3852.99     </span><br><span class="line">                                        输出3853.0      </span><br><span class="line">     长度：为ｈ短整形量,ｌ为长整形量      </span><br></pre></td></tr></table></figure>
+<h4 id="scanf"><a href="#scanf" class="headerlink" title="scanf"></a>scanf</h4><ol>
+<li><p>格式<br><code>scanf(&quot;%d%d%d&quot;,&amp;a,&amp;b,&amp;c)</code>将前三个数与a,b,c分别绑定     </p>
+</li>
+<li><p>“*”符<br>用以表示该输入项，读入后不赋予相应的变量，即跳过该输入值。如：<br><code>scanf(&quot;%d %*d %d&quot;,&amp;a,&amp;b);</code><br>当输入为：1   2   3时，把1赋予a，2被跳过，3赋予b。  </p>
+</li>
+<li><p>宽度<br>用十进制整数指定输入的宽度（即字符数）。例如：<br><code>scanf(&quot;%5d&quot;,&amp;a)</code><br>输入12345678只把12345赋予变量a，其余部分被截去。又如：<br><code>scanf(&quot;%4d%4d&quot;,&amp;a,&amp;b)</code><br>输入12345678将把1234赋予a，而把5678赋予b。  </p>
+</li>
+</ol>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// scanf()</span></span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, buf);  <span class="comment">// ⚠️ 遇到空格或者换行符就停，例如输入 &quot;hello world&quot; 只读 &quot;hello&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// fgets()</span></span><br><span class="line">fgets(buf, <span class="number">10</span>, <span class="built_in">stdin</span>);  <span class="comment">// ✅ 读空格、读换行，最多 9 个字符 + &#x27;\0&#x27;,例如输入 &quot;hi&quot; 读取内容为[&#x27;h&#x27;,&#x27;i&#x27;,&#x27;\n&#x27;,&#x27;\0&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">puts</span>(<span class="string">&quot;Direct string&quot;</span>);  <span class="comment">// 输出: Direct string</span></span><br></pre></td></tr></table></figure>
+<h2 id="系统头文件-非c自带"><a href="#系统头文件-非c自带" class="headerlink" title="系统头文件(非c自带)"></a>系统头文件(非c自带)</h2><h3 id="win中的标准头文件"><a href="#win中的标准头文件" class="headerlink" title="win中的标准头文件"></a>win中的标准头文件</h3><h4 id="windows-h"><a href="#windows-h" class="headerlink" title="windows.h"></a>windows.h</h4><h5 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h5><h5 id="桌面应用程序"><a href="#桌面应用程序" class="headerlink" title="桌面应用程序"></a>桌面应用程序</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Windows.h&gt;</span></span></span><br><span class="line"><span class="comment">//编写窗口过程（需绑定到窗口类的lpfnWndProc成员）</span></span><br><span class="line"><span class="function">LRESULT CALLBACK <span class="title">frameWindowProc</span><span class="params">(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (uMsg) &#123;</span><br><span class="line">        <span class="comment">//“销毁窗口”消息，显式处理</span></span><br><span class="line">    <span class="keyword">case</span> WM_DESTROY:</span><br><span class="line">        PostQuitMessage(<span class="number">0</span>);    <span class="comment">//发送WM_QUIT消息到消息队列，以结束消息循环（参见代码7）</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">        <span class="comment">//其它消息（包括WM_QUIT消息），调用DefWindowProc函数处理，也即采用默认方式处理</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">return</span> DefWindowProc(hWnd, uMsg, wParam, lParam);  <span class="comment">//凡是采用默认方式处理的消息，一律返回非0值</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;   <span class="comment">//凡是显式处理的消息，一律返回0值</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> WINAPI <span class="title">wWinMain</span><span class="params">(HINSTANCE hInstance, HINSTANCE hPreInstance, PWSTR pCmdLine, <span class="keyword">int</span> nCmdShow)</span> <span class="comment">//主程序入口</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="comment">//构建窗口类</span></span><br><span class="line">    PCWSTR frameWndClassName = <span class="string">L&quot;窗口类名&quot;</span>;    </span><br><span class="line">    WNDCLASSEX wcex = &#123;&#125;;                            <span class="comment">//初始化窗口类</span></span><br><span class="line">    <span class="comment">//填充窗口类的成员值</span></span><br><span class="line">    wcex.cbSize = <span class="keyword">sizeof</span>(WNDCLASSEX);                 <span class="comment">//指定这个结构体的大小（以字节为单位）</span></span><br><span class="line">    wcex.hInstance = hInstance;                      <span class="comment">//hInstance 是一个 “程序实例句柄”，用于标识当前运行的程序。</span></span><br><span class="line">    wcex.lpszClassName = frameWndClassName;           <span class="comment">//设置窗口类的类名作为该窗口类的标识</span></span><br><span class="line">    wcex.lpfnWndProc = frameWindowProc;               <span class="comment">//绑定窗口过程（回调函数）</span></span><br><span class="line"><span class="comment">//注册窗口类</span></span><br><span class="line">    RegisterClassEx(&amp;wcex);</span><br><span class="line"><span class="comment">//用注册的窗口类的类名创建实例窗口</span></span><br><span class="line">    HWND hWnd = CreateWindowEx(</span><br><span class="line">        <span class="number">0</span>,                    </span><br><span class="line">        frameWndClassName,    <span class="comment">//lpClassName（已注册的窗口类的类名）</span></span><br><span class="line">        <span class="string">L&quot;窗口的标题栏文本&quot;</span>,  </span><br><span class="line">        WS_OVERLAPPEDWINDOW,  </span><br><span class="line">        CW_USEDEFAULT,        <span class="comment">//x（窗口的初始位置的x坐标，这里使用默认值）</span></span><br><span class="line">        <span class="number">0</span>,                    <span class="comment">//y（窗口的初始位置的y坐标，或可视窗口的显示样式）</span></span><br><span class="line">        CW_USEDEFAULT,        <span class="comment">//nWidth（窗口的初始宽度，这里使用默认值）</span></span><br><span class="line">        <span class="number">0</span>,                    <span class="comment">//nHeight（窗口的初始高度。当nWidth为CW_USEDEFAULT时，此值被忽略）</span></span><br><span class="line">        <span class="literal">NULL</span>,                 <span class="comment">//hWndParent（窗口的父窗口的句柄。主窗口自己就是顶级窗口，因而无父窗口）</span></span><br><span class="line">        <span class="literal">NULL</span>,                 <span class="comment">//hMenu（窗口的菜单的句柄）</span></span><br><span class="line">        hInstance,            <span class="comment">//hInstance（窗口所在的应用程序的句柄）</span></span><br><span class="line">        <span class="literal">NULL</span>                  <span class="comment">//lpParam（需要向窗口传入的数据结构，现在不打算向窗口传入额外数据，故填充NULL）</span></span><br><span class="line">    );</span><br><span class="line"><span class="keyword">if</span> (hWnd == <span class="literal">NULL</span>) &#123; <span class="comment">//创建窗口之后，还要检查窗口创建成功了没有</span></span><br><span class="line">    <span class="keyword">return</span> FALSE;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//显示窗口</span></span><br><span class="line">    ShowWindow(hWnd, SW_SHOW);   <span class="comment">//以SW_SHOW样式显示窗口</span></span><br><span class="line">    UpdateWindow(hWnd);<span class="comment">//强制立即更新窗口客户区，避免出现短暂空白窗口</span></span><br><span class="line"><span class="comment">//开始进入消息循环，不断地检索各种事件，并分发到窗口过程，从而调用窗口过程处理各种事件</span></span><br><span class="line">    MSG msg;</span><br><span class="line">    <span class="keyword">while</span> (GetMessage(&amp;msg, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="number">0</span>))<span class="comment">//从当前线程的消息队列中检索第一条消息，将其复制到msg变量中，并从消息队列中删除</span></span><br><span class="line">&#123;</span><br><span class="line">        TranslateMessage(&amp;msg);   <span class="comment">//对于键盘或鼠标消息，转换为字符串消息；对于其它消息，保持消息的原貌</span></span><br><span class="line">        DispatchMessage(&amp;msg);    <span class="comment">//将经TranslateMessage处理后的消息分发到相关窗口过程进行处理</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Unix中的标准头文件"><a href="#Unix中的标准头文件" class="headerlink" title="Unix中的标准头文件"></a>Unix中的标准头文件</h3><h4 id="unistd-h-Unix-Linux-系统特有的库"><a href="#unistd-h-Unix-Linux-系统特有的库" class="headerlink" title="unistd.h(Unix/Linux 系统特有的库)"></a>unistd.h(Unix/Linux 系统特有的库)</h4><h5 id="read"><a href="#read" class="headerlink" title="read"></a>read</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">read(int fd, void *buf, size_t count); 通过文件描述符获取数据</span><br><span class="line">fd：文件描述符（如果是0 表示 stdin，1 是 stdout，2 是 stderr）</span><br><span class="line">buf：指向缓冲区的指针，数据会写入该缓冲区。</span><br><span class="line">count：要读取的最大字节数</span><br></pre></td></tr></table></figure>
+<h5 id="write"><a href="#write" class="headerlink" title="write"></a>write</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">write(int fd, const void *buf, size_t count);</span><br><span class="line">fd：文件描述符（如果是1 表示 stdout）。</span><br><span class="line">buf：要写入的数据缓冲区指针（原始字节流）。</span><br><span class="line">count：要写入的字节数（8uLL 表示 8 字节无符号长整型字面量）。</span><br></pre></td></tr></table></figure>
+
+<h2 id="C-标准库（后缀无-h）"><a href="#C-标准库（后缀无-h）" class="headerlink" title="C++ 标准库（后缀无 .h）"></a>C++ 标准库（后缀无 .h）</h2><h3 id="string"><a href="#string" class="headerlink" title="string"></a>string</h3><p>1．声明一个C++字符串<br> <code>string str1</code>默认初始化    </p>
+<p> <code>str3 = str1</code>复制 str1 到 str3   </p>
+<p> <code>str3 = str1 + str2</code>连接 str1 和 str2  </p>
+<p> <code>string s4(n,&#39;c&#39;)</code>s4由n个c组成 </p>
+<p> <code>str3 = str1 + &#39;c&#39;</code>连接 str1 和 c  </p>
+<p> <code>str[i]</code>访问字符串中的字符<br>2．字符串操作函数<br><code>.size()||.length()</code>返回str3 的总长度   </p>
+<p><code>.insert(插入的位置,插入的字符串)</code> 插入字符</p>
+<p><code>.erase(起始下标,删除子字符串的长度)</code> 删除字符</p>
+<p><code>find(待查找的子字符串,开始查找的位置)</code>字符串查找</p>
+<p><code>.substr(起始下标,提取的子字符串的长度)</code> 返回某个子字符串</p>
+<p><code>.back()</code> 返回最后一个字符串</p>
+<h3 id="cmath"><a href="#cmath" class="headerlink" title="cmath"></a>cmath</h3><p>C++ 内置了丰富的数学函数，可对各种数字进行运算。下表列出了 C++ 中一些有用的内置的数学函数。<br>在c++中c开头的库对应的是兼容的c库，如<strong>cmath</strong>对应的是<strong>math.h</strong>,这时cmath的<strong>语法兼容</strong>math.h。</p>
+<p>正弦<code>sin()</code>,余弦<code>cos()</code>,正切<code>tan()</code>  </p>
+<p> <code>pow(x,y)</code>,x的y次方   </p>
+<p> <code>sqrt()</code>(square root)返回参数的平方根   </p>
+<p> <code>log()</code>返回参数的自然对数   </p>
+<p> <code>abs()/fabs()</code>(absolute value)返回绝对值   </p>
+<p> <code>floor()</code>返回一个小于或等于传入参数的最大整数   </p>
+<p> <code>ceil</code>返回大于或者等于指定表达式的最小整数</p>
+<h3 id="iomanip-io-manipulator"><a href="#iomanip-io-manipulator" class="headerlink" title="iomanip(io manipulator)"></a>iomanip(io manipulator)</h3><p>setbase(n)                      设置整数为n进制(n=8,10,16)<br>setprecision(n)                设置浮点数的<strong>有效数字</strong>为n位<br>setw(n)                      设置字段<strong>宽度</strong>为n位<br>setfill(c)                      设置<strong>字符填充</strong>，c可以是字符常或字符变量<br>setiosflags(ios::<strong>fixed</strong>)    设置浮点数以<strong>固定的小数位</strong>显示<br>setiosflags(ios::scientific)  设置浮点数以科学计数法表示<br>setiosflags(ios::left)          输出左对齐<br>setiosflags(ios::right)          输出右对齐     </p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/c/"># c</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/04/02/sql/MYSQL%E6%B3%A8%E5%85%A5%E5%AE%9E%E8%B7%B5/">MYSQL注入实践</a>
+            
+            
+            <a class="next" rel="next" href="/2022/02/15/front/HTML/">HTML</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

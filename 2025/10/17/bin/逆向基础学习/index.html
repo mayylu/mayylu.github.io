@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>逆向基础学习 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">逆向基础学习</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十月 17, 2025&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/re/">re</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近web学习有点迷茫，就像学习一下新鲜的知识，简单学习了一下ctf里面的re，个人感觉还是比较好学的，不是很底层，向程序，特别是神器ida，一键转c，让我找到代码审计的感觉。偏知识底层的我就补到其他文章里，这里只记录一些应用的东西</p>
+<span id="more"></span>
+<h2 id="可执行文件格式"><a href="#可执行文件格式" class="headerlink" title="可执行文件格式"></a>可执行文件格式</h2><pre><code>ELF文件是编译完毕后经过链接，可以直接运行的文件
+ELF文件包含了完整的ELF文件头和段表、字符串表、符号表以及其他表
+ELF文件是一系列代码、数据、表按照一定规则打包起来的数据包
+</code></pre>
+<p>elf文件的节(section)会被映射进内存中的段(segment)<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/5.png" alt="映射"></p>
+<h3 id="段表结构"><a href="#段表结构" class="headerlink" title="段表结构"></a>段表结构</h3><h4 id="PE（Windows-可执行文件）"><a href="#PE（Windows-可执行文件）" class="headerlink" title="PE（Windows 可执行文件）"></a>PE（Windows 可执行文件）</h4><table>
+<thead>
+<tr>
+<th><strong>IDA 段名</strong></th>
+<th><strong>PE 节名 (Section)</strong></th>
+<th><strong>运行时内存映射 / 权限</strong></th>
+<th><strong>主要作用 / 内容说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.text</code></td>
+<td><code>.text</code></td>
+<td><strong>RX</strong>（可执行、只读）</td>
+<td>程序主代码区，函数体、指令、跳转表。</td>
+</tr>
+<tr>
+<td><code>.rdata</code></td>
+<td><code>.rdata</code></td>
+<td><strong>R</strong>（只读）</td>
+<td>常量字符串、浮点常数、导入/导出表的辅助结构。</td>
+</tr>
+<tr>
+<td><code>.data</code></td>
+<td><code>.data</code></td>
+<td><strong>RW</strong>（可读写）</td>
+<td>已初始化的全局变量、静态变量。</td>
+</tr>
+<tr>
+<td><code>.bss</code>（有时合并在 <code>.data</code>）</td>
+<td><code>.bss</code></td>
+<td><strong>RW</strong>（可读写）</td>
+<td>未初始化的全局变量、静态变量，加载时置零。</td>
+</tr>
+<tr>
+<td><code>.idata</code></td>
+<td><code>.idata</code></td>
+<td><strong>R</strong>（只读）</td>
+<td>Import Address Table (IAT)、Import Name Table，DLL导入信息。</td>
+</tr>
+<tr>
+<td><code>.edata</code></td>
+<td><code>.edata</code></td>
+<td><strong>R</strong>（只读）</td>
+<td>Export Table，程序导出符号、函数名、导出地址。</td>
+</tr>
+<tr>
+<td><code>.reloc</code></td>
+<td><code>.reloc</code></td>
+<td><strong>R</strong>（只读）</td>
+<td>重定位信息表（IMAGE_BASE_RELOCATION），ASLR 时修正地址。</td>
+</tr>
+<tr>
+<td><code>.rsrc</code></td>
+<td><code>.rsrc</code></td>
+<td><strong>R</strong>（只读）</td>
+<td>程序资源（图标、菜单、对话框、版本信息等）。</td>
+</tr>
+<tr>
+<td><code>.pdata</code></td>
+<td><code>.pdata</code></td>
+<td><strong>R</strong>（只读）</td>
+<td>异常处理、函数展开信息（SEH 表）。</td>
+</tr>
+<tr>
+<td><code>.xdata</code></td>
+<td><code>.xdata</code></td>
+<td><strong>R</strong>（只读）</td>
+<td>对应 <code>.pdata</code> 的扩展异常信息表。</td>
+</tr>
+<tr>
+<td><code>.tls</code></td>
+<td><code>.tls</code></td>
+<td><strong>RW</strong>（线程本地）</td>
+<td>Thread Local Storage，全局线程变量初始化数据。</td>
+</tr>
+<tr>
+<td><code>.CRT$XCA</code> ~ <code>.CRT$XCZ</code></td>
+<td><code>.rdata</code>（逻辑上属于CRT）</td>
+<td><strong>R</strong></td>
+<td>C 运行库初始化段，用于构造函数注册。</td>
+</tr>
+<tr>
+<td><code>.CRT$XCU</code></td>
+<td><code>.rdata</code></td>
+<td><strong>R</strong></td>
+<td>C++ 全局对象构造函数表。</td>
+</tr>
+<tr>
+<td><code>.CRT$XTU</code></td>
+<td><code>.rdata</code></td>
+<td><strong>R</strong></td>
+<td>C++ 全局对象析构函数表。</td>
+</tr>
+<tr>
+<td><code>.debug</code> / <code>.pdb</code></td>
+<td><code>.debug</code> 或外部 <code>.pdb</code></td>
+<td>N/A（调试信息）</td>
+<td>调试符号表、类型信息（DWARF 或 MS CodeView 格式）。</td>
+</tr>
+<tr>
+<td><code>.textbss</code>（少见）</td>
+<td><code>.textbss</code></td>
+<td><strong>RWX</strong></td>
+<td>某些驱动或压缩壳工具临时可执行读写区。</td>
+</tr>
+<tr>
+<td><code>.cfg</code> / <code>.sxdata</code></td>
+<td><code>.cfg</code>, <code>.sxdata</code></td>
+<td><strong>R</strong></td>
+<td>安全控制流 (Control Flow Guard) 与异常处理扩展信息。</td>
+</tr>
+</tbody></table>
+<h4 id="ELF（Linux-Unix-可执行文件）"><a href="#ELF（Linux-Unix-可执行文件）" class="headerlink" title="ELF（Linux/Unix 可执行文件）"></a>ELF（Linux/Unix 可执行文件）</h4><table>
+<thead>
+<tr>
+<th><strong>IDA 段名</strong></th>
+<th><strong>ELF 节名 (Section)</strong></th>
+<th><strong>运行时映射 / 权限</strong></th>
+<th><strong>主要作用 / 内容说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.text</code></td>
+<td><code>.text</code></td>
+<td><strong>RX</strong>（可执行、只读）</td>
+<td>主代码段（函数、指令）。</td>
+</tr>
+<tr>
+<td><code>.rodata</code></td>
+<td><code>.rodata</code></td>
+<td><strong>R</strong>（只读）</td>
+<td>只读数据：字符串常量、浮点常数。</td>
+</tr>
+<tr>
+<td><code>.data</code></td>
+<td><code>.data</code></td>
+<td><strong>RW</strong>（可读写）</td>
+<td>已初始化的全局/静态变量。</td>
+</tr>
+<tr>
+<td><code>.bss</code></td>
+<td><code>.bss</code></td>
+<td><strong>RW</strong>（可读写，零填充）</td>
+<td>未初始化的全局/静态变量。</td>
+</tr>
+<tr>
+<td><code>.init</code></td>
+<td><code>.init</code></td>
+<td><strong>RX</strong></td>
+<td>程序启动时执行的初始化函数（编译器插入）。</td>
+</tr>
+<tr>
+<td><code>.fini</code></td>
+<td><code>.fini</code></td>
+<td><strong>RX</strong></td>
+<td>程序退出时执行的析构函数。</td>
+</tr>
+<tr>
+<td><code>.init_array</code></td>
+<td><code>.init_array</code></td>
+<td><strong>R</strong></td>
+<td>全局构造函数指针数组（C++构造）。</td>
+</tr>
+<tr>
+<td><code>.fini_array</code></td>
+<td><code>.fini_array</code></td>
+<td><strong>R</strong></td>
+<td>全局析构函数指针数组（C++析构）。</td>
+</tr>
+<tr>
+<td><code>.ctors</code> / <code>.dtors</code></td>
+<td><code>.ctors</code>, <code>.dtors</code></td>
+<td><strong>R</strong></td>
+<td>老版 GCC 构造/析构函数表（被 init_array/fini_array 替代）。</td>
+</tr>
+<tr>
+<td><code>.plt</code></td>
+<td><code>.plt</code></td>
+<td><strong>RX</strong></td>
+<td>Procedure Linkage Table，延迟绑定跳板。</td>
+</tr>
+<tr>
+<td><code>.got</code></td>
+<td><code>.got</code></td>
+<td><strong>RW</strong></td>
+<td>Global Offset Table，保存动态解析后的函数地址。</td>
+</tr>
+<tr>
+<td><code>.got.plt</code></td>
+<td><code>.got.plt</code></td>
+<td><strong>RW</strong></td>
+<td>明确划分给 PLT 使用的 GOT 条目。</td>
+</tr>
+<tr>
+<td><code>.rel.plt</code> / <code>.rela.plt</code></td>
+<td><code>.rel.plt</code> / <code>.rela.plt</code></td>
+<td><strong>R</strong></td>
+<td>动态链接重定位信息（针对 PLT）。</td>
+</tr>
+<tr>
+<td><code>.dynamic</code></td>
+<td><code>.dynamic</code></td>
+<td><strong>R</strong></td>
+<td>动态链接器使用的动态段信息表（lib, rel, strtab等指针）。</td>
+</tr>
+<tr>
+<td><code>.dynsym</code></td>
+<td><code>.dynsym</code></td>
+<td><strong>R</strong></td>
+<td>动态符号表（导入导出函数符号）。</td>
+</tr>
+<tr>
+<td><code>.dynstr</code></td>
+<td><code>.dynstr</code></td>
+<td><strong>R</strong></td>
+<td>动态字符串表，对应 <code>.dynsym</code> 中名字索引。</td>
+</tr>
+<tr>
+<td><code>.symtab</code></td>
+<td><code>.symtab</code></td>
+<td><strong>R</strong></td>
+<td>完整符号表（仅调试可见）。</td>
+</tr>
+<tr>
+<td><code>.strtab</code></td>
+<td><code>.strtab</code></td>
+<td><strong>R</strong></td>
+<td>对应 <code>.symtab</code> 的字符串表。</td>
+</tr>
+<tr>
+<td><code>.eh_frame</code></td>
+<td><code>.eh_frame</code></td>
+<td><strong>R</strong></td>
+<td>异常处理帧信息（C++ 异常栈展开）。</td>
+</tr>
+<tr>
+<td><code>.gcc_except_table</code></td>
+<td><code>.gcc_except_table</code></td>
+<td><strong>R</strong></td>
+<td>GCC 异常表，支持 C++ try/catch。</td>
+</tr>
+<tr>
+<td><code>.interp</code></td>
+<td><code>.interp</code></td>
+<td><strong>R</strong></td>
+<td>指定 ELF 运行所需的动态加载器路径（如 <code>/lib64/ld-linux-x86-64.so.2</code>）。</td>
+</tr>
+<tr>
+<td><code>.note.ABI-tag</code> / <code>.note.gnu.build-id</code></td>
+<td><code>.note.*</code></td>
+<td><strong>R</strong></td>
+<td>元数据、构建ID、ABI标识。</td>
+</tr>
+<tr>
+<td><code>.debug_*</code></td>
+<td><code>.debug_info</code>, <code>.debug_line</code>, <code>.debug_abbrev</code> 等</td>
+<td>N/A（调试）</td>
+<td>DWARF 调试信息。</td>
+</tr>
+<tr>
+<td><code>.comment</code></td>
+<td><code>.comment</code></td>
+<td><strong>R</strong></td>
+<td>编译器版本等注释信息。</td>
+</tr>
+</tbody></table>
+<h2 id="ida使用"><a href="#ida使用" class="headerlink" title="ida使用"></a>ida使用</h2><h3 id="IDA-中的宏"><a href="#IDA-中的宏" class="headerlink" title="IDA 中的宏"></a>IDA 中的宏</h3><p>宏只是帮助反映汇编寄存器或变量的「高/低部分」，在真实的 C 源码里是不存在的</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+<th>取的是什么</th>
+<th>位宽</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LOBYTE(x)</code></td>
+<td>Low Byte</td>
+<td>取低 8 位</td>
+<td>1 字节</td>
+</tr>
+<tr>
+<td><code>LOWORD(x)</code></td>
+<td>Low Word</td>
+<td>取低 16 位</td>
+<td>2 字节</td>
+</tr>
+<tr>
+<td><code>LODWORD(x)</code></td>
+<td>Low Double Word</td>
+<td>取低 32 位</td>
+<td>4 字节</td>
+</tr>
+<tr>
+<td><code>HIBYTE(x)</code></td>
+<td>High Byte</td>
+<td>取高 8 位</td>
+<td>1 字节</td>
+</tr>
+<tr>
+<td><code>HIWORD(x)</code></td>
+<td>High Word</td>
+<td>取高 16 位</td>
+<td>2 字节</td>
+</tr>
+<tr>
+<td><code>HIDWORD(x)</code></td>
+<td>High Double Word</td>
+<td>取高 32 位</td>
+<td>4 字节</td>
+</tr>
+</tbody></table>
+<h3 id="ida各页面内容【在菜单View的open-subview】"><a href="#ida各页面内容【在菜单View的open-subview】" class="headerlink" title="ida各页面内容【在菜单View的open subview】"></a>ida各页面内容【在菜单View的open subview】</h3><p>1.Hex View页面：直接查看程序的二进制内容（以hex值表示）<br>2.Function name:函数表用于分析每一个单独的函数<br>3.strings：字符串表 包括程序中存储的字符串常量<br>4.import export :导入表和导出表，表中内容为程序需要的外表函数和可以被外部程序调用的函数<br>5.segments ：包程序的各个段的信息<br>.text   — 代码段（可执行），存放函数、指令。<br>.rdata  — 只读数据，常量字符串、只读表。<br>.data   — 可读写数据（全局变量）。<br>.idata — Import table（导入表）。<br>.bss  — 未初始化数据（仅占虚拟地址空间）。<br>.reloc — 重定位表（如果存在）。<br>.rsrc — 资源（Windows 可执行文件）<br>.CRT  - 运行时/CRT初始化数据（__main 等）<br>.tls  - 线程局部存储<br>6.IDA-View窗口(反汇编窗口)</p>
+<h3 id="快捷键总结"><a href="#快捷键总结" class="headerlink" title="快捷键总结"></a>快捷键总结</h3><h4 id="F系列【主要是调试状态的处理】"><a href="#F系列【主要是调试状态的处理】" class="headerlink" title="F系列【主要是调试状态的处理】"></a>F系列【主要是调试状态的处理】</h4><pre><code>F2 添加/删除断点
+F4 运行到光标所在位置
+F5 反汇编【常用】
+F7 单步步入
+F8 单步跳过
+F9 持续运行直到输入/断点/结束
+</code></pre>
+<h4 id="shift系列【主要是调出对应的页面】"><a href="#shift系列【主要是调出对应的页面】" class="headerlink" title="shift系列【主要是调出对应的页面】"></a>shift系列【主要是调出对应的页面】</h4><pre><code>shift+F1 Local types（结构体） 【常用】
+shift+F2 execute scripts
+shift+F3 Functions
+shift+F4 Names
+shift+F5 Signatures
+shift+F7 Segments
+shift+F8 Segments registers
+shift+F9 Structures
+shift+F10 Enumerations
+shift+F11 Type libraries
+shift+F12 Strings（全局字符串） 【常用】
+Shift+E 导出数据段中的数据（多种形式可以选择）【常用】
+</code></pre>
+<h4 id="单字符系列【基本是数据处理转换相关】【这些都比较常用】"><a href="#单字符系列【基本是数据处理转换相关】【这些都比较常用】" class="headerlink" title="单字符系列【基本是数据处理转换相关】【这些都比较常用】"></a>单字符系列【基本是数据处理转换相关】【这些都比较常用】</h4><pre><code>G 按地址查找
+R 单个数字转换成对应的字符串【常用】
+D 把选中字节当作数据【常用于地址显示，指令分解】
+N 重命名（函数名、变量名等）【常用】
+Y 修改变量类型等（比如int改char等等）
+H decimal 数据的进制快速转换
+A 把选中区域识别为字符串【常用】
+C code（将数据转变为汇编代码）
+U undefined（取消定义，将字符串或者函数转变为原始数据）
+X 交叉引用（反汇编页面选中函数查找引用，汇编文本页面选中变量查找引用）【常用】
+P 选中位置识别为函数起点【常用】
+</code></pre>
+<h4 id="Ctrl、Alt系列"><a href="#Ctrl、Alt系列" class="headerlink" title="Ctrl、Alt系列"></a>Ctrl、Alt系列</h4><pre><code>Ctrl+F 搜索【常用】
+Ctrl+X 交叉引用（汇编页面）【常用】
+Alt+T 查找Text
+Ctrl+T 查找下一个text
+Alt+C Next Code
+Ctrl+D Next Data
+Ctrl+Z 撤销
+Ctrl+N 快速NOP
+Ctrl+S 跳转到任意段
+Ctrl+Shift+Z 恢复
+Alt+K 修改堆栈值
+</code></pre>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><pre><code>右键 → Hide casts 隐藏的编译器在反编译页面的自动插入【常用】
+tab  伪代码页面和汇编页面的切换【常用】
+空格 文本模式和普通汇编页面的切换【常用】    
+</code></pre>
+<h3 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h3><p>选中要修改的内容， Edit → Patch program → Assemble<br>Edit → Patch program → Apply patches to input file,导出修改后的程序</p>
+<h2 id="解方程神器z3的使用"><a href="#解方程神器z3的使用" class="headerlink" title="解方程神器z3的使用"></a>解方程神器z3的使用</h2><h3 id="示例1—一个最简单的解方程"><a href="#示例1—一个最简单的解方程" class="headerlink" title="示例1—一个最简单的解方程"></a>示例1—一个最简单的解方程</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line">x, y, z = Ints(<span class="string">&#x27;x y z&#x27;</span>)</span><br><span class="line">s = Solver()</span><br><span class="line">s.add(<span class="number">3</span>*x - y + z == <span class="number">185</span>)</span><br><span class="line">s.add(<span class="number">2</span>*x + <span class="number">3</span>*y - z == <span class="number">321</span>)</span><br><span class="line">s.add(x // y + z == <span class="number">173</span>)   <span class="comment"># //表示整除，如5//2=2，%表示取模，如5%2=1 </span></span><br><span class="line">check = s.check()          <span class="comment">#4、检测是否有解（有解sat、无解unsat）</span></span><br><span class="line"><span class="built_in">print</span>(check)</span><br><span class="line">model = s.model()<span class="comment">#获取到一组解</span></span><br><span class="line"><span class="built_in">print</span>(model)</span><br></pre></td></tr></table></figure>
+<h3 id="示例2—有位运算，答案是字符串，结果不唯一的解方程"><a href="#示例2—有位运算，答案是字符串，结果不唯一的解方程" class="headerlink" title="示例2—有位运算，答案是字符串，结果不唯一的解方程"></a>示例2—有位运算，答案是字符串，结果不唯一的解方程</h3><p>题目</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt;= <span class="number">33</span>; ++i) &#123;</span><br><span class="line">     b[i] = <span class="number">47806</span> * (input[i] + i);</span><br><span class="line">     <span class="keyword">if</span> (i)</span><br><span class="line">         b[i] ^= b[i - <span class="number">1</span>] ^ <span class="number">0x114514</span>;</span><br><span class="line">     b[i] %= <span class="number">51966</span>;</span><br><span class="line">     <span class="keyword">if</span> (b[i] != check[i])</span><br><span class="line">         <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>解</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line">N = <span class="number">34</span></span><br><span class="line">check = [<span class="number">0xB1B0</span>,<span class="number">0x5678</span>,<span class="number">0x7FF2</span>,<span class="number">0xA332</span>,<span class="number">0xA0E8</span>,<span class="number">0x364C</span>,<span class="number">0x2BD4</span>,<span class="number">0xC8FE</span>,<span class="number">0x4A7C</span>,<span class="number">0x18</span>,<span class="number">0x2BE4</span>,<span class="number">0x4144</span>,<span class="number">0x3BA6</span>,<span class="number">0xBE8C</span>,<span class="number">0x8F7E</span>,<span class="number">0x35F8</span>,<span class="number">0x61AA</span>,<span class="number">0x2B4A</span>,<span class="number">0x6828</span>,<span class="number">0xB39E</span>,<span class="number">0xB542</span>,<span class="number">0x33EC</span>,<span class="number">0xC7D8</span>,<span class="number">0x448C</span>,<span class="number">0x9310</span>,<span class="number">0x8808</span>,<span class="number">0xADD4</span>,<span class="number">0x3CC2</span>,<span class="number">0x796</span>,<span class="number">0xC940</span>,<span class="number">0x4E32</span>,<span class="number">0x4E2E</span>,<span class="number">0x924A</span>,<span class="number">0x5B5C</span>,<span class="number">0x405740</span>]</span><br><span class="line">s = [BitVec(<span class="string">f&#x27;s_<span class="subst">&#123;i&#125;</span>&#x27;</span>, <span class="number">32</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)]<span class="comment"># 变量,BitVec 为z3 中用于创建**定长二进制变量（Bit-Vector）**的函数，，是在模 $2^&#123;32&#125;$ 意义下寻找解。可以进行按位运算（^, &amp;, `</span></span><br><span class="line"><span class="comment">#创建一个含 34 个变量的列表 s，名字分别是 &#x27;s0&#x27; ... &#x27;s33&#x27;；</span></span><br><span class="line"><span class="comment">#每个变量是一个 32 位比特向量（BitVec）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">    solver.add(And(s[i] &gt;= <span class="number">32</span>, s[i] &lt;= <span class="number">127</span>)) <span class="comment">#添加约束条件,这里的意思是可视字符</span></span><br><span class="line">b = [<span class="number">0</span>] * N</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">    b[i] = (s[i] + i) * <span class="number">0xbabe</span></span><br><span class="line">    <span class="keyword">if</span> (i &gt; <span class="number">0</span>):</span><br><span class="line">        b[i] ^= b[i - <span class="number">1</span>] ^ <span class="number">0x114514</span></span><br><span class="line">    b[i] %= <span class="number">0xcafe</span></span><br><span class="line">    solver.add(b[i] == check[i]) <span class="comment">#添加约束条件</span></span><br><span class="line"><span class="keyword">if</span> solver.check() != sat:  <span class="comment">#检测是否有解（有解sat、无解unsat）</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;无解&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># 获取第一个解</span></span><br><span class="line">    <span class="keyword">while</span> (solver.check() == sat):</span><br><span class="line">        model1 = solver.model() <span class="comment">#取出结果</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;找到一个解：&quot;</span>)</span><br><span class="line">        sol1 = [model1[s[i]].as_long() <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)] <span class="comment"># 遍历获取s的解值，传给sol1</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join([<span class="built_in">chr</span>(c) <span class="keyword">for</span> c <span class="keyword">in</span> sol1]))</span><br><span class="line">        solver.add(Or([s[i] != model1[s[i]] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)])) <span class="comment"># 添加新的约束条件，排除当前解</span></span><br></pre></td></tr></table></figure>
+<h2 id="花指令总结"><a href="#花指令总结" class="headerlink" title="花指令总结"></a>花指令总结</h2><p>花指令就是往代码里添加一些数据，虽然不会影响程序的正常运行，但是会使你的ida 在生成汇编代码时出错</p>
+<h3 id="不可执行花指令"><a href="#不可执行花指令" class="headerlink" title="不可执行花指令"></a>不可执行花指令</h3><p>这类花指令是很好理解的，ida编译的时，遇到分支指令或者跳转指令时不会跳转。也就是说一些永远不会执行的分支里的数据，也会被当作代码执行,如果我们在这些分支里编写错误的数据，ida编译就会报错</p>
+<p>比如jmp跳转，或者跳转的位置无论如何都不变，这时分支里的数据就是无用的</p>
+<p>例如<code>jmp short near ptr loc_40102E+1</code>,那么代码标签<code>loc_40102E</code>的第一个字节就应该改成90(nop),因为ida会把这个字节当作操作数，导致报错</p>
+<h3 id="可执行花指令"><a href="#可执行花指令" class="headerlink" title="可执行花指令"></a>可执行花指令</h3><p>如果反编译器检测到指令破坏了堆栈平衡，即函数返回时与调用时堆栈状态发生了变化，就会报错<br>在函数内出现了：<br>    多余的 push 没有对应的 pop<br>    手动修改了 esp 或 ebp<br>    ret 前栈没有恢复到进入函数时的状态<br>就有可能报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...:00815023 038 E8 00 00 00 00          call    $+5  ;压入call 的下一条指令的地址，即0x815028</span><br><span class="line">...:00815028 03C 55                      push    ebp</span><br><span class="line">...:00815029 040 8B EC                   mov     ebp, esp</span><br><span class="line">...:0081502B                             db      36h</span><br><span class="line">...:0081502B 040 36 83 45 04 0A          add     dword ptr [ebp+4], 0Ah ;32位系统的寄存器大小为四字节，[ebp+4]就是call压入的地址</span><br><span class="line">...:00815030 040 5D                      pop     ebp</span><br><span class="line">...:00815031 03C C3                      retn                ;ret → 跳转到 0x815032,而不是“call下一条”的 0x815028。ida报错</span><br></pre></td></tr></table></figure>
+
+<h2 id="简单的脱壳"><a href="#简单的脱壳" class="headerlink" title="简单的脱壳"></a>简单的脱壳</h2><h3 id="ESP-定律"><a href="#ESP-定律" class="headerlink" title="ESP 定律"></a>ESP 定律</h3><p>壳 是在一些计算机软件里也有一段专门负责保护软件不被非法修改或反编译的程序。<br>它们一般都是先于程序运行，而不是修改源代码<br>加壳程序初始化时保存各寄存器的值，外壳执行完毕，恢复各寄存器值，最后再跳到原程序执行<br>通常用 pushad / popad、pushfd / popfd 指令对来保存和恢复现场环境</p>
+<p>ESP 定律就是在push后对ESP进行断点，然后执行到断点获取到源程序的入口</p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/re/"># re</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/10/25/bin/%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">二进制漏洞基础学习(正在学习)</a>
+            
+            
+            <a class="next" rel="next" href="/2025/09/02/android/%E5%AE%89%E5%8D%93%E5%AE%89%E5%85%A8%E5%85%A5%E9%97%A8/">安卓安全入门</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

