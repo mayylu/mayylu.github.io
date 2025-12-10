@@ -244,6 +244,7 @@
 <p>在window的时候如果文件名+<code>::$DATA</code>会把<code>::$DATA</code>之后的数据当成文件流处理,不会检测后缀名，且保持::$DATA之前的文件名，他的目的就是不检查后缀名       </p>
 <h3 id="存在其他有可能正常解析的后缀"><a href="#存在其他有可能正常解析的后缀" class="headerlink" title="存在其他有可能正常解析的后缀"></a>存在其他有可能正常解析的后缀</h3><p>PHP: .php, .php2, .php3, .php4, .php5, .php6, .php7, .phps, .phps, .pht, .phtm, .phtml, .pgif, .shtml, .htaccess, .phar, .inc<br>.php, .php3, .php4, .php5, .php7    这些后缀如果，php 版本x&gt; .phpy的y,则可以使用<br>.phps，高亮源码显示，不执行脚本，通常只做源码查看</p>
 <p>ASP: .asp, .aspx, .config, .ashx, .asmx, .aspq, .axd, .cshtm, .cshtml, .rem, .soap, .vbhtm, .vbhtml, .asa, .cer, .shtml<br>IIS6.0:下可以当asp执行的有asa,cer,cdx<br>Cer在7.0下有的可以有的不行。<br>Asa在IIS7.0，7.5也可以。</p>
+<p>当目标服务器开启了SSI功能(默认关闭),我们就可以上传.stm .shtml .shtm,利用<code>&lt;!--#exec cmd=&quot;whoami&quot; --&gt;</code>语法执行命令。</p>
 <p>Jsp: .jsp, .jspx, .jsw, .jsv, .jspf<br>Tomcat&lt;=4.x ,默认执行：.jsp<br>Tomcat&gt;=5.x 可以执行 .jspx，.jspf 依然只作为 include 文件，不能直接执行</p>
 <p><code>exif_imagetype</code>和<code>@getimagesize($tmp_name)[2]</code>可以通过抓包将文件内容的开头加上GIF89a(一种GIF标识)的方法绕过</p>
 <h3 id="利用自定义解析绕过黑名单"><a href="#利用自定义解析绕过黑名单" class="headerlink" title="利用自定义解析绕过黑名单"></a>利用自定义解析绕过黑名单</h3><h4 id="Apache的-htaccess"><a href="#Apache的-htaccess" class="headerlink" title="Apache的.htaccess"></a>Apache的.htaccess</h4><p>.htaccess可以在所在文件夹和子文件下修改部分apache2.conf和php.ini中的选项，方便程序可以灵活解析，当然这需要apache2.conf配置中的<strong>AllowOverride为ALL（默认为None）</strong></p>

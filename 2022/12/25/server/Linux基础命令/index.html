@@ -225,9 +225,19 @@
         <div class="post-content">
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本节简单纪录了一些linux常用命令和linux敏感文件</p>
 <span id="more"></span>
-<h2 id="linux-文件"><a href="#linux-文件" class="headerlink" title="linux 文件"></a>linux 文件</h2><h3 id="home目录"><a href="#home目录" class="headerlink" title="home目录"></a>home目录</h3><p>.bash_history 文件是记录用户在shell中输入的所有命令历史的文件，可以通过输入 history 命令查看。它通常存储在当前用户的 home 目录中</p>
-<p>读取/etc/passwd文件内容<br>www:x:1002:1002::/home/www:/sbin/nologin<br>记录用户名www及其workdir：/home/www/；读取/home/www/.bash_history，发现服务器的历史命令：</p>
-<h3 id="etc目录"><a href="#etc目录" class="headerlink" title="etc目录"></a>etc目录</h3><p>/etc/passwd<br>文件是Linux系统保存用户信息及其工作目录的文件，权限是所有用户/组可读，一般被用作Linux系统下文件读取漏洞存在性判断的基准。读到这个文件我们就可以知道系统存在哪些用户、他们所属的组是什么、工作目录是什么<br>/etc/shadow 用于存储用户的加密密码和与密码相关的其他安全信息<br>/etc/(cron.d/*|crontab)<br>定时任务文件<br>etc/environment是环境变量配置文件之一,可能存在大量目录信息的泄露<br>/etc/hostname表示主机名<br>/etc/hosts是主机名查询静态表，包含指定域名解析IP的成对信息。通过这个文件，参赛者可以探测网卡信息和内网IP/域名</p>
+<h2 id="linux-文件"><a href="#linux-文件" class="headerlink" title="linux 文件"></a>linux 文件</h2><h3 id="etc目录"><a href="#etc目录" class="headerlink" title="etc目录"></a>etc目录</h3><p><strong>/etc/passwd</strong><br>文件是Linux系统保存用户信息及其工作目录的文件，权限是所有用户/组可读，一般被用作Linux系统下文件读取漏洞存在性判断的基准。读到这个文件我们就可以知道系统存在哪些用户、他们所属的组是什么、工作目录是什么</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">www:x:1002:1002::/home/www:/sbin/nologin</span><br><span class="line">用户名:密码占位符:UID:GID:用户描述:家目录:登录Shell</span><br></pre></td></tr></table></figure>
+<p>登录 Shell 是 /etc/passwd 文件第 7 字段（最后一列），它决定用户登录后启动哪个程序</p>
+<p><strong>/etc/shadow</strong> 用于存储用户的加密密码和与密码相关的其他安全信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kali:$y$j9T$B4i9oW2LaERt/J5/X8bbN/$zzGfRqAZim/VofZcas3MhnfSdYddB5.zRulk087PN2A:18878:0:99999:7:::</span><br><span class="line">用户名:密码哈希值:从 1970-01-01 到上次改密码经过的天数:密码修改的最小间隔天数:密码最长有效期::::</span><br></pre></td></tr></table></figure>
+
+<p><strong>/etc/group</strong> 是 Linux 系统中 管理用户组信息 的配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">adm:x:4:kali,root                adm组允许读取 /var/log/* 系统日志，通常只有管理员加入</span><br><span class="line">sudo:x:27:kali                   sudo 组 = 可以 sudo 获取 root</span><br><span class="line"></span><br><span class="line">组名:组密码:GID:属于该组的用户</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>/etc/(cron.d/*|crontab)</strong><br>定时任务文件<br><strong>etc/environment</strong>是环境变量配置文件之一,可能存在大量目录信息的泄露<br><strong>/etc/hostname</strong>表示主机名<br><strong>/etc/hosts</strong>是主机名查询静态表，包含指定域名解析IP的成对信息。通过这个文件，参赛者可以探测网卡信息和内网IP/域名</p>
+<h3 id="home目录"><a href="#home目录" class="headerlink" title="home目录"></a>home目录</h3><p>.bash_history 文件是记录用户在shell中输入的所有命令历史的文件，可以通过输入 history 命令查看。它通常存储在当前用户的 home 目录中</p>
+<p>读取/etc/passwd文件内容<br>www:x:1002:1002::/home/www:/sbin/nologin<br>记录用户名www<br>其workdir：/home/www/；<br>则读取/home/www/.bash_history，发现服务器的历史命令：</p>
 <h3 id="proc目录"><a href="#proc目录" class="headerlink" title="proc目录"></a>proc目录</h3><p>/proc 目录是一个虚拟文件系统，提供了关于系统内核、进程、硬件以及系统状态的实时信息。/proc 目录中的文件和子目录并不存储在磁盘上，而是由内核动态生成和维护的。它为用户和程序提供了一个与内核交互的接口。<br>/proc/version     内核信息<br>/proc/sched_debug 正在运行的进程信息<br>/proc/net/wireless 无线网卡信息和基础信息</p>
 <p>pid是进程的标号：<br>/proc/pid/cmdline 是一个只读文件，包含进程的完整命令行信息<br>/proc/pid/cwd     包含了当前进程工作目录的一个链接<br>/proc/pid/environ 包含了可用进程环境变量的列表<br>/proc/1/environ</p>
 <p>self即当前进程<br>/proc/self/cmdline      当前进程的完整命令<br>/proc/self/maps         查看当前进程的内存映射关系<br>cat /proc/self/cmdline  当前进程的完整命令<br>ls -al /proc/self/cwd   获取目标当前进程环境的运行目录<br>ls -al /proc/self/exe   获得当前进程的可执行文件的完整路径<br>cat /proc/self/environ  获取当前进程的环境变量信息<br>cat /proc/self/fd/{id}  获取当前进程打开的文件内容<br>/proc/net/arp<br>/proc/net/fib_trie</p>
@@ -398,7 +408,7 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2023/01/10/server/windows%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/">windows基础命令</a>
+                <a class="prev" rel="prev" href="/2023/02/18/misc/web%E6%9C%8D%E5%8A%A1%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2/">web服务中的数据交换</a>
             
             
             <a class="next" rel="next" href="/2022/12/03/bin/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/">汇编基础</a>

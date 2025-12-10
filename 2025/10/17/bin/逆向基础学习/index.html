@@ -255,13 +255,13 @@ ELF文件是一系列代码、数据、表按照一定规则打包起来的数�
 <td><code>.data</code></td>
 <td><code>.data</code></td>
 <td><strong>RW</strong>（可读写）</td>
-<td>已初始化的全局变量、静态变量。</td>
+<td>已初始化的全局变量、静态变量。如:int a = 10;</td>
 </tr>
 <tr>
 <td><code>.bss</code>（有时合并在 <code>.data</code>）</td>
 <td><code>.bss</code></td>
 <td><strong>RW</strong>（可读写）</td>
-<td>未初始化的全局变量、静态变量，加载时置零。</td>
+<td>未初始化的全局变量、静态变量，加载时系统将其自动置零。如:int a</td>
 </tr>
 <tr>
 <td><code>.idata</code></td>
@@ -367,13 +367,13 @@ ELF文件是一系列代码、数据、表按照一定规则打包起来的数�
 <td><code>.data</code></td>
 <td><code>.data</code></td>
 <td><strong>RW</strong>（可读写）</td>
-<td>已初始化的全局/静态变量。</td>
+<td>已初始化的全局/静态变量。如:int a = 10;</td>
 </tr>
 <tr>
 <td><code>.bss</code></td>
 <td><code>.bss</code></td>
 <td><strong>RW</strong>（可读写，零填充）</td>
-<td>未初始化的全局/静态变量。</td>
+<td>未初始化的全局/静态变量。如:int a</td>
 </tr>
 <tr>
 <td><code>.init</code></td>
@@ -409,13 +409,13 @@ ELF文件是一系列代码、数据、表按照一定规则打包起来的数�
 <td><code>.plt</code></td>
 <td><code>.plt</code></td>
 <td><strong>RX</strong></td>
-<td>Procedure Linkage Table，延迟绑定跳板。</td>
+<td>程序链接表 （Procedure Linkage Table），PLT 表中只存放 GOT 表项的地址，而不是函数真实的地址，函数真实的地址存放在 GOT 表中。</td>
 </tr>
 <tr>
 <td><code>.got</code></td>
 <td><code>.got</code></td>
 <td><strong>RW</strong></td>
-<td>Global Offset Table，保存动态解析后的函数地址。</td>
+<td>Global 全局偏移表 （Global Offset Table），保存动态解析后的函数地址。</td>
 </tr>
 <tr>
 <td><code>.got.plt</code></td>
@@ -630,7 +630,7 @@ tab  伪代码页面和汇编页面的切换【常用】
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2025/10/25/bin/%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">二进制漏洞基础学习(正在学习)</a>
+                <a class="prev" rel="prev" href="/2025/10/29/crypto/%E5%B8%B8%E8%A7%81%E5%AF%86%E7%A0%81%E5%AD%A6%E7%AE%97%E6%B3%95%E7%9A%84%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/">常见密码学算法的简单实现</a>
             
             
             <a class="next" rel="next" href="/2025/09/02/android/%E5%AE%89%E5%8D%93%E5%AE%89%E5%85%A8%E5%85%A5%E9%97%A8/">安卓安全入门</a>

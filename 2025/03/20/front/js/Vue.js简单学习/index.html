@@ -223,9 +223,12 @@
         </header>
 
         <div class="post-content">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现在前端多是Vue.js+webpack,也是多亏了于此，黑盒才能有这么多的未授权可以挖。</p>
-<p>好久没写博客了，最近搞毕设想要搞个前端，不然光脚本实在交不了差，想到之前有简单了解vue，正好趁着这个机会把之前的这篇博客好好补补，在这里还是希望毕业以后博客还能继续写下去的</p>
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>好久没写博客了，最近搞毕设想要搞个前端，不然光脚本实在交不了差，想到之前有简单了解vue，正好趁着这个机会把之前的这篇博客好好补补，在这里还是希望毕业以后博客还能继续写下去的</p>
 <span id="more"></span>
+
+<p>比如vue只操作数据，不手动操作 DOM。<br><code>data.title = &quot;Hello&quot;;</code><br>HTML 自动刷新页面：<br><code>&lt;h1&gt;&#123;&#123; title &#125;&#125;&lt;/h1&gt;</code></p>
+<p>在 jQuery 时代你要写：<br><code>$(&quot;#h1&quot;).text(title);</code><br>现代前端已经不是“网页”，而是“复杂应用”,当你的页面有几十个动态数据，你要手动更新 DOM，让数据和界面保持一致，非常痛苦<br>随着页面复杂度上升，jQuery 会变得无法维护。</p>
+<p>并且jQuery无法复用 UI 逻辑，这使得前端页面存在大量的代码复用</p>
 <h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>在 JavaScript 开发中，我们通常会依赖于很多js第三方库和框架，比如 Vue.js、Axios、Vue Router 等。通过使用 npm，我们可以轻松地管理这些依赖</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装依赖，创建 node_modules文件夹</span></span><br><span class="line">npm install</span><br><span class="line"><span class="comment"># 建议不要直接使用 cnpm 安装依赖，会有各种诡异的 bug。可以通过如下操作解决 npm 下载速度慢的问题</span></span><br><span class="line">npm install --registry=https://registry.npmmirror.com</span><br><span class="line"><span class="comment"># 启动服务(自定义脚本，在 package.json文件的 scripts 部分有相应的内容)</span></span><br><span class="line">npm run serve</span><br><span class="line"><span class="comment">#生成 dist目录，用于生产环境的部署</span></span><br><span class="line">npm run build</span><br></pre></td></tr></table></figure>
 
