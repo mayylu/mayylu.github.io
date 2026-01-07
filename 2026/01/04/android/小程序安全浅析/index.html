@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>小程序安全简单学习 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">小程序安全简单学习</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">一月 4, 2026&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Android/">Android</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近不知道干什么，简单学学偏向开发的知识吧，小程序的漏洞还是比较多的，因为小程序访问和注册都需要通过微信，这个门槛使得小程序可以免受一些漏扫攻击，之前自己对小程序安全的认识还是，bp+Proxifier抓包，反编译看源码找接口，反正还是web那一套，个人感觉其实够用了，但是耐不住好奇心<br>借此希望这篇文章不单单是简单的知识记录，希望可以学到一些新的编程设计思想，说不定学安卓的时候就能用上了那</p>
+<span id="more"></span>
+<h2 id="关于前后端分离的一些认识"><a href="#关于前后端分离的一些认识" class="headerlink" title="关于前后端分离的一些认识"></a>关于前后端分离的一些认识</h2><p>在学习小程序开发的时候，我个人感觉跟vue很像，都是前端路由，后端接口服务，结合我之前对web开发的学习，现在总结一些对前后端分离的一些认识<br>前后端分离有三个阶段<br>第一阶段是前后端完全不分离，如（PHP / JSP / ASPX）<br>访问路径通常为相对文件路径，访问主体是一个文件，代码如同JS一样嵌在或者包含在页面中，页面完全由后端渲染</p>
+<p>第二阶段是代码层分离，如（Spring Boot + templates / ThinkPHP）<br>访问主体依旧是一个文件，称为模板文件，但是后端逻辑被抽象成一个一个接口，方便项目管理，从浏览器这个视角来看其实没什么变化</p>
+<p>第三阶段是架构层独立，如（Vue / 小程序）<br>这个时候的网站可以称得上是应用程序，初始化时需要先加载所有的 JS 代码和页面，前端框架在浏览器端独立运行</p>
+<p>前两个阶段返回包是html或者html+AJAX获取的后端 API 请求数据，称为<strong>服务端渲染（SSR）</strong><br>最后一个阶段返回包就只剩下后端 API 请求数据，称为<strong>客户端渲染（CSR）</strong></p>
+<p>但是需要注意的是小程序是不兼容js的，所以xss就别想了</p>
+<h2 id="小程序项目目录结构"><a href="#小程序项目目录结构" class="headerlink" title="小程序项目目录结构"></a>小程序项目目录结构</h2><p>因为小程序前端和vue基本差不多，并且我又不打算搞小程序开发，所以就打算简单写写了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">├── app.js                                 //加载页面前的预启动逻辑</span><br><span class="line">├── app.json                               //全局配置,如页面路径列表，首页，底部 tab 栏等</span><br><span class="line">├── app.wxss                               //全局样式</span><br><span class="line">├── pages</span><br><span class="line">│   ├── index</span><br><span class="line">│   │   ├── index.js</span><br><span class="line">│   │   ├── index.wxml</span><br><span class="line">│   │   └── index.wxss</span><br><span class="line">│   ├── logs</span><br><span class="line">│       ├── logs.js                        //页面逻辑</span><br><span class="line">│       ├── logs.json                      //页面配置</span><br><span class="line">│       ├── logs.wxml                      //模板文件，跟vue标签差不多</span><br><span class="line">│       └── logs.wxss                      //页面样式</span><br><span class="line">├── project.config.json                    //项目配置</span><br><span class="line">├── project.private.config.json</span><br></pre></td></tr></table></figure>
+<p>第一次访问后的调用顺序</p>
+<ol>
+<li><p>app.js<br>└─ App() 注册<br>└─ onLaunch(options)      ← 全局最先执行<br>└─ onShow(options)</p>
+</li>
+<li><p>app.json<br>└─ 解析 pages[]<br>└─ 确定首页（pages[0]）</p>
+</li>
+<li><p>首页 Page 初始化<br>└─ Page() 注册<br>└─ onLoad(query)<br>└─ onShow()<br>└─ onReady()</p>
+<h2 id="page"><a href="#page" class="headerlink" title="page"></a>page</h2><p><code>&lt;view bind:tap=&quot;viewTap&quot;&gt;&#123;&#123;num&#125;&#125;&lt;/view&gt;</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Page(&#123;</span><br><span class="line">    <span class="attr">onLoad</span>: <span class="function"><span class="keyword">function</span> (<span class="params">options</span>) </span>&#123;&#125;,<span class="comment">//生命周期函数</span></span><br><span class="line">	<span class="attr">onReady</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">	<span class="attr">data</span>: &#123;<span class="comment">//初始数据</span></span><br><span class="line">		<span class="attr">num</span>: <span class="number">0</span>,</span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="attr">viewTap</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;<span class="comment">//自定义触发函数</span></span><br><span class="line">		<span class="built_in">this</span>.setData(&#123;</span><br><span class="line">			<span class="attr">num</span>: <span class="built_in">this</span>.data.num + <span class="number">1</span>,</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>小程序是双线程模型(感觉叫双进程模型更合适)，页面渲染相关的数据只能通过 setData 修改，直接赋值只会修改JS 内存里的值，不会触发视图更新</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">逻辑层（JS）</span><br><span class="line">  ↕ setData 通信</span><br><span class="line">视图层（WXML / WXSS）</span><br></pre></td></tr></table></figure>
+<h2 id="与后端交互"><a href="#与后端交互" class="headerlink" title="与后端交互"></a>与后端交互</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wx.request(&#123;</span><br><span class="line">  <span class="attr">url</span>: <span class="string">&#x27;https://api.example.com/user/list&#x27;</span>,</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">  <span class="attr">data</span>: &#123;&#125;,</span><br><span class="line">  <span class="function"><span class="title">success</span>(<span class="params">res</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res.data)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">fail</span>(<span class="params">err</span>)</span> &#123;</span><br><span class="line">       wx.navigateTo(&#123;<span class="comment">//跳转页面</span></span><br><span class="line">      <span class="attr">url</span>: <span class="string">&#x27;/pages/404&#x27;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="小程序手机号一键登录"><a href="#小程序手机号一键登录" class="headerlink" title="小程序手机号一键登录"></a>小程序手机号一键登录</h2></li>
+</ol>
+<h3 id="老版本登录"><a href="#老版本登录" class="headerlink" title="老版本登录"></a>老版本登录</h3><p>小程序前端回调生成用户登录凭证</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wx.login(&#123;</span><br><span class="line">  success (res) &#123;</span><br><span class="line">    <span class="keyword">if</span> (res.code) &#123;<span class="comment">//前端回调获取，用户登录凭证（有效期五分钟）</span></span><br><span class="line">      wx.request(&#123;<span class="comment">//发给后端</span></span><br><span class="line">        <span class="attr">url</span>: <span class="string">&#x27;https://example.com/onLogin&#x27;</span>,</span><br><span class="line">        <span class="attr">data</span>: &#123;</span><br><span class="line">          <span class="attr">code</span>: res.code&#125;&#125;)&#125;&#125;&#125;)</span><br></pre></td></tr></table></figure>
+<p>后端根据用户登录凭证和小程序密钥获取用户唯一标识和会话密钥</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//GET https://api.weixin.qq.com/sns/jscode2session?appid=APPID&amp;secret=APPsecret&amp;js_code=code&amp;grant_type=&quot;uthorization_code&quot;</span></span><br><span class="line"><span class="comment">//AppID(小程序ID)	wx93ae32e40909dff5	</span></span><br><span class="line"><span class="comment">//AppSecret(小程序密钥)	03dd2a224c1be18a815e3d5fa077597d</span></span><br><span class="line"><span class="comment">//code(用户登录凭证)</span></span><br><span class="line"><span class="comment">//返回</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;openid&quot;</span>: <span class="string">&quot;xxxxxx&quot;</span>,<span class="comment">//用户唯一标识</span></span><br><span class="line">  <span class="attr">&quot;session_key&quot;</span>: <span class="string">&quot;xxxxx&quot;</span>,<span class="comment">//会话密钥</span></span><br><span class="line">  <span class="attr">&quot;unionid&quot;</span>: <span class="string">&quot;xxxxx&quot;</span>,<span class="comment">//同一个微信开放平台下的不同应用，UnionID是相同，适合多应用统一登录</span></span><br><span class="line">  <span class="attr">&quot;errcode&quot;</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">&quot;errmsg&quot;</span>: <span class="string">&quot;xxxxx&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>从基础库2.21.2之前，小程序前端button在用户点击后,前端回调获取到手机号密文信息，和对应的iv</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;button open-type=<span class="string">&quot;getPhoneNumber&quot;</span> bindgetphonenumber=<span class="string">&quot;getPhoneNumber&quot;</span>&gt;&lt;/button&gt;</span><br><span class="line">Page(&#123;</span><br><span class="line">  getPhoneNumber (e) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.detail.errMsg)</span><br><span class="line">    <span class="built_in">console</span>.log(e.detail.iv) <span class="comment">//加密算法的初始向量</span></span><br><span class="line">    <span class="built_in">console</span>.log(e.detail.encryptedData) <span class="comment">//用户信息密文，加密格式为AES-128-CBC,密钥为session_key</span></span><br><span class="line">    <span class="comment">//发送给后端，后端解密</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//encryptedData明文格式如下</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;phoneNumber&quot;</span>: <span class="string">&quot;13580006666&quot;</span>,</span><br><span class="line">    <span class="string">&quot;purePhoneNumber&quot;</span>: <span class="string">&quot;13580006666&quot;</span>,</span><br><span class="line">    <span class="string">&quot;countryCode&quot;</span>: <span class="string">&quot;86&quot;</span>,</span><br><span class="line">    <span class="string">&quot;watermark&quot;</span>:</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;appid&quot;</span>:<span class="string">&quot;APPID&quot;</span>,</span><br><span class="line">        <span class="string">&quot;timestamp&quot;</span>: TIMESTAMP</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="新版本登录"><a href="#新版本登录" class="headerlink" title="新版本登录"></a>新版本登录</h3><p>新版本登录在获取用户手机号信息的方式发生了改变，杜绝了因AppSecret泄露导致的任意用户登录<br>从基础库2.21.2之后，小程序前端button在用户点击后,前端回调获取到手机号动态令牌</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;button open-type=<span class="string">&quot;getPhoneNumber&quot;</span> bindgetphonenumber=<span class="string">&quot;getPhoneNumber&quot;</span>&gt;&lt;/button&gt;</span><br><span class="line"></span><br><span class="line">Page(&#123;</span><br><span class="line">  getPhoneNumber (e) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e.detail.code)  <span class="comment">// 手机号动态令牌</span></span><br><span class="line">    <span class="built_in">console</span>.log(e.detail.errMsg) <span class="comment">// 回调信息（成功失败都会返回）</span></span><br><span class="line">    <span class="built_in">console</span>.log(e.detail.errno)  <span class="comment">// 错误码（失败时返回）</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>使用小程序密钥获取后台接口调用凭据</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//GET https://api.weixin.qq.com/cgi-bin/token?grant_type=&quot;client_credential&quot;&amp;appid=APPID&amp;secret=APPSECRET</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;access_token&quot;</span>: <span class="string">&quot;ACCESS_TOKEN&quot;</span>,<span class="comment">//后台接口调用凭据</span></span><br><span class="line">  <span class="attr">&quot;expires_in&quot;</span>: <span class="number">7200</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用后台接口调用凭据和前面获取到的手机号动态令牌，获取手机号</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//POST https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=ACCESS_TOKEN</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;code&quot;</span>: <span class="string">&quot;e31968a7f94cc5ee25fafc2aef2773f0bb8c3937b22520eb8ee345274d00c144&quot;</span><span class="comment">// 手机号动态令牌</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//返回示例</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;errcode&quot;</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">&quot;errmsg&quot;</span>: <span class="string">&quot;ok&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;phone_info&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;phoneNumber&quot;</span>: <span class="string">&quot;13580006666&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;purePhoneNumber&quot;</span>: <span class="string">&quot;13580006666&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;countryCode&quot;</span>: <span class="number">86</span>,</span><br><span class="line">    <span class="attr">&quot;watermark&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;timestamp&quot;</span>: <span class="number">1637744274</span>,</span><br><span class="line">      <span class="attr">&quot;appid&quot;</span>: <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Android/"># Android</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2025/12/09/bin/%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">二进制漏洞基础学习</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -238,8 +238,8 @@
 <p><strong>/etc/(cron.d/*|crontab)</strong><br>定时任务文件<br><strong>etc/environment</strong>是环境变量配置文件之一,可能存在大量目录信息的泄露<br><strong>/etc/hostname</strong>表示主机名<br><strong>/etc/hosts</strong>是主机名查询静态表，包含指定域名解析IP的成对信息。通过这个文件，参赛者可以探测网卡信息和内网IP/域名</p>
 <h3 id="home目录"><a href="#home目录" class="headerlink" title="home目录"></a>home目录</h3><p>.bash_history 文件是记录用户在shell中输入的所有命令历史的文件，可以通过输入 history 命令查看。它通常存储在当前用户的 home 目录中</p>
 <p>读取/etc/passwd文件内容<br>www:x:1002:1002::/home/www:/sbin/nologin<br>记录用户名www<br>其workdir：/home/www/；<br>则读取/home/www/.bash_history，发现服务器的历史命令：</p>
-<h3 id="proc目录"><a href="#proc目录" class="headerlink" title="proc目录"></a>proc目录</h3><p>/proc 目录是一个虚拟文件系统，提供了关于系统内核、进程、硬件以及系统状态的实时信息。/proc 目录中的文件和子目录并不存储在磁盘上，而是由内核动态生成和维护的。它为用户和程序提供了一个与内核交互的接口。<br>/proc/version     内核信息<br>/proc/sched_debug 正在运行的进程信息<br>/proc/net/wireless 无线网卡信息和基础信息</p>
-<p>pid是进程的标号：<br>/proc/pid/cmdline 是一个只读文件，包含进程的完整命令行信息<br>/proc/pid/cwd     包含了当前进程工作目录的一个链接<br>/proc/pid/environ 包含了可用进程环境变量的列表<br>/proc/1/environ</p>
+<h3 id="proc目录"><a href="#proc目录" class="headerlink" title="proc目录"></a>proc目录</h3><p>/proc 目录是一个虚拟文件系统，提供了关于系统内核、进程、硬件以及系统状态的实时信息。/proc 目录中的文件和子目录并不存储在磁盘上，而是由内核动态生成和维护的。它为用户和程序提供了一个与内核交互的接口。<br>/proc/mounts 文件系统列表<br>/proc/cpuinfo CPU信息<br>/proc/meminfo 内存信息<br>/proc/version     内核信息<br>/proc/sched_debug 正在运行的进程信息<br>/proc/net/wireless 无线网卡信息和基础信息</p>
+<p>pid是进程的标号：<br>/proc/pid/cmdline 进程的完整命令行信息<br>/proc/pid/cwd     包含了当前进程工作目录的一个链接<br>/proc/pid/environ 包含了可用进程环境变量的列表<br>/proc/pid/mountinfo 文件系统挂载的信息<br>/proc/pid/fd/fd 进程打开的文件（fd是文件描述符id）<br>/proc/pid/exe 指向该进程的可执行文件</p>
 <p>self即当前进程<br>/proc/self/cmdline      当前进程的完整命令<br>/proc/self/maps         查看当前进程的内存映射关系<br>cat /proc/self/cmdline  当前进程的完整命令<br>ls -al /proc/self/cwd   获取目标当前进程环境的运行目录<br>ls -al /proc/self/exe   获得当前进程的可执行文件的完整路径<br>cat /proc/self/environ  获取当前进程的环境变量信息<br>cat /proc/self/fd/{id}  获取当前进程打开的文件内容<br>/proc/net/arp<br>/proc/net/fib_trie</p>
 <h3 id="系统日志目录"><a href="#系统日志目录" class="headerlink" title="系统日志目录"></a>系统日志目录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Linux的日志存储在/var/log中</span><br><span class="line"></span><br><span class="line">wtmp 记录登录进入、退出、数据交换、关机和重启</span><br><span class="line">cron 记录与定时任务相关的日志信息</span><br><span class="line">messages 记录系统启动后的信息和错误日志</span><br><span class="line">apache2/access.log 记录Apache的访问日志</span><br><span class="line">auth.log 记录系统授权信息，包括用户登录和使用的权限机制等</span><br><span class="line">userlog 记录所有等级用户信息的日志</span><br><span class="line">xferlog（vsftpd.log） 记录Linux FTP日志</span><br><span class="line">lastlog 记录登录的用户，可以使用命令lastlog查看</span><br><span class="line">secure 记录大多数应用输入的账号与密码，以及登录成功与否</span><br><span class="line">faillog 记录登录系统不成功的账号信息</span><br></pre></td></tr></table></figure>
 
@@ -374,7 +374,7 @@
 <p><strong><code>$&#123;?&#125;</code></strong>    //表示0    用途：上一条命令执行结束后的传回值。通常0代表执行成功，非0代表执行有误。</p>
 <p>**<code>$()</code>**：对命令的替换，同``（反引号）,查询失败返回就空，wh$(f1hgb)oa$(f1hgb)mi </p>
 <p><strong><code>$(())</code></strong>:对内部内容进行整数运算$((var1*var2)),输出结果为十进制</p>
-<ol>
+<ol start="5">
 <li><p>进制转换<br>将其他进制转换为十进制$((N#var))，其中N为进制。</p>
 </li>
 <li><p>位运算</p>

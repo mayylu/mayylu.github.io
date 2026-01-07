@@ -496,7 +496,77 @@ ELF文件是一系列代码、数据、表按照一定规则打包起来的数�
 <td>编译器版本等注释信息。</td>
 </tr>
 </tbody></table>
-<h2 id="ida使用"><a href="#ida使用" class="headerlink" title="ida使用"></a>ida使用</h2><h3 id="IDA-中的宏"><a href="#IDA-中的宏" class="headerlink" title="IDA 中的宏"></a>IDA 中的宏</h3><p>宏只是帮助反映汇编寄存器或变量的「高/低部分」，在真实的 C 源码里是不存在的</p>
+<h2 id="ida使用"><a href="#ida使用" class="headerlink" title="ida使用"></a>ida使用</h2><h3 id="IDA中的一些数据类型"><a href="#IDA中的一些数据类型" class="headerlink" title="IDA中的一些数据类型"></a>IDA中的一些数据类型</h3><table>
+<thead>
+<tr>
+<th>类型类别</th>
+<th align="right">ILP32 (32-bit)</th>
+<th align="right">LP64 (Unix x86_64)</th>
+<th align="right">LLP64 (Windows x64)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>char</code></td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td><code>short</code></td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td><code>long</code></td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td><code>long long</code></td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td>pointer (<code>void*</code>)</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td><code>size_t</code></td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td><code>ssize_t</code></td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td><code>ptrdiff_t</code></td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+<tr>
+<td><code>intptr_t</code> / <code>uintptr_t</code></td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">8</td>
+</tr>
+</tbody></table>
+<h4 id="IDA-中的宏"><a href="#IDA-中的宏" class="headerlink" title="IDA 中的宏"></a>IDA 中的宏</h4><p>宏只是帮助反映汇编寄存器或变量的「高/低部分」，在真实的 C 源码里是不存在的</p>
 <table>
 <thead>
 <tr>

@@ -304,11 +304,12 @@ AND和 OR来联结多个查询条件
 <h3 id="字符函数"><a href="#字符函数" class="headerlink" title="字符函数"></a>字符函数</h3><pre><code>LEN() -     返回某个文本字段的长度
 ASCII(s)-                     返回字符串s的第一个字符或字符s的 ASCII 码 
 
-left（a，b)-                  指从左侧读取a的前b位    
+left(a，b)-                  指从左侧读取a的前b位    
 right(a,b)-                   指从右侧读取a的前b位
 substr(string,start,length) - 字符串截取
 substr(string from start for length) 
 substring()、mid() 函数与substring()函数功能类似
+instr(string,a)               查看字符串中是否包含a字符，如果包含返回所在位置，不包含返回0
 
 replace(string,search,replace)把object对象中出现的的search全部替换成replace  
 
