@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>code agent 的使用 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/categories">Categories</a>
+                
+                    <a class="menu-item" href="/tags">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">code agent 的使用</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">六月 8, 2026&nbsp;&nbsp;</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/ai/">ai</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前写的ai扫盲算是AI学习的开篇，简单介绍了LLM和Agent的基本概念以及LangChain搭建简单智能体的流程。但在实际工作中，真正让我感受到AI提效的，其实是Code Agent——也就是用AI来辅助写代码、审计代码、管理项目。这段时间我深度使用Claude Code，从最开始的”能用就行”到后来慢慢理解它的设计哲学，发现这东西远比想象的精巧。这篇文章就结合<a target="_blank" rel="noopener" href="https://github.com/shareAI-lab/learn-claude-code">learn-claude-code</a>项目的内容，系统整理一下Code Agent的使用方法，包括API消息体结构、设计理念、常用指令、Skill和MCP这几个核心部分。</p>
+<span id="more"></span>
+<h2 id="Learn-Claude-Code"><a href="#Learn-Claude-Code" class="headerlink" title="Learn Claude Code"></a>Learn Claude Code</h2><p>根据项目<code>https://github.com/shareAI-lab/learn-claude-code</code>的内容学习编写</p>
+<p>Claude Code 是 Anthropic 推出的官方命令行 AI 编程助手，本质是一个<strong>基于LLM的Code Agent</strong>。与Copilot这种补全式工具不同，Claude Code是一个具备自主规划和执行能力的智能体——它能理解整个项目结构，能跨文件修改代码，能执行shell命令，还能通过MCP协议扩展自己的能力边界。</p>
+<h3 id="Claude-Code格式的api和消息体结构"><a href="#Claude-Code格式的api和消息体结构" class="headerlink" title="Claude Code格式的api和消息体结构"></a>Claude Code格式的api和消息体结构</h3><p>理解Claude Code的消息体结构，是深入使用它的基础。Claude Code底层调用的是Anthropic的Messages API，消息体的核心结构如下：</p>
+<p><strong>基础消息格式：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;model&quot;</span>: <span class="string">&quot;claude-sonnet-4-6&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;max_tokens&quot;</span>: <span class="number">8192</span>,</span><br><span class="line">  <span class="attr">&quot;system&quot;</span>: <span class="string">&quot;你是一个AI编程助手...&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;messages&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;content&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;帮我写一个快速排序函数&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;content&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;好的，以下是快速排序的实现...&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;tool_use&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;tool_01abc123&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Write&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;input&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;file_path&quot;</span>: <span class="string">&quot;/path/to/sort.py&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;def quicksort(arr):\n    ...&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>System Prompt 的构成：</strong></p>
+<p>Claude Code的system prompt是其能力的核心，它并不是简单的一句话指令，而是由多个层次组合而成的复杂提示词系统：</p>
+<ol>
+<li><strong>基础身份和行为约束</strong>：定义Claude Code是什么、能做什么、行为边界</li>
+<li><strong>环境信息注入</strong>：当前工作目录、操作系统、Git状态、Shell类型等</li>
+<li><strong>工具定义</strong>：所有可用工具的JSON Schema定义，包括Read、Write、Edit、Bash、Grep、Glob等</li>
+<li><strong>编码规范</strong>：代码风格约定、命名规范、注释密度要求</li>
+<li><strong>安全策略</strong>：权限模式、危险操作确认机制</li>
+<li><strong>用户自定义指令</strong>：CLAUDE.md文件中的项目级指令</li>
+</ol>
+<p>这种分层设计的好处是：每一层职责清晰，模型能准确理解自己的角色和能力边界，同时用户可以通过CLAUDE.md灵活定制行为。</p>
+<p><strong>Tool Use 的消息流：</strong></p>
+<p>Claude Code与模型的交互遵循”思考-行动-观察”的循环模式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User Message → Assistant (text + tool_use) → Tool Result (tool_result) → Assistant (text + tool_use) → ...</span><br></pre></td></tr></table></figure>
+
+<p>具体到消息体中的<code>content</code>数组，一条完整的tool交互包含三种content类型：</p>
+<table>
+<thead>
+<tr>
+<th>content类型</th>
+<th>角色</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>text</code></td>
+<td>assistant</td>
+<td>模型输出的文本解释</td>
+</tr>
+<tr>
+<td><code>tool_use</code></td>
+<td>assistant</td>
+<td>模型决定调用的工具及参数</td>
+</tr>
+<tr>
+<td><code>tool_result</code></td>
+<td>user</td>
+<td>工具执行后返回的结果</td>
+</tr>
+</tbody></table>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个完整的工具调用回合</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;content&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;我先读取这个文件看看现有代码结构。&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;tool_use&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;tool_01xyz789&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Read&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;input&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;file_path&quot;</span>: <span class="string">&quot;/project/src/main.py&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 紧接着是工具返回结果</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;content&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;tool_result&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;tool_use_id&quot;</span>: <span class="string">&quot;tool_01xyz789&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;content&quot;</span>: <span class="string">&quot;import os\nimport sys\n\ndef main():\n    print(&#x27;hello&#x27;)\n&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>关键点</strong>：<code>tool_result</code>是以<code>user</code>角色注入到消息流中的，这意味着模型将工具返回视为”用户的输入”——这是Anthropic API设计上的一个巧妙之处，保证了对话流的连贯性。</p>
+<p><strong>多工具并行调用：</strong></p>
+<p>Claude Code支持在一次响应中同时调用多个工具，这在处理独立任务时可以大幅提升效率。消息体中的体现就是content数组包含多个<code>tool_use</code>块：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;content&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;我同时读取三个相关文件。&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;tool_use&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;tool_a&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Read&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;input&quot;</span>: &#123;<span class="attr">&quot;file_path&quot;</span>: <span class="string">&quot;/project/src/auth.py&quot;</span>&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;tool_use&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;tool_b&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Read&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;input&quot;</span>: &#123;<span class="attr">&quot;file_path&quot;</span>: <span class="string">&quot;/project/src/models.py&quot;</span>&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;tool_use&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;tool_c&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;Grep&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;input&quot;</span>: &#123;<span class="attr">&quot;pattern&quot;</span>: <span class="string">&quot;def login&quot;</span>, <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;/project/src/&quot;</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>扩展思考（Streaming）</strong>：</p>
+<p>在生产环境中，Claude Code使用SSE（Server-Sent Events）进行流式传输，每个消息块会携带event类型标识：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">event: message_start</span><br><span class="line">data: &#123;&quot;type&quot;: &quot;message_start&quot;, &quot;message&quot;: &#123;...&#125;&#125;</span><br><span class="line"></span><br><span class="line">event: content_block_start</span><br><span class="line">data: &#123;&quot;type&quot;: &quot;content_block_start&quot;, &quot;content_block&quot;: &#123;&quot;type&quot;: &quot;text&quot;&#125;&#125;</span><br><span class="line"></span><br><span class="line">event: content_block_delta</span><br><span class="line">data: &#123;&quot;type&quot;: &quot;content_block_delta&quot;, &quot;delta&quot;: &#123;&quot;type&quot;: &quot;text_delta&quot;, &quot;text&quot;: &quot;好的，&quot;&#125;&#125;</span><br><span class="line"></span><br><span class="line">event: content_block_stop</span><br><span class="line">data: &#123;&quot;type&quot;: &quot;content_block_stop&quot;&#125;</span><br><span class="line"></span><br><span class="line">event: message_stop</span><br><span class="line">data: &#123;&quot;type&quot;: &quot;message_stop&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种流式设计使得用户能实时看到模型的”思考过程”和工具调用进度，而非等待一个黑盒响应。</p>
+<h3 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h3><p>Claude Code的设计理念可以从架构、交互、安全三个维度来理解。</p>
+<h4 id="架构设计：Agentic-Loop"><a href="#架构设计：Agentic-Loop" class="headerlink" title="架构设计：Agentic Loop"></a>架构设计：Agentic Loop</h4><p>Claude Code的核心架构是一个<strong>Agentic Loop（智能体循环）</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────┐</span><br><span class="line">│                   Claude Code                     │</span><br><span class="line">│                                                    │</span><br><span class="line">│   用户输入 ──→ LLM推理 ──→ 决策（工具调用？）    │</span><br><span class="line">│       ↑                        ↓                  │</span><br><span class="line">│       │                    是  否                 │</span><br><span class="line">│       │                    ↓    ↓                 │</span><br><span class="line">│       │              执行工具  输出回复           │</span><br><span class="line">│       │                    ↓                      │</span><br><span class="line">│       └──── 工具结果注入 ◄──┘                     │</span><br><span class="line">│                                                    │</span><br><span class="line">└─────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>这个循环的核心思想来自<strong>ReAct（Reasoning + Acting）</strong>模式，即模型交替进行推理（思考下一步做什么）和行动（调用工具执行操作），行动的观察结果又会成为下一轮推理的输入。</p>
+<p>与传统IDE插件（如Copilot）的”补全式”交互不同，Claude Code是<strong>任务导向</strong>的——你给它一个目标，它自主拆解、分步执行、验证结果、修正错误。这种设计使得Claude Code能处理”帮我重构这个模块”这种复杂任务，而不只是”帮我写完这行代码”。</p>
+<h4 id="工具设计：最小原语原则"><a href="#工具设计：最小原语原则" class="headerlink" title="工具设计：最小原语原则"></a>工具设计：最小原语原则</h4><p>Claude Code的工具集合遵循<strong>最小原语原则</strong>——每个工具只做一件原子化的事情，复杂操作由模型组合工具完成：</p>
+<table>
+<thead>
+<tr>
+<th>工具类别</th>
+<th>具体工具</th>
+<th>设计意图</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件读取</td>
+<td>Read</td>
+<td>精确读取文件内容</td>
+</tr>
+<tr>
+<td>文件写入</td>
+<td>Write, Edit</td>
+<td>Write全量覆盖，Edit精确替换</td>
+</tr>
+<tr>
+<td>代码搜索</td>
+<td>Grep, Glob</td>
+<td>Grep内容搜索，Glob文件名匹配</td>
+</tr>
+<tr>
+<td>命令执行</td>
+<td>Bash</td>
+<td>所有shell操作的统一入口</td>
+</tr>
+<tr>
+<td>任务编排</td>
+<td>Agent, Workflow</td>
+<td>子智能体分发，多智能体编排</td>
+</tr>
+<tr>
+<td>交互控制</td>
+<td>AskUserQuestion, EnterPlanMode</td>
+<td>关键决策点的人类确认</td>
+</tr>
+</tbody></table>
+<p>为什么不多提供几个”高级”工具，比如一个”重构函数”的工具？因为这会让工具的语义变得模糊——LLM需要猜测工具的内部行为，反而降低可靠性。一个<code>Edit</code>工具做精确字符串替换，模型能完全预测其结果，这种确定性是可靠Agent的基础。</p>
+<h4 id="安全设计：权限分层与人类审核"><a href="#安全设计：权限分层与人类审核" class="headerlink" title="安全设计：权限分层与人类审核"></a>安全设计：权限分层与人类审核</h4><p>Claude Code运行在本地终端，拥有文件读写和命令执行的权限——这在提供强大能力的同时也带来了安全风险。其安全模型分为三层：</p>
+<ol>
+<li><strong>权限模式</strong>：用户在首次使用时选择权限级别，决定哪些类操作需要确认，哪些可以自动执行</li>
+<li><strong>危险操作检测</strong>：对<code>rm -rf</code>、<code>git push --force</code>、<code>sudo</code>等命令进行模式匹配，触发额外确认</li>
+<li><strong>沙箱隔离</strong>：支持在git worktree中运行子智能体，即使子智能体的操作出错也不影响主工作区</li>
+</ol>
+<p>这套设计的哲学是：<strong>不给模型绝对信任，但也不阻碍其工作</strong>。让人类在关键节点做决策，同时让常规操作流畅执行。</p>
+<h4 id="上下文管理：分层注入"><a href="#上下文管理：分层注入" class="headerlink" title="上下文管理：分层注入"></a>上下文管理：分层注入</h4><p>Claude Code的上下文管理非常精巧。它并不是把所有信息一次性塞给模型，而是分层注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">第一层：System Prompt（固定）</span><br><span class="line">   ├── 身份定义</span><br><span class="line">   ├── 工具Schema</span><br><span class="line">   └── 行为规范</span><br><span class="line"></span><br><span class="line">第二层：项目上下文（会话开始时加载一次）</span><br><span class="line">   ├── CLAUDE.md（项目指令）</span><br><span class="line">   ├── .claude/settings.json（项目配置）</span><br><span class="line">   └── Git状态概览</span><br><span class="line"></span><br><span class="line">第三层：即时上下文（每次对话动态注入）</span><br><span class="line">   ├── 当前打开的文件列表</span><br><span class="line">   ├── IDE选中的代码</span><br><span class="line">   └── 用户消息</span><br></pre></td></tr></table></figure>
+
+<p>这种设计保证了模型始终拥有”足够且不过量”的上下文。过量的上下文会稀释模型的注意力（即常说的”Lost in the Middle”问题），而分层注入确保最相关的信息优先级最高。</p>
+<h4 id="记忆系统：持久化的经验积累"><a href="#记忆系统：持久化的经验积累" class="headerlink" title="记忆系统：持久化的经验积累"></a>记忆系统：持久化的经验积累</h4><p>Claude Code内置了一套<strong>文件级记忆系统</strong>，位于<code>.claude/projects/&lt;project&gt;/memory/</code>目录。每条记忆是一个独立的markdown文件，包含：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: project-coding-style</span><br><span class="line">description: 项目的编码风格约定</span><br><span class="line">metadata:</span><br><span class="line"><span class="section">  type: project</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line">本项目使用4空格缩进，双引号，函数名使用snake<span class="emphasis">_case。</span></span><br><span class="line"><span class="emphasis">所有公共API必须有docstring。</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">**Why:**</span> 团队在2024年Q3统一了代码风格</span></span><br><span class="line"><span class="emphasis"><span class="strong">**How to apply:**</span> 在生成任何Python代码前检查此记忆</span></span><br></pre></td></tr></table></figure>
+
+<p>记忆分为四种类型：</p>
+<ul>
+<li><strong>user</strong>：关于用户偏好和习惯</li>
+<li><strong>feedback</strong>：用户对AI工作的纠正和反馈</li>
+<li><strong>project</strong>：项目特定的知识和约定</li>
+<li><strong>reference</strong>：外部资源的引用</li>
+</ul>
+<p>这套系统的精妙之处在于：<strong>记忆内容会随着会话自动召回</strong>（通过MEMORY.md索引），形成跨会话的经验积累。每一次用户纠正Claude的错误，都可能沉淀为一条永久记忆。</p>
+<h2 id="claude-code-的使用"><a href="#claude-code-的使用" class="headerlink" title="claude code 的使用"></a>claude code 的使用</h2><h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><p>Claude Code的交互模型是以<strong>斜杠指令（Slash Commands）</strong>为核心的，这些指令本质上是预设好的Prompt模板，触发特定的工作流。</p>
+<h4 id="基础交互指令"><a href="#基础交互指令" class="headerlink" title="基础交互指令"></a>基础交互指令</h4><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>使用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/help</code></td>
+<td>显示帮助信息</td>
+<td>查看所有可用指令</td>
+</tr>
+<tr>
+<td><code>/clear</code></td>
+<td>清空当前对话上下文</td>
+<td>话题切换，避免上下文污染</td>
+</tr>
+<tr>
+<td><code>/compact</code></td>
+<td>压缩对话上下文</td>
+<td>对话过长时，让模型自动总结并压缩历史</td>
+</tr>
+<tr>
+<td><code>/context</code></td>
+<td>显示当前上下文信息</td>
+<td>查看模型能看到什么</td>
+</tr>
+<tr>
+<td><code>/cost</code></td>
+<td>显示当前会话的token消耗</td>
+<td>成本控制</td>
+</tr>
+<tr>
+<td><code>/model</code></td>
+<td>切换使用的模型</td>
+<td>在sonnet/opus/haiku之间切换</td>
+</tr>
+<tr>
+<td><code>/status</code></td>
+<td>显示Claude Code的状态</td>
+<td>查看当前配置和连接状态</td>
+</tr>
+</tbody></table>
+<h4 id="代码相关指令"><a href="#代码相关指令" class="headerlink" title="代码相关指令"></a>代码相关指令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 初始化项目CLAUDE.md</span></span><br><span class="line">/init</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 代码审查（审查当前diff）</span></span><br><span class="line">/code-review</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> PR审查</span></span><br><span class="line">/review</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安全审查</span></span><br><span class="line">/security-review</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 验证改动是否生效</span></span><br><span class="line">/verify</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 简化/重构代码</span></span><br><span class="line">/simplify</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>/init</code>是最常用的指令之一。它会在项目根目录创建一个<code>CLAUDE.md</code>文件，这个文件是Claude Code的项目级System Prompt补充。运行<code>/init</code>后，Claude Code会自动扫描项目结构、依赖、构建系统，生成一份结构化的项目文档：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># CLAUDE.md</span></span><br><span class="line"></span><br><span class="line"><span class="section">## Project Overview</span></span><br><span class="line"><span class="bullet">-</span> Project: my-web-app</span><br><span class="line"><span class="bullet">-</span> Language: TypeScript</span><br><span class="line"><span class="bullet">-</span> Framework: Next.js 14</span><br><span class="line"><span class="bullet">-</span> Package Manager: pnpm</span><br><span class="line"></span><br><span class="line"><span class="section">## Build &amp; Test</span></span><br><span class="line"><span class="bullet">-</span> <span class="code">`pnpm dev`</span> - Start development server</span><br><span class="line"><span class="bullet">-</span> <span class="code">`pnpm build`</span> - Production build</span><br><span class="line"><span class="bullet">-</span> <span class="code">`pnpm test`</span> - Run tests</span><br><span class="line"></span><br><span class="line"><span class="section">## Code Style</span></span><br><span class="line"><span class="bullet">-</span> Use strict TypeScript</span><br><span class="line"><span class="bullet">-</span> Prefer functional components</span><br><span class="line"><span class="bullet">-</span> Follow Next.js App Router conventions</span><br></pre></td></tr></table></figure>
+
+<p>CLAUDE.md中的内容会在每次会话开始时作为system prompt的一部分注入，确保Claude Code始终了解项目约定。</p>
+<h4 id="交互控制指令"><a href="#交互控制指令" class="headerlink" title="交互控制指令"></a>交互控制指令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 进入计划模式（先规划再执行）</span></span><br><span class="line">/plan</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 退出计划模式</span></span><br><span class="line">/exit-plan</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置Claude Code的行为</span></span><br><span class="line">/config</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加记忆</span></span><br><span class="line">/memory</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 管理权限</span></span><br><span class="line">/permissions</span><br></pre></td></tr></table></figure>
+
+<p><strong>计划模式（Plan Mode）</strong>是Claude Code中非常有特色的一个功能。开启后，模型在动手写代码前会先制定详细计划，包括：</p>
+<ul>
+<li>需要修改哪些文件</li>
+<li>修改的先后顺序</li>
+<li>每个修改的目的和预期效果</li>
+<li>可能的风险和回退方案</li>
+</ul>
+<p>用户审阅并批准计划后，模型才开始执行。这种”先思后行”的交互模式，在重构、架构调整等高风险场景下特别有价值。</p>
+<p><strong>记忆指令（/memory）</strong>用于管理Claude Code的持久化记忆系统。通过这些指令，Claude Code可以在不同项目间积累和复用经验。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 添加一条项目记忆</span></span><br><span class="line">/memory add &quot;本项目使用FastAPI框架，所有API端点需要Bearer Token认证&quot;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看已保存的记忆</span></span><br><span class="line">/memory list</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除某条记忆</span></span><br><span class="line">/memory delete &lt;memory-id&gt;</span><br></pre></td></tr></table></figure>
+
+<p>记忆系统使得Claude Code能够”记住”跨会话的重要信息，比如项目的技术栈偏好、团队的编码规范、某段代码的特殊约定等。在长时间的协作中，这种持久化状态会显著提升效率——你不需要每次都解释”为什么这个函数需要异常处理”。</p>
+<h4 id="自动化指令"><a href="#自动化指令" class="headerlink" title="自动化指令"></a>自动化指令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 循环执行某个指令</span></span><br><span class="line">/loop 5m /test</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 定时任务</span></span><br><span class="line">/cron</span><br></pre></td></tr></table></figure>
+
+<p><code>/loop</code>指令让Claude Code定期执行某个操作，比如每5分钟检查一次CI状态。这在需要持续监控的场景下很有用。</p>
+<h4 id="CLI参数"><a href="#CLI参数" class="headerlink" title="CLI参数"></a>CLI参数</h4><p>除了交互式使用，Claude Code也支持通过命令行参数进行非交互式调用：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 单次问答模式（不进入交互循环）</span></span><br><span class="line">claude -p &quot;解释这段代码的作用&quot; --file src/main.py</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定工作目录</span></span><br><span class="line">claude --cwd /path/to/project</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定使用的模型</span></span><br><span class="line">claude --model claude-opus-4-8</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 允许所有权限（CI/CD环境）</span></span><br><span class="line">claude --dangerously-skip-permissions -p &quot;运行测试并修复失败用例&quot;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出为JSON格式</span></span><br><span class="line">claude --output-format json -p &quot;列出所有TODO注释&quot;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 从stdin读取内容</span></span><br><span class="line">cat error.log | claude -p &quot;分析这个错误日志&quot;</span><br></pre></td></tr></table></figure>
+
+<p>在CI/CD流水线中，Claude Code可以作为一个自动化代码审查员：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .github/workflows/claude-review.yml</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">Claude</span> <span class="string">Code</span> <span class="string">Review</span></span><br><span class="line"><span class="attr">on:</span> [<span class="string">pull_request</span>]</span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">review:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v4</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Claude</span> <span class="string">Code</span> <span class="string">Review</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          claude --dangerously-skip-permissions \</span></span><br><span class="line"><span class="string">            -p &quot;审查这个PR的改动，重点关注安全问题和逻辑错误&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="skill"><a href="#skill" class="headerlink" title="skill"></a>skill</h3><p>Skill是Claude Code的<strong>可插拔能力扩展机制</strong>。每个Skill是一个独立的Markdown文件，定义了特定领域的知识和操作流程。当用户的请求匹配某个Skill的触发条件时，该Skill会被自动激活并注入到System Prompt中。</p>
+<h4 id="Skill的本质"><a href="#Skill的本质" class="headerlink" title="Skill的本质"></a>Skill的本质</h4><p>从实现角度看，一个Skill就是一个<strong>加在System Prompt前面的领域指令</strong>。它内部可能包含：</p>
+<ul>
+<li>该领域的工作流程</li>
+<li>常用工具和命令</li>
+<li>输出格式要求</li>
+<li>常见问题处理策略</li>
+</ul>
+<p>这种设计非常巧妙——Skill不需要修改Claude Code的核心代码，只需要通过Prompt Engineering就能赋予模型全新的能力。它本质上是一种<strong>Prompt注入</strong>，只不过这里是我们主动、受控地注入。</p>
+<h4 id="内置Skill"><a href="#内置Skill" class="headerlink" title="内置Skill"></a>内置Skill</h4><p>Claude Code内置了多个Skill，覆盖常见场景：</p>
+<table>
+<thead>
+<tr>
+<th>Skill名称</th>
+<th>触发场景</th>
+<th>核心能力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>hello_js_reverse_skill</code></td>
+<td>JS逆向、签名分析</td>
+<td>MCP浏览器动态调试 + 静态源码审计</td>
+</tr>
+<tr>
+<td><code>skill-creator</code></td>
+<td>创建/优化Skill</td>
+<td>Skill的创建、编辑、评测</td>
+</tr>
+<tr>
+<td><code>deep-research</code></td>
+<td>深度研究</td>
+<td>多源搜索、对抗验证、合成报告</td>
+</tr>
+<tr>
+<td><code>code-review</code></td>
+<td>代码审查</td>
+<td>Diff级别的正确性/安全性审查</td>
+</tr>
+<tr>
+<td><code>security-review</code></td>
+<td>安全审计</td>
+<td>对当前分支进行安全审查</td>
+</tr>
+<tr>
+<td><code>verify</code></td>
+<td>验证改动</td>
+<td>运行应用确认改动生效</td>
+</tr>
+<tr>
+<td><code>simplify</code></td>
+<td>代码简化</td>
+<td>重构优化，去除冗余</td>
+</tr>
+<tr>
+<td><code>run</code></td>
+<td>运行项目</td>
+<td>自动检测项目类型并启动</td>
+</tr>
+<tr>
+<td><code>init</code></td>
+<td>项目初始化</td>
+<td>生成CLAUDE.md</td>
+</tr>
+<tr>
+<td><code>loop</code></td>
+<td>定时任务</td>
+<td>周期性执行指令</td>
+</tr>
+</tbody></table>
+<h4 id="Skill的工作原理"><a href="#Skill的工作原理" class="headerlink" title="Skill的工作原理"></a>Skill的工作原理</h4><p>以<code>code-review</code>这个Skill为例，当用户输入<code>/code-review</code>时，系统会执行以下步骤：</p>
+<ol>
+<li><strong>匹配触发条件</strong>：用户输入匹配到<code>code-review</code> Skill</li>
+<li><strong>加载Skill定义</strong>：读取对应的Markdown文件，获取该Skill的System Prompt扩展</li>
+<li><strong>注入上下文</strong>：将Skill的指令、流程、输出格式要求注入到System Prompt</li>
+<li><strong>执行工作流</strong>：模型按照Skill定义的流程执行操作</li>
+<li><strong>格式化输出</strong>：按照Skill约定的格式输出结果</li>
+</ol>
+<p>从消息体角度来看，Skill的注入发生在system prompt层面，对于模型来说就像”换了一个更专业的身份”一样。</p>
+<h4 id="创建自定义Skill"><a href="#创建自定义Skill" class="headerlink" title="创建自定义Skill"></a>创建自定义Skill</h4><p>Skill的强大之处在于它是<strong>完全可编程的</strong>——任何人都可以创建自己的Skill。创建一个Skill只需要一个Markdown文件：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: my-security-audit</span><br><span class="line">description: |</span><br><span class="line">  针对Web应用的自动化安全审计Skill。</span><br><span class="line"><span class="section">  触发条件：用户提到&quot;安全审计&quot;、&quot;漏洞扫描&quot;、&quot;代码审计&quot;等关键词。</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># Web安全审计Skill</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 审计流程</span></span><br><span class="line"></span><br><span class="line">当用户请求安全审计时，按以下步骤执行：</span><br><span class="line"></span><br><span class="line"><span class="section">### 第一步：信息收集</span></span><br><span class="line"><span class="bullet">1.</span> 识别项目使用的框架和语言</span><br><span class="line"><span class="bullet">2.</span> 列出所有API端点</span><br><span class="line"><span class="bullet">3.</span> 识别所有用户输入点</span><br><span class="line"></span><br><span class="line"><span class="section">### 第二步：逐项检查</span></span><br><span class="line">对每个输入点检查以下漏洞类型：</span><br><span class="line"><span class="bullet">-</span> SQL注入</span><br><span class="line"><span class="bullet">-</span> XSS（反射型、存储型、DOM型）</span><br><span class="line"><span class="bullet">-</span> CSRF</span><br><span class="line"><span class="bullet">-</span> 路径遍历</span><br><span class="line"><span class="bullet">-</span> 命令注入</span><br><span class="line"><span class="bullet">-</span> 反序列化漏洞</span><br><span class="line"><span class="bullet">-</span> 认证/授权缺陷</span><br><span class="line"></span><br><span class="line"><span class="section">### 第三步：生成报告</span></span><br><span class="line">按以下格式输出：</span><br></pre></td></tr></table></figure>
+<h2 id="安全审计报告"><a href="#安全审计报告" class="headerlink" title="安全审计报告"></a>安全审计报告</h2><h3 id="发现漏洞总数：N"><a href="#发现漏洞总数：N" class="headerlink" title="发现漏洞总数：N"></a>发现漏洞总数：N</h3><h3 id="高危：X个"><a href="#高危：X个" class="headerlink" title="高危：X个"></a>高危：X个</h3><h3 id="中危：Y个"><a href="#中危：Y个" class="headerlink" title="中危：Y个"></a>中危：Y个</h3><h3 id="低危：Z个"><a href="#低危：Z个" class="headerlink" title="低危：Z个"></a>低危：Z个</h3><h4 id="漏洞详情"><a href="#漏洞详情" class="headerlink" title="漏洞详情"></a>漏洞详情</h4><p>[每个漏洞的详细描述和修复建议]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">#### Skill与MCP的关系</span><br><span class="line"></span><br><span class="line">Skill和MCP是Claude Code生态中的两个核心扩展机制，但它们解决的是不同层面的问题：</span><br><span class="line"></span><br><span class="line">| 维度       | Skill                    | MCP                        |</span><br><span class="line">| ---------- | ------------------------ | -------------------------- |</span><br><span class="line">| 扩展层面   | 认知层（教模型&quot;怎么想&quot;） | 能力层（给模型&quot;能做什么&quot;） |</span><br><span class="line">| 实现方式   | Prompt注入               | 协议+外部服务器            |</span><br><span class="line">| 加载时机   | 匹配触发条件时           | 会话启动时                 |</span><br><span class="line">| 提供的能力 | 专业知识、工作流程       | 外部工具、数据源           |</span><br><span class="line">| 创建难度   | 低（写Markdown即可）     | 中高（需要实现MCP Server） |</span><br><span class="line"></span><br><span class="line">实际使用中，Skill经常会调用MCP提供的外部工具。比如一个&quot;数据库审计&quot;Skill可能会在流程中调用PostgreSQL MCP来直接查询数据库结构。</span><br><span class="line"></span><br><span class="line">一个Skill可以结合MCP工具实现更强大的功能。例如，JS逆向Skill内部就会调用浏览器MCP进行动态调试：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>用户请求：”分析这个网站的登录签名算法”<br>    ↓<br>Skill激活：hello_js_reverse_skill<br>    ↓<br>Skill流程：</p>
+<ol>
+<li>Grep搜索关键JS文件</li>
+<li>识别webpack打包结构</li>
+<li>调用浏览器MCP → 在登录按钮设置断点</li>
+<li>追踪加密函数调用链</li>
+<li>还原签名算法</li>
+<li>输出Burp Suite格式的请求包<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### mcp</span><br><span class="line"></span><br><span class="line">MCP（Model Context Protocol）是Anthropic推出的**模型上下文协议**，你可以把它理解为&quot;AI应用的USB-C接口&quot;——一个标准化的、用于连接LLM与外部工具和数据源的开放协议。</span><br><span class="line"></span><br><span class="line">#### 为什么需要MCP</span><br><span class="line"></span><br><span class="line">在没有MCP之前，每个AI应用要对接外部工具都需要单独开发集成代码。比如：</span><br><span class="line">- Claude Code要访问数据库 → 需要写一个数据库插件</span><br><span class="line">- Claude Code要调用浏览器 → 需要写一个浏览器插件</span><br><span class="line">- Claude Code要读取Jira工单 → 需要写一个Jira插件</span><br><span class="line"></span><br><span class="line">每个插件都有自己的认证方式、数据格式、错误处理，维护成本极高。</span><br><span class="line"></span><br><span class="line">MCP通过定义统一的协议解决了这个问题：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+传统模式（N×M集成）：<br>每个AI应用 → 单独对接 → 每个外部工具</li>
+</ol>
+<p>MCP模式（N+M集成）：<br>  所有AI应用 → 统一协议(MCP) → 所有外部工具</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### MCP架构</span><br><span class="line"></span><br><span class="line">MCP采用经典的**客户端-服务器**架构：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>┌──────────────────────────────────────────┐<br>│              Host（宿主机）                │<br>│  ┌────────────────────────────────────┐  │<br>│  │         Claude Code（客户端）       │  │<br>│  │  ┌──────────────────────────────┐  │  │<br>│  │  │     MCP Client Protocol      │  │  │<br>│  │  └──────────────────────────────┘  │  │<br>│  └────────────────────────────────────┘  │<br>│              │              │              │<br>│         JSON-RPC        JSON-RPC          │<br>│              │              │              │<br>│  ┌───────────┴──┐  ┌─────┴───────────┐  │<br>│  │ MCP Server A │  │ MCP Server B    │  │<br>│  │ (文件系统)    │  │ (数据库)         │  │<br>│  └──────────────┘  └─────────────────┘  │<br>└──────────────────────────────────────────┘</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- **Host**：运行Claude Code的宿主环境（终端/IDE）</span><br><span class="line">- **Client**：Claude Code内部的MCP客户端实现，负责管理与Server的连接</span><br><span class="line">- **Server**：独立的进程，实现MCP协议，提供特定能力（文件操作、数据库查询、API调用等）</span><br><span class="line"></span><br><span class="line">#### MCP协议核心概念</span><br><span class="line"></span><br><span class="line">**1. 传输层**</span><br><span class="line"></span><br><span class="line">MCP支持两种传输方式：</span><br><span class="line"></span><br><span class="line">| 传输方式   | 适用场景     | 特点                     |</span><br><span class="line">| ---------- | ------------ | ------------------------ |</span><br><span class="line">| stdio      | 本地进程通信 | 低延迟，适合本地工具     |</span><br><span class="line">| HTTP + SSE | 远程服务     | 支持跨网络，适合云端服务 |</span><br><span class="line"></span><br><span class="line">stdio模式下，Claude Code直接启动MCP Server作为子进程，通过标准输入输出进行JSON-RPC通信：</span><br><span class="line"></span><br><span class="line">```json</span><br><span class="line">// 配置文件 .claude/settings.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mcpServers&quot;: &#123;</span><br><span class="line">    &quot;filesystem&quot;: &#123;</span><br><span class="line">      &quot;command&quot;: &quot;npx&quot;,</span><br><span class="line">      &quot;args&quot;: [&quot;-y&quot;, &quot;@modelcontextprotocol/server-filesystem&quot;, &quot;/path/to/allowed/files&quot;]</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;postgres&quot;: &#123;</span><br><span class="line">      &quot;command&quot;: &quot;npx&quot;,</span><br><span class="line">      &quot;args&quot;: [&quot;-y&quot;, &quot;@modelcontextprotocol/server-postgres&quot;, &quot;postgresql://localhost/mydb&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 资源（Resources）</strong></p>
+<p>资源是MCP Server暴露的<strong>可读取的数据</strong>，类似于REST API的GET端点：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 客户端请求列出可用资源</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;method&quot;</span>: <span class="string">&quot;resources/list&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 服务端响应</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;result&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;resources&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;uri&quot;</span>: <span class="string">&quot;file:///project/src/main.py&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;main.py&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;mimeType&quot;</span>: <span class="string">&quot;text/x-python&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;应用入口文件&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;uri&quot;</span>: <span class="string">&quot;postgres://localhost/mydb/schema/users&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;users表结构&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;mimeType&quot;</span>: <span class="string">&quot;application/json&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 工具（Tools）</strong></p>
+<p>工具是MCP Server暴露的<strong>可执行的操作</strong>，类似于REST API的POST端点。这是MCP最核心的能力——让LLM能够调用外部世界的功能：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 客户端调用工具</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;method&quot;</span>: <span class="string">&quot;tools/call&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;params&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;execute_sql&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;arguments&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;query&quot;</span>: <span class="string">&quot;SELECT * FROM users WHERE created_at &gt; &#x27;2024-01-01&#x27;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 服务端返回工具执行结果</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;result&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;content&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;[&#123;\&quot;id\&quot;: 1, \&quot;name\&quot;: \&quot;Alice\&quot;&#125;, &#123;\&quot;id\&quot;: 2, \&quot;name\&quot;: \&quot;Bob\&quot;&#125;]&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 提示模板（Prompts）</strong></p>
+<p>MCP Server可以提供预定义的提示模板，帮助用户更高效地与模型交互：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 列出可用提示</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;method&quot;</span>: <span class="string">&quot;prompts/list&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 服务端返回</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;result&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;prompts&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;code_review&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;对当前选中的代码进行审查&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;arguments&quot;</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;language&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;代码语言&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;required&quot;</span>: <span class="literal">true</span></span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;id&quot;</span>: <span class="number">3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="MCP在Claude-Code中的运行机制"><a href="#MCP在Claude-Code中的运行机制" class="headerlink" title="MCP在Claude Code中的运行机制"></a>MCP在Claude Code中的运行机制</h4><p>当配置了MCP Server后，Claude Code会在启动时执行以下流程：</p>
+<ol>
+<li><strong>连接建立</strong>：按照配置启动MCP Server进程或连接远程地址</li>
+<li><strong>能力发现</strong>：通过<code>initialize</code>握手获取Server支持的能力（工具列表、资源列表等）</li>
+<li><strong>工具注册</strong>：将MCP Server提供的工具动态注册到模型的可用工具列表中</li>
+<li><strong>运行时调用</strong>：当模型决定调用MCP工具时，通过JSON-RPC转发给Server执行</li>
+</ol>
+<p>从模型视角看，MCP工具和内置工具（Read、Write等）在Schema层面是完全一样的——模型不需要知道一个工具是”内置的”还是”外部MCP提供的”。这种透明性是MCP协议设计的一大亮点。</p>
+<h4 id="实战：配置IDA-Pro-MCP"><a href="#实战：配置IDA-Pro-MCP" class="headerlink" title="实战：配置IDA Pro MCP"></a>实战：配置IDA Pro MCP</h4><p>从上面的配置可以看出，作者已经连接了IDA Pro的MCP Server，这使得Claude Code可以直接与IDA Pro交互进行二进制逆向分析。配置方式：</p>
+<p>在<code>.claude/settings.json</code>中添加：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;ida-pro-mcp&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;command&quot;</span>: <span class="string">&quot;python&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;args&quot;</span>: [<span class="string">&quot;-m&quot;</span>, <span class="string">&quot;ida_pro_mcp.server&quot;</span>],</span><br><span class="line">      <span class="attr">&quot;env&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;IDA_HOST&quot;</span>: <span class="string">&quot;localhost&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;IDA_PORT&quot;</span>: <span class="string">&quot;1337&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>连接成功后，Claude Code的工具列表就会多出一系列IDA相关的工具：</p>
+<table>
+<thead>
+<tr>
+<th>工具名</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>decompile_function</code></td>
+<td>反编译指定地址的函数</td>
+</tr>
+<tr>
+<td><code>disassemble_function</code></td>
+<td>获取函数的汇编代码</td>
+</tr>
+<tr>
+<td><code>get_xrefs_to</code></td>
+<td>获取交叉引用</td>
+</tr>
+<tr>
+<td><code>list_functions</code></td>
+<td>列出所有函数</td>
+</tr>
+<tr>
+<td><code>list_strings</code></td>
+<td>列出所有字符串</td>
+</tr>
+<tr>
+<td><code>rename_function</code></td>
+<td>重命名函数</td>
+</tr>
+<tr>
+<td><code>set_comment</code></td>
+<td>设置注释</td>
+</tr>
+<tr>
+<td><code>get_global_variable_value_by_name</code></td>
+<td>读取全局变量值</td>
+</tr>
+</tbody></table>
+<p>这些工具让Claude Code成为二进逆向的得力助手。比如分析一个恶意样本时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">用户：分析这个样本中0x401000处的函数</span><br><span class="line"></span><br><span class="line">Claude Code执行过程：</span><br><span class="line">1. decompile_function(&quot;0x401000&quot;) → 获取伪代码</span><br><span class="line">2. get_callees(&quot;0x401000&quot;) → 查看它调用了哪些函数</span><br><span class="line">3. get_xrefs_to(&quot;0x401000&quot;) → 查看哪些地方调用了这个函数</span><br><span class="line">4. list_strings_filter(&#123;filter: &quot;http&quot;&#125;) → 搜索网络相关字符串</span><br><span class="line">5. 综合分析 → 判断这是一个C2通信函数</span><br><span class="line">6. 自动给关键位置添加注释</span><br></pre></td></tr></table></figure>
+
+<h4 id="常用MCP-Server生态"><a href="#常用MCP-Server生态" class="headerlink" title="常用MCP Server生态"></a>常用MCP Server生态</h4><p>Anthropic官方和社区提供了丰富的MCP Server：</p>
+<table>
+<thead>
+<tr>
+<th>MCP Server</th>
+<th>能力</th>
+<th>安装命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>filesystem</td>
+<td>安全的文件系统操作</td>
+<td><code>npx @modelcontextprotocol/server-filesystem</code></td>
+</tr>
+<tr>
+<td>github</td>
+<td>GitHub API交互</td>
+<td><code>npx @modelcontextprotocol/server-github</code></td>
+</tr>
+<tr>
+<td>postgres</td>
+<td>PostgreSQL数据库查询</td>
+<td><code>npx @modelcontextprotocol/server-postgres</code></td>
+</tr>
+<tr>
+<td>slack</td>
+<td>Slack消息管理</td>
+<td><code>npx @modelcontextprotocol/server-slack</code></td>
+</tr>
+<tr>
+<td>memory</td>
+<td>持久化知识图谱</td>
+<td><code>npx @modelcontextprotocol/server-memory</code></td>
+</tr>
+<tr>
+<td>puppeteer</td>
+<td>浏览器自动化</td>
+<td><code>npx @modelcontextprotocol/server-puppeteer</code></td>
+</tr>
+<tr>
+<td>brave-search</td>
+<td>Web搜索</td>
+<td><code>npx @modelcontextprotocol/server-brave-search</code></td>
+</tr>
+<tr>
+<td>sequential-thinking</td>
+<td>复杂推理辅助</td>
+<td><code>npx @modelcontextprotocol/server-sequential-thinking</code></td>
+</tr>
+</tbody></table>
+<h4 id="MCP的权限控制"><a href="#MCP的权限控制" class="headerlink" title="MCP的权限控制"></a>MCP的权限控制</h4><p>MCP Server本质上拥有执行外部代码的能力，因此安全边界需要仔细考量：</p>
+<ol>
+<li><strong>Server级别的权限</strong>：在配置文件中声明Server允许访问的资源范围</li>
+<li><strong>工具级别的确认</strong>：对敏感MCP工具（如数据库写入）可以设置需要用户确认</li>
+<li><strong>网络隔离</strong>：远程MCP Server应部署在可信网络中</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;postgres&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;command&quot;</span>: <span class="string">&quot;npx&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;args&quot;</span>: [<span class="string">&quot;-y&quot;</span>, <span class="string">&quot;@modelcontextprotocol/server-postgres&quot;</span>, <span class="string">&quot;postgresql://localhost/mydb&quot;</span>],</span><br><span class="line">      <span class="attr">&quot;permission&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;tools&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;execute_sql&quot;</span>: <span class="string">&quot;ask&quot;</span>  <span class="comment">// 每次执行SQL都询问用户</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Code Agent正在改变我们与代码交互的方式。从最早的语法补全，到GitHub Copilot的上下文补全，再到Claude Code这种具备自主规划和执行能力的Agent，AI在编程领域的角色正在从”打字助手”向”协作工程师”转变。</p>
+<p>理解其底层机制——API消息体的结构、Agentic Loop的运作方式、Skill的注入原理、MCP的扩展协议——不是为了”炫技”，而是为了在遇到问题时能快速定位根因，在能力触达边界时知道如何扩展。毕竟，工具用得越好，能做的事情就越多。</p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/ai/"># ai</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/03/18/java/Thymeleaf%20SPEL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/">Thymeleaf SPEL表达式注入</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

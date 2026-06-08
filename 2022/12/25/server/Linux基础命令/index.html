@@ -252,6 +252,7 @@
 <p>如果 /usr/bin 目录包含在 PATH 中（通常是默认配置），那么你可以直接在终端中输入该目录下的命令，系统会自动在 /usr/bin 目录中找到并执行它</p>
 <p><code>echo $PATH</code>查看 PATH 环境变量</p>
 <p>/bin 存放的是系统引导和修复所需的基础命令,例如 ls, cp, mv, rm, cat, sh 等<br>/usr/bin 存放的是常用的用户命令和应用程序,例如，文本编辑器（如 vim）、编译器（如 gcc）、各种脚本语言的解释器（如 python, perl）等。</p>
+<p><code>command -v apt</code>检查系统中是否存在某个命令，若存在则会返回命令地址</p>
 <h3 id="shell命令"><a href="#shell命令" class="headerlink" title="shell命令"></a>shell命令</h3><p>bash -c 命令</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@kali:  bash -c whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
 <p>bash -i 命令<br>以交互方式运行shell</p>
@@ -282,15 +283,15 @@
 <p>-r ：是 rm 命令的可选项，表示递归处理，将指定目录下的所有文件与子目录一并处理；<br>-f ：是 rm 命令的可选项，表示强制删除文件或目录<br>8. sh命令<br>将文件中的内容当作命令来执行，同时.也可以执行命令<br>例如：<br><code>. \a=sh \a</code></p>
 <h3 id="文本操作"><a href="#文本操作" class="headerlink" title="文本操作"></a>文本操作</h3><p>grep 更适合单纯的查找或匹配文本<br>sed  更适合编辑匹配到的文本<br>awk  更适合格式化文本，对文本进行较复杂格式处理</p>
 <ol>
-<li>grep 命令<br>grep 指令会把含有范本样式的那一列显示出来,常用于文本搜索和选择输出<br>格式： grep -ira “flag{“ / 2&gt;/dev/null</li>
+<li>grep 命令<br>grep 指令会把含有范本样式的那一列显示出来,常用于文本搜索和选择输出<br>格式： <code>grep -ira &quot;flag&#123;&quot; / 2&gt;/dev/null</code></li>
 </ol>
 <p>-i： 不区分大小写。<br>-r:  递归查找子目录。<br>-a： 不要忽略二进制的数据<br>-v： 显示不包含匹配文本的所有行。<br>-n： 显示匹配行及 行号<br>-o: 只输出匹配到的文本。<br>-h: 不输出匹配行所在的文件名。<br>-H: 显示匹配的行所在文件的文件名。</p>
 <p>-E:  使用扩展正则表达式<code>grep -E &quot;https?://[a-zA-Z0-9\.\/_&amp;=@$%?~#-]*&quot; -r xxx --color=auto</code></p>
 <ol start="2">
-<li><p>awk 命令</p>
-</li>
-<li><p>sed 命令</p>
-</li>
+<li>awk 命令<br>awk 是一个文本分析工具，按行读取数据并按字段处理，常用于结构化解析、提取、过滤和计算<br>格式：<code>awk -F: &#39;&#123;print $1&#125;&#39; /etc/passwd</code><br>awk默认按照空格分割字符串，此处是通过<code>:</code>分割字符串，并输出结果数组的第一个</li>
+</ol>
+<ol start="3">
+<li>sed 命令</li>
 </ol>
 <p>-e 脚本命令         该选项会将其后跟的脚本命令添加到已有的命令中。例如sed  -e “1p” -e “5p” 1.txt<br>-f 脚本命令文件     该选项会将其后文件中的脚本命令添加到已有的命令中。<br>-n                  默认情况下，sed 会在所有的脚本指定执行完毕后，会自动输出处理后的内容，而该选项会屏蔽启动输出，需使用 print 命令来完成输出。<br>-i                  此选项会直接修改源文件，要慎用。<br>    a ：新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行)～<br>    c ：取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行！<br>    d ：删除，因为是删除啊，例如sed ‘/1/,/3/d’ data6.txt<br>    i ：插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；<br>    p ：打印，亦即将某个选择的数据印出。通常 p 会与参数 sed -n 一起运行～<br>    s ：取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正则表达式！例如sed -n ‘s/test/trial/p’ data5.txt</p>
 <ol start="4">
@@ -308,7 +309,7 @@
 <li>nl<br>nl可以将输出的文件内容前自动的加上行号,整体来说，nl主要是对行号做更多的修饰。</li>
 <li> rev命令<br>把每一行字符的顺序颠倒过来显示文件内容<br>若其后跟的是文件,则将文件每一行颠倒,但行的顺序不变</li>
 </ol>
-<h3 id="文件所有权和访问权限"><a href="#文件所有权和访问权限" class="headerlink" title="文件所有权和访问权限"></a>文件所有权和访问权限</h3><p><strong>ll命令详解</strong><br>文件类型<br>常规文件(-) ：文本文件和二进制文件<br>目录文件(d) ：目录文件是文件系统中一个目录所包含的目录项所组成的文件<br>设备文件(c or b) ：每种I/O设备对应一个设备文件，存放在 /dev 目录中。<br>管道文件(p) ：主要用于在进程间传递数据 ，又称先进先出(FIFO)文件<br>链接文件(L) ：链接又可以分为软链接（符号链接）和硬链接，它提供了共享文件的一种方法。</p>
+<h3 id="文件所有权和访问权限"><a href="#文件所有权和访问权限" class="headerlink" title="文件所有权和访问权限"></a>文件所有权和访问权限</h3><h4 id="查看文件所有权"><a href="#查看文件所有权" class="headerlink" title="查看文件所有权"></a>查看文件所有权</h4><p><strong>ll命令详解</strong><br>文件类型<br>常规文件(-) ：文本文件和二进制文件<br>目录文件(d) ：目录文件是文件系统中一个目录所包含的目录项所组成的文件<br>设备文件(c or b) ：每种I/O设备对应一个设备文件，存放在 /dev 目录中。<br>管道文件(p) ：主要用于在进程间传递数据 ，又称先进先出(FIFO)文件<br>链接文件(L) ：链接又可以分为软链接（符号链接）和硬链接，它提供了共享文件的一种方法。</p>
 <p>r：目录执行ls以列出目录内容；                             文件可读<br>w：目录创建、删除文件；                                   文件可写<br>x：可以cd切换进此目录，也可以使用ll查看内部文件的详细信息；  文件可执行</p>
 <p>ls -l(ll) 除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来<br>             7  rw  5  r  3  w  x    </p>
 <ul>
@@ -318,7 +319,8 @@
 </code></pre>
 </li>
 </ul>
-<ol>
+<p>还可以通过stat查看文件属性，stat输出更加格式化适合脚本编写使用<br><code>stat -t /etc/passwd </code>简洁输出（机器可读）<br>-c：自定义输出格式（最重要）<br><code>stat -c &quot;%U %G %a %n&quot; /etc/passwd</code><br>属主用户名 属组 权限 文件名</p>
+<h4 id="更改文件所有权"><a href="#更改文件所有权" class="headerlink" title="更改文件所有权"></a>更改文件所有权</h4><ol>
 <li>改变所属的用户组<br>chrgp [选项] 组名 文件名</li>
 <li>改变所有者<br>chown [选项] 用户:组 文件名</li>
 <li>修改文件访问权限<br>文字法<br>chmod a+w,o-x,ug–r 1.txt<br>数字法<br>chmod 644 2.txt<h3 id="文件编辑"><a href="#文件编辑" class="headerlink" title="文件编辑"></a>文件编辑</h3><h4 id="vi与vim的区别"><a href="#vi与vim的区别" class="headerlink" title="vi与vim的区别"></a>vi与vim的区别</h4>vi编辑器只能运行于unix中，而vim不仅可以运行于unix，还可用于windows、mac等多操作平台。<br>vim可以用不同的颜色来加亮你的代码。vi使用于文本编辑，但是vim更适用于coding<h4 id="模式转换"><a href="#模式转换" class="headerlink" title="模式转换"></a>模式转换</h4></li>
