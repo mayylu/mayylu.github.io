@@ -52,18 +52,21 @@
     <script>
         // this function is used to check current theme before page loaded.
         (() => {
-            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
-            const isDark = currentTheme === 'dark';
             const pagebody = document.getElementsByTagName('body')[0]
-            if (isDark) {
-                pagebody.classList.add('dark-theme');
-                // mobile
-                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
-            } else {
-                pagebody.classList.remove('dark-theme');
-                // mobile
-                document.getElementById("mobile-toggle-theme").innerText = "· Light"
-            }
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
         })();
     </script>
 
@@ -74,13 +77,14 @@
             <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
             <div class="menu navbar-right">
                 
-                    <a class="menu-item" href="/archives">Posts</a>
+                <a class="menu-item" href="/archives">Posts</a>
                 
-                    <a class="menu-item" href="/categories">Categories</a>
+                <a class="menu-item" href="/categories">Categories</a>
                 
-                    <a class="menu-item" href="/tags">Tags</a>
+                <a class="menu-item" href="/tags">Tags</a>
                 
-                    <a class="menu-item" href="/about">About</a>
+                <a class="menu-item" href="/about">About</a>
+                
                 
                 <input id="switch_default" type="checkbox" class="switch_default">
                 <label for="switch_default" class="toggleBtn"></label>
@@ -95,17 +99,20 @@
                 <div>
                     <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
                 </div>
-                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
             </div>
             <div class="menu" id="mobile-menu">
                 
-                    <a class="menu-item" href="/archives">Posts</a>
+                <a class="menu-item" href="/archives">Posts</a>
                 
-                    <a class="menu-item" href="/categories">Categories</a>
+                <a class="menu-item" href="/categories">Categories</a>
                 
-                    <a class="menu-item" href="/tags">Tags</a>
+                <a class="menu-item" href="/tags">Tags</a>
                 
-                    <a class="menu-item" href="/about">About</a>
+                <a class="menu-item" href="/about">About</a>
                 
             </div>
         </div>
@@ -116,10 +123,10 @@
     var mobileBtn = function f() {
         var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
         var mobileMenu = document.getElementById("mobile-menu");
-        if(toggleMenu.classList.contains("active")){
-           toggleMenu.classList.remove("active")
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
             mobileMenu.classList.remove("active")
-        }else{
+        } else {
             toggleMenu.classList.add("active")
             mobileMenu.classList.add("active")
         }
@@ -207,7 +214,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十月 17, 2025&nbsp;&nbsp;</a>
+                        Date: <a href="#">十月 17, 2025&nbsp;&nbsp;10:41:03</a>
                         </span>
                     
                     
@@ -230,7 +237,7 @@ ELF文件包含了完整的ELF文件头和段表、字符串表、符号表以�
 ELF文件是一系列代码、数据、表按照一定规则打包起来的数据包
 </code></pre>
 <p>elf文件的节(section)会被映射进内存中的段(segment)<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/5.png" alt="映射"></p>
-<h3 id="段表结构"><a href="#段表结构" class="headerlink" title="段表结构"></a>段表结构</h3><h4 id="PE（Windows-可执行文件）"><a href="#PE（Windows-可执行文件）" class="headerlink" title="PE（Windows 可执行文件）"></a>PE（Windows 可执行文件）</h4><table>
+<h3 id="节区结构"><a href="#节区结构" class="headerlink" title="节区结构"></a>节区结构</h3><h4 id="PE（Windows-可执行文件）"><a href="#PE（Windows-可执行文件）" class="headerlink" title="PE（Windows 可执行文件）"></a>PE（Windows 可执行文件）</h4><table>
 <thead>
 <tr>
 <th><strong>IDA 段名</strong></th>
@@ -258,7 +265,7 @@ ELF文件是一系列代码、数据、表按照一定规则打包起来的数�
 <td>已初始化的全局变量、静态变量。如:int a = 10;</td>
 </tr>
 <tr>
-<td><code>.bss</code>（有时合并在 <code>.data</code>）</td>
+<td><code>.bss</code></td>
 <td><code>.bss</code></td>
 <td><strong>RW</strong>（可读写）</td>
 <td>未初始化的全局变量、静态变量，加载时系统将其自动置零。如:int a</td>
@@ -267,13 +274,13 @@ ELF文件是一系列代码、数据、表按照一定规则打包起来的数�
 <td><code>.idata</code></td>
 <td><code>.idata</code></td>
 <td><strong>R</strong>（只读）</td>
-<td>Import Address Table (IAT)、Import Name Table，DLL导入信息。</td>
+<td>导入表，记录了调用的dll,以及每个dll里调用的函数</td>
 </tr>
 <tr>
 <td><code>.edata</code></td>
 <td><code>.edata</code></td>
 <td><strong>R</strong>（只读）</td>
-<td>Export Table，程序导出符号、函数名、导出地址。</td>
+<td>正常情况下,dll才有导出表，程序向外提供函数，让别人调用。。</td>
 </tr>
 <tr>
 <td><code>.reloc</code></td>
@@ -330,7 +337,7 @@ ELF文件是一系列代码、数据、表按照一定规则打包起来的数�
 <td>调试符号表、类型信息（DWARF 或 MS CodeView 格式）。</td>
 </tr>
 <tr>
-<td><code>.textbss</code>（少见）</td>
+<td><code>.textbss</code></td>
 <td><code>.textbss</code></td>
 <td><strong>RWX</strong></td>
 <td>某些驱动或压缩壳工具临时可执行读写区。</td>
@@ -613,7 +620,7 @@ ELF文件是一系列代码、数据、表按照一定规则打包起来的数�
 <td>4 字节</td>
 </tr>
 </tbody></table>
-<h3 id="ida各页面内容【在菜单View的open-subview】"><a href="#ida各页面内容【在菜单View的open-subview】" class="headerlink" title="ida各页面内容【在菜单View的open subview】"></a>ida各页面内容【在菜单View的open subview】</h3><p>1.Hex View页面：直接查看程序的二进制内容（以hex值表示）<br>2.Function name:函数表用于分析每一个单独的函数<br>3.strings：字符串表 包括程序中存储的字符串常量<br>4.import export :导入表和导出表，表中内容为程序需要的外表函数和可以被外部程序调用的函数<br>5.segments ：包程序的各个段的信息<br>.text   — 代码段（可执行），存放函数、指令。<br>.rdata  — 只读数据，常量字符串、只读表。<br>.data   — 可读写数据（全局变量）。<br>.idata — Import table（导入表）。<br>.bss  — 未初始化数据（仅占虚拟地址空间）。<br>.reloc — 重定位表（如果存在）。<br>.rsrc — 资源（Windows 可执行文件）<br>.CRT  - 运行时/CRT初始化数据（__main 等）<br>.tls  - 线程局部存储<br>6.IDA-View窗口(反汇编窗口)</p>
+<h3 id="ida各页面内容【在菜单View的open-subview】"><a href="#ida各页面内容【在菜单View的open-subview】" class="headerlink" title="ida各页面内容【在菜单View的open subview】"></a>ida各页面内容【在菜单View的open subview】</h3><p>1.Hex View页面：直接查看程序的二进制内容（以hex值表示）<br>2.Function name:函数表用于分析每一个单独的函数<br>3.strings：字符串表 包括程序中存储的字符串常量<br>4.import export :导入表和导出表，表中内容为程序需要的外部函数和可以被外部程序调用的函数<br>5.segments ：包程序的各个段的信息<br>.text   — 代码段（可执行），存放函数、指令。<br>.rdata  — 只读数据，常量字符串、只读表。<br>.data   — 可读写数据（全局变量）。<br>.idata — Import table（导入表）。<br>.bss  — 未初始化数据（仅占虚拟地址空间）。<br>.reloc — 重定位表（如果存在）。<br>.rsrc — 资源（Windows 可执行文件）<br>.CRT  - 运行时/CRT初始化数据（__main 等）<br>.tls  - 线程局部存储<br>6.IDA-View窗口(反汇编窗口)</p>
 <h3 id="快捷键总结"><a href="#快捷键总结" class="headerlink" title="快捷键总结"></a>快捷键总结</h3><h4 id="F系列【主要是调试状态的处理】"><a href="#F系列【主要是调试状态的处理】" class="headerlink" title="F系列【主要是调试状态的处理】"></a>F系列【主要是调试状态的处理】</h4><pre><code>F2 添加/删除断点
 F4 运行到光标所在位置
 F5 反汇编【常用】
@@ -662,6 +669,7 @@ Alt+K 修改堆栈值
 tab  伪代码页面和汇编页面的切换【常用】
 空格 文本模式和普通汇编页面的切换【常用】    
 </code></pre>
+<p>交叉引用 type 分为 P和R和W,其中<br>    P 关注“谁保存了这个地址”<br>    R 关注“谁读取了这个数据”<br>    W 关注“谁修改了这个数据”<br>所以P为函数引用，R为变量读取，W为变量修改</p>
 <h3 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h3><p>选中要修改的内容， Edit → Patch program → Assemble<br>Edit → Patch program → Apply patches to input file,导出修改后的程序</p>
 <h2 id="解方程神器z3的使用"><a href="#解方程神器z3的使用" class="headerlink" title="解方程神器z3的使用"></a>解方程神器z3的使用</h2><h3 id="示例1—一个最简单的解方程"><a href="#示例1—一个最简单的解方程" class="headerlink" title="示例1—一个最简单的解方程"></a>示例1—一个最简单的解方程</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line">x, y, z = Ints(<span class="string">&#x27;x y z&#x27;</span>)</span><br><span class="line">s = Solver()</span><br><span class="line">s.add(<span class="number">3</span>*x - y + z == <span class="number">185</span>)</span><br><span class="line">s.add(<span class="number">2</span>*x + <span class="number">3</span>*y - z == <span class="number">321</span>)</span><br><span class="line">s.add(x // y + z == <span class="number">173</span>)   <span class="comment"># //表示整除，如5//2=2，%表示取模，如5%2=1 </span></span><br><span class="line">check = s.check()          <span class="comment">#4、检测是否有解（有解sat、无解unsat）</span></span><br><span class="line"><span class="built_in">print</span>(check)</span><br><span class="line">model = s.model()<span class="comment">#获取到一组解</span></span><br><span class="line"><span class="built_in">print</span>(model)</span><br></pre></td></tr></table></figure>
 <h3 id="示例2—有位运算，答案是字符串，结果不唯一的解方程"><a href="#示例2—有位运算，答案是字符串，结果不唯一的解方程" class="headerlink" title="示例2—有位运算，答案是字符串，结果不唯一的解方程"></a>示例2—有位运算，答案是字符串，结果不唯一的解方程</h3><p>题目</p>
