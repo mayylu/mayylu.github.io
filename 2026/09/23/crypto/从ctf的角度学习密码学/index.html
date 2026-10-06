@@ -288,64 +288,64 @@
 <h5 id="矩阵与线性变换"><a href="#矩阵与线性变换" class="headerlink" title="矩阵与线性变换"></a>矩阵与线性变换</h5><p><strong>线性变换</strong>：变换可以看成一种函数（输入一个向量，输出一个向量）</p>
 <p>线性变换可以用矩阵表示，矩阵与向量相乘，就是对这个向量施加一次线性变换</p>
 <p>描述<strong>线性变换只要记录基向量变换后的位置</strong>：把变换后的 $\hat i,\hat j$ 的坐标按列排成的矩阵，就是这个线性变换的矩阵，它的每一列都是对应基向量变换后的坐标<br>如：变换后 $\hat i$ 落在 $[1,2]$、$\hat j$ 落在 $[3,1]$，对应的矩阵就是</p>
-<p>$$A = \begin{pmatrix} 1 &amp; 3 \ 2 &amp; 1 \end{pmatrix}$$</p>
+<p>$$A = \begin{pmatrix} 1 &amp; 3 \cr 2 &amp; 1 \end{pmatrix}$$</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/lin-transform.gif" alt="lin-transform"></p>
 <p><strong>矩阵乘法</strong>可以看成对向量进行多次线性变化后用一个复合矩阵来描述，因为矩阵乘法就是线性变换的复合，变换的先后顺序会影响结果，所以矩阵乘法满足结合律，但是不满足交换律</p>
 <p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/7wNHCZEztv1LxGm.png" alt="7wNHCZEztv1LxGm"></p>
 <p>矩阵乘法要求左矩阵的列数等于右矩阵的行数，计算规则是「左矩阵第 $i$ 行 与 右矩阵第 $j$ 列 对应相乘再相加」，得到结果中第 $i$ 行第 $j$ 列的元素</p>
-<p>$$\begin{pmatrix} a &amp; b \ c &amp; d \end{pmatrix}\begin{pmatrix} e &amp; f \ g &amp; h \end{pmatrix} = \begin{pmatrix} ae+bg &amp; af+bh \ ce+dg &amp; cf+dh \end{pmatrix}$$</p>
+<p>$$\begin{pmatrix} a &amp; b \cr c &amp; d \end{pmatrix}\begin{pmatrix} e &amp; f \cr g &amp; h \end{pmatrix} = \begin{pmatrix} ae+bg &amp; af+bh \cr ce+dg &amp; cf+dh \end{pmatrix}$$</p>
 <p>如：$[-1,2]$在上述线性变换$A$后就变成了$[5,0]$</p>
-<p>$$\begin{pmatrix} 1 &amp; 3 \ 2 &amp; 1 \end{pmatrix}\begin{pmatrix} -1 \ 2 \end{pmatrix} = \begin{pmatrix} 1\times (-1)+3\times 2 \ 2\times (-1)+1\times 2 \end{pmatrix} = \begin{pmatrix} 5 \ 0 \end{pmatrix}$$</p>
+<p>$$\begin{pmatrix} 1 &amp; 3 \cr 2 &amp; 1 \end{pmatrix}\begin{pmatrix} -1 \cr 2 \end{pmatrix} = \begin{pmatrix} 1\times (-1)+3\times 2 \cr 2\times (-1)+1\times 2 \end{pmatrix} = \begin{pmatrix} 5 \cr 0 \end{pmatrix}$$</p>
 <p>当我们有一个线性方程组的时候，我们可以把它们用矩阵乘以向量的形式表示<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/cHpoedBJil7ynhg.png" alt="cHpoedBJil7ynhg"></p>
-<p><strong>单位矩阵</strong> $E$：主对角线上的元素都是 1、其余元素都是 0 的 $n$ 阶矩阵（如二阶的 $E = \begin{pmatrix} 1 &amp; 0 \ 0 &amp; 1 \end{pmatrix}$），它对应的线性变换就是什么都没做，任何矩阵与它相乘都不变，即 $AE = EA = A$</p>
+<p><strong>单位矩阵</strong> $E$：主对角线上的元素都是 1、其余元素都是 0 的 $n$ 阶矩阵（如二阶的 $E = \begin{pmatrix} 1 &amp; 0 \cr 0 &amp; 1 \end{pmatrix}$），它对应的线性变换就是什么都没做，任何矩阵与它相乘都不变，即 $AE = EA = A$</p>
 <p><strong>逆矩阵</strong>：对于 $n$ 阶矩阵 $A$，若存在 $n$ 阶矩阵 $B$，使得 $AB = BA = E$，则称矩阵 $A$ 是可逆的，$B$ 为 $A$ 的逆矩阵</p>
 <h5 id="行列式的计算"><a href="#行列式的计算" class="headerlink" title="行列式的计算"></a>行列式的计算</h5><p><strong>行列式</strong>（Determinant）本质上是一个数值，记为 $\det(A)$ 或 $|A|$，它表示线性变换把面积（体积）缩放的比例</p>
 <p>二阶行列式可以直接计算</p>
-<p>$$\begin{vmatrix} a &amp; b \ c &amp; d \end{vmatrix} = ad - bc$$</p>
+<p>$$\begin{vmatrix} a &amp; b \cr c &amp; d \end{vmatrix} = ad - bc$$</p>
 <p>降阶要用到<strong>代数余子式</strong>：$A_{ij} = (-1)^{i+j}M_{ij}$，其中 $M_{ij}$ 是删去 $a_{ij}$ 所在的行与列后得到的子行列式，于是有按行（列）展开定理</p>
 <p>$$\det(A) = a_{i1}A_{i1} + a_{i2}A_{i2} + \cdots + a_{in}A_{in}$$</p>
 <p>如：三阶行列式按第一行展开，就是把它降成三个二阶行列式</p>
-<p>$$\begin{vmatrix} a_{11} &amp; a_{12} &amp; a_{13} \ a_{21} &amp; a_{22} &amp; a_{23} \ a_{31} &amp; a_{32} &amp; a_{33} \end{vmatrix} = a_{11}\begin{vmatrix} a_{22} &amp; a_{23} \ a_{32} &amp; a_{33} \end{vmatrix} - a_{12}\begin{vmatrix} a_{21} &amp; a_{23} \ a_{31} &amp; a_{33} \end{vmatrix} + a_{13}\begin{vmatrix} a_{21} &amp; a_{22} \ a_{31} &amp; a_{32} \end{vmatrix}$$</p>
+<p>$$\begin{vmatrix} a_{11} &amp; a_{12} &amp; a_{13} \cr a_{21} &amp; a_{22} &amp; a_{23} \cr a_{31} &amp; a_{32} &amp; a_{33} \end{vmatrix} = a_{11}\begin{vmatrix} a_{22} &amp; a_{23} \cr a_{32} &amp; a_{33} \end{vmatrix} - a_{12}\begin{vmatrix} a_{21} &amp; a_{23} \cr a_{31} &amp; a_{33} \end{vmatrix} + a_{13}\begin{vmatrix} a_{21} &amp; a_{22} \cr a_{31} &amp; a_{32} \end{vmatrix}$$</p>
 <p>按哪一行（列）展开都可以，选含 0 最多的那一行（列）会快很多</p>
 <p>手算更常用<strong>化三角形法</strong>：用性质里「某一行（列）乘同一个数加到另一行（列）上，行列式不变」这条，把行列式化成上三角，此时行列式就等于主对角元的乘积（注意交换两行要变号、某一行乘 $k$ 要把 $k$ 提到外面，只有倍加不变）</p>
-<p>$$\begin{vmatrix} a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \ 0 &amp; a_{22} &amp; \cdots &amp; a_{2n} \ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \ 0 &amp; 0 &amp; \cdots &amp; a_{nn} \end{vmatrix} = a_{11}a_{22}\cdots a_{nn}$$</p>
+<p>$$\begin{vmatrix} a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \cr 0 &amp; a_{22} &amp; \cdots &amp; a_{2n} \cr \vdots &amp; \vdots &amp; \ddots &amp; \vdots \cr 0 &amp; 0 &amp; \cdots &amp; a_{nn} \end{vmatrix} = a_{11}a_{22}\cdots a_{nn}$$</p>
 <p>如：把第 2、3 行分别减去第 1 行的 2 倍、3 倍，第 3 行再减去第 2 行的 2 倍</p>
-<p>$$\begin{vmatrix} 2 &amp; 1 &amp; 3 \ 4 &amp; 3 &amp; 8 \ 6 &amp; 5 &amp; 14 \end{vmatrix} = \begin{vmatrix} 2 &amp; 1 &amp; 3 \ 0 &amp; 1 &amp; 2 \ 0 &amp; 2 &amp; 5 \end{vmatrix} = \begin{vmatrix} 2 &amp; 1 &amp; 3 \ 0 &amp; 1 &amp; 2 \ 0 &amp; 0 &amp; 1 \end{vmatrix} = 2 \times 1 \times 1 = 2$$</p>
+<p>$$\begin{vmatrix} 2 &amp; 1 &amp; 3 \cr 4 &amp; 3 &amp; 8 \cr 6 &amp; 5 &amp; 14 \end{vmatrix} = \begin{vmatrix} 2 &amp; 1 &amp; 3 \cr 0 &amp; 1 &amp; 2 \cr 0 &amp; 2 &amp; 5 \end{vmatrix} = \begin{vmatrix} 2 &amp; 1 &amp; 3 \cr 0 &amp; 1 &amp; 2 \cr 0 &amp; 0 &amp; 1 \end{vmatrix} = 2 \times 1 \times 1 = 2$$</p>
 <h5 id="特征值与特征向量"><a href="#特征值与特征向量" class="headerlink" title="特征值与特征向量"></a>特征值与特征向量</h5><p>对 $n$ 阶方阵 $A$，若存在非零向量 $x$ 和数 $\lambda$，使得</p>
 <p>$$Ax = \lambda x$$</p>
 <p>则称 $\lambda$ 是 $A$ 的<strong>特征值</strong>，$x$ 是 $A$ 对应于 $\lambda$ 的<strong>特征向量</strong></p>
 <p>几何上，特征向量在变换后仍留在它自己张成的直线上，只被伸缩而不发生旋转，$\lambda$ 就是伸缩的比例，$\lambda &lt; 0$ 表示该特征向量发生了反向</p>
 <h4 id="数论基础"><a href="#数论基础" class="headerlink" title="数论基础"></a>数论基础</h4><h5 id="群的定义"><a href="#群的定义" class="headerlink" title="群的定义"></a>群的定义</h5><p>集合分为<strong>有限集合</strong>和<strong>无限集合</strong><br>如：无限集合 $S_1 = {\cdots -20,-10,0,10,20,\cdots}$<br>有限集合 $S_2 = {-10,0,10}$</p>
 <p>集合上加上运算规则就是<strong>代数结构</strong>，为集合 $S_1$ 赋予一个加法运算，组成一个代数结构 $&lt;S_1,+&gt;$</p>
-<p>对于$S_1$而言，代数结构$&lt;S_1,+&gt;$中的加法运算满足<br><strong>封闭性</strong>：$\forall a,b \in S_1,; a+b \in S_1$<br><strong>结合律</strong>：$\forall a,b,c \in S_1,\ (a+b)+c = a+(b+c)$<br><strong>交换律</strong>：$\forall a,b \in S_1,\ a+b = b+a$</p>
+<p>对于$S_1$而言，代数结构$&lt;S_1,+&gt;$中的加法运算满足<br><strong>封闭性</strong>：$\forall a,b \in S_1,~ a+b \in S_1$<br><strong>结合律</strong>：$\forall a,b,c \in S_1,\ (a+b)+c = a+(b+c)$<br><strong>交换律</strong>：$\forall a,b \in S_1,\ a+b = b+a$</p>
 <p>并且对于代数结构$&lt;S_1,+&gt;$而言<br>存在<strong>单位元</strong> $e$：$\exists e \in S_1,\ \forall a \in S_1,\ e+a = a$<br>所有的元素都存在<strong>逆元</strong>： $\forall a \in S_1,\ \exists b \in S_1,\ a+b = b+a = e$</p>
 <p>那么可以根据代数结构满足的条件，对其进行划分<br>广群 —— 只有封闭性。<br>半群 —— 封闭性 + 结合律。<br>幺半群 —— 封闭性 + 结合律 + 单位元。<br>群 —— 封闭性 + 结合律 + 单位元 + 逆元。<br>阿贝尔群—— 封闭性 + 结合律 + 单位元 + 逆元 + 交换律。</p>
 <h5 id="循环群"><a href="#循环群" class="headerlink" title="循环群"></a>循环群</h5><p>设群 $G$ 的运算为 $∗$，存在生成元为 $g$。那么对任意 $y \in G$，一定存在整数 $k \in Z$ 使得：<br>$y = \underbrace{g * g * \cdots * g}_{k \text{ 次}}$</p>
 <p>则群$G$就是循环群</p>
-<p>设 (G=\langle g\rangle) 为循环群。若 (\forall y\in G)，(\exists k\in \mathbb Z) 使得<br>[<br>y = g^k,<br>]<br>则称 (k) 为 (y) 关于底 (g) 的离散对数，记为 (k=\log_g y)。</p>
-<p>设 (m\ge 1)，((a,m)=1)。使得<br>[<br>a^{,d}\equiv 1 \pmod m<br>]<br>成立的最小正整数 (d)，称为 (a) 对模 (m) 的阶，记为 (\delta_m(a))。</p>
-<p>若<br>[<br>\delta_m(a)=\varphi(m),<br>]<br>则称 (a) 是模 (m) 的原根。</p>
-<h5 id="剩余系"><a href="#剩余系" class="headerlink" title="剩余系"></a>剩余系</h5><p>对于模数 $m$，定义集合 $S_m$​ 为所有整数除以 $m$ 后可能得到的余数组成的集合：<br>$$S_m = {0, 1, 2, \dots, m-1}$$<br>这个<strong>集合</strong>叫作模 $m$ 的<strong>完全剩余系</strong>。</p>
-<p>一组<strong>同余</strong>的数组成的集合被称为<strong>剩余类</strong><br>例如模 3 下，余数为 2 的剩余类为：<br>$$ {\dots, -4, -1, 2, 5, 8, \dots} = {2 + 3k \mid k \in \mathbb{Z}}$$</p>
+<p>设 $G=\langle g\rangle$ 为循环群。若 $\forall y\in G$，$\exists k\in \mathbb Z$ 使得<br>$$<br>y = g^k,<br>$$<br>则称 $k$ 为 $y$ 关于底 $g$ 的离散对数，记为 $k=\log_g y$。</p>
+<p>设 $m\ge 1$，$(a,m)=1$。使得<br>$$<br>a^{d}\equiv 1 \pmod m<br>$$<br>成立的最小正整数 $d$，称为 $a$ 对模 $m$ 的阶，记为 $\delta_m(a)$。</p>
+<p>若<br>$$<br>\delta_m(a)=\varphi(m),<br>$$<br>则称 $a$ 是模 $m$ 的原根。</p>
+<h5 id="剩余系"><a href="#剩余系" class="headerlink" title="剩余系"></a>剩余系</h5><p>对于模数 $m$，定义集合 $S_m$​ 为所有整数除以 $m$ 后可能得到的余数组成的集合：<br>$$S_m = \lbrace0, 1, 2, \dots, m-1\rbrace$$<br>这个<strong>集合</strong>叫作模 $m$ 的<strong>完全剩余系</strong>。</p>
+<p>一组<strong>同余</strong>的数组成的集合被称为<strong>剩余类</strong><br>例如模 3 下，余数为 2 的剩余类为：<br>$$ \lbrace\dots, -4, -1, 2, 5, 8, \dots\rbrace = \lbrace2 + 3k \mid k \in \mathbb{Z}\rbrace$$</p>
 <p>所以剩余系是有限集合，剩余类是无限集合</p>
 <p>上面都是集合，跟前面提到的群还差了一个运算。</p>
 <p>以 $⟨S_5,\oplus⟩$ 为例（其中 $a \oplus b = (a + b) \bmod 5$，即$\oplus$是<strong>模加</strong> ）：<br>它同时满足 封闭性 + 结合律 + 单位元 + 逆元 + 交换律，所以其是一个阿贝尔群</p>
-<p>从 ( S_m ) 中取出所有与 ( m ) <strong>互素</strong>的元素，组成的集合叫作<strong>简化剩余系</strong>，记作 ( S_m^* )：<br>$S_m^* = {a \in S_m \mid \gcd(a, m) = 1}$</p>
+<p>从 $ S_m $ 中取出所有与 $ m $ <strong>互素</strong>的元素，组成的集合叫作<strong>简化剩余系</strong>，记作 $ S_m^* $：<br>$S_m^* = \lbrace a \in S_m \mid \gcd(a, m) = 1\rbrace$</p>
 <p>一个元素在模 $m$ 下存在乘法逆元当且仅当它与 $m$ 互素</p>
-<p>以$⟨S_{10}^*,\odot⟩$为例，（其中 $a \odot b = (a \times b) \bmod 10$，即$\odot$是<strong>模乘</strong>，$S_{10}^* = {1, 3, 7, 9}$)<br>它同时满足 封闭性 + 结合律 + 单位元 + 逆元 + 交换律，所以其是一个阿贝尔群</p>
+<p>以$⟨S_{10}^*,\odot⟩$为例，（其中 $a \odot b = (a \times b) \bmod 10$，即$\odot$是<strong>模乘</strong>，$S_{10}^* = \lbrace1, 3, 7, 9\rbrace$)<br>它同时满足 封闭性 + 结合律 + 单位元 + 逆元 + 交换律，所以其是一个阿贝尔群</p>
 <h3 id="公式定理"><a href="#公式定理" class="headerlink" title="公式定理"></a>公式定理</h3><h4 id="数论四大定理"><a href="#数论四大定理" class="headerlink" title="数论四大定理"></a>数论四大定理</h4><h5 id="欧拉定理"><a href="#欧拉定理" class="headerlink" title="欧拉定理"></a>欧拉定理</h5><p>设 $n,a∈Z$，如果有 $gcd(a,n)=1$，则有$$a^{\varphi(n) } \equiv 1 \pmod n$$（其中 $φ()$ 是欧拉函数，$φ(n)$ 表示模 $n$ 的简化剩余系中元素的个数）</p>
 <h5 id="中国剩余定理"><a href="#中国剩余定理" class="headerlink" title="中国剩余定理"></a>中国剩余定理</h5><p>设正整数$m_1,m_2…m_k$两两互素，那么对于任意的余数 $a_1,a_2,…,a_k$​,则同余方程组</p>
-<p>$$<br>\begin{align}<br>\left{<br>\begin{array}{ll}<br>x \equiv a_1 \pmod{m_1} \<br>x \equiv a_2 \pmod{m_2} \<br>\quad \vdots \<br>x \equiv a_k \pmod{m_k}<br>\end{array}<br>\right. \notag<br>\end{align}<br>$$<br>有整数解$x$ 。并且在模$M=m_1⋅m_2⋯m_k$下的解是唯一的，解为<br>$$<br>x \equiv (a_1M_1M_1^{-1} + a_2M_2M_2^{-1} + \cdots + a_kM_kM_k^{-1}) \mod M<br>$$<br>其中$M_i = M / m_i$，$M_i^{-1}M_i \equiv 1 \mod m_i$</p>
+<p>$$<br>\begin{align}<br>\left\lbrace<br>\begin{array}{ll}<br>x \equiv a_1 \pmod{m_1} \cr<br>x \equiv a_2 \pmod{m_2} \cr<br>\quad \vdots \cr<br>x \equiv a_k \pmod{m_k}<br>\end{array}<br>\right. \notag<br>\end{align}<br>$$<br>有整数解$x$ 。并且在模$M=m_1⋅m_2⋯m_k$下的解是唯一的，解为<br>$$<br>x \equiv (a_1M_1M_1^{-1} + a_2M_2M_2^{-1} + \cdots + a_kM_kM_k^{-1}) \mod M<br>$$<br>其中$M_i = M / m_i$，$M_i^{-1}M_i \equiv 1 \mod m_i$</p>
 <h5 id="威尔逊定理"><a href="#威尔逊定理" class="headerlink" title="威尔逊定理"></a>威尔逊定理</h5><p>它给出了一个正整数是素数的充分必要条件。即：一个整数 $p$ 是素数，当且仅当 $(p−1) ! \equiv  −1\pmod{p}$。</p>
 <h4 id="‌欧几里得算法"><a href="#‌欧几里得算法" class="headerlink" title="‌欧几里得算法"></a>‌欧几里得算法</h4><p>也叫辗转相除法，<br>$\gcd(a, b) = \gcd(b, a \bmod b)$</p>
 <p>跟据上述公式，我们可以快速计算两个数的最大公约数</p>
 <p>用较大数除以较小数，得到余数 r。<br>若 r 为 0，则较小数即为最大公约数；若 r 不为 0，则用除数除以余数继续计算。<br>重复上述过程直到余数为 0，最后的非零余数即为最大公约数</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span>(<span class="params">a,b</span>):</span></span><br><span class="line">    <span class="keyword">while</span> b != <span class="number">0</span>:</span><br><span class="line">        a,b = b, a % b</span><br><span class="line">    <span class="keyword">return</span> a</span><br></pre></td></tr></table></figure>
-<p>欧几里得拓展算法<br>[<br> \exists x,y\in\mathbb{Z},\ \gcd(a,b)=ax+by.<br>]<br>就是根据‌欧几里得算法推导过来的，前面通过余数来回相减得到最大公约数，所以可以得从结论，两个数的最大公约数可以用这两个数的整数倍之后相减得到</p>
+<p>欧几里得拓展算法<br>$$<br> \exists x,y\in\mathbb{Z},\ \gcd(a,b)=ax+by.<br>$$<br>就是根据‌欧几里得算法推导过来的，前面通过余数来回相减得到最大公约数，所以可以得从结论，两个数的最大公约数可以用这两个数的整数倍之后相减得到</p>
 <h4 id="BSGS（Baby-Step-Gaint-Step）算法"><a href="#BSGS（Baby-Step-Gaint-Step）算法" class="headerlink" title="BSGS（Baby-Step Gaint Step）算法"></a>BSGS（Baby-Step Gaint Step）算法</h4><p>已知：$g^x \equiv h \pmod p$</p>
 <p>求解$x$</p>
 <p>假设 $x=i*n+j$<br>那么则有：</p>
-<p>[<br>g^j \equiv h \cdot g^{-in} \pmod p<br>]</p>
+<p>$$<br>g^j \equiv h \cdot g^{-in} \pmod p<br>$$</p>
 <p>通过遍历$j$和$i$就能等到x</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> isqrt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bsgs</span>(<span class="params">g, h, p</span>):</span></span><br><span class="line">    n = isqrt(p - <span class="number">1</span>) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Baby Step</span></span><br><span class="line">    baby = &#123;&#125;</span><br><span class="line">    cur = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> cur <span class="keyword">not</span> <span class="keyword">in</span> baby:</span><br><span class="line">            baby[cur] = j <span class="comment">#实际上保存： g^j mod p→ j ,j in [0,n)</span></span><br><span class="line">        cur = cur * g % p</span><br><span class="line">                            <span class="comment"># 1 mod p → 0</span></span><br><span class="line">                            <span class="comment"># g mod p → 1</span></span><br><span class="line">                            <span class="comment"># g² mod p → 2</span></span><br><span class="line">                            <span class="comment"># g³ mod p→ 3</span></span><br><span class="line"></span><br><span class="line">    factor = <span class="built_in">pow</span>(<span class="built_in">pow</span>(g, n, p), -<span class="number">1</span>, p) <span class="comment"># g^(-n) mod p</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Giant Step</span></span><br><span class="line">    cur = h</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> cur <span class="keyword">in</span> baby:</span><br><span class="line">            <span class="comment"># 实际上寻找：</span></span><br><span class="line">            <span class="comment"># 即：h(g^(-n))^i ≡ g^j mod p</span></span><br><span class="line">            <span class="keyword">return</span> i * n + baby[cur]</span><br><span class="line"></span><br><span class="line">        cur = cur * factor % p </span><br><span class="line">            <span class="comment"># h·g^(-n) mod p</span></span><br><span class="line">            <span class="comment"># h·g^(-n)·g^(-n) mod p</span></span><br><span class="line">            <span class="comment"># h·g^(-n)·g^(-n)·g^(-n) mod p</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -353,9 +353,9 @@
 <p>RSA 的加密公式为 $c \equiv m^e \pmod n$<br>RSA 的解密公式为 $m \equiv c^d \pmod n$<br>其中 $e,d$ 满足 $e \cdot d \equiv 1 \pmod {\varphi(n)}$</p>
 <p>因为 $\varphi (N)=\varphi (p)\varphi (q)=(p-1)(q-1)$，所以知道$p,q$就很容易知道 $\varphi (N)$，进而根据公钥设计出私钥，而因为在整个加解密过程中p,q都没有泄露，所以要是想解密就得大数因式分解非常复杂</p>
 <h4 id="RSA-CRT"><a href="#RSA-CRT" class="headerlink" title="RSA-CRT"></a>RSA-CRT</h4><p>rsa中加解密使用到的幂运算需要大量的时间和算力，所以RSA-CRT算法的作用就是使用CRT将原来的幂运算变成两个指数更小的幂运算，从而提高效率</p>
-<p>公钥还是$(e,n)$<br>私钥改为了 $(d_p,d_q,p,q)$<br>其中：<br>[<br>d_p\equiv d\pmod{p-1} \equiv e^{-1} \pmod{p-1}, \qquad<br>d_q\equiv d\pmod{q-1} \equiv e^{-1} \pmod{q-1}, \qquad<br>q_{\text{Inv}} = q^{-1} \pmod{p}<br>]</p>
-<p>解密（或签名生成）时，先分别在模 ( p ) 和模 ( q ) 下计算两个中间值：<br>[<br>m_1 = c^{d_p} \bmod p, \qquad m_2 = c^{d_q} \bmod q.<br>]<br>根据CRT<br>$m \equiv m_1 \pmod{p} \equiv c^{d_p} \pmod{p} \equiv c^d \pmod{p}$<br>$m \equiv m_2 \pmod{q} \equiv c^{d_q} \pmod{q} \equiv c^d \pmod{q}$</p>
-<p>最终计算明文$m$为：<br>[<br>h = q_{\text{Inv}} \cdot (m_1 - m_2) \bmod p,\qquad m = m_2 + h \cdot q<br>]</p>
+<p>公钥还是$(e,n)$<br>私钥改为了 $(d_p,d_q,p,q)$<br>其中：<br>$$<br>d_p\equiv d\pmod{p-1} \equiv e^{-1} \pmod{p-1}, \qquad<br>d_q\equiv d\pmod{q-1} \equiv e^{-1} \pmod{q-1}, \qquad<br>q_{\text{Inv}} = q^{-1} \pmod{p}<br>$$</p>
+<p>解密（或签名生成）时，先分别在模 $ p $ 和模 $ q $ 下计算两个中间值：<br>$$<br>m_1 = c^{d_p} \bmod p, \qquad m_2 = c^{d_q} \bmod q.<br>$$<br>根据CRT<br>$m \equiv m_1 \pmod{p} \equiv c^{d_p} \pmod{p} \equiv c^d \pmod{p}$<br>$m \equiv m_2 \pmod{q} \equiv c^{d_q} \pmod{q} \equiv c^d \pmod{q}$</p>
+<p>最终计算明文$m$为：<br>$$<br>h = q_{\text{Inv}} \cdot (m_1 - m_2) \bmod p,\qquad m = m_2 + h \cdot q<br>$$</p>
 <h5 id="d-p-泄露"><a href="#d-p-泄露" class="headerlink" title="$d_p$泄露"></a>$d_p$泄露</h5><p>$d_p$和$p$同等重要,一旦泄露就会导致私钥 $(d,n)$被计算出来</p>
 <p>已知公钥对$(e,n)$，只需要再加上一个 $d_p$ 或者 $d_q$</p>
 <p>由前面可得<br>$e \cdot d_p \equiv 1 \pmod {\varphi(p)}$<br>所以有<br>$e \cdot d_p = 1 + k \varphi(p)=1+k(p-1)$<br>然后就是遍历$k$就能找到$p$了</p>
@@ -364,32 +364,32 @@
 <h4 id="共模攻击"><a href="#共模攻击" class="headerlink" title="共模攻击"></a>共模攻击</h4><p>同一明文$m$用的俩不同的公钥加密，但是公钥的$n$一样如<br>$c_1 \equiv m^{e_1} \pmod n$<br>$c_2 \equiv m^{e_2} \pmod n$</p>
 <p>已知密文$c_1,c_2$，和对应的两条公钥$(e_1,n)和(e_2,n)$，并且$gcd(e_1,e_2)=1$。我们就能通过共模攻击计算出密文$c_1,c_2$对应的明文$m$</p>
 <p>通过欧几里得拓展算法可以得出结论</p>
-<p>[<br> \exists u,v\in\mathbb{Z},\ \gcd(e_1,e_2)=e_1u+e_2v<br>]<br>我们计算出$u,v$,就可以计算出明文<br>$c_1^u \cdot c_2^v \equiv m^{u\cdot e_1+v\cdot e_2 } \equiv m ^1 \pmod n$</p>
+<p>$$<br> \exists u,v\in\mathbb{Z},\ \gcd(e_1,e_2)=e_1u+e_2v<br>$$<br>我们计算出$u,v$,就可以计算出明文<br>$c_1^u \cdot c_2^v \equiv m^{u\cdot e_1+v\cdot e_2 } \equiv m ^1 \pmod n$</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">u = inverse(e1-e2,e2) <span class="comment"># u⋅(e_1−e_2)≡1 (mode e_2)</span></span><br><span class="line">v = (<span class="number">1</span>-e1*u)//e2</span><br><span class="line">m = <span class="built_in">pow</span>(c1,u,n)*<span class="built_in">pow</span>(c2,v,n)%n</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(m))</span><br></pre></td></tr></table></figure>
 <h4 id="低加密指数广播攻击"><a href="#低加密指数广播攻击" class="headerlink" title="低加密指数广播攻击"></a>低加密指数广播攻击</h4><p>假设公钥$e$为3</p>
 <p>同一明文有三组不同的公钥加密，但是公钥的e都为3<br>$c_1 \equiv m^{3} \pmod{n_1}$<br>$c_2 \equiv m^{3} \pmod{n_2}$<br>$c_3 \equiv m^{3} \pmod{n_3}$</p>
 <p>已知密文$c_1,c_2,c_3$,和对应的公钥$(e,n_1),(e,n_2),(e,n_3)$</p>
-<p>根据中国剩余定理可得：<br>[<br>N = n_1 n_2 n_3, \quad N_i = \frac{N}{n_i} \quad (i=1,2,3)<br>]</p>
-<p>[ N_i \cdot N_i^{-1} \equiv 1\pmod{n_i}  \quad  (i=1,2,3)]</p>
+<p>根据中国剩余定理可得：<br>$$<br>N = n_1 n_2 n_3, \quad N_i = \frac{N}{n_i} \quad (i=1,2,3)<br>$$</p>
+<p>$$ N_i \cdot N_i^{-1} \equiv 1\pmod{n_i}  \quad  (i=1,2,3)$$</p>
 <p>$$<br>x \equiv m^{3} \mod N \equiv (c_1N_1N_1^{-1} + c_2N_2N_2^{-1}  + c_3N_3N_3^{-1}) \mod N<br>$$</p>
 <h4 id="p-q-泄露攻击"><a href="#p-q-泄露攻击" class="headerlink" title="p+q 泄露攻击"></a>p+q 泄露攻击</h4><p>已知$p,q$都是512 bit素数，RSA公钥$n$、密文$c$和题目泄露的</p>
-<p>[<br>hint=(p+q)^2\bmod n<br>]</p>
+<p>$$<br>hint=(p+q)^2\bmod n<br>$$</p>
 <p>要求出RSA私钥$d$，从而解密得到明文$m$。</p>
 <p>由于</p>
-<p>[<br>(p+q)^2=(p-q)^2+4n<br>]</p>
+<p>$$<br>(p+q)^2=(p-q)^2+4n<br>$$</p>
 <p>不妨设$p&lt;q&lt;2p$，所以 $q-p&lt;p$</p>
 <p>因此</p>
-<p>[<br>0\leq(p-q)^2&lt;p^2&lt;n<br>]</p>
-<p>[<br>\begin{aligned}<br>hint<br>&amp;=(p+q)^2\bmod n\<br>&amp;=((p-q)^2+4n)\bmod n\<br>&amp;=(p-q)^2<br>\end{aligned}<br>]</p>
-<p>[<br>|p-q|=\sqrt{hint}<br>]</p>
-<p>[<br>p+q=\sqrt{hint+4n}<br>]</p>
+<p>$$<br>0\leq(p-q)^2&lt;p^2&lt;n<br>$$</p>
+<p>$$<br>\begin{aligned}<br>hint<br>&amp;=(p+q)^2\bmod n\cr<br>&amp;=((p-q)^2+4n)\bmod n\cr<br>&amp;=(p-q)^2<br>\end{aligned}<br>$$</p>
+<p>$$<br>|p-q|=\sqrt{hint}<br>$$</p>
+<p>$$<br>p+q=\sqrt{hint+4n}<br>$$</p>
 <p>因此已知$p+q$和$|p-q|$，可以通过两数的和与差求出$p,q$</p>
-<p>[<br>p=\frac{(p+q)+|p-q|}{2}<br>]</p>
-<p>[<br>q=\frac{(p+q)-|p-q|}{2}<br>]</p>
+<p>$$<br>p=\frac{(p+q)+|p-q|}{2}<br>$$</p>
+<p>$$<br>q=\frac{(p+q)-|p-q|}{2}<br>$$</p>
 <h4 id="p-amp-q-不当分解-N"><a href="#p-amp-q-不当分解-N" class="headerlink" title="p &amp; q 不当分解 N"></a>p &amp; q 不当分解 N</h4><p>这类题型的要点是要能猜测到 $p+q$的大概值</p>
 <p>设$a=\frac{p+q}{2}$<br>$b=\frac{q-p}{2}$</p>
-<p>于是<br>[<br>n=pq=(a-b)(a+b)=a^2-b^2<br>]</p>
-<p>[<br>a^2-n=b^2<br>]</p>
+<p>于是<br>$$<br>n=pq=(a-b)(a+b)=a^2-b^2<br>$$</p>
+<p>$$<br>a^2-n=b^2<br>$$</p>
 <p>也就是说，我们只需要找到一个$a$，使得$a^2-n$是一个完全平方数，就可以得到$b$。</p>
 <ol>
 <li>小素数间隔攻击 (Fermat 分解)</li>
@@ -401,94 +401,94 @@
 
 
 <h3 id="离散对数问题"><a href="#离散对数问题" class="headerlink" title="离散对数问题"></a>离散对数问题</h3><h4 id="Diffie-Hellman-密钥交换算法"><a href="#Diffie-Hellman-密钥交换算法" class="headerlink" title="Diffie-Hellman 密钥交换算法"></a>Diffie-Hellman 密钥交换算法</h4><p>现在假设 Alice 想和 Bob 约定一个整数作为密钥，但 他们通信的信道是完全被监听的。</p>
-<p>设 (G_p = \langle g \rangle) 为模 (p) 的循环群，其中 (p) 为大素数，(g) 为生成元。</p>
+<p>设 $G_p = \langle g \rangle$ 为模 $p$ 的循环群，其中 $p$ 为大素数，$g$ 为生成元。</p>
 <p>系统参数：</p>
 <ul>
-<li>公共参数：((p, g))</li>
+<li>公共参数：$(p, g)$</li>
 </ul>
 <p>密钥生成：</p>
-<p>Alice 选取随机数 (a)，计算公钥：</p>
-<p>[<br>A \equiv g^a \pmod p.<br>]</p>
-<p>Bob 选取随机数 (b)，计算公钥：</p>
-<p>[<br>B \equiv g^b \pmod p.<br>]</p>
+<p>Alice 选取随机数 $a$，计算公钥：</p>
+<p>$$<br>A \equiv g^a \pmod p.<br>$$</p>
+<p>Bob 选取随机数 $b$，计算公钥：</p>
+<p>$$<br>B \equiv g^b \pmod p.<br>$$</p>
 <p>密钥交换：</p>
-<p>Alice 将公钥 (A) 发送给 Bob，Bob 将公钥 (B) 发送给 Alice。</p>
-<p>Alice 收到 Bob 的公钥 (B) 后，计算共享密钥：</p>
-<p>[<br>K_A \equiv B^a \pmod p.<br>]</p>
-<p>Bob 收到 Alice 的公钥 (A) 后，计算共享密钥：</p>
-<p>[<br>K_B \equiv A^b \pmod p.<br>]</p>
+<p>Alice 将公钥 $A$ 发送给 Bob，Bob 将公钥 $B$ 发送给 Alice。</p>
+<p>Alice 收到 Bob 的公钥 $B$ 后，计算共享密钥：</p>
+<p>$$<br>K_A \equiv B^a \pmod p.<br>$$</p>
+<p>Bob 收到 Alice 的公钥 $A$ 后，计算共享密钥：</p>
+<p>$$<br>K_B \equiv A^b \pmod p.<br>$$</p>
 <p>因此：</p>
-<p>[<br>K_A \equiv K_B \equiv g^{ab} \pmod p.<br>]</p>
+<p>$$<br>K_A \equiv K_B \equiv g^{ab} \pmod p.<br>$$</p>
 <p>最终 Alice 和 Bob 得到相同的共享密钥：</p>
-<p>[<br>\boxed{K = g^{ab} \pmod p}.<br>]</p>
+<p>$$<br>\boxed{K = g^{ab} \pmod p}.<br>$$</p>
 <p>安全性：</p>
-<p>攻击者可以知道公共参数 (p,g) 以及双方公钥 (A=g^a\bmod p)、(B=g^b\bmod p)，但在离散对数问题困难的情况下，无法在可行时间内由 (A) 或 (B) 求出私钥 (a) 或 (b)，从而难以计算共享密钥(K)</p>
+<p>攻击者可以知道公共参数 $p,g$ 以及双方公钥 $A=g^a\bmod p$、$B=g^b\bmod p$，但在离散对数问题困难的情况下，无法在可行时间内由 $A$ 或 $B$ 求出私钥 $a$ 或 $b$，从而难以计算共享密钥$K$</p>
 <p>目前为止，Diffie-Hellman 密钥交换算法是安全的。它被用于 SSL 协议的握手阶段。</p>
-<h4 id="ElGamal-加密方案"><a href="#ElGamal-加密方案" class="headerlink" title="ElGamal 加密方案"></a>ElGamal 加密方案</h4><p>设 (G_p = \langle g \rangle) 为循环群。对任意 (y \in G_p)，存在整数 (k \in \mathbb Z)，使得<br>[<br>g^k \equiv y \pmod p.<br>]</p>
+<h4 id="ElGamal-加密方案"><a href="#ElGamal-加密方案" class="headerlink" title="ElGamal 加密方案"></a>ElGamal 加密方案</h4><p>设 $G_p = \langle g \rangle$ 为循环群。对任意 $y \in G_p$，存在整数 $k \in \mathbb Z$，使得<br>$$<br>g^k \equiv y \pmod p.<br>$$</p>
 <p>系统参数：</p>
 <ul>
-<li>私钥：(k)</li>
-<li>公钥：((p, g, y))</li>
+<li>私钥：$k$</li>
+<li>公钥：$(p, g, y)$</li>
 </ul>
-<p>加密算法:<br>加密者选取随机数 (r \in \mathbb Z_{p-1})，计算密文：<br>[<br>E_k\bigl(m, r, (p, g, y)\bigr) = (y_1, y_2),<br>]<br>其中<br>[<br>\begin{aligned}<br>y_1 &amp;\equiv g^r \pmod p, \<br>y_2 &amp;\equiv m \cdot y^r \pmod p.<br>\end{aligned}<br>]</p>
-<p>解密算法:<br>接收方使用私钥 (k) 解密密文 ((y_1, y_2))：<br>[<br>D_k(y_1, y_2, k) = y_2 \cdot \bigl(y_1^k\bigr)^{-1} \pmod p.<br>]</p>
-<p>正确性推导：<br>[<br>y_2 \cdot \bigl(y_1^k\bigr)^{-1}<br>\equiv m \cdot (g^k)^r \cdot (g^{rk})^{-1}<br>\equiv m \pmod p.<br>]</p>
+<p>加密算法:<br>加密者选取随机数 $r \in \mathbb Z_{p-1}$，计算密文：<br>$$<br>E_k\bigl(m, r, (p, g, y)\bigr) = (y_1, y_2),<br>$$<br>其中<br>$$<br>\begin{aligned}<br>y_1 &amp;\equiv g^r \pmod p, \cr<br>y_2 &amp;\equiv m \cdot y^r \pmod p.<br>\end{aligned}<br>$$</p>
+<p>解密算法:<br>接收方使用私钥 $k$ 解密密文 $(y_1, y_2)$：<br>$$<br>D_k(y_1, y_2, k) = y_2 \cdot \bigl(y_1^k\bigr)^{-1} \pmod p.<br>$$</p>
+<p>正确性推导：<br>$$<br>y_2 \cdot \bigl(y_1^k\bigr)^{-1}<br>\equiv m \cdot (g^k)^r \cdot (g^{rk})^{-1}<br>\equiv m \pmod p.<br>$$</p>
 <h4 id="ElGamal-数字签名"><a href="#ElGamal-数字签名" class="headerlink" title="ElGamal 数字签名"></a>ElGamal 数字签名</h4><p>密钥与加密方案保持一致</p>
-<p>签名算法：<br>签名者选取随机数 (r \in \mathbb{Z}_{p-1}^*)（即 (1 \le r \le p-2) 且 (\gcd(r, p-1)=1)），计算消息 (m) 的签名：<br>[<br>\operatorname{sig}_k(m, r) = (s_1, s_2)<br>]<br>其中：<br>[<br>s_1 \equiv g^r \pmod p<br>]<br>[<br>s_2 \equiv (m - k s_1) \cdot r^{-1} \pmod{p-1}<br>]</p>
-<p>验证算法:<br>验证者收到消息 (m) 及其签名 ((s_1, s_2)) 后，使用公钥 ((p, g, y)) 进行验证。验证方程为：<br>[<br>y^{s_1} \cdot s_1^{s_2} \equiv g^m \pmod p<br>]<br>若等式成立，则验签成功；否则失败。</p>
-<p>正确性证明：<br>签名生成时满足：<br>[<br>s_2 \equiv (m - k s_1) \cdot r^{-1} \pmod{p-1}<br>]<br>两边乘以 (r)，得：<br>[<br>r s_2 \equiv m - k s_1 \pmod{p-1}<br>]<br>即：<br>[<br>k s_1 + r s_2 \equiv m \pmod{p-1}<br>]<br>根据 费马小定理，可得：<br>[<br>g^{k s_1 + r s_2} \equiv g^{a*(p-1)+m} \equiv g^m \pmod p<br>]</p>
+<p>签名算法：<br>签名者选取随机数 $r \in \mathbb{Z}_{p-1}^*$（即 $1 \le r \le p-2$ 且 $\gcd(r, p-1)=1$），计算消息 $m$ 的签名：<br>$$<br>\operatorname{sig}_k(m, r) = (s_1, s_2)<br>$$<br>其中：<br>$$<br>s_1 \equiv g^r \pmod p<br>$$<br>$$<br>s_2 \equiv (m - k s_1) \cdot r^{-1} \pmod{p-1}<br>$$</p>
+<p>验证算法:<br>验证者收到消息 $m$ 及其签名 $(s_1, s_2)$ 后，使用公钥 $(p, g, y)$ 进行验证。验证方程为：<br>$$<br>y^{s_1} \cdot s_1^{s_2} \equiv g^m \pmod p<br>$$<br>若等式成立，则验签成功；否则失败。</p>
+<p>正确性证明：<br>签名生成时满足：<br>$$<br>s_2 \equiv (m - k s_1) \cdot r^{-1} \pmod{p-1}<br>$$<br>两边乘以 $r$，得：<br>$$<br>r s_2 \equiv m - k s_1 \pmod{p-1}<br>$$<br>即：<br>$$<br>k s_1 + r s_2 \equiv m \pmod{p-1}<br>$$<br>根据 费马小定理，可得：<br>$$<br>g^{k s_1 + r s_2} \equiv g^{a*(p-1)+m} \equiv g^m \pmod p<br>$$</p>
 <h3 id="椭圆曲线离散对数问题"><a href="#椭圆曲线离散对数问题" class="headerlink" title="椭圆曲线离散对数问题"></a>椭圆曲线离散对数问题</h3><p>ECC 全称为椭圆曲线加密，EllipseCurve Cryptography，是一种基于椭圆曲线数学的公钥密码。</p>
 <p><strong>椭圆曲线</strong>：设 $p$ 为素数，$\mathbb{F}_p$ 上方程<br>$$y^2 \equiv x^3 + ax + b \pmod p \qquad (4a^3 + 27b^2 \not\equiv 0 \pmod p)$$<br>的全部解 $(x,y)$，再加上一个<strong>无穷远点</strong> $O$，组成的集合记作 $E(\mathbb{F}_p)$<br>后面的不等式是保证曲线光滑（没有尖点、自交点）的条件</p>
 <p><strong>点的加法</strong>：几何上就是”过两点的直线与曲线交于第三点，再把第三点关于 $x$ 轴翻折”<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/image-16.png" alt="image-16"><br>如：设 $P = (x_1,y_1)$、$Q = (x_2,y_2)$，则 $P + Q = (x_3,y_3)$，其中</p>
-<p>$$k = \begin{cases} \dfrac{y_2 - y_1}{x_2 - x_1}, &amp; P \neq \pm Q \[3pt] \dfrac{3x_1^2 + a}{2y_1}, &amp; P = Q \end{cases}, \qquad \begin{aligned} x_3 &amp;= k^2 - x_1 - x_2 \ y_3 &amp;= k(x_1 - x_3) - y_1 \end{aligned}$$</p>
+<p>$$k = \begin{cases} \dfrac{y_2 - y_1}{x_2 - x_1}, &amp; P \neq \pm Q \cr \dfrac{3x_1^2 + a}{2y_1}, &amp; P = Q \end{cases}, \qquad \begin{aligned} x_3 &amp;= k^2 - x_1 - x_2 \cr y_3 &amp;= k(x_1 - x_3) - y_1 \end{aligned}$$</p>
 <p>另外规定 $P + O = O + P = P$、$P + (-P) = O$（其中 $-P = (x_1,-y_1)$）<br>于是 $E(\mathbb{F}_p)$ 在点的加法下构成<strong>阿贝尔群</strong>，$O$ 是单位元，和前面的 $⟨S_m^*,\odot⟩$ 一样都是”集合 + 运算 = 群”</p>
 <p><strong>标量乘法</strong>：$kP$ 表示 $k$ 个 $P$ 相加，用二进制分解（倍点法）只要 $O(\log k)$ 次点加法</p>
 <p><strong>椭圆曲线离散对数问题（ECDLP）</strong>：已知曲线、基点 $G$ 和点 $Q = kG$，求整数 $k$<br>目前没有多项式时间的通用算法，$p$ 取 256 位左右就足够安全，ECC 的安全性就建立在这里</p>
-<p><strong>ECC 加解密</strong>：和前面的离散对数问题完全平行，只是把”模幂”换成”标量乘法”<br>私钥是随机数 $k$，公钥是点 $Q = kG$<br>加密（ElGamal 型）：取随机数 $r$，把明文嵌入成曲线上的点 $M$，密文是两个点<br>$$C = (rG,; M + rQ)$$<br>解密时用私钥算 $M = (M + rQ) - k(rG)$，再把点 $M$ 还原成明文</p>
+<p><strong>ECC 加解密</strong>：和前面的离散对数问题完全平行，只是把”模幂”换成”标量乘法”<br>私钥是随机数 $k$，公钥是点 $Q = kG$<br>加密（ElGamal 型）：取随机数 $r$，把明文嵌入成曲线上的点 $M$，密文是两个点<br>$$C = (rG,~ M + rQ)$$<br>解密时用私钥算 $M = (M + rQ) - k(rG)$，再把点 $M$ 还原成明文</p>
 <h3 id="分组密码"><a href="#分组密码" class="headerlink" title="分组密码"></a>分组密码</h3><h4 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h4><p>DES算法跟前面不同之处在于，他没用到什么数学公式或者一些推导过程，利用到的技术就是分组，置换，异或<br>总结一下就是不难，但是步骤繁多，复杂<br>为节约篇幅，就介绍大致流程</p>
 <h5 id="加密流程"><a href="#加密流程" class="headerlink" title="加密流程"></a>加密流程</h5><p>输入$x$(64 位)。<br>输出$y$(64 位)。<br>密钥$K$(64 位)，使用 64 位密钥中的 56 位，剩余的 8 位要么丢弃，要么作为奇偶校验位。<br>密钥$K$ ⽣成16个48位的轮密钥$K_n$<br>并且DES内部所用到的置换表都是写死的，即<strong>DES内部置换表都为已知</strong></p>
 <p>密文$y$生成的流程图如下<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/canvas.png" alt="canvas"></p>
 <ol>
 <li><p><strong>初始置换 IP</strong></p>
 <ul>
-<li>将 64 位明文 (x) 通过 <strong>IP</strong> 置换表重新排列，得到 64 位数据。</li>
-<li>将其分为左右两部分：(L_0)（左 32 位）和 (R_0)（右 32 位）。</li>
+<li>将 64 位明文 $x$ 通过 <strong>IP</strong> 置换表重新排列，得到 64 位数据。</li>
+<li>将其分为左右两部分：$L_0$（左 32 位）和 $R_0$（右 32 位）。</li>
 </ul>
 </li>
-<li><p><strong>16 轮 Feistel 迭代</strong><br>对 (i = 1, 2, \dots, 16)：</p>
+<li><p><strong>16 轮 Feistel 迭代</strong><br>对 $i = 1, 2, \dots, 16$：</p>
 <ul>
-<li>(L_i = R_{i-1})</li>
-<li>(R_i = L_{i-1} \oplus F(R_{i-1}, K_i))</li>
+<li>$L_i = R_{i-1}$</li>
+<li>$R_i = L_{i-1} \oplus F(R_{i-1}, K_i)$</li>
 </ul>
-<p>其中 (K_i) 是第 (i) 轮子密钥（由密钥调度生成），(F) 是轮函数。</p>
+<p>其中 $K_i$ 是第 $i$ 轮子密钥（由密钥调度生成），$F$ 是轮函数。</p>
 </li>
-<li><p><strong>轮函数 (F(R, K))</strong><br>输入：32 位 (R)，48 位子密钥 (K)。</p>
+<li><p><strong>轮函数 $F(R, K)$</strong><br>输入：32 位 $R$，48 位子密钥 $K$。</p>
 <ul>
-<li><strong>E 扩展置换</strong>：通过扩展表$E$将 32 位 (R) 扩展为 48 位。</li>
-<li><strong>异或</strong>：与 48 位子密钥 (K_i) 逐位异或。</li>
+<li><strong>E 扩展置换</strong>：通过扩展表$E$将 32 位 $R$ 扩展为 48 位。</li>
+<li><strong>异或</strong>：与 48 位子密钥 $K_i$ 逐位异或。</li>
 <li><strong>S 盒替换</strong>：将 48 位分成 8 个 6 位组，分别送入 8 个 S 盒，每个 S 盒输出 4 位，合并为 32 位。</li>
 <li><strong>P 置换</strong>：将 32 位按 P 置换表重新排列，输出 32 位。</li>
 </ul>
 </li>
-<li><p><strong>左右交换</strong><br>完成 16 轮后，得到 (L_{16}) 和 (R_{16})。交换左右，得到预输出：<br>[<br>\text{预输出} = R_{16} \parallel L_{16}<br>]</p>
+<li><p><strong>左右交换</strong><br>完成 16 轮后，得到 $L_{16}$ 和 $R_{16}$。交换左右，得到预输出：<br>$$<br>\text{预输出} = R_{16} \parallel L_{16}<br>$$</p>
 </li>
-<li><p><strong>逆初始置换 IP⁻¹</strong><br>将预输出通过 <strong>IP⁻¹</strong> 置换表，得到 64 位密文 (y)。</p>
+<li><p><strong>逆初始置换 IP⁻¹</strong><br>将预输出通过 <strong>IP⁻¹</strong> 置换表，得到 64 位密文 $y$。</p>
 </li>
 </ol>
 <h5 id="密钥生成流程"><a href="#密钥生成流程" class="headerlink" title="密钥生成流程"></a>密钥生成流程</h5><p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/canvasmiyao.png" alt="canvasmiyao"></p>
 <ol>
-<li><p>64 位初始密钥 (K) 通过 <strong>PC-1</strong> 置换，丢弃第8、16、…、64 位，得到 56 位有效密钥。</p>
+<li><p>64 位初始密钥 $K$ 通过 <strong>PC-1</strong> 置换，丢弃第8、16、…、64 位，得到 56 位有效密钥。</p>
 </li>
-<li><p>将 56 位分为左右两部分 (C_0) 和 (D_0)，各 28 位。</p>
+<li><p>将 56 位分为左右两部分 $C_0$ 和 $D_0$，各 28 位。</p>
 </li>
-<li><p>对 (i = 1) 到 (16) 轮：</p>
+<li><p>对 $i = 1$ 到 $16$ 轮：</p>
 <ul>
-<li>根据循环左移表，对 (C_{i-1}) 和 (D_{i-1}) 根据循环左移位数序列左移 ，得到 (C_i) 和 (D_i)。</li>
-<li>合并 (C_i \parallel D_i)，得到 56 位。</li>
-<li>通过 <strong>PC-2</strong> 置换，从 56 位中选出 48 位，作为第 (i) 轮子密钥 (K_i)。</li>
+<li>根据循环左移表，对 $C_{i-1}$ 和 $D_{i-1}$ 根据循环左移位数序列左移 ，得到 $C_i$ 和 $D_i$。</li>
+<li>合并 $C_i \parallel D_i$，得到 56 位。</li>
+<li>通过 <strong>PC-2</strong> 置换，从 56 位中选出 48 位，作为第 $i$ 轮子密钥 $K_i$。</li>
 </ul>
 </li>
-<li><p>重复步骤 3 共 16 轮，最终生成 16 个子密钥 (K_1, K_2, \dots, K_{16})。</p>
+<li><p>重复步骤 3 共 16 轮，最终生成 16 个子密钥 $K_1, K_2, \dots, K_{16}$。</p>
 </li>
 </ol>
 <h4 id="分组密码的工作模式"><a href="#分组密码的工作模式" class="headerlink" title="分组密码的工作模式"></a>分组密码的工作模式</h4><h4 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h4><p>AES 明显用到了线性代数，包括 GF(2⁸) 上的矩阵乘法、仿射变换和有限域运算；DES 则主要是 GF(2) 上的置换和异或，线性代数体现在底层，但没有显式的矩阵乘法或有限域乘法</p>
