@@ -391,12 +391,12 @@
 </li>
 <li><p>位运算</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~$(())))</span><br><span class="line">-1</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~0))</span><br><span class="line">-1</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~1))</span><br><span class="line">-2</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~11))</span><br><span class="line">-12</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((1&lt;&lt;1))</span><br><span class="line">2</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((1&lt;&lt;1&lt;&lt;1))</span><br><span class="line">4</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((2#10001))</span><br><span class="line">17</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $(( $((1&lt;&lt;1))#10001 ))</span><br><span class="line">17</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="分隔符"><a href="#分隔符" class="headerlink" title="分隔符"></a>分隔符</h3></li>
+<h3 id="命令分隔符"><a href="#命令分隔符" class="headerlink" title="命令分隔符"></a>命令分隔符</h3></li>
 </ol>
 <p><strong>windows</strong>：</p>
 <p>‘|’  在前面命令的结果上，执行后面的指令<br>‘||’ 如果前面命令是错的那么就执行后面的语句，否则只执行前面的语句<br>‘&amp;&amp;’ 如果前面为假，后面的命令也不执行，如果前面为真则执行两条命令，例如<code>?cmd=cd ..&amp;&amp;ls&amp;&amp;ca$@t ffff$@llllaaaaggggg</code></p>
 <p>‘&amp;’  前面和后面命令都要执行，无论前面真假</p>
-<p><strong>Linux</strong>:<br>Linux系统包含了windows系统上面四个之外，还多了一个 ‘;’ 这个作用和 ‘&amp;’ 作用相同</p>
+<p><strong>Linux</strong>:<br>Linux系统包含了windows系统上面四个之外，还多了两个 <code>‘;’和‘\n’</code> 这个作用和 ‘&amp;’ 作用相同</p>
 
         </div>
 
