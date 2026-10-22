@@ -286,7 +286,7 @@
 <li><p>cp 命令(copy)</p>
 </li>
 </ol>
-<p> -f：覆盖已经存在的目标文件而不给出提示。<br> -p：除复制文件的内容外，还把修改时间和访问权限也复制到新文件中。<br> -r或-R：递归处理，将指定目录下的子文件和子目录一并处理（复制目录的时候使用）<br><code>[root@tjf328 ~]# cp  /root/a.txt  /tmp/</code><br>6. find命令<br>用来在指定目录下查找文件 <code>find [path] [expression]</code><br>实例：<br>将当前目录及其子目录下所有文件后缀为 .c 的文件列出来:<br><code># find . -name &quot;*.c&quot;</code><br>寻找根目录下所以flag开头的文件<br><code>find / -name flag*</code><br>三天内新加或修改的文件：<br><code>find . -type f -mtime -3</code></p>
+<p> -f：覆盖已经存在的目标文件而不给出提示。<br> -p：除复制文件的内容外，还把修改时间和访问权限也复制到新文件中。<br> -r或-R：递归处理，将指定目录下的子文件和子目录一并处理（复制目录的时候使用）<br><code>[root@tjf328 ~]# cp  /root/a.txt  /tmp/</code><br>6. find命令<br>用来在指定目录下查找文件 <code>find [path] [expression]</code><br>实例：<br>将当前目录及其子目录下所有文件后缀为 .c 的文件列出来:<br><code># find . -name &quot;*.c&quot;</code><br>寻找根目录下所以flag开头的文件<br><code>find / -name flag*</code><br>三天内新加或修改的文件：<br><code>find . -type f -mtime -3</code><br>丢弃所有 stderr<br><code>find / -name &quot;*.conf&quot; 2&gt;/dev/null</code></p>
 <ol start="7">
 <li>rm 命令(remove)<br>可以直接使用 rm 命令删除文件； </li>
 </ol>
