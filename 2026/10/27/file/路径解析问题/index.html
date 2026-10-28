@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="mayylu">
+
+
+
+    <meta name="description" content="学习是一种生活态度">
+
+
+
+<title>路径解析问题 | mayylu&#39;s blog</title>
+
+
+
+    <link rel="icon" href="/vue.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+    <!-- 看板娘预加载：提前获取核心资源，首次访问即缓存 -->
+    <link rel="preload" href="/live2d/Core/live2dcubismcore.js" as="script">
+    <link rel="preload" href="/live2d/assets/index-DGcyJwDa.js" as="script" crossorigin="anonymous">
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">mayylu&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">mayylu&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/categories">Categories</a>
+                
+                <a class="menu-item" href="/tags">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">路径解析问题</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">mayylu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十月 27, 2026&nbsp;&nbsp;16:17:00</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目录穿越blog编写，记录一些逻辑和危险方法和现有历史漏洞，记忆总结的东西比较多，不难,但是值得一写，毕竟好多白盒漏洞都是这方面的问题</p>
+<span id="more"></span>
+
+<h2 id="文件路径解析实现绕过"><a href="#文件路径解析实现绕过" class="headerlink" title="文件路径解析实现绕过"></a>文件路径解析实现绕过</h2><h3 id="文件操作功能"><a href="#文件操作功能" class="headerlink" title="文件操作功能"></a>文件操作功能</h3><p>新建文件 /上传文件功能<br>例2 前端接受了文件名且未考虑文件名中的../直接路径与文件名则存在目录穿越漏洞。 可构造文件名进行利用../filename.txt覆盖任意文件<br>读取文件 - 下载文件功能。<br>例3 前端接受了文件名且未考虑文件名中的../直接路径与文件名则存在目录穿越漏洞。 可构造文件名进行利用../filename.txt读取任意文件<br>修改文件 - 编辑文件功能。</p>
+<ul>
+<li>三个功能的共同点：文件名 / 路径由前端传入，后端直接拼到目录后面；只要过滤是「字符串式」的就可能被绕</li>
+</ul>
+<h4 id="“过滤式”路径处理"><a href="#“过滤式”路径处理" class="headerlink" title="“过滤式”路径处理"></a>“过滤式”路径处理</h4><p>「过滤式」指只在字符串层做检查：<code>replace</code> 删字符、正则匹配、解码后比对，<strong>不做路径规范化</strong>。文件 API 和容器事后还会再解析一次，两者的差就是绕过空间</p>
+<h5 id="绕过方法按「差异点」分六类："><a href="#绕过方法按「差异点」分六类：" class="headerlink" title="绕过方法按「差异点」分六类："></a>绕过方法按「差异点」分六类：</h5><ol>
+<li><p>绝对路径（不用 ..） ✓ /etc/passwd、\Windows\win.ini、//etc/passwd、\host\share\x（UNC）——子路径是绝对路径时，父目录base 直接被丢弃。</p>
+</li>
+<li><p>盘符相对路径（Windows 特有） C:..\..\x —— c:foo 是”盘符相对”，不是绝对也不是相对，很多过滤只拦 ^[A-Za-z]: 后面的第一层。</p>
+</li>
+<li><p>拼接函数把 base 丢掉（语言语义差异） 实测：</p>
+</li>
+</ol>
+<p>代码块</p>
+<p>Python  os.path.join(‘/app’, ‘/etc/passwd’)   -&gt; /etc/passwd      ← 重置，危险<br>Python  Path(‘/app’) / ‘/etc/passwd’          -&gt; /etc/passwd      ← 重置，危险<br>Node    path.join(‘/app’, ‘/etc/passwd’)      -&gt; /app/etc/passwd  ← 不重置<br>Node    path.resolve(‘/app’, ‘/etc/passwd’)   -&gt; D:\etc\passwd    ← 重置，危险<br>同一段 BASE + name 的代码，语言/函数选错就是一个洞。</p>
+<ol start="4">
+<li><p>规范化函数自身的语义坑 Clean/normpath/normalize/realpath 各不一样：normpath 不解析符号链接、realpath 解析、Go 的 Clean 在 Windows 上把 .\c: 变成 c:（CVE-2022-29804）。</p>
+</li>
+<li><p>前缀比较（startsWith） /data/storage 与 /data/storage2 前缀相同；大小写、缺末尾分隔符都能绕。</p>
+</li>
+<li><p>符号链接（不写 .. 也能出界） 预置软链（部署/容器常见）、解压时创建软链（zip/tar entry type=symlink）、软链 + 后续写入的两步穿越。</p>
+</li>
+<li><p>TOCTOU（检查完再打开） realpath 检查通过后把文件换成软链，再 open —— 可预测文件名（/tmp/xxx）场景经典。</p>
+</li>
+<li><p>服务器把 URL 当路径（映射式） nginx alias、Java ServletContext.getRealPath()、Python SimpleHTTPRequestHandler.translate_path()、PHP $_SERVER[‘PATH_TRANSLATED’]、IIS 的 URL→路径映射。</p>
+</li>
+<li><p>容器的 URL 语义被带进路径 Tomcat 剥 ; 路径参数后的 ..;/、%2F 处理策略（Apache AllowEncodedSlashes、Tomcat encodedSolidusHandling）—— 这类只在”URL path 来源 + 容器参与”时成立。</p>
+</li>
+<li><p>同一请求的多形态解析 nginx $uri（已解码+规范化）vs $request_uri（原样）、Java getRequestURI() vs getServletPath()/getPathInfo()、WAF 解一次框架再解一次。</p>
+</li>
+<li><p>归档 entry（Zip Slip 之外） Tar Slip（tar entry 里的 ..、绝对路径 entry）、symlink/hardlink entry、Unicode Path Extra Field（0x7075）与 central directory 名字不一致、嵌套压缩递归解压。</p>
+</li>
+<li><p>文件名/外部数据被当路径 上传的 filename=../../x、i18n 的 lang=../../etc/passwd（拼 messages_{lang}.properties）、模板名、插件 id（Grafana CVE-2021-43798）。</p>
+</li>
+<li><p>编码变体 ✓ %2e、%252e、overlong、全角 —— 就是你现在「过滤式」那节写的内容，本质属这一类。</p>
+</li>
+</ol>
+<p>前后矛盾的，这种也很常见</p>
+<ul>
+<li><strong>删除重组</strong>（一次性 replace 的锅）：<code>....//</code>、<code>...//</code>、<code>....//./</code>、<code>....//....//</code>、<code>.././</code>、<code>....\/</code>、<code>..\/</code></li>
+<li><strong>编码差</strong>（解码次数不同）：<code>..%2f</code>、<code>%2e%2e%2f</code>、<code>%2e%2e%5c</code>、<code>%2e%2e/</code>、<code>.%2e/</code>、<code>%252e%252e%252f</code>、<code>..%255c</code></li>
+<li><strong>畸形编码</strong>（宽松解码器）：overlong UTF-8、全角字符、IIS 的 <code>%u</code> 编码</li>
+<li><strong>路径参数</strong>（Servlet 的 <code>;</code>）：<code>..;/</code>、<code>..;/..;/</code>、<code>%3b</code></li>
+<li><strong>后缀 / 数据流</strong>（扩展名检查 ≠ 文件访问）：<code>%00</code> 截断、<code>::$DATA</code>、尾随点/空格、8.3 短名、大小写</li>
+<li><strong>拼接与规范化</strong>：<code>path.join</code>/<code>normalize</code> 把噪声折叠成真穿越；<code>startsWith</code> 前缀比较被绕过</li>
+</ul>
+<p><strong>overlong UTF-8</strong>（重点记它的范围和限制）：</p>
+<ul>
+<li><strong>原理</strong>：UTF-8 早期允许用 2~4 字节表示本可 1 字节的 ASCII（overlong），宽松解码器折叠后 <code>%c0%ae</code> 变成 <code>.</code>、<code>%c0%af</code> 变成 <code>/</code>；RFC 3629 起解码器必须拒绝</li>
+<li><strong>种类</strong>：两字节 <code>%c0%ae</code> / <code>%c0%af</code> / <code>%c1%9c</code>；三字节 <code>%e0%80%ae</code> / <code>%e0%80%af</code>；四字节 <code>%f0%80%80%ae</code></li>
+<li><strong>使用范围</strong>：只对「宽松解码 + 会做 ASCII 折叠」的旧组件有效 —— 旧 Tomcat 4.1/5.5/6.0 + <code>allowLinking=&quot;true&quot;</code> + <code>URIEncoding=&quot;UTF-8&quot;</code>（CVE-2008-2938）、老 IIS 的 <code>%c0%af</code></li>
+<li><strong>限制</strong>：现代 Java、Python 3、Node 都严格解码，直接 400；链路上没有「折叠」这一步时它只是普通字节串，等于没发</li>
+<li><strong>全角字符</strong>（同类手法）：<code>%ef%bc%8e</code> 是全角点、<code>%ef%bc%8f</code> 是全角斜杠，要等下游做 NFKC 归一化才会折成 <code>.</code> 和 <code>/</code>；没有 NFKC 步骤就不生效<br>还有就是“前后矛盾”导致绕过，这种还挺常见的<br><a target="_blank" rel="noopener" href="https://fushuling.com/index.php/2025/10/21/%e8%bf%87%e5%ba%a6%e9%98%b2%e5%be%a1%e5%b8%a6%e6%9d%a5%e7%9a%84%e8%b7%af%e5%be%84%e9%81%8d%e5%8e%86%e7%bb%95%e8%bf%87/">https://fushuling.com/index.php/2025/10/21/%e8%bf%87%e5%ba%a6%e9%98%b2%e5%be%a1%e5%b8%a6%e6%9d%a5%e7%9a%84%e8%b7%af%e5%be%84%e9%81%8d%e5%8e%86%e7%bb%95%e8%bf%87/</a> replace绕过<h5 id="一些案例"><a href="#一些案例" class="headerlink" title="一些案例"></a>一些案例</h5>os.ReadFile() 文件读取函数<br>path.join 参数是传参<br>个文件的path = strings.ReplaceAll(path, “../“, “”)。函数<br><a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15847702/5808324">https://blog.51cto.com/u_15847702/5808324</a></li>
+<li><strong>Vite（CVE-2025-30208）</strong>：dev server 的 <code>server.fs.deny</code> 能被 URL 尾部 <code>?raw??</code> / <code>?import&amp;raw??</code> 绕过，读到 allow list 外的任意文件；成因是”尾部 <code>?</code> 在多处被剥掉、查询串正则却没算到”；只有 dev server 暴露到网络（<code>--host</code>）时才受影响</li>
+<li><strong>Apache httpd 2.4.49 / 2.4.50（CVE-2021-41773 / CVE-2021-42013）</strong>：<code>/.%2e/</code> 单层编码穿越，直接读 <code>etc/passwd</code>；开了 <code>mod_cgi</code> 还能进一步 RCE</li>
+<li><strong>Go 标准库 <code>path/filepath.Clean</code>（CVE-2022-29804）</strong>：Windows 上 <code>Clean(&quot;.\c:&quot;)</code> 会返回 <code>c:</code>，把非法路径”规范化”成合法绝对路径，进而目录穿越；影响 Go &lt; 1.17.11 与 &lt; 1.18.3，仅 Windows —— <strong>规范化函数本身就有语义坑</strong></li>
+</ul>
+<p>I Doc View 在线文档 文件上传</p>
+<h3 id="上传压缩文件包功能"><a href="#上传压缩文件包功能" class="headerlink" title="上传压缩文件包功能"></a>上传压缩文件包功能</h3><h4 id="‌Zip-Slip"><a href="#‌Zip-Slip" class="headerlink" title="‌Zip Slip"></a>‌Zip Slip</h4><p>‌Zip Slip 是一种通过构造恶意压缩包实现目录穿越的漏洞‌，攻击者在压缩包文件名中植入 ../ 等路径序列，若程序解压时未校验文件路径，文件即可被写到目标目录之外，甚至覆盖系统关键文件或执行恶意代码</p>
+<ul>
+<li><strong>entry 名</strong>：zip/tar 都是用 entry 名拼解压路径，<code>../../</code> 直接落到目标目录外</li>
+<li><strong>绝对路径 entry</strong>：<code>/etc/cron.d/x</code>、<code>C:\...</code>（有的解压库直接尊重绝对路径）</li>
+<li><strong>符号链接 entry</strong>：zip 里塞个 symlink 指向 <code>/etc/passwd</code>，再解压一个普通文件到该链接</li>
+<li><strong>Windows 变体</strong>：entry 名用 <code>..\</code> 或 <code>%2e%2e%5c</code></li>
+<li><strong>修复</strong>：解压每个文件后 <code>getCanonicalPath()</code> 必须仍落在目标目录内</li>
+</ul>
+<p>漏洞写法 vs 修复（Java 为例）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ✗ entry 名直接拼</span></span><br><span class="line">File f = <span class="keyword">new</span> File(destinationDir, e.getName());</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✓ canonical 化后比较，注意带分隔符</span></span><br><span class="line">String dir  = destinationDir.getCanonicalPath();</span><br><span class="line">String dest = <span class="keyword">new</span> File(destinationDir, e.getName()).getCanonicalPath();</span><br><span class="line"><span class="keyword">if</span> (!dest.startsWith(dir + File.separator)) <span class="keyword">throw</span> <span class="keyword">new</span> ArchiverException(<span class="string">&quot;outside&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>其它语言同一个坑：JS <code>path.join(target, entry.path)</code>、Go <code>filepath.Join(dest, header.Name)</code>、.NET <code>Path.Combine(dest, entry.Key)</code></li>
+<li>两个细节：<code>startsWith(dir)</code> 要写成 <code>startsWith(dir + File.separator)</code>（否则 <code>/uploads</code> 和 <code>/uploads-evil</code> 前缀相同）；<code>getCanonicalPath()</code> 会解析符号链接，<code>normalize()</code> 不会</li>
+</ul>
+<h5 id="一些案例-1"><a href="#一些案例-1" class="headerlink" title="一些案例"></a>一些案例</h5><ul>
+<li><strong>kkFileView v4.2.0~v4.4.0-beta</strong>：上传含 <code>../../…/tmp/x</code> entry 的 zip，预览时解压 → 任意文件写入 → 覆盖可被调用的文件 → RCE</li>
+<li><strong>Zip Slip 原始披露（Snyk 2018）</strong>：<code>unzipper</code> &lt; 0.8.13、<code>adm-zip</code> &lt; 0.4.9、<code>plexus-archiver</code> &lt; 3.6.0、<code>zt-zip</code> &lt; 1.13、<code>zip4j</code>（全版本）、<code>DotNetZip</code> &lt; 1.11.0、<code>SharpCompress</code> &lt; 0.21.0、<code>mholt/archiver</code>（全版本）、<code>commons-compress</code> &lt; 1.17；产品侧 Apache Ant &lt; 1.9.12、Storm &lt; 1.0.7、Spring Integration Zip &lt; 1.0.1</li>
+<li><strong>同类但不是压缩包</strong>：Flink CVE-2020-17518（上传 jar 的文件名穿越）、Struts2 CVE-2023-50164 / CVE-2024-53677（上传路径穿越）</li>
+</ul>
+<h2 id="URL请求路径解析实现越权"><a href="#URL请求路径解析实现越权" class="headerlink" title="URL请求路径解析实现越权"></a>URL请求路径解析实现越权</h2><p>上面是文件定义的目录解析导致的文件读取上传等漏洞，我们可以把视角拉到中间件，web中间件的路由解析和安全限制也有可能出现，而且这种漏洞更加复杂。<br>上面的代码要分析的是对要处理文件路径处理不当，接下来的是对请求路径处理不当，代码量差距就不小</p>
+<p>在CVE-2021-34429中，Jetty 就有过使用%u002e进行绕过，在Jetty9.4.37版本中，为了符合RFC3986中的规范，选择性地支持可能有歧义解释的URI，默认模式允许URL编码，这也导致我们可以使用UTF-16字符来绕过路径穿越的防护</p>
+<p>CVE-2025-41242    Spring Framework MVC（spring-webmvc）</p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/file/"># file</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2026/09/23/crypto/%E4%BB%8Ectf%E7%9A%84%E8%A7%92%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AF%86%E7%A0%81%E5%AD%A6/">从ctf的角度学习密码学</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© mayylu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+
+    <script src="/live2d/Core/live2dcubismcore.js"></script>
+    <script type="module" src="/live2d/assets/index-DGcyJwDa.js"></script>
+</body>
+
+</html>

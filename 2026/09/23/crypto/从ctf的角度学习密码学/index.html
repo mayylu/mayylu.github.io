@@ -333,6 +333,87 @@
 <p>从 $ S_m $ 中取出所有与 $ m $ <strong>互素</strong>的元素，组成的集合叫作<strong>简化剩余系</strong>，记作 $ S_m^* $：<br>$S_m^* = \lbrace a \in S_m \mid \gcd(a, m) = 1\rbrace$</p>
 <p>一个元素在模 $m$ 下存在乘法逆元当且仅当它与 $m$ 互素</p>
 <p>以$⟨S_{10}^*,\odot⟩$为例，（其中 $a \odot b = (a \times b) \bmod 10$，即$\odot$是<strong>模乘</strong>，$S_{10}^* = \lbrace1, 3, 7, 9\rbrace$)<br>它同时满足 封闭性 + 结合律 + 单位元 + 逆元 + 交换律，所以其是一个阿贝尔群</p>
+<h4 id="连分数"><a href="#连分数" class="headerlink" title="连分数"></a>连分数</h4><p><strong>有理数</strong>是能写成两个整数之比的数：<br>$$<br>\frac{p}{q},\qquad p,q\in\mathbb Z,\ q\ne 0.<br>$$<br>反之就是<strong>无理数</strong><br><strong>实数</strong>就是<strong>有理数+无理数</strong></p>
+<h5 id="连分数的定义与写法"><a href="#连分数的定义与写法" class="headerlink" title="连分数的定义与写法"></a>连分数的定义与写法</h5><p>一个实数 $x$ 可以写成这样的嵌套分数：</p>
+<p>$$<br>x = a_0 + \dfrac{1}{a_1 + \dfrac{1}{a_2 + \dfrac{1}{\ddots}}}<br>$$</p>
+<p>简记成 $[a_0;a_1,a_2,\dots]$，其中 $a_0$ 是整数部分，后面的 $a_i$ 都是正整数</p>
+<ul>
+<li>有理数的展开是<strong>有限</strong>的，无理数是<strong>无限</strong>的<br>例子：有理数$\frac{355}{113}$的展开为$\frac{355}{113} = [3;7,16]$</li>
+</ul>
+<h5 id="从辗转相除到连分数"><a href="#从辗转相除到连分数" class="headerlink" title="从辗转相除到连分数"></a>从辗转相除到连分数</h5><p>求 $\gcd(355,113)$ 的过程，就是把较大的数反复除下去，每一步的<strong>商</strong>就是连分数的系数：</p>
+<p>$$<br>355 = 3\times113 + 16<br>$$</p>
+<p>$$<br>113 = 7\times16 + 1<br>$$</p>
+<p>$$<br>16 = 16\times1 + 0<br>$$</p>
+<p>商依次是 $3,7,16$，余数变成 $0$ 就停，于是 $\frac{355}{113}=[3;7,16]$</p>
+<p>所以：<strong>连分数展开就是欧几里得算法，只是顺手把商记了下来</strong></p>
+<h5 id="收敛子及其递推"><a href="#收敛子及其递推" class="headerlink" title="收敛子及其递推"></a>收敛子及其递推</h5><p>只取前 $n$ 项得到的分式，叫第 $n$ 个<strong>收敛子</strong>（convergent），记作 $\frac{p_n}{q_n}$，即</p>
+<p>$$<br>\frac{p_n}{q_n} = [a_0;a_1,\dots,a_n]<br>$$</p>
+<p>它可以用递推式从前面两个算出来，不用每次重算：</p>
+<p>$$<br>p_n = a_n p_{n-1} + p_{n-2}, \qquad q_n = a_n q_{n-1} + q_{n-2}<br>$$</p>
+<p>以 $[3;7,16]$（也就是 $\frac{355}{113}$）为例，逐个截断就得到它的三个收敛子：</p>
+<ul>
+<li>其第一个收敛子是：$[3] = \frac31 = 3$</li>
+<li>其第二个收敛子是：$[3;7] = 3+\frac{1}{7} = \frac{22}{7} \approx 3.142857$</li>
+<li>其第三个收敛子是：$[3;7,16] = 3+\frac{1}{7+\frac{1}{16}} = \frac{355}{113} \approx 3.1415929$</li>
+</ul>
+<p>数值依次是 $3$、$3.142857$、$3.1415929$，越来越接近 $x=\frac{355}{113}$ 本身 —— 这就是”收敛”的含义</p>
+<p>两个常用性质：</p>
+<ul>
+<li>收敛子<strong>交替</strong>从两侧逼近 $x$：奇数项在一边、偶数项在另一边，越来越近。例如 $x=\frac{355}{113}$ 的三个收敛子满足 $\frac31 &lt; x &lt; \frac{22}{7}$</li>
+<li>相邻两个收敛子的误差约为 $\frac{1}{q_n q_{n+1}}$，分母越大越准</li>
+</ul>
+<h5 id="最佳有理逼近"><a href="#最佳有理逼近" class="headerlink" title="最佳有理逼近"></a>最佳有理逼近</h5><p>“最佳”是指：在所有分母不超过 $q_n$ 的分数里，$\frac{p_n}{q_n}$ 是离 $x$ 最近的那个</p>
+<p>反过来还有一个很强的结论：</p>
+<p><strong>Legendre 定理</strong>：如果 $\left|x-\frac{p}{q}\right|&lt;\frac{1}{2q^2}$，那么 $\frac{p}{q}$ 一定是 $x$ 的某个收敛子</p>
+<p>也就是只要误差小于 $\frac{1}{2q^2}$，这个分数一定出现在收敛子序列里，逐个枚举就能找到</p>
+<p>用 $x=\pi=3.14159265\dots$ 走一遍就清楚了</p>
+<p><strong>先看”最佳”是什么意思</strong>：把分母上限一点点放大，看每个上限下最接近 $\pi$ 的分数</p>
+<table>
+<thead>
+<tr>
+<th>分母不超过</th>
+<th>最接近的分数</th>
+<th>误差</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>$\frac31$</td>
+<td>0.1416</td>
+</tr>
+<tr>
+<td>4</td>
+<td>$\frac{13}{4}$</td>
+<td>0.1084</td>
+</tr>
+<tr>
+<td>5</td>
+<td>$\frac{16}{5}$</td>
+<td>0.0584</td>
+</tr>
+<tr>
+<td>6</td>
+<td>$\frac{19}{6}$</td>
+<td>0.0251</td>
+</tr>
+<tr>
+<td>7</td>
+<td>$\frac{22}{7}$</td>
+<td>0.00126</td>
+</tr>
+<tr>
+<td>113</td>
+<td>$\frac{355}{113}$</td>
+<td>0.00000027</td>
+</tr>
+</tbody></table>
+<p>这些”最优分数”就是 $\pi$ 的收敛子（$\pi=[3;7,15,1,292,\dots]$，收敛子是 $\frac31,\frac{22}{7},\frac{333}{106},\frac{355}{113},\dots$）</p>
+<p><strong>再看 Legendre 定理怎么用</strong>：把误差和 $\frac{1}{2q^2}$ 比一比</p>
+<ul>
+<li>$\frac{22}{7}$：误差 $0.00126$，而 $\frac{1}{2\times7^2}=0.0102$，误差更小 → <strong>满足条件</strong> → 一定是收敛子</li>
+<li>$\frac{16}{5}$：误差 $0.0584$，而 $\frac{1}{2\times5^2}=0.02$，误差更大 → 不满足条件，它也<strong>确实不是</strong>收敛子</li>
+</ul>
+<p>还要注意这个条件是<strong>充分</strong>的，不是必要的：$\frac{333}{106}$ 明明是收敛子，误差 $8.3\times10^{-5}$ 却大于 $\frac{1}{2\times106^2}=4.5\times10^{-5}$ —— 所以”不满足不等式”不代表”不是收敛子”</p>
 <h3 id="公式定理"><a href="#公式定理" class="headerlink" title="公式定理"></a>公式定理</h3><h4 id="数论四大定理"><a href="#数论四大定理" class="headerlink" title="数论四大定理"></a>数论四大定理</h4><h5 id="欧拉定理"><a href="#欧拉定理" class="headerlink" title="欧拉定理"></a>欧拉定理</h5><p>设 $n,a∈Z$，如果有 $gcd(a,n)=1$，则有$$a^{\varphi(n) } \equiv 1 \pmod n$$（其中 $φ()$ 是欧拉函数，$φ(n)$ 表示模 $n$ 的简化剩余系中元素的个数）</p>
 <h5 id="中国剩余定理"><a href="#中国剩余定理" class="headerlink" title="中国剩余定理"></a>中国剩余定理</h5><p>设正整数$m_1,m_2…m_k$两两互素，那么对于任意的余数 $a_1,a_2,…,a_k$​,则同余方程组</p>
 <p>$$<br>\begin{align}<br>\left\lbrace<br>\begin{array}{ll}<br>x \equiv a_1 \pmod{m_1} \cr<br>x \equiv a_2 \pmod{m_2} \cr<br>\quad \vdots \cr<br>x \equiv a_k \pmod{m_k}<br>\end{array}<br>\right. \notag<br>\end{align}<br>$$<br>有整数解$x$ 。并且在模$M=m_1⋅m_2⋯m_k$下的解是唯一的，解为<br>$$<br>x \equiv (a_1M_1M_1^{-1} + a_2M_2M_2^{-1} + \cdots + a_kM_kM_k^{-1}) \mod M<br>$$<br>其中$M_i = M / m_i$，$M_i^{-1}M_i \equiv 1 \mod m_i$</p>
@@ -342,6 +423,9 @@
 <p>用较大数除以较小数，得到余数 r。<br>若 r 为 0，则较小数即为最大公约数；若 r 不为 0，则用除数除以余数继续计算。<br>重复上述过程直到余数为 0，最后的非零余数即为最大公约数</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span>(<span class="params">a,b</span>):</span></span><br><span class="line">    <span class="keyword">while</span> b != <span class="number">0</span>:</span><br><span class="line">        a,b = b, a % b</span><br><span class="line">    <span class="keyword">return</span> a</span><br></pre></td></tr></table></figure>
 <p>欧几里得拓展算法<br>$$<br> \exists x,y\in\mathbb{Z},\ \gcd(a,b)=ax+by.<br>$$<br>就是根据‌欧几里得算法推导过来的，前面通过余数来回相减得到最大公约数，所以可以得从结论，两个数的最大公约数可以用这两个数的整数倍之后相减得到</p>
+<blockquote>
+<p>顺带一提：把辗转相除每一步的商依次记下来，就得到连分数，见前面「连分数」一节</p>
+</blockquote>
 <h4 id="BSGS（Baby-Step-Gaint-Step）算法"><a href="#BSGS（Baby-Step-Gaint-Step）算法" class="headerlink" title="BSGS（Baby-Step Gaint Step）算法"></a>BSGS（Baby-Step Gaint Step）算法</h4><p>已知：$g^x \equiv h \pmod p$</p>
 <p>求解$x$</p>
 <p>假设 $x=i*n+j$<br>那么则有：</p>
@@ -360,18 +444,59 @@
 <p>已知公钥对$(e,n)$，只需要再加上一个 $d_p$ 或者 $d_q$</p>
 <p>由前面可得<br>$e \cdot d_p \equiv 1 \pmod {\varphi(p)}$<br>所以有<br>$e \cdot d_p = 1 + k \varphi(p)=1+k(p-1)$<br>然后就是遍历$k$就能找到$p$了</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = d_p*e-<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,e):</span><br><span class="line">    <span class="keyword">if</span> a%k == <span class="number">0</span>:</span><br><span class="line">        p = a//k+<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> n%p == <span class="number">0</span>:</span><br><span class="line">            q = n//p</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h4 id="小e攻击-低加密指数攻击"><a href="#小e攻击-低加密指数攻击" class="headerlink" title="小e攻击/低加密指数攻击"></a>小e攻击/低加密指数攻击</h4><p><strong>适用</strong>：<code>e</code> 很小（常见 $3$、$5$）</p>
+<p><strong>三种情形</strong>：</p>
+<ol>
+<li>$m^e &lt; n$：密文没取到模，直接对 $c$ 开 $e$ 次方</li>
+<li>$m^e &gt; n$ 但不太大：$c = m^e - kn$，从小到大枚举 $k$，对 $c+kn$ 开 $e$ 次方，能开尽就是明文</li>
+<li>广播（同一个 $m$、不同的 $n_i$、同一个小 $e$）：见「低加密指数广播攻击」</li>
+</ol>
+<p><strong>代码如下：</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> iroot</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情形 1：直接开方</span></span><br><span class="line">m, exact = iroot(c, e)</span><br><span class="line"><span class="keyword">if</span> exact:</span><br><span class="line">    <span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情形 2：爆破 k</span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">100000</span>):</span><br><span class="line">    m, exact = iroot(c + k * n, e)</span><br><span class="line">    <span class="keyword">if</span> exact:<span class="comment"># 开方成功</span></span><br><span class="line">        <span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)))</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>识别特征</strong>：<code>e</code> 是 3 这种小数；<code>c</code> 比 <code>n</code> 小很多；明文是短字符串</p>
+<h4 id="低加密指数广播攻击"><a href="#低加密指数广播攻击" class="headerlink" title="低加密指数广播攻击"></a>低加密指数广播攻击</h4><p>假设公钥$e$为3</p>
+<p>同一明文$m$ 有三组不同的公钥加密，但是公钥的e都为3<br>$c_1 \equiv m^{3} \pmod{n_1}$<br>$c_2 \equiv m^{3} \pmod{n_2}$<br>$c_3 \equiv m^{3} \pmod{n_3}$</p>
+<p>已知密文$c_1,c_2,c_3$,和对应的公钥$(e,n_1),(e,n_2),(e,n_3)$<br>并且 $m^3$ 远大于 $n_1,n_2,n_3$：每个 $c_i = m^e - k_i n_i$ 里的 $k_i$ 都是天文数字，枚举不出来，<strong>这种情况就用不了小 e 攻击</strong></p>
+<p>根据中国剩余定理可得：<br>$$<br>N = n_1 n_2 n_3, \quad N_i = \frac{N}{n_i} \quad (i=1,2,3)<br>$$</p>
+<p>$$ N_i \cdot N_i^{-1} \equiv 1\pmod{n_i}  \quad  (i=1,2,3)$$</p>
+<p>$$<br>x \equiv m^{3} \mod N \equiv (c_1N_1N_1^{-1} + c_2N_2N_2^{-1}  + c_3N_3N_3^{-1}) \mod N<br>$$<br>对 $x$ 求整数 3 次根，得到明文 $m$</p>
+<p><strong>代码如下：</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> iroot</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line"></span><br><span class="line">N = n1 * n2 * n3</span><br><span class="line">x = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> c, n <span class="keyword">in</span> <span class="built_in">zip</span>((c1, c2, c3), (n1, n2, n3)):</span><br><span class="line">    Ni = N // n</span><br><span class="line">    x = (x + c * Ni * <span class="built_in">pow</span>(Ni, -<span class="number">1</span>, n)) % N          <span class="comment"># CRT 合并</span></span><br><span class="line"></span><br><span class="line">m, exact = iroot(x, <span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)) <span class="keyword">if</span> exact <span class="keyword">else</span> <span class="string">&#x27;m^3 &gt;= N：组数不够&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
 <h4 id="共模攻击"><a href="#共模攻击" class="headerlink" title="共模攻击"></a>共模攻击</h4><p>同一明文$m$用的俩不同的公钥加密，但是公钥的$n$一样如<br>$c_1 \equiv m^{e_1} \pmod n$<br>$c_2 \equiv m^{e_2} \pmod n$</p>
 <p>已知密文$c_1,c_2$，和对应的两条公钥$(e_1,n)和(e_2,n)$，并且$gcd(e_1,e_2)=1$。我们就能通过共模攻击计算出密文$c_1,c_2$对应的明文$m$</p>
 <p>通过欧几里得拓展算法可以得出结论</p>
 <p>$$<br> \exists u,v\in\mathbb{Z},\ \gcd(e_1,e_2)=e_1u+e_2v<br>$$<br>我们计算出$u,v$,就可以计算出明文<br>$c_1^u \cdot c_2^v \equiv m^{u\cdot e_1+v\cdot e_2 } \equiv m ^1 \pmod n$</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">u = inverse(e1-e2,e2) <span class="comment"># u⋅(e_1−e_2)≡1 (mode e_2)</span></span><br><span class="line">v = (<span class="number">1</span>-e1*u)//e2</span><br><span class="line">m = <span class="built_in">pow</span>(c1,u,n)*<span class="built_in">pow</span>(c2,v,n)%n</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(m))</span><br></pre></td></tr></table></figure>
-<h4 id="低加密指数广播攻击"><a href="#低加密指数广播攻击" class="headerlink" title="低加密指数广播攻击"></a>低加密指数广播攻击</h4><p>假设公钥$e$为3</p>
-<p>同一明文有三组不同的公钥加密，但是公钥的e都为3<br>$c_1 \equiv m^{3} \pmod{n_1}$<br>$c_2 \equiv m^{3} \pmod{n_2}$<br>$c_3 \equiv m^{3} \pmod{n_3}$</p>
-<p>已知密文$c_1,c_2,c_3$,和对应的公钥$(e,n_1),(e,n_2),(e,n_3)$</p>
-<p>根据中国剩余定理可得：<br>$$<br>N = n_1 n_2 n_3, \quad N_i = \frac{N}{n_i} \quad (i=1,2,3)<br>$$</p>
-<p>$$ N_i \cdot N_i^{-1} \equiv 1\pmod{n_i}  \quad  (i=1,2,3)$$</p>
-<p>$$<br>x \equiv m^{3} \mod N \equiv (c_1N_1N_1^{-1} + c_2N_2N_2^{-1}  + c_3N_3N_3^{-1}) \mod N<br>$$</p>
+
+<h4 id="模不互素"><a href="#模不互素" class="headerlink" title="模不互素"></a>模不互素</h4><p>已知两组公钥 $(e_1,n_1)$、$(e_2,n_2)$ 和对应的密文 $c_1,c_2$和明文$m_1,m_2$，其中 $n_1 \ne n_2$，但两个 $n$ 是同一套程序生成的（或者复用了同一个素数）</p>
+<p>由于 $n_1,n_2$ 共享一个素因子，可以用最大公约数把它挖出来：</p>
+<p>$$<br>p=\gcd(n_1,n_2)<br>$$</p>
+<p>只要 $p \ne 1$，就有</p>
+<p>$$<br>n_1=p\cdot q_1 , \qquad n_2=p\cdot q_2<br>$$</p>
+<p>于是两个模数都被分解，各自的私钥也都能算出来：</p>
+<p>$$<br>\varphi(n_1)=(p-1)(q_1-1)<br>$$</p>
+<p>$$<br>d_1 \equiv e_1^{-1} \pmod{\varphi(n_1)}<br>$$</p>
+<p>因此两组各自解密：</p>
+<p>$$<br>m_1=c_1^{d_1} \bmod n_1 , \qquad m_2=c_2^{d_2} \bmod n_2<br>$$</p>
+<p><strong>代码如下：</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> inverse, long_to_bytes</span><br><span class="line"></span><br><span class="line">p = gcd(n1, n2)</span><br><span class="line"><span class="keyword">assert</span> p != <span class="number">1</span>                    <span class="comment"># 等于 1 说明不共享素因子，这题用不了</span></span><br><span class="line"></span><br><span class="line">q1 = n1 // p</span><br><span class="line">d1 = inverse(e1, (p - <span class="number">1</span>) * (q1 - <span class="number">1</span>))</span><br><span class="line">m = <span class="built_in">pow</span>(c1, d1, n1)</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(m))</span><br></pre></td></tr></table></figure>
+
+<p>如果给的是同一个 $n$、两个不同的 $e$，那是「共模攻击」；如果 $e_1,e_2$ 不互素（$\gcd(e_1,e_2)=\delta&gt;1$），扩展欧几里得只能求出 $m^{\delta}$，再开 $\delta$ 次方即可</p>
+<h4 id="p-amp-q-不当分解-N"><a href="#p-amp-q-不当分解-N" class="headerlink" title="p &amp; q 不当分解 N"></a>p &amp; q 不当分解 N</h4><p>这类题型的要点是要能猜测到 $p+q$的大概值</p>
+<p>设$a=\frac{p+q}{2}$<br>$b=\frac{q-p}{2}$</p>
+<p>于是<br>$$<br>n=pq=(a-b)(a+b)=a^2-b^2<br>$$</p>
+<p>$$<br>a^2-n=b^2<br>$$</p>
+<p>也就是说，我们只需要找到一个$a$，使得$a^2-n$是一个完全平方数，就可以得到$b$。</p>
+<ol>
+<li>小素数间隔攻击 (Fermat 分解)</li>
+</ol>
+<p>RSA公钥$n$、密文$c$，并且已知：<br>$\qquad p\approx q$ ,即$|p-q|$ 较小</p>
+<p>那么就知道a应该在$\lceil\sqrt n\rceil$附近</p>
+<p>从$a=\lceil\sqrt n\rceil$ 开始枚举$a$。<br><strong>代码如下：</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = isqrt(n) + <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">not</span> is_square(a*a - n):</span><br><span class="line">    a += <span class="number">1</span></span><br><span class="line">b = isqrt(a*a - n)</span><br><span class="line">p, q = a - b, a + b</span><br></pre></td></tr></table></figure>
+
 <h4 id="p-q-泄露攻击"><a href="#p-q-泄露攻击" class="headerlink" title="p+q 泄露攻击"></a>p+q 泄露攻击</h4><p>已知$p,q$都是512 bit素数，RSA公钥$n$、密文$c$和题目泄露的</p>
 <p>$$<br>hint=(p+q)^2\bmod n<br>$$</p>
 <p>要求出RSA私钥$d$，从而解密得到明文$m$。</p>
@@ -386,18 +511,23 @@
 <p>因此已知$p+q$和$|p-q|$，可以通过两数的和与差求出$p,q$</p>
 <p>$$<br>p=\frac{(p+q)+|p-q|}{2}<br>$$</p>
 <p>$$<br>q=\frac{(p+q)-|p-q|}{2}<br>$$</p>
-<h4 id="p-amp-q-不当分解-N"><a href="#p-amp-q-不当分解-N" class="headerlink" title="p &amp; q 不当分解 N"></a>p &amp; q 不当分解 N</h4><p>这类题型的要点是要能猜测到 $p+q$的大概值</p>
-<p>设$a=\frac{p+q}{2}$<br>$b=\frac{q-p}{2}$</p>
-<p>于是<br>$$<br>n=pq=(a-b)(a+b)=a^2-b^2<br>$$</p>
-<p>$$<br>a^2-n=b^2<br>$$</p>
-<p>也就是说，我们只需要找到一个$a$，使得$a^2-n$是一个完全平方数，就可以得到$b$。</p>
+<h4 id="wiener-维纳-攻击-低解密指数攻击"><a href="#wiener-维纳-攻击-低解密指数攻击" class="headerlink" title="wiener(维纳)攻击/低解密指数攻击"></a>wiener(维纳)攻击/低解密指数攻击</h4><p><strong>什么时候用</strong>：<code>e</code> 特别大（接近 <code>n</code>）、<code>d</code> 特别小，满足 $d&lt;\frac{1}{3}n^{\frac{1}{4}}$</p>
+<p><strong>一句话思路</strong>：由 $ed-k\varphi(n)=1$ 可知 $\frac{e}{n}$ 约等于 $\frac{k}{d}$，而 $\frac{k}{d}$ 一定出现在 $\frac{e}{n}$ 的连分数展开里 —— 枚举收敛子就能反推出 $d$</p>
+<p><strong>推导三步</strong></p>
 <ol>
-<li>小素数间隔攻击 (Fermat 分解)</li>
+<li>由 $ed-1=k\varphi(n)$，两边除以 $d\varphi(n)$：</li>
 </ol>
-<p>RSA公钥$n$、密文$c$，并且已知：<br>$\qquad p\approx q$ ,即$|p-q|$ 较小</p>
-<p>那么就知道a应该在$\lceil\sqrt n\rceil$附近</p>
-<p>从$a=\lceil\sqrt n\rceil$ 开始枚举$a$。<br><strong>代码如下：</strong></p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = isqrt(n) + <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">not</span> is_square(a*a - n):</span><br><span class="line">    a += <span class="number">1</span></span><br><span class="line">b = isqrt(a*a - n)</span><br><span class="line">p, q = a - b, a + b</span><br></pre></td></tr></table></figure>
+<p>$$<br>\frac{e}{\varphi(n)}-\frac{k}{d}=\frac{1}{d\varphi(n)}<br>$$</p>
+<p>即 $\frac{e}{\varphi(n)}$ 与 $\frac{k}{d}$ 差一个极小的量</p>
+<ol start="2">
+<li>又 $\varphi(n)=n-p-q+1\approx n$，把分母换成 $n$ 只会再引入一个很小的误差；在 $d&lt;\frac{1}{3}n^{\frac{1}{4}}$ 的条件下，两者加起来可以压到</li>
+</ol>
+<p>$$<br>\left|\frac{e}{n}-\frac{k}{d}\right|&lt;\frac{1}{2d^2}<br>$$</p>
+<ol start="3">
+<li>由 Legendre 定理（误差小于 $\frac{1}{2d^2}$ 的有理数必是 $x$ 的收敛子），$\frac{k}{d}$ 必是 $\frac{e}{n}$ 的某个<strong>收敛子</strong></li>
+</ol>
+<p>后面就是把 $\frac{e}{n}$ 的收敛子 $\frac{k}{d}$ 一个个拿来试：反算 $\varphi=\frac{ed-1}{k}$，能分解 $n$ 时，这个 $d$ 就是解密指数<br><strong>代码如下：</strong></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wiener</span>(<span class="params">e, n</span>):</span></span><br><span class="line">    a, b = e, n                       <span class="comment"># 一边做 e/n 的连分数展开</span></span><br><span class="line">    k, d = <span class="number">1</span>, <span class="number">0</span>                       <span class="comment"># k_&#123;-1&#125;, d_&#123;-1&#125;</span></span><br><span class="line">    k2, d2 = <span class="number">0</span>, <span class="number">1</span>                     <span class="comment"># k_&#123;-2&#125;, d_&#123;-2&#125;</span></span><br><span class="line">    <span class="keyword">while</span> b:</span><br><span class="line">        c = a // b</span><br><span class="line">        a, b = b, a % b</span><br><span class="line">        k2, k, d2, d = k, c * k + k2, d, c * d + d2    <span class="comment"># 第 i 个收敛子 k/d</span></span><br><span class="line">        <span class="keyword">if</span> k <span class="keyword">and</span> (e * d - <span class="number">1</span>) % k == <span class="number">0</span>:</span><br><span class="line">            phi = (e * d - <span class="number">1</span>) // k    <span class="comment"># 反算 φ(n)</span></span><br><span class="line">            s = n - phi + <span class="number">1</span>           <span class="comment"># p + q</span></span><br><span class="line">            t = s * s - <span class="number">4</span> * n</span><br><span class="line">            r = gmpy2.isqrt(t) <span class="keyword">if</span> t &gt;= <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">if</span> r * r == t:            <span class="comment"># 判别式开得尽 → 分解成功</span></span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">int</span>(d), <span class="built_in">int</span>((s + r) // <span class="number">2</span>), <span class="built_in">int</span>((s - r) // <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">e = <span class="number">14058695417015334071588010346586749790539913287499707802938898719199384604316115908373997739604466972535533733290829894940306314501336291780396644520926473</span></span><br><span class="line">n = <span class="number">33608051123287760315508423639768587307044110783252538766412788814888567164438282747809126528707329215122915093543085008547092423658991866313471837522758159</span></span><br><span class="line"><span class="built_in">print</span>(wiener(e, n))                   <span class="comment"># (d, p, q)</span></span><br></pre></td></tr></table></figure>
 
 
 <h3 id="离散对数问题"><a href="#离散对数问题" class="headerlink" title="离散对数问题"></a>离散对数问题</h3><h4 id="Diffie-Hellman-密钥交换算法"><a href="#Diffie-Hellman-密钥交换算法" class="headerlink" title="Diffie-Hellman 密钥交换算法"></a>Diffie-Hellman 密钥交换算法</h4><p>现在假设 Alice 想和 Bob 约定一个整数作为密钥，但 他们通信的信道是完全被监听的。</p>
@@ -491,7 +621,58 @@
 <li><p>重复步骤 3 共 16 轮，最终生成 16 个子密钥 $K_1, K_2, \dots, K_{16}$。</p>
 </li>
 </ol>
-<h4 id="分组密码的工作模式"><a href="#分组密码的工作模式" class="headerlink" title="分组密码的工作模式"></a>分组密码的工作模式</h4><h4 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h4><p>AES 明显用到了线性代数，包括 GF(2⁸) 上的矩阵乘法、仿射变换和有限域运算；DES 则主要是 GF(2) 上的置换和异或，线性代数体现在底层，但没有显式的矩阵乘法或有限域乘法</p>
+<h4 id="分组密码的工作模式"><a href="#分组密码的工作模式" class="headerlink" title="分组密码的工作模式"></a>分组密码的工作模式</h4><p>分组密码（DES / AES / SM4）一次只能处理一个固定长度的块（64 或 128 位），而实际数据往往比块长、或者不是块长的整数倍。<strong>工作模式</strong>就是规定”怎么切块、怎么把块串起来、IV 放在哪”的那套规则</p>
+<h5 id="五种经典模式"><a href="#五种经典模式" class="headerlink" title="五种经典模式"></a>五种经典模式</h5><p>设块加密为 $E_K$、解密为 $D_K$，块长 16 字节，$IV$ 为初始向量：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>加密</th>
+<th>要 padding 吗</th>
+<th>并行</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ECB</td>
+<td>$C_i = E_K(P_i)$</td>
+<td>要</td>
+<td>加密可并行</td>
+<td>相同明文块 → 相同密文块（最危险）</td>
+</tr>
+<tr>
+<td>CBC</td>
+<td>$C_i = E_K(P_i \oplus C_{i-1})$，$C_0 = IV$</td>
+<td>要</td>
+<td>解密可并行</td>
+<td>每个块依赖前一个块+IV</td>
+</tr>
+<tr>
+<td>CFB</td>
+<td>$C_i = P_i \oplus E_K(C_{i-1})$</td>
+<td>不要</td>
+<td>解密可并行</td>
+<td>近似流密码</td>
+</tr>
+<tr>
+<td>CTR</td>
+<td>$C_i = P_i \oplus E_K(IV + i)$</td>
+<td>不要</td>
+<td>可并行</td>
+<td>使用计数器生成密钥流</td>
+</tr>
+</tbody></table>
+<h5 id="PKCS-7-填充"><a href="#PKCS-7-填充" class="headerlink" title="PKCS#7 填充"></a>PKCS#7 填充</h5><p>块长 16 时，缺 $n$ 个字节就补 $n$ 个字节，每个字节的值都是 <code>0x0n</code>；如果明文刚好整块，就补一整块 <code>0x10</code>（16 个 <code>0x10</code>）</p>
+<p>解密后校验：取最后一个字节 $n$，检查末尾 $n$ 个字节是否都等于 $n$ —— <strong>这一步的”报错 / 不报错”差异就是 padding oracle</strong></p>
+<h5 id="快速识别"><a href="#快速识别" class="headerlink" title="快速识别"></a>快速识别</h5><ul>
+<li>相同明文块出现重复密文块 → <strong>ECB</strong></li>
+<li>改一个明文字节，只有对应块变化 → <strong>CTR / OFB / CFB</strong>（流式）</li>
+<li>改一个明文字节，该块及其后全部变化 → <strong>CBC</strong></li>
+<li>密文长度不是块长整数倍 → <strong>CFB / OFB / CTR</strong>（不需要 padding）</li>
+<li>密文尾部有 <code>0x01</code>…<code>0x10</code> 的规律 → <strong>ECB / CBC</strong>（有 padding）</li>
+<li>报错分”填充错误 / 解密失败” → 先想 <strong>padding oracle</strong></li>
+</ul>
+<h4 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h4><p>AES 明显用到了线性代数，包括 GF(2⁸) 上的矩阵乘法、仿射变换和有限域运算；DES 则主要是 GF(2) 上的置换和异或，线性代数体现在底层，但没有显式的矩阵乘法或有限域乘法</p>
 <h4 id="SM4"><a href="#SM4" class="headerlink" title="SM4"></a>SM4</h4><h3 id="流密码"><a href="#流密码" class="headerlink" title="流密码"></a>流密码</h3><h3 id="格密码"><a href="#格密码" class="headerlink" title="格密码"></a>格密码</h3>
         </div>
 
@@ -514,6 +695,8 @@
             </div>
         </section>
         <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2026/10/27/file/%E8%B7%AF%E5%BE%84%E8%A7%A3%E6%9E%90%E9%97%AE%E9%A2%98/">路径解析问题</a>
             
             
             <a class="next" rel="next" href="/2026/08/03/java/JDBC%20%E5%88%A9%E7%94%A8/">JDBC 利用</a>

