@@ -656,7 +656,8 @@ U undefined（取消定义，将字符串或者函数转变为原始数据）
 X 交叉引用（反汇编页面选中函数查找引用，汇编文本页面选中变量查找引用）【常用】
 P 选中位置识别为函数起点【常用】
 </code></pre>
-<h4 id="Ctrl、Alt系列"><a href="#Ctrl、Alt系列" class="headerlink" title="Ctrl、Alt系列"></a>Ctrl、Alt系列</h4><pre><code>Ctrl+F 搜索【常用】
+<h4 id="Ctrl、Alt系列"><a href="#Ctrl、Alt系列" class="headerlink" title="Ctrl、Alt系列"></a>Ctrl、Alt系列</h4><pre><code>Ctrl+Q 打开问题列表
+Ctrl+F 搜索【常用】
 Ctrl+X 交叉引用（汇编页面）【常用】
 Alt+T 查找Text
 Ctrl+T 查找下一个text
@@ -668,11 +669,13 @@ Ctrl+S 跳转到任意段
 Ctrl+Shift+Z 恢复
 Alt+K 修改堆栈值
 </code></pre>
-<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><pre><code>右键 → Hide casts 隐藏的编译器在反编译页面的自动插入【常用】
+<h4 id="其他补充"><a href="#其他补充" class="headerlink" title="其他补充"></a>其他补充</h4><pre><code>右键 → Hide casts 隐藏的编译器在反编译页面的自动插入【常用】
 tab  伪代码页面和汇编页面的切换【常用】
 空格 文本模式和普通汇编页面的切换【常用】    
 </code></pre>
 <p>交叉引用 type 分为 P和R和W,其中<br>    P 关注“谁保存了这个地址”<br>    R 关注“谁读取了这个数据”<br>    W 关注“谁修改了这个数据”<br>所以P为函数引用，R为变量读取，W为变量修改</p>
+<p>问题列表 type分为</p>
+<p>NONAME        跳转/调用目标没有名字，或 IDA 无法确认目标                  需要看，但不一定是错误<br>BOUNDS        操作数或跳转目标超出当前段/范围，可能是 IDA 误判           需要看<br>BADSTACK    栈指针不平衡，通常是函数边界识别错、调用约定错或反汇编错    重点看<br>DECISION    IDA 让你决定这里是代码还是数据，或确认对齐/填充/数据       大多数可忽略</p>
 <h3 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h3><p>打开修改页面， Edit → Patch program → Assemble<br>修改对应的汇编代码后，按回车<br>Edit → Patch program → Apply patches to,导出修改后的程序</p>
 <p>注意:IDA 的 Patch program/Assemble 本身只能替换（覆盖）现有汇编，不能直接插入新汇编；要“增加”代码需借助代码洞穴、扩展段等绕道方式。</p>
 <h3 id="linux-环境下的远程动态调试"><a href="#linux-环境下的远程动态调试" class="headerlink" title="linux 环境下的远程动态调试"></a>linux 环境下的远程动态调试</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x linux_server</span><br><span class="line">chmod +x 待调试文件</span><br></pre></td></tr></table></figure>
@@ -683,20 +686,254 @@ tab  伪代码页面和汇编页面的切换【常用】
 <p>解</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line">N = <span class="number">34</span></span><br><span class="line">check = [<span class="number">0xB1B0</span>,<span class="number">0x5678</span>,<span class="number">0x7FF2</span>,<span class="number">0xA332</span>,<span class="number">0xA0E8</span>,<span class="number">0x364C</span>,<span class="number">0x2BD4</span>,<span class="number">0xC8FE</span>,<span class="number">0x4A7C</span>,<span class="number">0x18</span>,<span class="number">0x2BE4</span>,<span class="number">0x4144</span>,<span class="number">0x3BA6</span>,<span class="number">0xBE8C</span>,<span class="number">0x8F7E</span>,<span class="number">0x35F8</span>,<span class="number">0x61AA</span>,<span class="number">0x2B4A</span>,<span class="number">0x6828</span>,<span class="number">0xB39E</span>,<span class="number">0xB542</span>,<span class="number">0x33EC</span>,<span class="number">0xC7D8</span>,<span class="number">0x448C</span>,<span class="number">0x9310</span>,<span class="number">0x8808</span>,<span class="number">0xADD4</span>,<span class="number">0x3CC2</span>,<span class="number">0x796</span>,<span class="number">0xC940</span>,<span class="number">0x4E32</span>,<span class="number">0x4E2E</span>,<span class="number">0x924A</span>,<span class="number">0x5B5C</span>,<span class="number">0x405740</span>]</span><br><span class="line">s = [BitVec(<span class="string">f&#x27;s_<span class="subst">&#123;i&#125;</span>&#x27;</span>, <span class="number">32</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)]<span class="comment"># 变量,BitVec 为z3 中用于创建**定长二进制变量（Bit-Vector）**的函数，，是在模 $2^&#123;32&#125;$ 意义下寻找解。可以进行按位运算（^, &amp;, `</span></span><br><span class="line"><span class="comment">#创建一个含 34 个变量的列表 s，名字分别是 &#x27;s0&#x27; ... &#x27;s33&#x27;；</span></span><br><span class="line"><span class="comment">#每个变量是一个 32 位比特向量（BitVec）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">    solver.add(And(s[i] &gt;= <span class="number">32</span>, s[i] &lt;= <span class="number">127</span>)) <span class="comment">#添加约束条件,这里的意思是可视字符</span></span><br><span class="line">b = [<span class="number">0</span>] * N</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">    b[i] = (s[i] + i) * <span class="number">0xbabe</span></span><br><span class="line">    <span class="keyword">if</span> (i &gt; <span class="number">0</span>):</span><br><span class="line">        b[i] ^= b[i - <span class="number">1</span>] ^ <span class="number">0x114514</span></span><br><span class="line">    b[i] %= <span class="number">0xcafe</span></span><br><span class="line">    solver.add(b[i] == check[i]) <span class="comment">#添加约束条件</span></span><br><span class="line"><span class="keyword">if</span> solver.check() != sat:  <span class="comment">#检测是否有解（有解sat、无解unsat）</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;无解&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># 获取第一个解</span></span><br><span class="line">    <span class="keyword">while</span> (solver.check() == sat):</span><br><span class="line">        model1 = solver.model() <span class="comment">#取出结果</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;找到一个解：&quot;</span>)</span><br><span class="line">        sol1 = [model1[s[i]].as_long() <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)] <span class="comment"># 遍历获取s的解值，传给sol1</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join([<span class="built_in">chr</span>(c) <span class="keyword">for</span> c <span class="keyword">in</span> sol1]))</span><br><span class="line">        solver.add(Or([s[i] != model1[s[i]] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)])) <span class="comment"># 添加新的约束条件，排除当前解</span></span><br></pre></td></tr></table></figure>
 
+
+
+
 <h2 id="反逆向工程"><a href="#反逆向工程" class="headerlink" title="反逆向工程"></a>反逆向工程</h2><p>面对一个保护样本时，首先要解决的是<strong>反调试</strong>让程序可以被动态调试，其次要解决的是<strong>反编译</strong>让代码可以正常的还原成伪代码，而最后要解决的<strong>混淆</strong>则是为了减少代码审计的难度</p>
 <p>解决上述问题，才能尽可能的还原源代码</p>
 <h3 id="反调试"><a href="#反调试" class="headerlink" title="反调试"></a>反调试</h3><p>指通过检测、干扰或破坏调试器及其调试行为，使程序无法被附加、无法正常单步/断点，或使调试结果不可信的技术<br>具体看<code>https://anti-debug.checkpoint.com/</code></p>
+<blockquote>
+<p>读表提示：<code>NtQueryInformationProcess</code> / <code>NtQuerySystemInformation</code> 的返回值是 <code>NTSTATUS</code>，是否被调试要看输出缓冲区；<code>CheckRemoteDebuggerPresent</code> 的返回值只表示调用是否成功，第二个参数才是调试状态。不同 Windows 版本、调试器和 ScyllaHide 版本下，具体值可能略有差异。  </p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">类别</th>
+<th align="left">检测点 / API</th>
+<th align="left">原理 / 关键位置</th>
+<th align="left">未调试时</th>
+<th align="left">正在调试时</th>
+<th align="left">备注 / ScyllaHide</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">PEB</td>
+<td align="left"><code>PEB.BeingDebugged</code></td>
+<td align="left">PEB+0x2；x86 用 <code>fs:[0x30]</code>、x64 用 <code>gs:[0x60]</code> 定位 PEB</td>
+<td align="left"><code>0</code></td>
+<td align="left"><code>1</code></td>
+<td align="left"><code>IsDebuggerPresent()</code> 的数据源；ScyllaHide <code>Hide from PEB → BeingDebugged</code></td>
+</tr>
+<tr>
+<td align="left">Win32 API</td>
+<td align="left"><code>IsDebuggerPresent()</code></td>
+<td align="left">读取当前进程 <code>PEB.BeingDebugged</code></td>
+<td align="left">返回 <code>0</code></td>
+<td align="left">返回非零，通常 <code>1</code></td>
+<td align="left">最基础、最常见的检测；ScyllaHide <code>IsDebuggerPresent</code> / <code>BeingDebugged</code></td>
+</tr>
+<tr>
+<td align="left">Win32 API</td>
+<td align="left"><code>CheckRemoteDebuggerPresent()</code></td>
+<td align="left">内部走 <code>NtQueryInformationProcess(ProcessDebugPort)</code>；函数返回值表示“调用是否成功”，第二参数才是调试状态</td>
+<td align="left">返回非零；<code>pbDebuggerPresent = FALSE(0)</code></td>
+<td align="left">返回非零；<code>pbDebuggerPresent = TRUE(非0)</code></td>
+<td align="left">不要用函数返回值判断调试；ScyllaHide <code>NtQueryInformationProcess</code> / <code>CheckRemoteDebuggerPresent</code></td>
+</tr>
+<tr>
+<td align="left">Native API</td>
+<td align="left"><code>NtQueryInformationProcess(ProcessDebugPort = 0x7)</code></td>
+<td align="left">查询进程调试端口；<code>NTSTATUS</code> 与输出 <code>DebugPort</code> 分开看</td>
+<td align="left"><code>NTSTATUS = 0</code>；<code>DebugPort = 0</code></td>
+<td align="left"><code>NTSTATUS = 0</code>；<code>DebugPort = 0xFFFFFFFF</code></td>
+<td align="left">输出非零通常表示被调试；ScyllaHide <code>NtQueryInformationProcess</code></td>
+</tr>
+<tr>
+<td align="left">Native API</td>
+<td align="left"><code>NtQueryInformationProcess(ProcessDebugFlags = 0x1F)</code></td>
+<td align="left">查询 <code>EPROCESS-&gt;NoDebugInherit</code> 的<strong>相反数</strong></td>
+<td align="left"><code>NTSTATUS = 0</code>；<code>Flags = 1</code>（或非零）</td>
+<td align="left"><code>NTSTATUS = 0</code>；<code>Flags = 0</code></td>
+<td align="left">逻辑与 <code>ProcessDebugPort</code> 相反：<code>0</code> 表示被调试；ScyllaHide <code>NtQueryInformationProcess</code></td>
+</tr>
+<tr>
+<td align="left">Native API</td>
+<td align="left"><code>NtQueryInformationProcess(ProcessDebugObjectHandle = 0x1E)</code></td>
+<td align="left">查询调试对象句柄</td>
+<td align="left">通常 <code>STATUS_PORT_NOT_SET (0xC0000353)</code>；<code>Handle = NULL</code>（部分实现返回 0 + NULL）</td>
+<td align="left"><code>NTSTATUS = 0</code>；<code>Handle != NULL</code></td>
+<td align="left">句柄非空表示被调试；ScyllaHide <code>NtQueryInformationProcess</code></td>
+</tr>
+<tr>
+<td align="left">Native API</td>
+<td align="left"><code>NtQuerySystemInformation(SystemKernelDebuggerInformation = 0x23)</code></td>
+<td align="left">查询 <code>SYSTEM_KERNEL_DEBUGGER_INFORMATION</code>，含 <code>KdDebuggerEnabled</code>、<code>KdDebuggerNotPresent</code></td>
+<td align="left"><code>KdDebuggerEnabled = 0</code>；<code>KdDebuggerNotPresent = 1</code></td>
+<td align="left"><code>KdDebuggerEnabled = 1</code>；<code>KdDebuggerNotPresent = 0</code></td>
+<td align="left">检测内核调试器；ScyllaHide <code>NtQuerySystemInformation</code></td>
+</tr>
+<tr>
+<td align="left">Native API</td>
+<td align="left"><code>NtQueryObject(ObjectTypesInformation)</code></td>
+<td align="left">枚举对象类型（系统范围），查找 <code>DebugObject</code> 类型及其数量</td>
+<td align="left">无 <code>DebugObject</code> 或数量为 0</td>
+<td align="left"><code>DebugObject</code> 数量 &gt; 0</td>
+<td align="left">也可用 <code>ObjectTypeInformation</code> 查句柄类型；ScyllaHide <code>NtQueryObject</code></td>
+</tr>
+<tr>
+<td align="left">PEB</td>
+<td align="left"><code>NtGlobalFlag</code></td>
+<td align="left">PEB+0xBC（x64）/ PEB+0x68（x86）</td>
+<td align="left"><code>0</code></td>
+<td align="left">常见 <code>0x70</code>（<code>FLG_HEAP_ENABLE_TAIL_CHECK</code>、<code>FLG_HEAP_ENABLE_FREE_CHECK</code>、<code>FLG_HEAP_VALIDATE_PARAMETERS</code>）</td>
+<td align="left">ScyllaHide <code>NtGlobalFlag</code></td>
+</tr>
+<tr>
+<td align="left">PEB / Heap</td>
+<td align="left"><code>PEB.ProcessHeap-&gt;Flags</code></td>
+<td align="left">x64 <code>ProcessHeap+0x70</code>；x86 <code>ProcessHeap+0x40</code>（Vista+）</td>
+<td align="left">通常 <code>0x2</code>（≤2）</td>
+<td align="left">常见 <code>0x50000062</code>（&gt;2）</td>
+<td align="left">ScyllaHide <code>HeapFlags</code></td>
+</tr>
+<tr>
+<td align="left">PEB / Heap</td>
+<td align="left"><code>PEB.ProcessHeap-&gt;ForceFlags</code></td>
+<td align="left">x64 <code>ProcessHeap+0x74</code>；x86 <code>ProcessHeap+0x44</code>（Vista+）</td>
+<td align="left"><code>0</code></td>
+<td align="left">常见 <code>0x40000060</code>（非 0）</td>
+<td align="left">与 <code>Flags</code> 配合判断调试堆；ScyllaHide <code>HeapFlags</code></td>
+</tr>
+<tr>
+<td align="left">PEB</td>
+<td align="left"><code>PEB.StartupInfo</code></td>
+<td align="left">调试器启动进程时可能留下 <code>STARTUPINFO</code> 痕迹</td>
+<td align="left">正常</td>
+<td align="left">可能出现调试器相关字段/标志</td>
+<td align="left">辅助项，单独检测较少；ScyllaHide <code>StartupInfo</code></td>
+</tr>
+<tr>
+<td align="left">PEB</td>
+<td align="left"><code>PEB.OSBuildNumber</code></td>
+<td align="left">PEB 中的系统 build 号；调试器/兼容层可能改变</td>
+<td align="left">正常系统 build</td>
+<td align="left">可能不同或被伪造</td>
+<td align="left">辅助隐藏项，不是典型检测；ScyllaHide <code>OSBuildNumber</code></td>
+</tr>
+<tr>
+<td align="left">线程</td>
+<td align="left"><code>NtSetInformationThread(ThreadHideFromDebugger = 0x11)</code></td>
+<td align="left">将线程从调试器隐藏</td>
+<td align="left">调用成功，但对无调试器无实际意义</td>
+<td align="left">调用成功，调试器收不到该线程事件</td>
+<td align="left">反调试动作，不是查询；ScyllaHide <code>NtSetInformationThread</code></td>
+</tr>
+<tr>
+<td align="left">线程</td>
+<td align="left"><code>NtCreateThreadEx(THREAD_CREATE_FLAGS_HIDE_FROM_DEBUGGER = 0x4)</code></td>
+<td align="left">创建对调试器隐藏的线程</td>
+<td align="left">创建成功</td>
+<td align="left">创建成功，调试器看不到该线程</td>
+<td align="left">ScyllaHide <code>NtCreateThreadEx</code></td>
+</tr>
+<tr>
+<td align="left">硬件断点</td>
+<td align="left"><code>GetThreadContext</code> / <code>NtGetContextThread</code> 的 <code>DR0</code>~`DR3`</td>
+<td align="left">调试寄存器保存硬件断点地址</td>
+<td align="left">全为 <code>0</code></td>
+<td align="left">至少一个非零</td>
+<td align="left">ScyllaHide <code>DRx Protection</code></td>
+</tr>
+<tr>
+<td align="left">硬件断点</td>
+<td align="left"><code>DR6</code> / <code>DR7</code></td>
+<td align="left"><code>DR6</code> 记录断点触发状态；<code>DR7</code> 控制 <code>Lx/Gx</code> 位</td>
+<td align="left"><code>DR6</code> 无触发位；<code>DR7</code> 的 <code>Lx/Gx</code> 为 0</td>
+<td align="left"><code>DR6</code> 对应位被置位；<code>DR7</code> 的 <code>Lx/Gx</code> 被启用</td>
+<td align="left">通过 <code>GetThreadContext</code> 读取；ScyllaHide <code>DRx Protection</code></td>
+</tr>
+<tr>
+<td align="left">异常</td>
+<td align="left"><code>NtClose</code> / <code>CloseHandle</code> 处理无效或异常句柄</td>
+<td align="left">返回 <code>STATUS_INVALID_HANDLE</code> / 设置错误码，或触发异常；观察调试器是否介入</td>
+<td align="left">程序自己的错误/异常处理接管</td>
+<td align="left">调试器可能先收到异常或改变返回/错误行为</td>
+<td align="left">ScyllaHide <code>NtClose</code>；具体表现依调用方式而定</td>
+</tr>
+<tr>
+<td align="left">输出</td>
+<td align="left"><code>OutputDebugStringA</code></td>
+<td align="left">通过 <code>GetLastError</code> 或输出行为判断是否有调试器接收</td>
+<td align="left"><code>GetLastError</code> 常保持原值或非 0</td>
+<td align="left">调试器接收输出，<code>GetLastError</code> 可能被置 0</td>
+<td align="left">具体表现依赖系统和调试器；ScyllaHide <code>OutputDebugStringA</code></td>
+</tr>
+<tr>
+<td align="left">调试状态</td>
+<td align="left"><code>NtSetDebugFilterState</code> / <code>NtQueryDebugFilterState</code></td>
+<td align="left">设置/查询调试过滤器，依赖 <code>SeDebugPrivilege</code></td>
+<td align="left">调用失败（无权限）或状态未设置</td>
+<td align="left">调用成功或状态已设置</td>
+<td align="left">调试器通常持有 <code>SeDebugPrivilege</code>；ScyllaHide <code>NtSetDebugFilterState</code></td>
+</tr>
+<tr>
+<td align="left">权限</td>
+<td align="left"><code>SeDebugPrivilege</code> / <code>Remove Debug Privileges</code></td>
+<td align="left">检查/移除令牌中的调试权限</td>
+<td align="left">普通用户通常未启用</td>
+<td align="left">调试器常启用</td>
+<td align="left">ScyllaHide <code>Remove Debug Privileges</code>；属于权限面而非单一 API</td>
+</tr>
+<tr>
+<td align="left">时序</td>
+<td align="left"><code>GetTickCount</code> / <code>GetTickCount64</code></td>
+<td align="left">比较两次调用差值</td>
+<td align="left">差值在正常范围</td>
+<td align="left">单步/断点后差值异常增大</td>
+<td align="left">阈值由程序设定；ScyllaHide <code>Timing Hooks → GetTickCount / GetTickCount64</code></td>
+</tr>
+<tr>
+<td align="left">时序</td>
+<td align="left"><code>QueryPerformanceCounter</code> / <code>NtQueryPerformanceCounter</code></td>
+<td align="left">高精度性能计数器</td>
+<td align="left">差值在预期范围</td>
+<td align="left">差值可能超过阈值（如 &gt;50ms）</td>
+<td align="left">ScyllaHide <code>NtQueryPerfCounter</code>（不同版本名称可能不同）</td>
+</tr>
+<tr>
+<td align="left">时序</td>
+<td align="left"><code>GetSystemTime</code> / <code>GetLocalTime</code> / <code>NtQuerySystemTime</code></td>
+<td align="left">墙钟时间/系统时间</td>
+<td align="left">正常</td>
+<td align="left">调试器暂停后时间差增大</td>
+<td align="left">ScyllaHide Timing 页对应项</td>
+</tr>
+<tr>
+<td align="left">窗口</td>
+<td align="left"><code>NtUserFindWindowEx</code> / <code>NtUserBuildHwndList</code> / <code>NtUserQueryWindow</code> / <code>NtUserGetForegroundWindow</code></td>
+<td align="left">枚举窗口/前台窗口，查找调试器窗口类名</td>
+<td align="left">列表无调试器窗口</td>
+<td align="left">列表包含调试器窗口</td>
+<td align="left">ScyllaHide 对应窗口枚举选项</td>
+</tr>
+<tr>
+<td align="left">输入</td>
+<td align="left"><code>BlockInput</code></td>
+<td align="left">阻止键盘/鼠标输入</td>
+<td align="left">正常输入</td>
+<td align="left">输入被阻断</td>
+<td align="left">反调试动作，不是检测；ScyllaHide <code>BlockInput</code></td>
+</tr>
+</tbody></table>
 <h3 id="反编译"><a href="#反编译" class="headerlink" title="反编译"></a>反编译</h3><p>指通过破坏反汇编器/反编译器对指令边界、控制流、数据流和语义的静态恢复能力，使 IDA 等工具难以将机器码正确还原为汇编或高级伪代码的技术与保护手段</p>
 <h4 id="花指令总结"><a href="#花指令总结" class="headerlink" title="花指令总结"></a>花指令总结</h4><p>花指令就是往代码里添加一些数据，虽然不会影响程序的正常运行，但是会使你的ida 在生成汇编代码时出错</p>
 <h5 id="不可执行花指令"><a href="#不可执行花指令" class="headerlink" title="不可执行花指令"></a>不可执行花指令</h5><p>这类花指令是很好理解的，ida编译的时，遇到分支指令或者跳转指令时不会跳转。也就是说一些永远不会执行的分支里的数据，也会被当作代码执行,如果我们在这些分支里编写错误的数据，ida编译就会报错</p>
 <p>比如jmp跳转，或者跳转的位置无论如何都不变，这时分支里的数据就是无用的<br>例如</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_asm&#123;</span><br><span class="line">    jz label1</span><br><span class="line">    jnz label1</span><br><span class="line">    db junkcode //垃圾汇编</span><br><span class="line">label1:    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>无效call</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call    near ptr 12FBFB358h //12FBFB358h地址就不存在</span><br></pre></td></tr></table></figure>
 
-
-<h5 id="可执行花指令"><a href="#可执行花指令" class="headerlink" title="可执行花指令"></a>可执行花指令</h5><p>如果反编译器检测到指令破坏了堆栈平衡，即函数返回时与调用时堆栈状态发生了变化，就会报错<br>在函数内出现了：<br>    多余的 push 没有对应的 pop<br>    手动修改了 esp 或 ebp<br>    ret 前栈没有恢复到进入函数时的状态<br>就有可能报错</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.text:000000000040113E                 call    $+5  //$ 表示当前指令的地址，实际效果是：把 0x401143 压入栈，然后跳转到 0x401143</span><br><span class="line">.text:0000000000401143                 pop     rax</span><br></pre></td></tr></table></figure>
+<h5 id="可执行花指令"><a href="#可执行花指令" class="headerlink" title="可执行花指令"></a>可执行花指令</h5><p>如果反编译器检测到指令破坏了堆栈平衡，即函数返回时与调用时堆栈状态发生了变化，就会报错<br>在函数内出现以下内容，就有可能报错</p>
+<ol>
+<li>多余的 push 没有对应的 pop</li>
+<li>IDA 误判调用目标和函数入口<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.text:000000000040113E                 call    $+5  //$ 表示当前指令的地址，实际效果是：把 0x401143 压入栈，然后跳转到 0x401143</span><br><span class="line">.text:0000000000401143                 pop     rax</span><br></pre></td></tr></table></figure></li>
+<li>手动修改了 esp 或 ebp 让ida无法判断栈是否平衡。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.text:00000001400026C1                 mov     eax, 1048h</span><br><span class="line">.text:00000001400026C6                 push    rdi</span><br><span class="line">.text:00000001400026C7                 call    sub_140002590</span><br><span class="line">.text:00000001400026CC                 sub     rsp, rax   ; rax 运行时值 IDA 静态不可知    </span><br></pre></td></tr></table></figure></li>
+<li>ret 前栈没有恢复到进入函数时的状态</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">move rax,sub_140001560</span><br><span class="line">push  rax</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
 
 <h5 id="清除方法"><a href="#清除方法" class="headerlink" title="清除方法"></a>清除方法</h5><ol>
+<li><code>Ctrl+Q</code> 打开问题列表，重点关注<code>type</code>为<code>BADSTACK</code>的错误，寻找爆红内容</li>
 <li>判断要修改的内容，确定要修改的函数坐标位<code>0x401136</code>，要修改的坐标为<code>0x401149～0x401157</code>，在 <code>0x401149</code> 按 <code>U</code> 取消定义，将字符串或者函数转变为原始数据</li>
 <li>选中<code>0x401149～0x401157</code>要修改的字节，<code>右键 → Edit → Patch program → Change byte...</code></li>
 <li>将字节序列全部改为 <code>90</code>。或者使用 <code>IDA 的 Patch program → Assemble</code>，逐条将指令改为 <code>nop</code>。</li>
@@ -723,7 +960,24 @@ tab  伪代码页面和汇编页面的切换【常用】
 <p>在Arglist被smc处理后的位置打断点<br>然后就是快捷键 <code>U+C+P</code>,重构函数，最后反编译就能看到sub_403040的真实内容了</p>
 <p>注意：ida在调试的时候修改后续指令汇编，不保存也能生效，在静态分析的时候修改程序，不保存，动态调试的时候还是原文件</p>
 <h4 id="OLLVM————控制流平坦化"><a href="#OLLVM————控制流平坦化" class="headerlink" title="OLLVM————控制流平坦化"></a>OLLVM————控制流平坦化</h4><h3 id="混淆"><a href="#混淆" class="headerlink" title="混淆"></a>混淆</h3><p>指通过保持语义不变的代码变换，增加人工阅读和自动化分析的难度，使代码“更难懂”</p>
-<h4 id="OLLVM————虚假控制"><a href="#OLLVM————虚假控制" class="headerlink" title="OLLVM————虚假控制"></a>OLLVM————虚假控制</h4><h4 id="OLLVM————指令替换"><a href="#OLLVM————指令替换" class="headerlink" title="OLLVM————指令替换"></a>OLLVM————指令替换</h4><h4 id="VMP-虚拟机保护"><a href="#VMP-虚拟机保护" class="headerlink" title="VMP 虚拟机保护"></a>VMP 虚拟机保护</h4>
+<h4 id="OLLVM————虚假控制"><a href="#OLLVM————虚假控制" class="headerlink" title="OLLVM————虚假控制"></a>OLLVM————虚假控制</h4><h4 id="OLLVM————指令替换"><a href="#OLLVM————指令替换" class="headerlink" title="OLLVM————指令替换"></a>OLLVM————指令替换</h4><h4 id="VMP-虚拟机保护"><a href="#VMP-虚拟机保护" class="headerlink" title="VMP 虚拟机保护"></a>VMP 虚拟机保护</h4><h2 id="函数劫持"><a href="#函数劫持" class="headerlink" title="函数劫持"></a>函数劫持</h2><p>这是我发现一种邪修的方法，通过函数注入到strcmp等最终函数来直接打印出来flag，这样就能绕过烦人的反调试或者混淆技术了</p>
+<h3 id="LD-PRELOAD"><a href="#LD-PRELOAD" class="headerlink" title="LD_PRELOAD"></a>LD_PRELOAD</h3><p>LD_PRELOAD是Linux系统的一个环境变量，它可以影响程序的运行时的链接（Runtime linker），它允许你定义在程序运行前优先加载的动态链接库。当然这也意味着它<strong>只能修改动态链接程序的外部函数</strong>，程序的自定义函数是没有办法劫持的</p>
+<p>编写自定义函数文件 <code>hook_strcmp.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _GNU_SOURCE</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义原函数指针类型</span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">int</span> <span class="params">(*<span class="keyword">strcmp_t</span>)</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *, <span class="keyword">const</span> <span class="keyword">char</span> *)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">strcmp</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *s1, <span class="keyword">const</span> <span class="keyword">char</span> *s2)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 1. 获取真正的 strcmp 函数地址 (RTLD_NEXT 表示&quot;下一个&quot;)</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">strcmp_t</span> real_strcmp = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (real_strcmp == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        real_strcmp = (<span class="keyword">strcmp_t</span>)dlsym(RTLD_NEXT, <span class="string">&quot;strcmp&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 直接打印两个参数，flag 通常就在其中</span></span><br><span class="line">    <span class="comment">//    程序比对时，一个参数是用户输入，另一个就是期望的 flag</span></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;\n[HOOK] strcmp called:\n&quot;</span>);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;  arg1: %s\n&quot;</span>, s1);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;  arg2: %s\n&quot;</span>, s2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 调用真正的 strcmp，保证程序逻辑不变</span></span><br><span class="line">    <span class="keyword">return</span> real_strcmp(s1, s2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将自定义函数打包成so库,然后使用 LD_PRELOAD 运行目标程序即可</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编译为共享库</span></span><br><span class="line">gcc -shared -fPIC -o hook_strcmp.so hook_strcmp.c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 LD_PRELOAD 运行目标程序</span></span><br><span class="line">LD_PRELOAD=./hook_strcmp.so ./target_program</span><br></pre></td></tr></table></figure>
+
+<h4 id="glic版本过低"><a href="#glic版本过低" class="headerlink" title="glic版本过低"></a>glic版本过低</h4><p>如果程序的glic版本要求比较高，我们可以通过patchelf修改 ELF 文件的动态链接信息，从而改变程序运行时加载的库</p>
+<p>注意<strong>patchelf不能修改有壳的程序</strong>， 加壳会彻底改变文件结构：原始 ELF 头、程序头（Program Headers）和动态段（Dynamic Section）大多被压缩或隐藏。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">LIBDIR=/root/pwn/glibc-all-in-one/libs/2.39-0ubuntu8.12_amd64/x86_64-linux-gnu</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1) 清除旧的 RPATH/RUNPATH（避免残留错误路径干扰搜索）</span></span><br><span class="line">patchelf --remove-rpath ./exam1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2) 设置正确的 RPATH，指向真正包含 libc.so.6 的目录</span></span><br><span class="line">patchelf --set-rpath <span class="string">&quot;<span class="variable">$LIBDIR</span>&quot;</span> ./exam1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3) 设置正确的 interpreter（必须与 libc 同版本、同目录）</span></span><br><span class="line">patchelf --set-interpreter <span class="string">&quot;<span class="variable">$LIBDIR</span>/ld-linux-x86-64.so.2&quot;</span> ./exam1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1) 清除旧 RPATH</span></span><br><span class="line">patchelf --remove-rpath ./hook_strcmp.so</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2) 把 NEEDED 改回相对名称（</span></span><br><span class="line">patchelf --print-needed ./hook_strcmp.so</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3)（可选）给 .so 也设置同样的 RPATH，增加冗余保险</span></span><br><span class="line">patchelf --set-rpath <span class="string">&quot;<span class="variable">$LIBDIR</span>&quot;</span> ./hook_strcmp.so</span><br></pre></td></tr></table></figure>
+
+<h3 id="Frida"><a href="#Frida" class="headerlink" title="Frida"></a>Frida</h3><p>Frida允许我们在程序运行时动态修改内存数据、拦截函数调用，并且Linux 和 Windows 都适用。并且可以hook的范围也比LD_PRELOAD，基本上知道要hook的函数地址就能hook函数</p>
+<h4 id="hook所有的strcmp函数"><a href="#hook所有的strcmp函数" class="headerlink" title="hook所有的strcmp函数"></a>hook所有的strcmp函数</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hook_all_strcmp_linux.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> hooked = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line"><span class="keyword">var</span> inHook = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dumpPtr</span>(<span class="params">p, label</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (p.isNull()) &#123; <span class="built_in">console</span>.log(label + <span class="string">&quot; = NULL&quot;</span>); <span class="keyword">return</span>; &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123; <span class="built_in">console</span>.log(label + <span class="string">&quot; str = &quot;</span> + p.readCString(<span class="number">256</span>)); &#125;</span><br><span class="line">    <span class="keyword">catch</span> (e) &#123; <span class="built_in">console</span>.log(label + <span class="string">&quot; str failed: &quot;</span> + e); &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123; <span class="built_in">console</span>.log(label + <span class="string">&quot; hex = &quot;</span> + hexdump(p, &#123; <span class="attr">length</span>: <span class="number">32</span> &#125;)); &#125;</span><br><span class="line">    <span class="keyword">catch</span> (e) &#123; <span class="built_in">console</span>.log(label + <span class="string">&quot; hex failed: &quot;</span> + e); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hookOne</span>(<span class="params">addr, tag</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!addr) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">var</span> key = addr.toString();</span><br><span class="line">    <span class="keyword">if</span> (hooked.has(key)) <span class="keyword">return</span>;</span><br><span class="line">    hooked.add(key);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;[*] hook &quot;</span> + tag + <span class="string">&quot; @ &quot;</span> + addr);</span><br><span class="line"></span><br><span class="line">    Interceptor.attach(addr, &#123;</span><br><span class="line">        <span class="attr">onEnter</span>: <span class="function"><span class="keyword">function</span> (<span class="params">args</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> tid = Process.getCurrentThreadId();</span><br><span class="line">            <span class="keyword">if</span> (inHook.has(tid)) <span class="keyword">return</span>;</span><br><span class="line">            inHook.add(tid);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">&quot;===== &quot;</span> + tag + <span class="string">&quot; =====&quot;</span>);</span><br><span class="line">                dumpPtr(args[<span class="number">0</span>], tag + <span class="string">&quot; arg0&quot;</span>);</span><br><span class="line">                dumpPtr(args[<span class="number">1</span>], tag + <span class="string">&quot; arg1&quot;</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">&quot;hook error: &quot;</span> + e);</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                inHook.delete(tid);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hookModule</span>(<span class="params">m</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 1) 先尝试导出名 strcmp（Frida 通常能解析 IFUNC）</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> p = Module.findExportByName(m.name, <span class="string">&quot;strcmp&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (p) hookOne(p, m.name + <span class="string">&quot;!strcmp&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2) IFUNC 兜底：显式 hook 具体实现符号</span></span><br><span class="line">    [<span class="string">&quot;__strcmp_avx2&quot;</span>, <span class="string">&quot;__strcmp_sse2_unaligned&quot;</span>, <span class="string">&quot;__strcmp_sse2&quot;</span>, <span class="string">&quot;__strcmp_sse42&quot;</span>]</span><br><span class="line">        .forEach(<span class="function"><span class="keyword">function</span> (<span class="params">name</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">var</span> p = Module.findExportByName(m.name, name);</span><br><span class="line">                <span class="keyword">if</span> (p) hookOne(p, m.name + <span class="string">&quot;!&quot;</span> + name);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e) &#123; &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Process.enumerateModules().forEach(hookModule);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (Process.attachModuleObserver) &#123;</span><br><span class="line">    Process.attachModuleObserver(&#123;</span><br><span class="line">        <span class="attr">onAdded</span>: <span class="function"><span class="keyword">function</span> (<span class="params">m</span>) </span>&#123; hookModule(m); &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = Module.findExportByName(<span class="literal">null</span>, <span class="string">&quot;strcmp&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (p) &#123;</span><br><span class="line">    <span class="keyword">var</span> owner = Process.findModuleByAddress(p);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;[*] strcmp resolved from &quot;</span> + (owner ? owner.name : <span class="string">&quot;?&quot;</span>) + <span class="string">&quot; @ &quot;</span> + p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行下面命令，即可运行hook后的文件<br><code>frida -l hook_all_strcmp.js -f ./exam2_ida_patched.exe</code></p>
+<h4 id="根据地址hook特定函数"><a href="#根据地址hook特定函数" class="headerlink" title="根据地址hook特定函数"></a>根据地址hook特定函数</h4><p>注意target.base.add后面是去掉基本地址后的相对地址<br>把ida的汇编页面拉到最开头就能看到程序的基本地址，如<code>.text:0000000140001000 ; Imagebase   : 140000000</code>,那么目标函数的相对地址=在ida中的地址-140000000<br>没有 <code>Imagebase</code> 时，IDA 地址就是“偏移”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//没有 `Imagebase` 时，IDA 地址就是“偏移”</span></span><br><span class="line"><span class="comment">// .plt.sec:0000000000001100 _strcmp         proc near               ; CODE XREF: main+1DA↓p</span></span><br><span class="line"><span class="comment">// .plt.sec:0000000000001100                 endbr64</span></span><br><span class="line"><span class="comment">// .plt.sec:0000000000001104                 jmp     cs:strcmp_ptr</span></span><br><span class="line"><span class="comment">// .plt.sec:0000000000001104 _strcmp         endp  </span></span><br><span class="line"><span class="keyword">var</span> target = Process.enumerateModules().find(<span class="function"><span class="keyword">function</span> (<span class="params">m</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> m.name.toLowerCase().indexOf(<span class="string">&quot;exam1&quot;</span>) &gt;= <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> addr = target.base.add(<span class="number">0x1100</span>);   <span class="comment">// 关键：RVA-base  </span></span><br><span class="line">Interceptor.attach(addr, &#123;</span><br><span class="line">    <span class="attr">onEnter</span>: <span class="function"><span class="keyword">function</span> (<span class="params">args</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;===== plt.sec 0x1100 =====&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (!args[<span class="number">0</span>].isNull()) <span class="built_in">console</span>.log(<span class="string">&quot;arg0 = &quot;</span> + args[<span class="number">0</span>].readCString());</span><br><span class="line">        <span class="keyword">if</span> (!args[<span class="number">1</span>].isNull()) <span class="built_in">console</span>.log(<span class="string">&quot;arg1 = &quot;</span> + args[<span class="number">1</span>].readCString());</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">onLeave</span>: <span class="function"><span class="keyword">function</span> (<span class="params">retval</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;returned = &quot;</span> + retval.toInt32());  <span class="comment">// 0 表示相等</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>当然也能hook程序的自定义函数</p>
+
         </div>
 
         
