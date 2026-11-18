@@ -436,6 +436,18 @@
 <h2 id="常见密码算法"><a href="#常见密码算法" class="headerlink" title="常见密码算法"></a>常见密码算法</h2><h3 id="大数分解问题—-RSA"><a href="#大数分解问题—-RSA" class="headerlink" title="大数分解问题—-RSA"></a>大数分解问题—-RSA</h3><p>设有明文 $m$、公钥 $(e,n)$、私钥 $(d,n)$、密文 $c$、其中$n=p*q$  ， $p,q$ 为两个大素数</p>
 <p>RSA 的加密公式为 $c \equiv m^e \pmod n$<br>RSA 的解密公式为 $m \equiv c^d \pmod n$<br>其中 $e,d$ 满足 $e \cdot d \equiv 1 \pmod {\varphi(n)}$</p>
 <p>因为 $\varphi (N)=\varphi (p)\varphi (q)=(p-1)(q-1)$，所以知道$p,q$就很容易知道 $\varphi (N)$，进而根据公钥设计出私钥，而因为在整个加解密过程中p,q都没有泄露，所以要是想解密就得大数因式分解非常复杂</p>
+<h4 id="RSA盲签名"><a href="#RSA盲签名" class="headerlink" title="RSA盲签名"></a>RSA盲签名</h4><p>正常RSA签名流程为</p>
+<p>签名者用私钥$(d,n)$直接对消息 $m$ 进行签名<br>$$<br>s \equiv m^{d} \pmod n<br>$$<br>验证者用公钥$(e,n)$检查签名$s$<br>$$<br>s^{e} \equiv m \pmod n<br>$$</p>
+<p>盲签名要解决的正是这一点：<strong>让签名者在不看消息内容的前提下完成签名</strong></p>
+<p>盲签名流程为</p>
+<ol>
+<li>选随机数 $r$，要求 $\gcd(r,n)=1$</li>
+<li>对明文$m$进行盲化(这里的随机数 $r$ 叫<strong>盲因子</strong>（blinding factor），真正乘到明文$m$上的 $r^{e}$ 叫<strong>盲化因子</strong>)：<br>$$<br>m’ \equiv m \cdot r^{e} \pmod n<br>$$</li>
+<li>签名者用私钥$(d,n)$对盲化后的消息 $m’$ 进行签名：<br>$$<br>s’ \equiv (m’)^{d} \pmod n<br>$$</li>
+<li>验证者拿到盲文签名$s’$先解盲，获取明文的签名$s$：<br>$$<br>s \equiv s’ \cdot r^{-1} \pmod n<br>$$</li>
+<li>然后验证者正常用公钥$(e,n)$检查签名$s$即可：$s^{e} \equiv m \pmod n$</li>
+</ol>
+<p><strong>正确性</strong>：<br>$$<br>s’ \equiv (m r^{e})^{d} \equiv m^{d} \cdot r^{ed} \pmod n<br>$$<br>由 $ed \equiv 1 \pmod{\varphi(n)}$ 可设 $ed = 1 + k\varphi(n)$，再用欧拉定理（依赖 $\gcd(r,n)=1$）<br>$$<br>r^{ed} = r^{1+k\varphi(n)} = r \cdot (r^{\varphi(n)})^{k} \equiv r \pmod n<br>$$<br>于是<br>$$<br>s \equiv s’ \cdot r^{-1} \equiv m^{d} \cdot r \cdot r^{-1} \equiv m^{d} \pmod n<br>$$</p>
 <h4 id="RSA-CRT"><a href="#RSA-CRT" class="headerlink" title="RSA-CRT"></a>RSA-CRT</h4><p>rsa中加解密使用到的幂运算需要大量的时间和算力，所以RSA-CRT算法的作用就是使用CRT将原来的幂运算变成两个指数更小的幂运算，从而提高效率</p>
 <p>公钥还是$(e,n)$<br>私钥改为了 $(d_p,d_q,p,q)$<br>其中：<br>$$<br>d_p\equiv d\pmod{p-1} \equiv e^{-1} \pmod{p-1}, \qquad<br>d_q\equiv d\pmod{q-1} \equiv e^{-1} \pmod{q-1}, \qquad<br>q_{\text{Inv}} = q^{-1} \pmod{p}<br>$$</p>
 <p>解密（或签名生成）时，先分别在模 $ p $ 和模 $ q $ 下计算两个中间值：<br>$$<br>m_1 = c^{d_p} \bmod p, \qquad m_2 = c^{d_q} \bmod q.<br>$$<br>根据CRT<br>$m \equiv m_1 \pmod{p} \equiv c^{d_p} \pmod{p} \equiv c^d \pmod{p}$<br>$m \equiv m_2 \pmod{q} \equiv c^{d_q} \pmod{q} \equiv c^d \pmod{q}$</p>
