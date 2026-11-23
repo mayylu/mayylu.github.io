@@ -236,18 +236,135 @@
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>MySQL所使用的 SQL 语言是用于访问数据库的最常用标准化语言,由于其体积小、速度快、总体拥有成本低，尤其是开放源码这一特点，一般中小型网站的开发都选择 MySQL 作为网站数据库。  </p>
 <span id="more"></span>  
 <h2 id="mysql的特点"><a href="#mysql的特点" class="headerlink" title="mysql的特点"></a>mysql的特点</h2><p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/20200331110731265.png" alt="20200331110731265"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">select</span> workPicPath <span class="keyword">from</span> smbms_user <span class="keyword">where</span> workPicPath <span class="operator">=</span><span class="string">&#x27;123  &#x27;</span> <span class="keyword">and</span> <span class="number">123</span><span class="operator">=</span><span class="string">&#x27;123a&#x27;</span>;</span><br><span class="line"><span class="operator">+</span><span class="comment">-------------+</span></span><br><span class="line"><span class="operator">|</span> workPicPath <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------+</span></span><br><span class="line"><span class="operator">|</span> <span class="number">123</span>         <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------+</span></span><br><span class="line"><span class="number">1</span> <span class="type">row</span> <span class="keyword">in</span> <span class="keyword">set</span>, <span class="number">1</span> warning (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">select</span> workPicPath <span class="keyword">from</span> smbms_user <span class="keyword">where</span> workPicPath <span class="operator">=</span><span class="string">&#x27;123  &#x27;</span> <span class="keyword">and</span> <span class="number">123</span><span class="operator">=</span><span class="string">&#x27;123a&#x27;</span>;</span><br><span class="line"><span class="operator">+</span><span class="comment">-------------+</span></span><br><span class="line"></span><br><span class="line"><span class="operator">|</span> workPicPath <span class="operator">|</span></span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------+</span></span><br><span class="line"></span><br><span class="line"><span class="operator">|</span> <span class="number">123</span>         <span class="operator">|</span></span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">-------------+</span></span><br><span class="line"><span class="number">1</span> <span class="type">row</span> <span class="keyword">in</span> <span class="keyword">set</span>, <span class="number">1</span> warning (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
 <h2 id="数据库基本信息"><a href="#数据库基本信息" class="headerlink" title="数据库基本信息"></a>数据库基本信息</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">user</span>, host <span class="keyword">FROM</span> mysql.user; <span class="comment">--用户信息查询</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;log_error&#x27;</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;general_log_file&#x27;</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;slow_query_log_file&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> PROCESSLIST;  <span class="comment">-- 查看当前正在执行的MySQL进程</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--查看有没有开event_scheduler（事件调度器）</span></span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@event</span>_scheduler;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;event%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> TRIGGERS; <span class="comment">--查看所有计划任务（触发器）</span></span><br><span class="line"><span class="keyword">DROP</span> EVENT [IF <span class="keyword">EXISTS</span>] event_name  <span class="comment">--删除计划任务（触发器）</span></span><br></pre></td></tr></table></figure>
 
 
 <h2 id="MySQL数据库管理语法"><a href="#MySQL数据库管理语法" class="headerlink" title="MySQL数据库管理语法"></a>MySQL数据库管理语法</h2><h3 id="数据库的连接"><a href="#数据库的连接" class="headerlink" title="数据库的连接"></a>数据库的连接</h3><h4 id="使用-PHP-脚本连接-MySQL服务"><a href="#使用-PHP-脚本连接-MySQL服务" class="headerlink" title="使用 PHP 脚本连接 MySQL服务"></a>使用 PHP 脚本<strong>连接</strong> MySQL服务</h4><p><code>mysqli_connect(host, username, password, dbname,port, socket);</code>   </p>
-<h4 id="断开与MySQL数据库的链接"><a href="#断开与MySQL数据库的链接" class="headerlink" title="断开与MySQL数据库的链接"></a><strong>断开</strong>与MySQL数据库的链接</h4><p><code>mysqli_close ( connection )</code><br> 提示：通常不需要使用 mysqli_close()，因为已打开的非持久连接会在脚本执行完毕后自动关闭。   </p>
-<h3 id="数据定义"><a href="#数据定义" class="headerlink" title="数据定义"></a>数据定义</h3><h4 id="创建-删除数据库-结果以query而定"><a href="#创建-删除数据库-结果以query而定" class="headerlink" title="创建,删除数据库(结果以query而定)"></a><strong>创建,删除</strong>数据库(结果以query而定)</h4><p>  <code>mysqli_query(connection,query,resultmode);</code><br>‘DROP DATABASE RUNOOB’<br>‘CREATE DATABASE RUNOOB’<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20220122232819.png" alt="微信截图_20220122232819"><br>也可以使用mysqli_multi_query(connection,query)执行一条或多条sql语句，然后将结果全部输出。       </p>
+<p>对应命令：<code>mysql -h 127.0.0.1 -uroot -p123456 bluecms</code></p>
+<h4 id="断开与MySQL数据库的链接"><a href="#断开与MySQL数据库的链接" class="headerlink" title="断开与MySQL数据库的链接"></a><strong>断开</strong>与MySQL数据库的链接</h4><p><code>mysqli_close ( connection )</code><br> 提示：通常不需要使用 mysqli_close()，因为已打开的非持久连接会在脚本执行完毕后自动关闭。</p>
+<p>对应命令：<code>quit</code></p>
+<h3 id="数据定义"><a href="#数据定义" class="headerlink" title="数据定义"></a>数据定义</h3><h4 id="创建-删除数据库-结果以query而定"><a href="#创建-删除数据库-结果以query而定" class="headerlink" title="创建,删除数据库(结果以query而定)"></a><strong>创建,删除</strong>数据库(结果以query而定)</h4><p>  <code>mysqli_query(connection,query,resultmode);</code><br>‘DROP DATABASE RUNOOB’<br>‘CREATE DATABASE RUNOOB’  </p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>connection</code></td>
+<td>必需。规定要使用的 MySQL 连接</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td>必需，规定查询字符串</td>
+</tr>
+<tr>
+<td><code>resultmode</code></td>
+<td>可选。一个常量，可以是：<code>MYSQLI_USE_RESULT</code>（需要检索大量数据时用这个）、<code>MYSQLI_STORE_RESULT</code>（默认）</td>
+</tr>
+</tbody></table>
+<p>也可以使用mysqli_multi_query(connection,query)执行一条或多条sql语句，然后将结果全部输出。       </p>
 <h4 id="选择MySQL数据库"><a href="#选择MySQL数据库" class="headerlink" title="选择MySQL数据库"></a><strong>选择</strong>MySQL数据库</h4><p><code>mysqli_select_db(connection,dbname);</code>  </p>
 <h4 id="创建-删除数据表"><a href="#创建-删除数据表" class="headerlink" title="创建,删除数据表"></a><strong>创建,删除</strong>数据表</h4><p><code>mysqli_query(connection,query,resultmode);</code></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span>(</span><br><span class="line">      <span class="operator">&lt;</span>列名<span class="operator">&gt;</span> <span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span>[ <span class="operator">&lt;</span>列级完整性约束条件<span class="operator">&gt;</span> ]</span><br><span class="line">      [，<span class="operator">&lt;</span>列名<span class="operator">&gt;</span> <span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span>[ <span class="operator">&lt;</span>列级完整性约束条件<span class="operator">&gt;</span>] ]</span><br><span class="line">       ………</span><br><span class="line">      [，<span class="operator">&lt;</span>表级完整性约束条件<span class="operator">&gt;</span> ]</span><br><span class="line"> );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `runoob_tbl`(       </span><br><span class="line">    `runoob_id` <span class="type">INT</span> UNSIGNED AUTO_INCREMENT,     </span><br><span class="line">    `runoob_title` <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,    </span><br><span class="line">    `runoob_author` <span class="type">VARCHAR</span>(<span class="number">40</span>) <span class="keyword">NULL</span>,     </span><br><span class="line">    `submission_date` <span class="type">DATE</span>,      </span><br><span class="line">    <span class="keyword">PRIMARY</span> KEY (  `runoob_id` ), <span class="keyword">UNIQUE</span>(runoob_title)        </span><br><span class="line">    )ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8;     </span><br></pre></td></tr></table></figure>
-<p>数据类型<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/20200331204116766.png" alt="20200331204116766"><br>约束条件<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20240116232033.png" alt="QQ截图20240116232033"></p>
-<p>   查看列：<code>desc 表名;</code>或<code>describe 表名</code></p>
+<p>数据类型</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CHAR(n) / CHARACTER(n)</td>
+<td>字符/字符串。固定长度 n</td>
+</tr>
+<tr>
+<td>VARCHAR(n) / CHARACTER VARYING(n)</td>
+<td>字符/字符串。可变长度，最大长度 n</td>
+</tr>
+<tr>
+<td>BINARY(n)</td>
+<td>二进制串。固定长度 n</td>
+</tr>
+<tr>
+<td>BOOLEAN</td>
+<td>存储 TRUE 或 FALSE 值</td>
+</tr>
+<tr>
+<td>VARBINARY(n) / BINARY VARYING(n)</td>
+<td>二进制串。可变长度，最大长度 n</td>
+</tr>
+<tr>
+<td>DATE</td>
+<td>存储年、月、日的值</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>存储小时、分、秒的值</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>存储年、月、日、小时、分、秒的值</td>
+</tr>
+<tr>
+<td>XML</td>
+<td>存储 XML 数据</td>
+</tr>
+</tbody></table>
+<p>Null<br>取值只有两个：</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YES</td>
+<td>该列允许存 NULL（“没有值”）</td>
+</tr>
+<tr>
+<td>NO</td>
+<td>该列不允许 NULL，插入时必须给值（除非有默认值）</td>
+</tr>
+</tbody></table>
+<p>约束条件</p>
+<table>
+<thead>
+<tr>
+<th>约束条件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>primary key</code></td>
+<td>主键约束</td>
+</tr>
+<tr>
+<td><code>unique</code></td>
+<td>唯一约束</td>
+</tr>
+<tr>
+<td><code>not null</code></td>
+<td>非空约束</td>
+</tr>
+<tr>
+<td><code>default</code></td>
+<td>默认约束</td>
+</tr>
+<tr>
+<td><code>auto_increment</code></td>
+<td>自动增长约束</td>
+</tr>
+<tr>
+<td><code>foreign key</code></td>
+<td>外键约束</td>
+</tr>
+</tbody></table>
+<p>查看列：<code>desc 表名;</code>或<code>describe 表名</code></p>
 <p>   删除表: <code>DROP TABLE &lt;表名&gt;［RESTRICT| CASCADE］；</code><br>    RESTRICT：删除表是有限制的。<br>        欲删除的基本表不能被其他表的约束所引用(如视图等)<br>        如果存在依赖该表的对象，则此表不能被删除<br>    CASCADE：删除该表没有限制。<br>        在删除基本表的同时，相关的依赖对象一起删除</p>
 <h4 id="添加，修改，删除表名，列名"><a href="#添加，修改，删除表名，列名" class="headerlink" title="添加，修改，删除表名，列名"></a><strong>添加，修改，删除</strong>表名，列名</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br><span class="line">[ <span class="keyword">ADD</span> <span class="operator">&lt;</span>新列名<span class="operator">&gt;</span> <span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span> [ 完整性约束 ] ]</span><br><span class="line">[ <span class="keyword">DROP</span> <span class="operator">&lt;</span>完整性约束名<span class="operator">&gt;</span> ]</span><br><span class="line">[ MODIFY <span class="operator">&lt;</span>列名<span class="operator">&gt;</span> <span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span>]</span><br><span class="line">[ <span class="keyword">ALTER</span> <span class="keyword">COLUMN</span> <span class="operator">&lt;</span>列名<span class="operator">&gt;</span> <span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span> ]</span><br><span class="line">[ RENAME <span class="keyword">to</span> <span class="operator">&lt;</span>新表名<span class="operator">&gt;</span> ]</span><br><span class="line">[ RENAME <span class="keyword">COLUMN</span> <span class="operator">&lt;</span>列名<span class="operator">&gt;</span> <span class="keyword">to</span> <span class="operator">&lt;</span>新列名<span class="operator">&gt;</span> ]</span><br><span class="line">[ CHANGE <span class="keyword">column</span> <span class="operator">&lt;</span>旧列名<span class="operator">&gt;</span> <span class="operator">&lt;</span>新列名<span class="operator">&gt;</span> <span class="operator">&lt;</span>数据类型<span class="operator">&gt;</span>]</span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> table_name rename table_name1; <span class="comment">--修改表名</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span>  column_name <span class="type">varchar</span>(<span class="number">10</span>); <span class="comment">--添加表列</span></span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> name1 <span class="type">int</span>,<span class="keyword">add</span> name2 <span class="type">varchar</span>(<span class="number">11</span>);<span class="comment">--添加两个字段</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">drop</span>  column_name; <span class="comment">--删除表列</span></span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">drop</span> column_name1,<span class="keyword">drop</span> column_name2;<span class="comment">--删除两个字段name1,name2</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> table_name modify (<span class="keyword">NOT</span> <span class="keyword">NULL</span>) name <span class="type">char</span>(<span class="number">10</span>) <span class="comment">--修改表列类型 例:alter table interaction modify column rcontent longtext NULL;</span></span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> table_name change name address  <span class="type">char</span>(<span class="number">40</span>)<span class="comment">--修改列名</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> table_name change  <span class="keyword">column</span> name name1 <span class="type">varchar</span>(<span class="number">30</span>)<span class="comment">--修改表列名address-&gt; address1</span></span><br></pre></td></tr></table></figure>
 <h3 id="数据操纵"><a href="#数据操纵" class="headerlink" title="数据操纵"></a>数据操纵</h3><h4 id="insert-into-插入数据"><a href="#insert-into-插入数据" class="headerlink" title="insert into 插入数据"></a>insert into <strong>插入</strong>数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span></span><br><span class="line"><span class="keyword">INTO</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span> (<span class="operator">&lt;</span>属性列<span class="number">1</span><span class="operator">&gt;</span>[，<span class="operator">&lt;</span>属性列<span class="number">2</span> <span class="operator">&gt;</span>…)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="operator">&lt;</span>常量<span class="number">1</span><span class="operator">&gt;</span> [，<span class="operator">&lt;</span>常量<span class="number">2</span><span class="operator">&gt;</span>]    …           )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -257,7 +374,7 @@
 <h5 id="REPLACE-INTO"><a href="#REPLACE-INTO" class="headerlink" title="REPLACE INTO"></a><strong>REPLACE INTO</strong></h5><p>REPLACE INTO在执行插入操作时，如果发现某个行与表格中已有的行具有相同的主键或唯一性字段，则会删除原有的行，并插入新记录。这种情况下不会报“重复键”错误，因为它相当于先执行了一条 DELETE 再执行 INSERT。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> REPLACE <span class="keyword">INTO</span> `score` (`username`,`listen`,`read`,`write`)</span><br><span class="line">    <span class="operator">-</span><span class="operator">&gt;</span> <span class="keyword">values</span>(<span class="string">&#x27;mayylu&#x27;</span>,<span class="number">150</span>,<span class="number">200</span>,<span class="number">200</span>);</span><br><span class="line">Query OK, <span class="number">1</span> <span class="type">row</span> affected (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h4 id="Update-set-修改数据"><a href="#Update-set-修改数据" class="headerlink" title="Update set 修改数据"></a>Update set <strong>修改</strong>数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UPDATE  <span class="operator">&lt;</span>表名<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">SET</span>  <span class="operator">&lt;</span>列名<span class="operator">&gt;=</span><span class="operator">&lt;</span>表达式<span class="operator">&gt;</span>[，<span class="operator">&lt;</span>列名<span class="operator">&gt;=</span><span class="operator">&lt;</span>表达式<span class="operator">&gt;</span>]…</span><br><span class="line">[<span class="keyword">WHERE</span> <span class="operator">&lt;</span>条件<span class="operator">&gt;</span>];</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">select</span> username,listen,`read`,`write` <span class="keyword">from</span> `score`;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"><span class="operator">|</span> username <span class="operator">|</span> listen <span class="operator">|</span> read <span class="operator">|</span> write <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"><span class="operator">|</span> 火华     <span class="operator">|</span>    <span class="number">100</span> <span class="operator">|</span>  <span class="number">201</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> 火华     <span class="operator">|</span>     <span class="number">11</span> <span class="operator">|</span>  <span class="number">201</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"></span><br><span class="line">UPDATE `score` <span class="keyword">SET</span> `read`<span class="operator">=</span>REPLACE(`read`,<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">Query OK, <span class="number">2</span> <span class="keyword">rows</span> affected (<span class="number">0.01</span> sec)</span><br><span class="line"><span class="keyword">Rows</span> matched: <span class="number">2</span>  Changed: <span class="number">2</span>  Warnings: <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> username,listen,`read`,`write` <span class="keyword">from</span> `score`;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"><span class="operator">|</span> username <span class="operator">|</span> listen <span class="operator">|</span> read <span class="operator">|</span> write <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"><span class="operator">|</span> 火华     <span class="operator">|</span>    <span class="number">100</span> <span class="operator">|</span>   <span class="number">20</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> 火华     <span class="operator">|</span>     <span class="number">11</span> <span class="operator">|</span>   <span class="number">20</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">select</span> username,listen,`read`,`write` <span class="keyword">from</span> `score`;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"></span><br><span class="line"><span class="operator">|</span> username <span class="operator">|</span> listen <span class="operator">|</span> read <span class="operator">|</span> write <span class="operator">|</span></span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"></span><br><span class="line"><span class="operator">|</span> 火华     <span class="operator">|</span>    <span class="number">100</span> <span class="operator">|</span>  <span class="number">201</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> 火华     <span class="operator">|</span>     <span class="number">11</span> <span class="operator">|</span>  <span class="number">201</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"></span><br><span class="line">UPDATE `score` <span class="keyword">SET</span> `read`<span class="operator">=</span>REPLACE(`read`,<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">Query OK, <span class="number">2</span> <span class="keyword">rows</span> affected (<span class="number">0.01</span> sec)</span><br><span class="line"><span class="keyword">Rows</span> matched: <span class="number">2</span>  Changed: <span class="number">2</span>  Warnings: <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> username,listen,`read`,`write` <span class="keyword">from</span> `score`;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"></span><br><span class="line"><span class="operator">|</span> username <span class="operator">|</span> listen <span class="operator">|</span> read <span class="operator">|</span> write <span class="operator">|</span></span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"></span><br><span class="line"><span class="operator">|</span> 火华     <span class="operator">|</span>    <span class="number">100</span> <span class="operator">|</span>   <span class="number">20</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> 火华     <span class="operator">|</span>     <span class="number">11</span> <span class="operator">|</span>   <span class="number">20</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br></pre></td></tr></table></figure>
 <h4 id="DELETE-删除-数据"><a href="#DELETE-删除-数据" class="headerlink" title="DELETE 删除 数据"></a>DELETE <strong>删除</strong> 数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> <span class="operator">&lt;</span>表名<span class="operator">&gt;</span> </span><br><span class="line">[<span class="keyword">WHERE</span> 子句]</span><br><span class="line">[<span class="keyword">ORDER</span> <span class="keyword">BY</span> 子句]</span><br><span class="line">[LIMIT 子句]</span><br></pre></td></tr></table></figure>
 <p> 删除数据 ：<code>delete from students where id=3;</code></p>
 <h2 id="select-查询语法"><a href="#select-查询语法" class="headerlink" title="select 查询语法"></a>select 查询语法</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> [<span class="keyword">ALL</span><span class="operator">|</span><span class="keyword">DISTINCT</span>]   </span><br><span class="line"><span class="operator">&lt;</span>目标列表达式<span class="operator">&gt;</span> [别名] [ ，<span class="operator">&lt;</span>目标列表达式<span class="operator">&gt;</span> [别名]] … </span><br><span class="line"><span class="keyword">FROM</span>   <span class="operator">&lt;</span>表名或视图名<span class="operator">&gt;</span> [别名]   [ ，<span class="operator">&lt;</span>表名或视图名<span class="operator">&gt;</span> [别名]] …</span><br><span class="line">[<span class="keyword">WHERE</span> <span class="operator">&lt;</span>条件表达式<span class="operator">&gt;</span>]</span><br><span class="line">[<span class="keyword">GROUP</span>  <span class="keyword">BY</span><span class="operator">&lt;</span>列名<span class="number">1</span><span class="operator">&gt;</span></span><br><span class="line">[<span class="keyword">HAVING</span>  <span class="operator">&lt;</span>条件表达式<span class="operator">&gt;</span>]]</span><br><span class="line">[<span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="operator">&lt;</span>列名<span class="number">2</span><span class="operator">&gt;</span> [<span class="keyword">ASC</span><span class="operator">|</span><span class="keyword">DESC</span>] </span><br><span class="line">[LIMIT N][ <span class="keyword">OFFSET</span> M]</span><br></pre></td></tr></table></figure>
@@ -271,15 +388,150 @@
 <li>“SELECT 字段名 FROM 数据表 AS 别名;”，可为表指定别名。</li>
 </ul>
 <p>通过as<strong>构建视图</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> REPLACE(username,<span class="string">&#x27;火&#x27;</span>,<span class="string">&#x27; - &#x27;</span>) <span class="keyword">as</span> username,listen,`read`,`write` <span class="keyword">from</span> `score`;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"><span class="operator">|</span> username <span class="operator">|</span> listen <span class="operator">|</span> read <span class="operator">|</span> write <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"><span class="operator">|</span>  <span class="operator">-</span> 华    <span class="operator">|</span>    <span class="number">100</span> <span class="operator">|</span>  <span class="number">201</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>  <span class="operator">-</span> 华    <span class="operator">|</span>     <span class="number">11</span> <span class="operator">|</span>  <span class="number">201</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br></pre></td></tr></table></figure>
-<h3 id="有条件有限制的查询和输出"><a href="#有条件有限制的查询和输出" class="headerlink" title="有条件有限制的查询和输出"></a>有条件有限制的查询和输出</h3><h4 id="where子句"><a href="#where子句" class="headerlink" title="where子句"></a>where子句</h4><p>常用的查询条件<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/125858.png" alt="125858"></p>
-<p>嵌套查询常用的比较运算符<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE20231028154756.png" alt="QQ截图20231028154756"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> REPLACE(username,<span class="string">&#x27;火&#x27;</span>,<span class="string">&#x27; - &#x27;</span>) <span class="keyword">as</span> username,listen,`read`,`write` <span class="keyword">from</span> `score`;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"></span><br><span class="line"><span class="operator">|</span> username <span class="operator">|</span> listen <span class="operator">|</span> read <span class="operator">|</span> write <span class="operator">|</span></span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br><span class="line"></span><br><span class="line"><span class="operator">|</span>  <span class="operator">-</span> 华    <span class="operator">|</span>    <span class="number">100</span> <span class="operator">|</span>  <span class="number">201</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>  <span class="operator">-</span> 华    <span class="operator">|</span>     <span class="number">11</span> <span class="operator">|</span>  <span class="number">201</span> <span class="operator">|</span>   <span class="number">212</span> <span class="operator">|</span></span><br><span class="line"></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+--------+------+-------+</span></span><br></pre></td></tr></table></figure>
+<h3 id="有条件有限制的查询和输出"><a href="#有条件有限制的查询和输出" class="headerlink" title="有条件有限制的查询和输出"></a>有条件有限制的查询和输出</h3><h4 id="where子句"><a href="#where子句" class="headerlink" title="where子句"></a>where子句</h4><p>常用的查询条件</p>
+<table>
+<thead>
+<tr>
+<th>查询条件</th>
+<th>谓词</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>比较</td>
+<td><code>=</code>、<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code>、<code>!=</code>、<code>&lt;&gt;</code>、<code>!&gt;</code>、<code>!&lt;</code>；<strong>NOT</strong> + 上述比较运算符</td>
+</tr>
+<tr>
+<td>确定范围</td>
+<td><code>BETWEEN AND</code>、<code>NOT BETWEEN AND</code></td>
+</tr>
+<tr>
+<td>确定集合</td>
+<td><code>IN</code>、<code>NOT IN</code></td>
+</tr>
+<tr>
+<td>字符匹配</td>
+<td><code>LIKE</code>、<code>NOT LIKE</code></td>
+</tr>
+<tr>
+<td>空值</td>
+<td><code>IS NULL</code>、<code>IS NOT NULL</code></td>
+</tr>
+<tr>
+<td>多重条件（逻辑运算）</td>
+<td><code>AND</code>、<code>OR</code>、<code>NOT</code></td>
+</tr>
+</tbody></table>
+<p>嵌套查询常用的比较运算符</p>
+<table>
+<thead>
+<tr>
+<th>谓词</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&gt; ANY</code></td>
+<td>大于子查询结果中的某个值</td>
+</tr>
+<tr>
+<td><code>&gt; ALL</code></td>
+<td>大于子查询结果中的所有值</td>
+</tr>
+<tr>
+<td><code>&lt; ANY</code></td>
+<td>小于子查询结果中的某个值</td>
+</tr>
+<tr>
+<td><code>&lt; ALL</code></td>
+<td>小于子查询结果中的所有值</td>
+</tr>
+<tr>
+<td><code>&gt;= ANY</code></td>
+<td>大于等于子查询结果中的某个值</td>
+</tr>
+<tr>
+<td><code>&gt;= ALL</code></td>
+<td>大于等于子查询结果中的所有值</td>
+</tr>
+<tr>
+<td><code>&lt;= ANY</code></td>
+<td>小于等于子查询结果中的某个值</td>
+</tr>
+<tr>
+<td><code>&lt;= ALL</code></td>
+<td>小于等于子查询结果中的所有值</td>
+</tr>
+<tr>
+<td><code>= ANY</code></td>
+<td>等于子查询结果中的某个值</td>
+</tr>
+<tr>
+<td><code>= ALL</code></td>
+<td>等于子查询结果中的所有值（通常没有实际意义）</td>
+</tr>
+<tr>
+<td><code>!=</code>（或 <code>&lt;&gt;</code>）<code>ANY</code></td>
+<td>不等于子查询结果中的某个值</td>
+</tr>
+<tr>
+<td><code>!=</code>（或 <code>&lt;&gt;</code>）<code>ALL</code></td>
+<td>不等于子查询结果中的任何一个值</td>
+</tr>
+</tbody></table>
 <h5 id="LIKE-语法"><a href="#LIKE-语法" class="headerlink" title="LIKE 语法"></a>LIKE 语法</h5><p><code>[NOT] LIKE ‘&lt;匹配串&gt;’ [ESCAPE ‘ &lt;换码字符&gt;’]</code><br>如<code>WHERE  Sname LIKE &#39;欧阳_&#39;;</code><br>like 匹配/模糊匹配，会与 % 和 _ 结合使用。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(1)&#x27;_&#x27;表示任意单个字符</span><br><span class="line">(2)&#x27;%&#x27;表示任意数量的字符</span><br><span class="line">(3)如果想在A中匹配字符&#x27;_&#x27;和&#x27;%&#x27;或者&#x27;;&#x27;就需要转义。以&#x27;%&#x27;为例，即用&#x27;\%&#x27;(匹配一个%字符)。</span><br><span class="line"></span><br><span class="line">如</span><br><span class="line">where id=(1) || fl4g like binary 0x5f25   0x5f25对应的是%_I% ,即限制了查询数据的fl4g字段可以为任何数据</span><br><span class="line">where id=(1) || fl4g like binary 0x25544925   0x25544925对应的是%TI% ,即限制了查询数据的fl4g字段中必须包含TI</span><br><span class="line"></span><br><span class="line">like binary 区分大小写</span><br></pre></td></tr></table></figure>
 <p>A(表名) <strong>rlike</strong> B (表达式) ，表示A里边只要含有B即可，B中一般放正则表达式。</p>
 <p><strong>regexp 正则</strong><br>regexp与其用法相似，即A(表名) regexp B (表达式)。</p>
 <p><code>SELECT name FROM person_tbl WHERE name REGEXP &#39; &#39;</code>  </p>
-<p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/%E6%88%AA%E5%9B%BE_20220123180747.png" alt="截图_20220123180747">    </p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>^</code></td>
+<td>匹配输入字符串的开始位置。如果设置了 RegExp 对象的 Multiline 属性，<code>^</code> 也匹配 <code>\n</code> 或 <code>\r</code> 之后的位置</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>匹配输入字符串的结束位置。如果设置了 RegExp 对象的 Multiline 属性，<code>$</code> 也匹配 <code>\n</code> 或 <code>\r</code> 之前的位置</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td>匹配除 <code>\n</code> 之外的任何单个字符。要匹配包括 <code>\n</code> 在内的任何字符，请使用像 <code>[.\n]</code> 的模式</td>
+</tr>
+<tr>
+<td><code>[...]</code></td>
+<td>字符集合。匹配所包含的任意一个字符。例如 <code>[abc]</code> 可以匹配 “plain” 中的 <code>a</code></td>
+</tr>
+<tr>
+<td><code>[^...]</code></td>
+<td>负值字符集合。匹配未包含的任意字符。例如 <code>[^abc]</code> 可以匹配 “plain” 中的 <code>p</code></td>
+</tr>
+<tr>
+<td><code>p1|p2|p3</code></td>
+<td>匹配 p1 或 p2 或 p3。例如 <code>z|food</code> 能匹配 “z” 或 “food”，<code>(z|f)ood</code> 则匹配 “zood” 或 “food”</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>匹配前面的子表达式零次或多次。例如 <code>zo*</code> 能匹配 “z” 以及 “zoo”。<code>*</code> 等价于 <code>&#123;0,&#125;</code></td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>匹配前面的子表达式一次或多次。例如 <code>zo+</code> 能匹配 “zo” 以及 “zoo”，但不能匹配 “z”。<code>+</code> 等价于 <code>&#123;1,&#125;</code></td>
+</tr>
+<tr>
+<td><code>&#123;n&#125;</code></td>
+<td>n 是一个非负整数，匹配确定的 n 次。例如 <code>o&#123;2&#125;</code> 不能匹配 “Bob” 中的 <code>o</code>，但是能匹配 “food” 中的两个 <code>o</code></td>
+</tr>
+<tr>
+<td><code>&#123;n,m&#125;</code></td>
+<td>m 和 n 均为非负整数，其中 n &lt;= m。最少匹配 n 次且最多匹配 m 次</td>
+</tr>
+</tbody></table>
 <h5 id="多重条件查询"><a href="#多重条件查询" class="headerlink" title="多重条件查询"></a>多重条件查询</h5><p>逻辑运算符：</p>
 <pre><code>and用 &amp;&amp; 代替
 or用 || 代替 
@@ -360,9 +612,134 @@ CASE WHEN a then b else c end        判断如果a为真返回b,为假返回c
 <h3 id="LOAD-DATA-INFILE语法"><a href="#LOAD-DATA-INFILE语法" class="headerlink" title="LOAD DATA INFILE语法"></a>LOAD DATA INFILE语法</h3><p>语法主要是用于读取一个文件的内容并且放到一个表中,文件可以是客户端也可以是服务端的</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">load data infile &quot;/data/data.csv&quot; <span class="keyword">into</span> <span class="keyword">table</span> TestTable; <span class="comment">--+和load_file类似</span></span><br><span class="line">load data <span class="keyword">local</span> infile &quot;/home/data.csv&quot; <span class="keyword">into</span> <span class="keyword">table</span> TestTable; <span class="comment">--+不受secure_file_priv限制，文件路径由客户端提供，但是需要设置local_infile=ON</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="mysql中的特殊库"><a href="#mysql中的特殊库" class="headerlink" title="mysql中的特殊库"></a>mysql中的特殊库</h2><h3 id="information-schema简介"><a href="#information-schema简介" class="headerlink" title="information_schema简介"></a>information_schema简介</h3><p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE2021131028154756.png" alt="QQ截图2021131028154756"></p>
-<h3 id="sys库"><a href="#sys库" class="headerlink" title="sys库"></a>sys库</h3><p>mysql5.7增加sys系统数据库，这个库是通过视图的形式把information_schema和performance_schema结合起来<br><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE201151556.png" alt="QQ截图201151556"></p>
-<h3 id="performance-schema"><a href="#performance-schema" class="headerlink" title="performance_schema"></a>performance_schema</h3><p><img src="https://cdn.jsdelivr.net/gh/mayylu/pic@main/blogs/QQ%E6%88%AA%E5%9B%BE21111111256.png" alt="QQ截图21111111256"></p>
+<h2 id="mysql中的特殊库"><a href="#mysql中的特殊库" class="headerlink" title="mysql中的特殊库"></a>mysql中的特殊库</h2><h3 id="information-schema简介"><a href="#information-schema简介" class="headerlink" title="information_schema简介"></a>information_schema简介</h3><table>
+<thead>
+<tr>
+<th>表</th>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>information_schema.schemata</code></td>
+<td><code>schema_name</code></td>
+<td>库名</td>
+</tr>
+<tr>
+<td><code>information_schema.tables</code></td>
+<td><code>table_schema</code>、<code>table_name</code></td>
+<td>库名、表名</td>
+</tr>
+<tr>
+<td><code>information_schema.columns</code></td>
+<td><code>table_schema</code>、<code>table_name</code>、<code>column_name</code></td>
+<td>库名、表名、字段名</td>
+</tr>
+</tbody></table>
+<h3 id="sys库"><a href="#sys库" class="headerlink" title="sys库"></a>sys库</h3><p>mysql5.7增加sys系统数据库，这个库是通过视图的形式把information_schema和performance_schema结合起来</p>
+<table>
+<thead>
+<tr>
+<th>表</th>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>sys.schema_auto_increment_columns</code></td>
+<td><code>table_schema</code>、<code>table_name</code>、<code>column_name</code></td>
+<td>库名、表名、字段名</td>
+</tr>
+<tr>
+<td><code>sys.schema_index_statistics</code></td>
+<td><code>table_schema</code>、<code>table_name</code></td>
+<td>库名、表名</td>
+</tr>
+<tr>
+<td><code>sys.schema_object_overview</code></td>
+<td><code>db</code></td>
+<td>库名</td>
+</tr>
+<tr>
+<td><code>sys.schema_table_statistics</code></td>
+<td><code>table_schema</code>、<code>table_name</code></td>
+<td>库名、表名</td>
+</tr>
+<tr>
+<td><code>sys.schema_table_statistics_with_buffer</code></td>
+<td><code>table_schema</code>、<code>table_name</code></td>
+<td>库名、表名</td>
+</tr>
+<tr>
+<td><code>sys.schema_tables_with_full_table_scans</code></td>
+<td><code>object_schema</code>、<code>object_name</code></td>
+<td>库名、表名</td>
+</tr>
+<tr>
+<td><code>sys.statement_analysis</code> 或者 <code>sys.x$statement_analysis</code></td>
+<td><code>query</code>、<code>db</code></td>
+<td>请求访问的数据库名、数据库最近执行的请求</td>
+</tr>
+<tr>
+<td><code>sys.version</code></td>
+<td><code>mysql_version</code></td>
+<td>mysql 版本信息</td>
+</tr>
+<tr>
+<td><code>sys.x$innodb_buffer_stats_by_schema</code></td>
+<td><code>object_schema</code></td>
+<td>库名</td>
+</tr>
+<tr>
+<td><code>sys.x$innodb_buffer_stats_by_table</code></td>
+<td><code>object_schema</code>、<code>object_name</code></td>
+<td>库名、表名</td>
+</tr>
+<tr>
+<td><code>sys.x$io_global_by_file_by_bytes</code></td>
+<td><code>file</code></td>
+<td>路径中包含表名</td>
+</tr>
+<tr>
+<td><code>sys.x$schema_tables_with_full_table_scans</code></td>
+<td><code>object_schema</code>、<code>object_name</code></td>
+<td>库名、表名</td>
+</tr>
+<tr>
+<td><code>sys.x$schema_flattened_keys</code></td>
+<td><code>table_schema</code>、<code>table_name</code>、<code>index_columns</code></td>
+<td>库名、表名、字段名</td>
+</tr>
+</tbody></table>
+<h3 id="performance-schema"><a href="#performance-schema" class="headerlink" title="performance_schema"></a>performance_schema</h3><table>
+<thead>
+<tr>
+<th>表</th>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>performance_schema.objects_summary_global_by_type</code></td>
+<td><code>object_schema</code>、<code>object_name</code></td>
+<td>库、表</td>
+</tr>
+<tr>
+<td><code>performance_schema.table_handles</code></td>
+<td><code>object_schema</code>、<code>object_name</code></td>
+<td>库、表</td>
+</tr>
+<tr>
+<td><code>performance_schema.table_io_waits_summary_by_index_usage</code></td>
+<td><code>object_schema</code>、<code>object_name</code></td>
+<td>库、表</td>
+</tr>
+<tr>
+<td><code>performance_schema.table_io_waits_summary_by_table</code></td>
+<td><code>object_schema</code>、<code>object_name</code></td>
+<td>库、表</td>
+</tr>
+</tbody></table>
 
         </div>
 

