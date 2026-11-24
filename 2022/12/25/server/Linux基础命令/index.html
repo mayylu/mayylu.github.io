@@ -263,6 +263,96 @@
 <p><code>echo $PATH</code>查看 PATH 环境变量</p>
 <p>/bin 存放的是系统引导和修复所需的基础命令,例如 ls, cp, mv, rm, cat, sh 等<br>/usr/bin 存放的是常用的用户命令和应用程序,例如，文本编辑器（如 vim）、编译器（如 gcc）、各种脚本语言的解释器（如 python, perl）等。</p>
 <p><code>command -v apt</code>检查系统中是否存在某个命令，若存在则会返回命令地址</p>
+<h3 id="用户切换"><a href="#用户切换" class="headerlink" title="用户切换"></a>用户切换</h3><ol>
+<li>whoami / id</li>
+</ol>
+<p>看当前是谁、在哪些组里</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">whoami                  <span class="comment"># 当前用户名</span></span><br><span class="line">id                      <span class="comment"># uid、gid、所属组</span></span><br><span class="line">id 用户名               <span class="comment"># 看指定用户</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>su（switch user）</li>
+</ol>
+<p>切换到另一个用户，不带参数就切到 root</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">su                      <span class="comment"># 切到 root，要 root 的密码</span></span><br><span class="line">su username             <span class="comment"># 切到 username，要 username 的密码</span></span><br><span class="line">su - username           <span class="comment"># 登录式切换（推荐）</span></span><br><span class="line">su -c <span class="string">&quot;命令&quot;</span> username    <span class="comment"># 只执行一条命令，执行完还在原用户</span></span><br></pre></td></tr></table></figure>
+
+<p><code>su</code> 和 <code>su -</code> 的差别（本地实测）：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>su 用户</code></th>
+<th><code>su - 用户</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>当前目录</td>
+<td><strong>不变</strong>，还留在原目录</td>
+<td>切到目标用户的家目录</td>
+</tr>
+<tr>
+<td>启动文件</td>
+<td>不读 <code>.bash_profile</code></td>
+<td>读 <code>/etc/profile</code>、<code>~/.bash_profile</code></td>
+</tr>
+<tr>
+<td>环境变量</td>
+<td>会重置 PATH、HOME、USER 等</td>
+<td>完全按目标用户重新初始化</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>root 切普通用户不用密码</strong>；普通用户切 root（或切别人）<strong>要对方的密码</strong></li>
+<li>切换后往回退，用 <code>exit</code> 或 <code>Ctrl+D</code></li>
+</ul>
+<p>只执行一条命令、不离开当前用户：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - username -c <span class="string">&#x27;id&#x27;</span>       <span class="comment"># 以 username 身份跑 id，跑完自动回来</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>sudo（superuser do）</li>
+</ol>
+<p>以其他用户身份执行<strong>一条命令</strong>，默认是 root</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo 命令                 <span class="comment"># 以 root 执行</span></span><br><span class="line">sudo -u username 命令     <span class="comment"># 以指定用户执行</span></span><br><span class="line">sudo -i                   <span class="comment"># 拿到 root 的登录 shell（约等于 su -）</span></span><br><span class="line">sudo -s                   <span class="comment"># 拿到 root 的 shell，但不切目录、不读登录脚本</span></span><br><span class="line">sudo -l                   <span class="comment"># 列出当前用户能 sudo 哪些命令</span></span><br><span class="line">sudo -n 命令              <span class="comment"># 非交互：需要密码就直接失败，不会卡住等输入</span></span><br><span class="line">sudo -v                   <span class="comment"># 刷新认证缓存（不执行命令）</span></span><br><span class="line">sudo -S 命令              <span class="comment"># 从标准输入读密码，配合 echo 密码 | sudo -S</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>验证的是<strong>当前用户自己的密码</strong>，不是 root 的密码</li>
+<li>认证结果默认缓存 15 分钟，<code>sudo -k</code> 可以立即清掉</li>
+<li><code>sudo -n</code> 常用于脚本里判断”现在能不能直接 sudo”，要密码时只会报 <code>sudo: a password is required</code> 然后退出，不会挂在那里等输入</li>
+</ul>
+<p> su 和 sudo 的区别</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>su</code></th>
+<th><code>sudo</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>验证谁的密码</td>
+<td>目标用户的密码</td>
+<td>自己的密码</td>
+</tr>
+<tr>
+<td>权限粒度</td>
+<td>整个 shell 全给</td>
+<td>可以只授权某几条命令</td>
+</tr>
+<tr>
+<td>环境变量</td>
+<td>会重置，<code>su -</code> 更彻底</td>
+<td>默认 <code>env_reset</code> + <code>secure_path</code>，也会重置</td>
+</tr>
+<tr>
+<td>审计日志</td>
+<td>只有一条 su 记录</td>
+<td>每条命令都记</td>
+</tr>
+<tr>
+<td>典型用途</td>
+<td>长时间变成某个用户</td>
+<td>临时提权跑一条命令</td>
+</tr>
+</tbody></table>
 <h3 id="shell命令"><a href="#shell命令" class="headerlink" title="shell命令"></a>shell命令</h3><p>bash -c 命令</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@kali:  bash -c whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
 <p>bash -i 命令<br>以交互方式运行shell</p>
@@ -383,7 +473,7 @@
  :wq!        强制保存并退出
 </code></pre>
 </li>
-<li>到指定一行<pre><code> :$   最后一行；
+<li>到指定一行<pre><code> `:$`   最后一行；
  :#   第#行；
  :+# 向下的#行
  :n1,n2d 删除指定范围的行
@@ -412,7 +502,29 @@
 </ol>
 <p>硬链接：ln 源文件 链接文件<br>是在选定的位置生成一个文件的镜像，镜像文件与源文件同样大小，但不占用实际空间，不允许给目录创建硬链接。<br>删除链接：unlink 链接文件</p>
 <h2 id="常见符号"><a href="#常见符号" class="headerlink" title="常见符号"></a>常见符号</h2><h3 id="转义字符"><a href="#转义字符" class="headerlink" title="\ 转义字符"></a>\ 转义字符</h3><p>放在特殊符号前，则该特殊符号的作用消失，放在指令的最末端，表示指令连接下一行</p>
-<h3 id="lt-输出重定向"><a href="#lt-输出重定向" class="headerlink" title="&lt;输出重定向"></a>&lt;输出重定向</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">命令 &lt; 文件 	        将指定文件作为命令的输入设备</span><br><span class="line">命令 &lt; 文件 1 &gt; 文件 2 	将文件 1 作为命令的输入设备，该命令的执行结果输出到文件 2 中。</span><br><span class="line"></span><br><span class="line">命令 &lt;&lt; 分界符 	      “&lt;&lt;”则是一种特殊的重定向，是输入内容重定向到一个命令或脚本。</span><br><span class="line">ubuntu@VM-12-3-ubuntu:/$ ls &lt;&lt;eor</span><br><span class="line">&gt; eor</span><br><span class="line">apache2.conf  boot   data  docker </span><br><span class="line"></span><br><span class="line">命令 &lt;&lt;&lt; 参数         将指定字符串参数作为命令的输入</span><br><span class="line">ubuntu@VM-12-3-ubuntu:/$ ls&lt;&lt;&lt;/</span><br><span class="line">apache2.conf  boot   data  docker </span><br><span class="line">bash&lt;&lt;&lt;ls</span><br><span class="line">apache2.conf  boot   data  docker </span><br><span class="line">passwd --stdin root  &lt;&lt;&lt; &quot;123456&quot;== echo &quot;123456&quot; | passwd --stdin root</span><br></pre></td></tr></table></figure>
+<h3 id="lt-输入重定向"><a href="#lt-输入重定向" class="headerlink" title="&lt;输入重定向"></a>&lt;输入重定向</h3><p>默认的输入是键盘，<code>&lt;</code> 把文件或字符串换成命令的输入</p>
+<ol>
+<li><code>&lt;</code>：从文件读输入</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">命令 &lt; 文件                  <span class="comment"># 把文件当成命令的输入</span></span><br><span class="line">命令 &lt; 文件1 &gt; 文件2          <span class="comment"># 从 文件1 读输入，结果输出到 文件2</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cat &lt; /etc/hostname            <span class="comment"># 等价于 cat /etc/hostname</span></span><br><span class="line">$ su tester -c <span class="string">&#x27;id&#x27;</span> &lt; /tmp/pw.txt</span><br><span class="line">Password: uid=1001(tester) ...</span><br><span class="line">$ sudo -S id &lt; /tmp/pw.txt</span><br><span class="line">[sudo] password <span class="keyword">for</span> tester: uid=0(root) ...</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><code>&lt;&lt;</code> 分界符：把一段文本当输入（heredoc）</li>
+</ol>
+<p>从下一行开始写内容，遇到<strong>只有分界符的那一行</strong>就结束</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">第一行</span></span><br><span class="line"><span class="string">第二行</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">第一行</span><br><span class="line">第二行</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat &gt; /tmp/t1.txt &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">hello $USER</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">$ cat /tmp/t1.txt</span><br><span class="line">hello root                       <span class="comment"># 不加引号，$USER 被替换</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>&lt;&lt;&lt;</code>：把一个字符串当输入（here-string）</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令 &lt;&lt;&lt; <span class="string">&quot;字符串&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cat &lt;&lt;&lt; <span class="string">&quot;hello&quot;</span>                <span class="comment"># 等价于 echo &quot;hello&quot; | cat</span></span><br><span class="line">hello</span><br><span class="line">$ su tester -c <span class="string">&#x27;id&#x27;</span> &lt;&lt;&lt; <span class="string">&#x27;pass123&#x27;</span></span><br><span class="line">Password: uid=1001(tester) ...</span><br><span class="line">$ sudo -S id &lt;&lt;&lt; <span class="string">&#x27;pass123&#x27;</span></span><br><span class="line">[sudo] password <span class="keyword">for</span> tester: uid=0(root) ...</span><br><span class="line">$ bash &lt;&lt;&lt; <span class="string">&#x27;ls -d /tmp&#x27;</span>          <span class="comment"># 把字符串当成 bash 脚本执行</span></span><br><span class="line">/tmp</span><br></pre></td></tr></table></figure>
+
 <h3 id="gt-表示覆盖内容"><a href="#gt-表示覆盖内容" class="headerlink" title="&gt; 表示覆盖内容"></a>&gt; 表示覆盖内容</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1, 通过&gt;来创建文件</span><br><span class="line"></span><br><span class="line">&gt;flag.txt</span><br><span class="line"></span><br><span class="line">2，通过&gt;将命令结果存入文件中</span><br><span class="line"></span><br><span class="line">echo &quot;hello hacker&quot; &gt; flag.txt</span><br><span class="line"></span><br><span class="line">3，&gt;&gt;符号的作用是将字符串添加到文件内容末尾，不会覆盖原内容</span><br><span class="line"></span><br><span class="line">echo &quot;hello hacker&quot; &gt;&gt; flag.txt</span><br></pre></td></tr></table></figure>
 <h3 id="‘’，””引号"><a href="#‘’，””引号" class="headerlink" title="‘’，””引号"></a>‘’，””引号</h3><p>单引号’’剥夺了所有字符的特殊含义，单引号’’内就变成了单纯的字符。<br>双引号””则对于双引号””内的参数替换($)和命令替换(``)是个例外。</p>
 <h3 id="花括号"><a href="#花括号" class="headerlink" title="{}花括号"></a>{}花括号</h3><p>如touch {a,b}.txt 结果为a.txt b.txt。<br>如：touch {a…d}.txt 结果为a.txt b.txt c.txt d.txt。</p>
@@ -424,19 +536,22 @@
 <li>返回上一条命令执行结束后的传回值</li>
 </ol>
 <p><strong><code>$&#123;?&#125;</code></strong>    //表示0    用途：上一条命令执行结束后的传回值。通常0代表执行成功，非0代表执行有误。</p>
-<p>**<code>$()</code>**：对命令的替换，同``（反引号）,查询失败返回就空，wh$(f1hgb)oa$(f1hgb)mi </p>
+<p><strong><code>$()</code></strong>    对命令的替换，同``（反引号）,查询失败返回就空，wh$(f1hgb)oa$(f1hgb)mi </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(base) root@DESKTOP-G2RO7JA:~<span class="comment"># cat ../flag</span></span><br><span class="line">moectf&#123;PROBE_VERSION_OK&#125;</span><br><span class="line">(base) root@DESKTOP-G2RO7JA:~<span class="comment"># cat ../$(echo &quot;flag&quot;)</span></span><br><span class="line">moectf&#123;PROBE_VERSION_OK&#125;</span><br><span class="line">(base) root@DESKTOP-G2RO7JA:~<span class="comment"># cat ../`echo &quot;flag&quot;`</span></span><br><span class="line">moectf&#123;PROBE_VERSION_OK&#125; </span><br><span class="line"></span><br><span class="line">(base) root@DESKTOP-G2RO7JA:~<span class="comment"># ping -c 127.0.0.1$(whoami)</span></span><br><span class="line">ping: invalid argument: <span class="string">&#x27;127.0.0.1root&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
 <p><strong><code>$(())</code></strong>:对内部内容进行整数运算$((var1*var2)),输出结果为十进制</p>
 <ol start="5">
 <li><p>进制转换<br>将其他进制转换为十进制$((N#var))，其中N为进制。</p>
 </li>
 <li><p>位运算</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~$(())))</span><br><span class="line">-1</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~0))</span><br><span class="line">-1</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~1))</span><br><span class="line">-2</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((~11))</span><br><span class="line">-12</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((1&lt;&lt;1))</span><br><span class="line">2</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((1&lt;&lt;1&lt;&lt;1))</span><br><span class="line">4</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $((2#10001))</span><br><span class="line">17</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ echo $(( $((1&lt;&lt;1))#10001 ))</span><br><span class="line">17</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> $((~$(())))</span><br><span class="line">-1</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> $((~<span class="number">0</span>))</span><br><span class="line">-1</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> $((~<span class="number">1</span>))</span><br><span class="line">-2</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> $((~<span class="number">11</span>))</span><br><span class="line">-12</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> $((<span class="number">1</span>&lt;&lt;<span class="number">1</span>))</span><br><span class="line">2</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> $((<span class="number">1</span>&lt;&lt;<span class="number">1</span>&lt;&lt;<span class="number">1</span>))</span><br><span class="line">4</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> $((<span class="number">2#10001</span>))</span><br><span class="line">17</span><br><span class="line">ubuntu@VM-12-3-ubuntu:~$ <span class="built_in">echo</span> $(( $((<span class="number">1</span>&lt;&lt;<span class="number">1</span>))<span class="comment">#10001 ))</span></span><br><span class="line">17</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="命令分隔符"><a href="#命令分隔符" class="headerlink" title="命令分隔符"></a>命令分隔符</h3></li>
 </ol>
 <p><strong>windows</strong>：</p>
 <p>‘|’  在前面命令的结果上，执行后面的指令<br>‘||’ 如果前面命令是错的那么就执行后面的语句，否则只执行前面的语句<br>‘&amp;&amp;’ 如果前面为假，后面的命令也不执行，如果前面为真则执行两条命令，例如<code>?cmd=cd ..&amp;&amp;ls&amp;&amp;ca$@t ffff$@llllaaaaggggg</code></p>
 <p>‘&amp;’  前面和后面命令都要执行，无论前面真假</p>
-<p><strong>Linux</strong>:<br>Linux系统包含了windows系统上面四个之外，还多了两个 <code>‘;’和‘\n’</code> 这个作用和 ‘&amp;’ 作用相同</p>
+<p><strong>Linux</strong>:<br>Linux系统包含了windows系统上面四个之外，还多了两个 <code>‘;’和‘\n’</code> 这个作用和 ‘&amp;’ 作用相同<br>可以在$’’中测试<br><code>eval $&#39;ls\nls ../&#39;</code></p>
 
         </div>
 
