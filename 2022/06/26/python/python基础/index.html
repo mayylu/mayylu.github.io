@@ -306,13 +306,23 @@ list 的 sort 方法返回的是对已经存在的列表进行操作，无返回
 <h4 id="元组-tuple"><a href="#元组-tuple" class="headerlink" title="元组(tuple)"></a>元组(tuple)</h4><p>元组与列表的区别在与元组中的元素值是不允许修改，删除，添加的，但我们可以对元组进行连接组合<br><code>list(seq)</code>可将元组转换为列表<br><code>tuple = (&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)</code></p>
 <p>注意直接采用{}，即s={}默认生成一个空字典;用s = set()创建一个空集合</p>
 <h4 id="字典-dict"><a href="#字典-dict" class="headerlink" title="字典(dict)"></a>字典(dict)</h4><p><code>d = &#123;key1 : value1, key2 : value2, key3 : value3 &#125;</code><br>字典是一个无序、可变和有索引的集合，键必须是唯一的，但值则不必，值可以取任何数据类型，但键必须是不可变的，如字符串，数字。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dishes:<span class="comment">#可以直接遍历键</span></span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line"></span><br><span class="line"><span class="comment">#dict.keys()、dict.values() 和 dict.items() 返回的都是视图对象（ view objects），提供了字典实体的动态视图</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dishes = &#123;<span class="string">&#x27;eggs&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;sausage&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;bacon&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;spam&#x27;</span>: <span class="number">500</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>keys = dishes.keys()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values = dishes.values()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># keys 和 values 以相同顺序（插入顺序）进行迭代</span></span><br><span class="line">&gt;&gt;&gt;<span class="keyword">for</span> i,j <span class="keyword">in</span> dishes.items():<span class="comment">#字典遍历</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>   <span class="built_in">print</span>(i, <span class="string">&quot;:\t&quot;</span>, j)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(keys)     <span class="comment"># 使用 list() 转换为列表</span></span><br><span class="line">[<span class="string">&#x27;eggs&#x27;</span>, <span class="string">&#x27;sausage&#x27;</span>, <span class="string">&#x27;bacon&#x27;</span>, <span class="string">&#x27;spam&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(values)</span><br><span class="line">[<span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">500</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 视图对象是动态的，受字典变化的影响，以下删除了字典的 key，视图对象转为列表后也跟着变化</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> dishes[<span class="string">&#x27;eggs&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> dishes[<span class="string">&#x27;sausage&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(keys)</span><br><span class="line">[<span class="string">&#x27;bacon&#x27;</span>, <span class="string">&#x27;spam&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># json转为字典</span></span><br><span class="line">data = json.loads(text1)</span><br><span class="line"><span class="comment"># 修改 key: numbers → answers</span></span><br><span class="line">data[<span class="string">&quot;answers&quot;</span>] = data.pop(<span class="string">&quot;numbers&quot;</span>)</span><br><span class="line"><span class="comment"># 将字典转换为 JSON 格式</span></span><br><span class="line">json_str = json.dumps(data)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dishes:<span class="comment">#可以直接遍历键</span></span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line"></span><br><span class="line"><span class="comment">#dict.keys()、dict.values() 和 dict.items() 返回的都是视图对象（ view objects），提供了字典实体的动态视图</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dishes = &#123;<span class="string">&#x27;eggs&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;sausage&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;bacon&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;spam&#x27;</span>: <span class="number">500</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>keys = dishes.keys()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>values = dishes.values()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># keys 和 values 以相同顺序（插入顺序）进行迭代</span></span><br><span class="line">&gt;&gt;&gt;<span class="keyword">for</span> i,j <span class="keyword">in</span> dishes.items():<span class="comment">#字典遍历</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>   <span class="built_in">print</span>(i, <span class="string">&quot;:\t&quot;</span>, j)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(keys)     <span class="comment"># 使用 list() 转换为列表</span></span><br><span class="line">[<span class="string">&#x27;eggs&#x27;</span>, <span class="string">&#x27;sausage&#x27;</span>, <span class="string">&#x27;bacon&#x27;</span>, <span class="string">&#x27;spam&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(values)</span><br><span class="line">[<span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">500</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 视图对象是动态的，受字典变化的影响，以下删除了字典的 key，视图对象转为列表后也跟着变化</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> dishes[<span class="string">&#x27;eggs&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> dishes[<span class="string">&#x27;sausage&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(keys)</span><br><span class="line">[<span class="string">&#x27;bacon&#x27;</span>, <span class="string">&#x27;spam&#x27;</span>]</span><br><span class="line"><span class="comment"># 修改 key: numbers → answers</span></span><br><span class="line">data[<span class="string">&quot;answers&quot;</span>] = data.pop(<span class="string">&quot;numbers&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p><strong>添加，访问项目</strong><br>通过使用新的索引键并为其赋值，可以将项目添加到字典中：<br><code>thisdict[&quot;disappear&quot;] = &quot;s&quot;</code></p>
 <p>get(key) 方法在 key（键）不在字典中时，可以返回默认值 None 或者设置的默认值。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 没有设置 Sex，也没有设置默认的值，输出 None</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;Sex : &quot;</span>, tinydict.get(<span class="string">&#x27;Sex&#x27;</span>))  </span><br><span class="line"><span class="comment"># 没有设置 Salary，输出默认的值  0.0</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&#x27;Salary: &#x27;</span>, tinydict.get(<span class="string">&#x27;Salary&#x27;</span>, <span class="number">0.0</span>))</span><br></pre></td></tr></table></figure>
 
 <p>dict[key] 在 key（键）不在字典中时，会触发 KeyError 异常。</p>
+<h5 id="json和dict的转换"><a href="#json和dict的转换" class="headerlink" title="json和dict的转换"></a>json和dict的转换</h5><p>将json当成字符串输入，然后使用<code>json.loads</code>就能转成dict</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># json转为字典</span></span><br><span class="line">text1=<span class="string">&#x27;&#123;&quot;ts&quot;:1786932849.85,&quot;stream&quot;:true&#125;&#x27;</span></span><br><span class="line">data = json.loads(text1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将字典转换为 JSON 格式</span></span><br><span class="line">json_str = json.dumps(data)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>当然还有一种简单的方法就是直接把json手动复制到代码变量里面</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=[</span><br><span class="line">    &#123;<span class="string">&#x27;JUMDLabel&#x27;</span>: <span class="string">&#x27;c2pa&#x27;</span>, <span class="string">&#x27;FileName&#x27;</span>: <span class="string">&#x27;1.jpeg&#x27;</span>&#125;,</span><br><span class="line">    &#123;...&#125;</span><br><span class="line">]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> json1:</span><br><span class="line">    <span class="built_in">print</span>(i[<span class="string">&#x27;FileName&#x27;</span>])</span><br></pre></td></tr></table></figure>
+<p>下面处理jsonl后，直接复制放到列表里面，就是也该字典列表</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.jsonl&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    lines = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> f <span class="keyword">if</span> line.strip()]</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.jsonl&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">        f.write(line + <span class="string">&#x27;,\n&#x27;</span>)</span><br><span class="line">a=[]<span class="comment"># 手动复制</span></span><br></pre></td></tr></table></figure>
+
 <h4 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h4><p><code>parame = &#123;value01,value02,...&#125;</code><br>集合（set）是一个无序的<strong>不重复</strong>元素序列。</p>
 <ul>
 <li>使用 add() 方法向 set 添加项目：<br><code>s.add( x )</code></li>
@@ -371,7 +381,113 @@ list 的 sort 方法返回的是对已经存在的列表进行操作，无返回
 <ol>
 <li>删除文件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 要删除的文件名</span><br><span class="line">filename1 = &quot;1_msg1.txt&quot;</span><br><span class="line">filename2 = &quot;1_msg2.txt&quot;</span><br><span class="line"># 删除文件</span><br><span class="line">os.remove(filename1)</span><br><span class="line">os.remove(filename2)</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="python-request"><a href="#python-request" class="headerlink" title="python request"></a>python request</h2><h3 id="get"><a href="#get" class="headerlink" title="get"></a>get</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># http代理，需要指定访问的http协议和https协议两种</span></span><br><span class="line">proxies = &#123;</span><br><span class="line">  <span class="string">&quot;http&quot;</span>: <span class="string">&quot;http://127.0.0.1:8080&quot;</span>,</span><br><span class="line">  <span class="string">&quot;https&quot;</span>: <span class="string">&quot;http://127.0.0.1:1080&quot;</span>,</span><br><span class="line">&#125;</span><br><span class="line">headers=&#123;</span><br><span class="line">     <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">response=requests.get(short,params=&#123;<span class="string">&#x27;media_id&#x27;</span>:media_id,<span class="string">&#x27;ps&#x27;</span>:<span class="string">&#x27;20&#x27;</span>,<span class="string">&#x27;short&#x27;</span>:<span class="string">&#x27;0&#x27;</span>&#125;,headers=headers, proxies=proxies)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看响应内容，response.text 返回的是Unicode格式的数据</span></span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 查看响应内容，response.content返回的字节流数据</span></span><br><span class="line"><span class="built_in">print</span>(response.content)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果是json文件可以直接显示</span></span><br><span class="line"><span class="built_in">print</span>(response.json())</span><br><span class="line"></span><br><span class="line">set_cookie = response.headers.get(<span class="string">&quot;Set-Cookie&quot;</span>)<span class="comment">#获取返回包字段</span></span><br></pre></td></tr></table></figure>
+<h2 id="python-request"><a href="#python-request" class="headerlink" title="python request"></a>python request</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>url</code></td>
+<td>请求地址</td>
+<td>必填</td>
+</tr>
+<tr>
+<td><code>params</code></td>
+<td>URL 查询参数（GET 的 <code>?a=1&amp;b=2</code>）</td>
+<td>字典、列表、字符串都行</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>请求体</td>
+<td>字典会<strong>自动 URL 编码</strong>；字符串<strong>原样发送</strong>，且不设置 Content-Type</td>
+</tr>
+<tr>
+<td><code>json</code></td>
+<td>请求体（JSON）</td>
+<td>自动序列化，并设置 <code>Content-Type: application/json</code></td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>请求头</td>
+<td>字典</td>
+</tr>
+<tr>
+<td><code>cookies</code></td>
+<td>Cookie</td>
+<td>字典或 <code>CookieJar</code></td>
+</tr>
+<tr>
+<td><code>files</code></td>
+<td>上传文件（multipart）</td>
+<td>和 <code>data</code> 一起构成表单</td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td>超时（秒）</td>
+<td>也可以写 <code>(连接超时, 读取超时)</code>，如 <code>(3, 10)</code></td>
+</tr>
+<tr>
+<td><code>allow_redirects</code></td>
+<td>是否跟随重定向</td>
+<td>默认 <code>True</code></td>
+</tr>
+<tr>
+<td><code>proxies</code></td>
+<td>代理</td>
+<td><code>&#123;&quot;http&quot;: &quot;...&quot;, &quot;https&quot;: &quot;...&quot;&#125;</code></td>
+</tr>
+<tr>
+<td><code>verify</code></td>
+<td>是否校验服务端证书</td>
+<td><code>True</code> / <code>False</code> / CA 证书路径</td>
+</tr>
+<tr>
+<td><code>cert</code></td>
+<td>客户端证书</td>
+<td><code>.pem</code> 路径，或 <code>(cert, key)</code> 元组</td>
+</tr>
+</tbody></table>
+<p>常用响应属性</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>status_code</code></td>
+<td>状态码，如 <code>200</code> / <code>404</code></td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>按 <code>encoding</code> 解码后的字符串，乱码时可以手动改 <code>response.encoding</code></td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>原始字节，下载文件、图片用这个</td>
+</tr>
+<tr>
+<td><code>json()</code></td>
+<td>把响应体解析成字典</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>响应头，如 <code>response.headers[&#39;Set-Cookie&#39;]</code></td>
+</tr>
+<tr>
+<td><code>cookies</code></td>
+<td>响应里下发的 Cookie</td>
+</tr>
+<tr>
+<td><code>ok</code> / <code>raise_for_status()</code></td>
+<td>状态码小于 400 时为真 / 不是 2xx、3xx 就抛异常</td>
+</tr>
+</tbody></table>
+<h3 id="get"><a href="#get" class="headerlink" title="get"></a>get</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># http代理，需要指定访问的http协议和https协议两种</span></span><br><span class="line">proxies = &#123;</span><br><span class="line">  <span class="string">&quot;http&quot;</span>: <span class="string">&quot;http://127.0.0.1:8080&quot;</span>,</span><br><span class="line">  <span class="string">&quot;https&quot;</span>: <span class="string">&quot;http://127.0.0.1:1080&quot;</span>,</span><br><span class="line">&#125;</span><br><span class="line">headers=&#123;</span><br><span class="line">     <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">response=requests.get(short,params=&#123;<span class="string">&#x27;media_id&#x27;</span>:media_id,<span class="string">&#x27;ps&#x27;</span>:<span class="string">&#x27;20&#x27;</span>,<span class="string">&#x27;short&#x27;</span>:<span class="string">&#x27;0&#x27;</span>&#125;,headers=headers, proxies=proxies)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看响应内容，response.text 返回的是Unicode格式的数据</span></span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 查看响应内容，response.content返回的字节流数据</span></span><br><span class="line"><span class="built_in">print</span>(response.content)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果是json文件可以直接显示</span></span><br><span class="line"><span class="built_in">print</span>(response.json())</span><br><span class="line"></span><br><span class="line">set_cookie = response.headers.get(<span class="string">&quot;Set-Cookie&quot;</span>)<span class="comment">#获取返回包字段</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="post"><a href="#post" class="headerlink" title="post"></a>post</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;<span class="string">&quot;upload&quot;</span>:<span class="string">&quot;Submit&quot;</span>&#125;<span class="comment">#值得注意的是，使用字典作为参数时，requests.post 方法默认会对请求参数进行 URL 编码</span></span><br><span class="line">data = <span class="string">&quot;key1=value&amp;key2=value2&quot;</span><span class="comment">#以字符串的形式传递时，requests.post 方法就不会对请求参数进行编码</span></span><br><span class="line">files = &#123;</span><br><span class="line">	<span class="string">&quot;file&quot;</span>: (<span class="string">&quot;test.xlsx&quot;</span>, <span class="built_in">open</span>(<span class="string">&quot;D:\\test.xlsx&quot;</span>, <span class="string">&quot;rb&quot;</span>), <span class="string">&quot;application/octet-stream&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#response = requests.post(url, json=data)传json</span></span><br><span class="line">response = requests.post(url=url, data=data, files=files)<span class="comment">#传参和文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> response.status_code == <span class="number">200</span>:<span class="comment"># 查看响应码</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Request succeeded!&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
